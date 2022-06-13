@@ -110,8 +110,9 @@ module PERIPHERALS #(
     wire    cga_chip_select_n      = ~(enable_cga & (address[19:14] == 6'b1011_10)); // B8000 - BFFFF (32 KB)
 	 wire    mda_chip_select_n      = ~(enable_cga & (address[19:14] == 6'b1011_00)); // B0000 - B7FFF (32 KB)
 	 wire    rom_select_n           = ~(address[19:16] == 4'b1111); // F0000 - FFFFF (64 KB)
-	 wire    ram_select_n           = ~(address[19:18] == 2'b00); // 00000 - 3FFFF (256 KB)
-	 wire    uart_cs                = ({address[15:3], 3'd0} == 16'h03F8);
+	 //wire    ram_select_n           = ~(address[19:18] == 2'b00); // 00000 - 3FFFF (256 KB)
+     wire    ram_select_n           = ~(address[19:17] == 3'b000); // 00000 - 1FFFF (128 KB)
+     wire    uart_cs                = ({address[15:3], 3'd0} == 16'h03F8);
 	 
 
     //
@@ -458,6 +459,8 @@ module PERIPHERALS #(
 	);
 
 	
+    /*
+    //(RAM 256 KB)
 	ram #(.AW(18)) mram
 	(
 	  .clka(clock),
@@ -467,8 +470,21 @@ module PERIPHERALS #(
 	  .dina(internal_data_bus),
 	  .douta(ram_cpu_dout)
 	);
+	*/
+
+    //(RAM 128 KB)
+    ram #(.AW(17)) mram
+    (
+    .clka(clock),
+    .ena(~address_enable_n && ~ram_select_n),
+    .wea(~memory_write_n),
+    //.addra(address[17:0]),
+    .addra(address[16:0]),
+    .dina(internal_data_bus),
+    .douta(ram_cpu_dout)
+    );
 	
-	
+
 	bios bios
 	(
         .clka(ioctl_download ? clk_sys : clock),
