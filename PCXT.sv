@@ -78,7 +78,9 @@ parameter CONF_STR = {
 	"-;",
 	"OA,Adlib,On,Invisible;",
 	"-;",
-	"O12,Video,Color,Green,Amber,B/W;",	
+	"O4,Video Output,Tandy/CGA,MDA;",
+	"O12,CGA RGB,Color,Green,Amber,B/W;",
+	"O56,MDA RGB,Green,Amber,B/W;",
 	"O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
 	//"O78,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",	
 	"-;",
@@ -107,10 +109,14 @@ wire[63:0] usdImgSz;
 wire[ 0:0] usdImgMtd;
 
 //Keyboard Ps2
+//wire        ps2_kbd_clk_out;
+//wire        ps2_kbd_data_out;
 wire        ps2_kbd_clk_in;
 wire        ps2_kbd_data_in;
 
 //Mouse PS2
+//wire        ps2_mouse_clk_out;
+//wire        ps2_mouse_data_out;
 wire        ps2_mouse_clk_in;
 wire        ps2_mouse_data_in;
 
@@ -176,12 +182,14 @@ wire pll_locked;
 
 wire clk_100;
 wire clk_28_636;
-wire clk_25;
+wire clk_56_875;
 reg clk_14_318 = 1'b0;
 //reg clk_7_16 = 1'b0;
 wire clk_4_77;
 wire clk_cpu;
+wire cen_opl2;
 wire peripheral_clock;
+
 
 pll pll
 (
@@ -194,7 +202,22 @@ pll pll
 	.locked(pll_locked)
 );
 
-wire reset = !RESET_N | status[0] | buttons[1] | !pll_locked | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
+wire clk_227_500;
+wire pll_locked2;
+
+pllvideo pllvideo
+(
+	.inclk0(CLOCK_27),
+	.areset(1'b0),
+	.c0(clk_56_875),
+	.c1(clk_227_500),	
+	.locked(pll_locked2)
+);
+
+
+//wire reset = !RESET_N | status[0] | buttons[1] | !pll_locked | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
+wire reset = status[0] | !pll_locked | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
+
 
 //////////////////////////////////////////////////////////////////
 
@@ -205,9 +228,10 @@ wire VSync;
 wire ce_pix;
 //wire [7:0] video;
 
-assign CLK_VIDEO = clk_28_636;
+//assign CLK_VIDEO = clk_28_636;
+assign CLK_VIDEO = clk_56_875;
+//assign CLK_VIDEO = status[4] ? clk_28_636 : clk_56_875;
 
-//assign clk_cpu = status[4] ? clk_7_16 : clk_4_77;
 assign clk_cpu = clk_4_77;
 
 always @(posedge clk_28_636)
@@ -325,7 +349,14 @@ always @(posedge clk_4_77)
     wire address_latch_enable;
 
     wire lock_n;
-    wire [2:0]processor_status;	 
+    wire [2:0]processor_status;
+	 
+	 logic   [7:0]   port_b_out;
+    logic   [7:0]   port_c_in;	 
+	 reg     [7:0]   sw;
+	 
+	 assign  sw = ~status[4] ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
+	 assign  port_c_in[3:0] = port_b_out[3] ? sw[7:4] : sw[3:0];
 
    CHIPSET u_CHIPSET (
         .clock                              (clk_cpu),
@@ -341,14 +372,18 @@ always @(posedge clk_4_77)
 		  .processor_ready                    (processor_ready),
         .interrupt_to_cpu                   (interrupt_to_cpu),
         .splashscreen                       (splashscreen),
-        .clk_vga                            (clk_28_636),
+		  .video_output                       (~status[4]),
+        .clk_vga_cga                        (clk_28_636),
         .enable_cga                         (1'b1),
+        .clk_vga_mda                        (clk_56_875),
+        .enable_mda                         (1'b1),
+		  .mda_rgb                            (status[6:5]),
         .de_o                               (VGA_DE),
         .VGA_R                              (r),
         .VGA_G                              (g),
         .VGA_B                              (b),
-        .VGA_HSYNC                          (VGA_HS),
-        .VGA_VSYNC                          (VGA_VS),
+        .VGA_HSYNC                          (vga_hs),
+        .VGA_VSYNC                          (vga_vs),
 //      .address                            (address),
         .address_ext                        (0),
 //      .address_direction                  (address_direction),
@@ -375,10 +410,13 @@ always @(posedge clk_4_77)
 //      .dma_acknowledge_n                  (dma_acknowledge_n),
 //      .address_enable_n                   (address_enable_n),
 //      .terminal_count_n                   (terminal_count_n)
+        .port_b_out                         (port_b_out),
+		  .port_c_in                          (port_c_in),
 	     .speaker_out                        (speaker_out),   
         .ps2_clock                          (ps2_kbd_clk_in),
 	     .ps2_data                           (ps2_kbd_data_in),
-//	     .ps2_busy                           (ps2_kbd_busy),
+//	     .ps2_clock_out                      (ps2_kbd_clk_out),
+//	     .ps2_data_out                       (ps2_kbd_data_out),
 	     .enable_sdram                       (0),	   // -> During the first tests, it shall not be used.		  
 		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
 		  .jtopl2_snd_e                       (jtopl2_snd_e),
@@ -399,7 +437,10 @@ always @(posedge clk_4_77)
 	    //  .uart_rts_n                        (uart_rts),
 	    //  .uart_dtr_n                        (uart_dtr)
     );
-	 
+	
+	wire speaker_out;
+	wire  [7:0]   tandy_snd_e;
+
 	wire [15:0] jtopl2_snd_e;	
 	wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + (tandy_snd_e << 8); // signed mixer
 		
@@ -408,6 +449,9 @@ always @(posedge clk_4_77)
 
 	assign DAC_R = jtopl2_snd_e;
 	assign DAC_L = DAC_R;	 
+
+	wire s6_3_mux;
+	wire [2:0] SEGMENT;
 
 	i8088 B1(
 	  .CORE_CLK(clk_100),
@@ -463,22 +507,9 @@ always @(posedge clk_4_77)
 	
 	/// VIDEO
 
-	/*
-	wire [1:0] scale = status[8:7];
-	assign VGA_SL = scale;
-	wire freeze_sync;	
-	video_mixer #(640, 1) mixer
-	(
-		.*,
-        .hq2x(scale),
-        .scandoubler (scale || forced_scandoubler),
-        .R({raux, 2'b0}), 
-        .G({gaux, 2'b0}), 
-        .B({baux, 2'b0})
-	);
-	*/
 
-	always @ (status[2:1], r, g, b) begin
+	//CGA
+	always @ (status[2:1], r, g, b) begin		
 		case(status[2:1])
 			// Verde
 			2'b01	: begin
@@ -507,9 +538,70 @@ always @(posedge clk_4_77)
 		endcase
 	end
 
-	assign VGA_R = {raux, 2'b0};
-	assign VGA_G = {gaux, 2'b0};
-	assign VGA_B = {baux, 2'b0};
+	wire [5:0] vga_r;
+	wire [5:0] vga_g;
+	wire [5:0] vga_b;
+	wire vga_hs;
+	wire vga_vs;
+
+	// 1 MDA, 0 CGA
+	assign vga_r = ~status[4] ? r : raux;
+	assign vga_g = ~status[4] ? g : gaux;
+	assign vga_b = ~status[4] ? b : baux;
+
+
+	/*
+	wire [1:0] scale = status[8:7];
+	assign VGA_SL = scale;
+	wire freeze_sync;	
+	video_mixer #(640, 1) mixer
+	(
+		.*,
+        .hq2x(scale),
+        .scandoubler (scale || forced_scandoubler),
+        .R({raux, 2'b0}), 
+        .G({gaux, 2'b0}), 
+        .B({baux, 2'b0})
+	);
+	*/
+
+
+	video_mixer_mda #(.LINE_LENGTH(290), .HALF_DEPTH(0)) video_mixer
+	(
+		//.*,
+		.clk_sys(clk_227_500),
+		.ce_pix(clk_56_875),
+	    .ce_pix_actual(clk_56_875),
+	   
+		.SPI_SCK(SPI_SCK),
+		.SPI_SS3(SPI_SS3),
+		.SPI_DI(SPI_DI),
+
+		.scanlines(2'b00),
+		.scandoubler_disable(1'b1),
+		.hq2x(1'b0),
+		.ypbpr(1'b0),
+	    .ypbpr_full(1'b0),
+		.mono(1'b0),
+	    .line_start(1'b0),
+	
+		.R(vga_r),
+		.G(vga_g),
+		.B(vga_b),
+	
+		// Positive pulses.
+		.HSync(vga_hs),
+		.VSync(vga_vs),
+		.HBlank(1'b0),
+		.VBlank(1'b0),
+
+		.VGA_R(VGA_R),
+		.VGA_G(VGA_G),
+		.VGA_B(VGA_B),
+		.VGA_VS(VGA_VS),
+		.VGA_HS(VGA_HS)
+	);
+	
 
 /*
 // SRAM management

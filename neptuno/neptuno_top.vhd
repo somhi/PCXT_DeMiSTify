@@ -174,6 +174,8 @@ architecture RTL of neptuno_top is
 	-- i2s 
 	signal i2s_mclk : std_logic;
 
+	signal act_led : std_logic;
+
 begin
 
 	-- SPI
@@ -248,7 +250,7 @@ begin
 		port map(
 			CLOCK_27 => CLOCK_50_I,
 	        RESET_N  => reset_n,
-			LED      => LED,
+			LED      => act_led,
 			--SDRAM
 			SDRAM_DQ   => DRAM_DQ,
 			SDRAM_A    => DRAM_ADDR,
@@ -337,5 +339,7 @@ begin
 				txd => rs232_txd,
 				intercept => intercept
 			);
+
+		LED <= not act_led;
 
 	end rtl;
