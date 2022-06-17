@@ -107,7 +107,10 @@ module CHIPSET (
     output  logic   [15:0]  sdram_dq_out,
     output  logic           sdram_dq_io,
     output  logic           sdram_ldqm,
-    output  logic           sdram_udqm
+    output  logic           sdram_udqm,
+	 output          [20:0]  SRAM_ADDR,
+	 inout           [7:0]   SRAM_DATA,
+	 output                  SRAM_WE_n
 );
 
     logic           dma_ready;
@@ -238,7 +241,10 @@ module CHIPSET (
 	     .uart_dcd_n                        (uart_dcd),
 	     .uart_dsr_n                        (uart_dsr),
 	     .uart_rts_n                        (uart_rts),
-	     .uart_dtr_n                        (uart_dtr)
+	     .uart_dtr_n                        (uart_dtr),
+		  .SRAM_ADDR                         (SRAM_ADDR),
+		  .SRAM_DATA                         (SRAM_DATA),
+		  .SRAM_WE_n                         (SRAM_WE_n)
 		  
     );
 

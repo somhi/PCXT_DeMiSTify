@@ -34,6 +34,10 @@ module PCXT
 	output        SDRAM_CLK,
 	output        SDRAM_CKE,
 
+	//output	[20:0] SRAM_A,
+	//inout   [15:0] SRAM_Q,     	
+	//output         SRAM_WE,    
+
 	output        SPI_DO,
 	input         SPI_DI,
 	input         SPI_SCK,
@@ -67,6 +71,9 @@ module PCXT
 );
 
 assign LED  =  1'b1;
+//assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
+//assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
+
 
 
 //`include "build_id.v" 
@@ -196,27 +203,28 @@ pll pll
 	.inclk0(CLOCK_27),
 	.areset(1'b0),
 	.c0(clk_100),
-	.c1(clk_28_636),	
+	//.c1(clk_28_636),	
 	.c2(clk_uart),
 	.c3(cen_opl2),
 	.locked(pll_locked)
 );
 
-wire clk_227_500;
+wire clk_113_750;
 wire pll_locked2;
 
 pllvideo pllvideo
 (
 	.inclk0(CLOCK_27),
 	.areset(1'b0),
-	.c0(clk_56_875),
-	.c1(clk_227_500),	
+	.c0(clk_28_636),
+	.c1(clk_56_875),	
+	.c2(clk_113_750),
 	.locked(pll_locked2)
 );
 
 
 //wire reset = !RESET_N | status[0] | buttons[1] | !pll_locked | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
-wire reset = status[0] | !pll_locked | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
+wire reset = status[0] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
 
 
 //////////////////////////////////////////////////////////////////
@@ -228,9 +236,7 @@ wire VSync;
 wire ce_pix;
 //wire [7:0] video;
 
-//assign CLK_VIDEO = clk_28_636;
-assign CLK_VIDEO = clk_56_875;
-//assign CLK_VIDEO = status[4] ? clk_28_636 : clk_56_875;
+assign CLK_VIDEO = clk_28_636;
 
 assign clk_cpu = clk_4_77;
 
@@ -430,12 +436,18 @@ always @(posedge clk_4_77)
 		  
 		  .clk_uart                          (clk_uart),
 	     .uart_rx                           (UART_RX),
-	     .uart_tx                           (UART_TX)
+	     .uart_tx                           (UART_TX),
 	    //  .uart_cts_n                        (uart_cts),
 	    //  .uart_dcd_n                        (uart_dcd),
 	    //  .uart_dsr_n                        (uart_dsr),
 	    //  .uart_rts_n                        (uart_rts),
 	    //  .uart_dtr_n                        (uart_dtr)
+		//  .SRAM_ADDR                         (SRAM_A),
+		//  .SRAM_DATA                         (SRAM_Q[7:0]),
+		//  .SRAM_WE_n                         (SRAM_WE)
+		  .SRAM_ADDR                         (sramA),
+		  .SRAM_DATA                         (sramDQ),
+		  .SRAM_WE_n                         (sramWe)
     );
 	
 	wire speaker_out;
@@ -566,12 +578,11 @@ always @(posedge clk_4_77)
 	*/
 
 
-	video_mixer_mda #(.LINE_LENGTH(290), .HALF_DEPTH(0)) video_mixer
+	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer
 	(
-		//.*,
-		.clk_sys(clk_227_500),
-		.ce_pix(clk_56_875),
-	    .ce_pix_actual(clk_56_875),
+		.clk_sys(clk_113_750),
+		.ce_pix(clk_28_636),
+	    .ce_pix_actual(clk_28_636),
 	   
 		.SPI_SCK(SPI_SCK),
 		.SPI_SS3(SPI_SS3),
@@ -603,7 +614,7 @@ always @(posedge clk_4_77)
 	);
 	
 
-/*
+
 // SRAM management
 wire sramOe = ~sramWe;
 wire sramWe;
@@ -627,7 +638,7 @@ Mister_sRam sRam
   .SRAM_nOE    (sramOe), 
   .SRAM_nWE    (sramWe) 
 );
-*/
+
 
 reg vsd = 0;
 always @(posedge CLOCK_27) if(usdImgMtd[0]) vsd <= |usdImgSz;
