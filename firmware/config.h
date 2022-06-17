@@ -8,7 +8,7 @@
 /* Do we need access to the SD card filesystem? (Defined in the negative
    so that filesystem support is built by default) */
 
-#define CONFIG_WITHOUT_FILESYSTEM
+#undef CONFIG_WITHOUT_FILESYSTEM
 
 /* PS/2 Mouse support */
 #undef PS2_MOUSE
@@ -45,7 +45,7 @@ here, the number of units defaults to 4. */
 #define ROM_REQUIRED
 
 /* ROM name will default to "BOOT    ROM" if not defined here... */ 
-#define ROM_FILENAME "BOOT    ROM"
+#define ROM_FILENAME "PCXT    ROM"
 
 /* Do we support configuration files? */
 #undef CONFIG_SETTINGS
