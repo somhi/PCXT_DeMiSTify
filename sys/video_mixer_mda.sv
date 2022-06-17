@@ -180,6 +180,13 @@ always @(*) begin
 	endcase
 end
 
+
+// reg [1:0] cecount;
+// always @(posedge ce_pix)
+//   cecount<=cecount+1'b1;
+// wire ce = cecount[1];
+
+
 wire [5:0] red, green, blue;
 osd #(OSD_X_OFFSET, OSD_Y_OFFSET, OSD_COLOR) osd
 (
