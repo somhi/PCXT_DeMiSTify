@@ -72,8 +72,8 @@ module PCXT
 
 assign LED  =  1'b1;
 
-//assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
-assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
+assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
+//assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 
 
@@ -237,7 +237,8 @@ wire VSync;
 wire ce_pix;
 //wire [7:0] video;
 
-assign CLK_VIDEO = clk_28_636;
+//assign CLK_VIDEO = clk_28_636;
+assign CLK_VIDEO = clk_56_875;
 
 assign clk_cpu = clk_4_77;
 
