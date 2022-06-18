@@ -118,9 +118,9 @@ module PERIPHERALS #(
     wire    cga_chip_select_n      = ~(enable_cga & (address[19:14] == 6'b1011_10)); // B8000 - BFFFF (32 KB)
 	 wire    mda_chip_select_n      = ~(enable_mda & (address[19:14] == 6'b1011_00)); // B0000 - B7FFF (32 KB)
 	 wire    rom_select_n           = ~(address[19:16] == 4'b1111); // F0000 - FFFFF (64 KB)
-	 wire    ram_select_n           = ~(address[19:0] < 24'h0A0000); // 00000 - 9FFFF (640 KB)	 
+	 //wire    ram_select_n           = ~(address[19:0] < 24'h0A0000); // 00000 - 9FFFF (640 KB)	 
      //wire    ram_select_n           = ~(address[19] == 1'b0);     // 00000 - 7FFFF (512 KB)
-     //wire    ram_select_n           = ~(address[19:18] == 2'b00); // 00000 - 3FFFF (256 KB)
+     wire    ram_select_n           = ~(address[19:18] == 2'b00); // 00000 - 3FFFF (256 KB)
      //wire    ram_select_n           = ~(address[19:17] == 3'b000);// 00000 - 1FFFF (128 KB)
      //wire    ram_select_n           = ~(address[19:16] == 4'b0000);  // 00000 - FFFF  (64 KB)
      //wire    ram_select_n           = ~(address[19:15] == 5'b00000);  // 00000 - 7FFF  (32 KB)
@@ -591,20 +591,20 @@ module PERIPHERALS #(
 	);
 	
 
-	//(RAM 640 KB)
-	ram #(.AW(20)) mram
-	(
-	     .clka                       (clock),
-	     .ena                        (~address_enable_n && ~ram_select_n),
-	     .wea                        (~memory_write_n),
-	     .addra                      (address[19:0]),
-	     .dina                       (internal_data_bus),
-	     .douta                      (ram_cpu_dout),
-	     .SRAM_ADDR                  (SRAM_ADDR),
-	     .SRAM_DATA                  (SRAM_DATA),
-	     .SRAM_WE_n                  (SRAM_WE_n)
+	// //(RAM 640 KB)
+	// ram #(.AW(20)) mram
+	// (
+	//      .clka                       (clock),
+	//      .ena                        (~address_enable_n && ~ram_select_n),
+	//      .wea                        (~memory_write_n),
+	//      .addra                      (address[19:0]),
+	//      .dina                       (internal_data_bus),
+	//      .douta                      (ram_cpu_dout),
+	//      .SRAM_ADDR                  (SRAM_ADDR),
+	//      .SRAM_DATA                  (SRAM_DATA),
+	//      .SRAM_WE_n                  (SRAM_WE_n)
 	  
-	);
+	// );
 
 	// //(RAM 512 KB)
 	// ram #(.AW(19)) mram
@@ -620,16 +620,16 @@ module PERIPHERALS #(
 	//      .SRAM_WE_n                  (SRAM_WE_n)
 	// );
     
-	// //(RAM 256 KB)
-	// ram #(.AW(18)) mram
-	// (
-	//   .clka(clock),
-	//   .ena(~address_enable_n && ~ram_select_n),
-	//   .wea(~memory_write_n),
-	//   .addra(address[17:0]),
-	//   .dina(internal_data_bus),
-	//   .douta(ram_cpu_dout)
-	// );
+	//(RAM 256 KB)
+	ram #(.AW(18)) mram
+	(
+	  .clka(clock),
+	  .ena(~address_enable_n && ~ram_select_n),
+	  .wea(~memory_write_n),
+	  .addra(address[17:0]),
+	  .dina(internal_data_bus),
+	  .douta(ram_cpu_dout)
+	);
 
     // //(RAM 128 KB)
     // ram #(.AW(17)) mram
@@ -667,28 +667,28 @@ module PERIPHERALS #(
     // .douta(ram_cpu_dout)
     // );
 
-    // // BIOS (BRAM MISTER)
-	// bios bios
-	// (
-    //     .clka(ioctl_download ? clk_sys : clock),
-    //     .ena((~address_enable_n && ~rom_select_n) || ioctl_download),
-    //     .wea(ioctl_download && ioctl_wr),
-    //     .addra(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-    //     .dina(ioctl_data),
-    //     .douta(bios_cpu_dout)
-	// );
-
-
-    //BIOS (BRAM NEPTUNO)
+    // BIOS (BRAM MISTER)
 	bios bios
 	(
-        .clock(ioctl_download ? clk_sys : clock),
-        .clken((~address_enable_n && ~rom_select_n) || ioctl_download),
-        .wren(ioctl_download && ioctl_wr),
-        .address(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-        .data(ioctl_data),
-        .q(bios_cpu_dout)
+        .clka(ioctl_download ? clk_sys : clock),
+        .ena((~address_enable_n && ~rom_select_n) || ioctl_download),
+        .wea(ioctl_download && ioctl_wr),
+        .addra(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+        .dina(ioctl_data),
+        .douta(bios_cpu_dout)
 	);
+
+
+    // //BIOS (BRAM NEPTUNO)
+	// bios bios
+	// (
+    //     .clock(ioctl_download ? clk_sys : clock),
+    //     .clken((~address_enable_n && ~rom_select_n) || ioctl_download),
+    //     .wren(ioctl_download && ioctl_wr),
+    //     .address(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+    //     .data(ioctl_data),
+    //     .q(bios_cpu_dout)
+	// );
 
     // //BIOS (SRAM)
 	// bios bios
