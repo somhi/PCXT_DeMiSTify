@@ -396,13 +396,13 @@ begin
 	-- 	HDMI_TX_INT => HDMI_TX_INT
 	-- );
 
-	-- -- -- PLL2
-	-- -- pll2_inst : pll2
-	-- -- port map (
-	-- --	inclk0		=> MAX10_CLK1_50,
-	-- --	c0			=> vga_clk,		
-	-- --	locked		=> open
-	-- -- );
+	-- -- PLL2
+	-- pll2_inst : pll2
+	-- port map (
+	--	inclk0		=> MAX10_CLK1_50,
+	--	c0			=> vga_clk,		
+	--	locked		=> open
+	-- );
 
 	-- --  HDMI VIDEO   
 	-- HDMI_TX_CLK <= vga_clk;

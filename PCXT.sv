@@ -34,9 +34,9 @@ module PCXT
 	output        SDRAM_CLK,
 	output        SDRAM_CKE,
 
-	//output	[20:0] SRAM_A,
-	//inout   [15:0] SRAM_Q,     	
-	//output         SRAM_WE,    
+	output	[20:0] SRAM_A,
+	inout   [15:0] SRAM_Q,     	
+	output         SRAM_WE,    
 
 	output        SPI_DO,
 	input         SPI_DI,
@@ -71,9 +71,10 @@ module PCXT
 );
 
 assign LED  =  1'b1;
-//assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
-//assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 
+//assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
+assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
+//assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 
 
 //`include "build_id.v" 
@@ -441,13 +442,13 @@ always @(posedge clk_4_77)
 	    //  .uart_dcd_n                        (uart_dcd),
 	    //  .uart_dsr_n                        (uart_dsr),
 	    //  .uart_rts_n                        (uart_rts),
-	    //  .uart_dtr_n                        (uart_dtr)
-		//  .SRAM_ADDR                         (SRAM_A),
-		//  .SRAM_DATA                         (SRAM_Q[7:0]),
-		//  .SRAM_WE_n                         (SRAM_WE)
-		  .SRAM_ADDR                         (sramA),
-		  .SRAM_DATA                         (sramDQ),
-		  .SRAM_WE_n                         (sramWe)
+	    //  .uart_dtr_n                        (uart_dtr),
+		    .SRAM_ADDR                         (SRAM_A),
+		    .SRAM_DATA                         (SRAM_Q[7:0]),
+		    .SRAM_WE_n                         (SRAM_WE)
+		//  .SRAM_ADDR                         (sramA),
+		//  .SRAM_DATA                         (sramDQ),
+		//  .SRAM_WE_n                         (sramWe)
     );
 	
 	wire speaker_out;
@@ -614,7 +615,7 @@ always @(posedge clk_4_77)
 	);
 	
 
-
+/*
 // SRAM management
 wire sramOe = ~sramWe;
 wire sramWe;
@@ -638,7 +639,7 @@ Mister_sRam sRam
   .SRAM_nOE    (sramOe), 
   .SRAM_nWE    (sramWe) 
 );
-
+*/
 
 reg vsd = 0;
 always @(posedge CLOCK_27) if(usdImgMtd[0]) vsd <= |usdImgSz;
