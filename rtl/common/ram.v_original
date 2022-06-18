@@ -1,4 +1,4 @@
-module bram #(parameter AW=16)
+module ram #(parameter AW=16)
 (
   input clka,
   input ena,

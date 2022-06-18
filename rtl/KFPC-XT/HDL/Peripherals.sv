@@ -557,21 +557,21 @@ module PERIPHERALS #(
 	 wire [7:0] cga_vram_cpu_dout;
 	 wire [7:0] mda_vram_cpu_dout;
 
-    // vram cga_vram
-	//  (
-    //     .clka                       (clock),
-    //     .ena                        (~address_enable_n && ~cga_chip_select_n),
-    //     .wea                        (~memory_write_n),
-    //     .addra                      (address[14:0]),
-    //     .dina                       (internal_data_bus),
-    //     .douta                      (cga_vram_cpu_dout),
-    //     .clkb                       (clk_vga_cga),
-    //     .web                        (1'b0),
-    //     .enb                        (CGA_VRAM_ENABLE),
-    //     .addrb                      (CGA_VRAM_ADDR[14:0]),
-    //     .dinb                       (8'h0),
-    //     .doutb                      (CGA_VRAM_DOUT)
-	// );
+    vram cga_vram
+	 (
+        .clka                       (clock),
+        .ena                        (~address_enable_n && ~cga_chip_select_n),
+        .wea                        (~memory_write_n),
+        .addra                      (address[14:0]),
+        .dina                       (internal_data_bus),
+        .douta                      (cga_vram_cpu_dout),
+        .clkb                       (clk_vga_cga),
+        .web                        (1'b0),
+        .enb                        (CGA_VRAM_ENABLE),
+        .addrb                      (CGA_VRAM_ADDR[14:0]),
+        .dinb                       (8'h0),
+        .doutb                      (CGA_VRAM_DOUT)
+	);
 	
 	 
     vram mda_vram
