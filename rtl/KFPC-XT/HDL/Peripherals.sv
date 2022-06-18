@@ -76,7 +76,10 @@ module PERIPHERALS #(
 	 input   logic           uart_dcd_n,
 	 input   logic           uart_dsr_n,
 	 output  logic           uart_rts_n,
-	 output  logic           uart_dtr_n
+	 output  logic           uart_dtr_n,
+	 output          [20:0]  SRAM_ADDR,
+	 inout           [7:0]   SRAM_DATA,
+	 output                  SRAM_WE_n
 
 	 
 );
@@ -114,7 +117,8 @@ module PERIPHERALS #(
 	 wire    opl_chip_select_n      = ~(address[15:1] == (16'h0388 >> 1)); // 0x388 .. 0x389
     wire    cga_chip_select_n      = ~(enable_cga & (address[19:14] == 6'b1011_10)); // B8000 - BFFFF (32 KB)
 	 wire    mda_chip_select_n      = ~(enable_mda & (address[19:14] == 6'b1011_00)); // B0000 - B7FFF (32 KB)
-	 wire    rom_select_n           = ~(address[19:16] == 4'b1111); // F0000 - FFFFF (64 KB) 
+	 wire    rom_select_n           = ~(address[19:16] == 4'b1111); // F0000 - FFFFF (64 KB)
+	 //wire    ram_select_n           = ~(address[19:0] < 24'h0A0000); // 00000 - 9FFFF (640 KB)	 
      //wire    ram_select_n           = ~(address[19] == 1'b0);     // 00000 - 7FFFF (512 KB)
      //wire    ram_select_n           = ~(address[19:18] == 2'b00); // 00000 - 3FFFF (256 KB)
      //wire    ram_select_n           = ~(address[19:17] == 3'b000);// 00000 - 1FFFF (128 KB)
@@ -343,7 +347,7 @@ module PERIPHERALS #(
 	(
 		.clock_i(clock),
 		.clock_en_i(clk_en_opl2), // 3.579MHz
-		.res_n_i(reset),
+		.res_n_i(~reset),
 		.ce_n_i(tandy_chip_select_n),
 		.we_n_i(io_write_n),
 		.ready_o(TANDY_SND_RDY),
@@ -587,6 +591,35 @@ module PERIPHERALS #(
 	);
 	
 
+	// //(RAM 640 KB)
+	// ram #(.AW(20)) mram
+	// (
+	//      .clka                       (clock),
+	//      .ena                        (~address_enable_n && ~ram_select_n),
+	//      .wea                        (~memory_write_n),
+	//      .addra                      (address[19:0]),
+	//      .dina                       (internal_data_bus),
+	//      .douta                      (ram_cpu_dout),
+    //      .SRAM_ADDR                  (SRAM_ADDR),
+    //      .SRAM_DATA                  (SRAM_DATA),
+    //      .SRAM_WE_n                  (SRAM_WE_n)
+	  
+	// );
+
+	// //(RAM 512 KB)
+	// ram #(.AW(19)) mram
+	// (
+	//      .clka                       (clock),
+	//      .ena                        (~address_enable_n && ~ram_select_n),
+	//      .wea                        (~memory_write_n),
+	//      .addra                      (address[18:0]),
+	//      .dina                       (internal_data_bus),
+	//      .douta                      (ram_cpu_dout),
+	//      .SRAM_ADDR                  (SRAM_ADDR),
+	//      .SRAM_DATA                  (SRAM_DATA),
+	//      .SRAM_WE_n                  (SRAM_WE_n)
+	// );
+    
 	// //(RAM 256 KB)
 	// ram #(.AW(18)) mram
 	// (
@@ -598,30 +631,29 @@ module PERIPHERALS #(
 	//   .douta(ram_cpu_dout)
 	// );
 
-   // //(RAM 128 KB)
-   // ram #(.AW(17)) mram
-   // (
-   // .clka(clock),
-   // .ena(~address_enable_n && ~ram_select_n),
-   // .wea(~memory_write_n),
-   // //.addra(address[17:0]),
-   // .addra(address[16:0]),
-   // .dina(internal_data_bus),
-   // .douta(ram_cpu_dout)
-   // );
+    // //(RAM 128 KB)
+    // ram #(.AW(17)) mram
+    // (
+    // .clka(clock),
+    // .ena(~address_enable_n && ~ram_select_n),
+    // .wea(~memory_write_n),
+    // //.addra(address[17:0]),
+    // .addra(address[16:0]),
+    // .dina(internal_data_bus),
+    // .douta(ram_cpu_dout)
+    // );
 
-//    //(RAM 64 KB)
-//    ram #(.AW(16)) mram
-//    (
-//    .clka(clock),
-//    .ena(~address_enable_n && ~ram_select_n),
-//    .wea(~memory_write_n),
-//    //.addra(address[17:0]),
-//    .addra(address[15:0]),
-//    .dina(internal_data_bus),
-//    .douta(ram_cpu_dout)
-//    );
-
+    // //(RAM 64 KB)
+    // ram #(.AW(16)) mram
+    // (
+    // .clka(clock),
+    // .ena(~address_enable_n && ~ram_select_n),
+    // .wea(~memory_write_n),
+    // //.addra(address[17:0]),
+    // .addra(address[15:0]),
+    // .dina(internal_data_bus),
+    // .douta(ram_cpu_dout)
+    // );
 
     //(RAM 32 KB)
    ram #(.AW(15)) mram
@@ -635,7 +667,7 @@ module PERIPHERALS #(
    .douta(ram_cpu_dout)
    );
 
-
+    // // BIOS (BRAM MISTER)
 	// bios bios
 	// (
     //     .clka(ioctl_download ? clk_sys : clock),
@@ -647,6 +679,7 @@ module PERIPHERALS #(
 	// );
 
 
+    //BIOS (BRAM NEPTUNO)
 	bios bios
 	(
         .clock(ioctl_download ? clk_sys : clock),

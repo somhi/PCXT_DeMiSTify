@@ -7,8 +7,7 @@ module bios(
   output reg [7:0] douta
 );
 
-//reg [7:0] bios[65535:0];
-(* ramstyle = "M144K" *) reg [7:0] bios[65535:0];
+reg [7:0] bios[65535:0];
 
 always @(posedge clka)
   if (ena)
