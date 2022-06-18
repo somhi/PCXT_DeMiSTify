@@ -7,6 +7,11 @@ use work.demistify_config_pkg.all;
 
 -- -----------------------------------------------------------------------
 
+
+-- add following in Neptuno_pins.tcl in demistify/board/neptuno
+-- set_location_assignment PIN_AB15 -to SRAM_A[20]
+--------------------------------------------------
+
 entity neptuno_top is
 	port (
 		CLOCK_50_I : in std_logic;
@@ -23,6 +28,13 @@ entity neptuno_top is
 		DRAM_WE_N  : out std_logic;
 		DRAM_CAS_N : out std_logic;
 		DRAM_RAS_N : out std_logic;
+        -- SRAM
+        SRAM_A      : out   std_logic_vector(20 downto 0)   := (others => '0');
+        SRAM_Q      : inout std_logic_vector(15 downto 0)    := (others => 'Z');
+		SRAM_WE     : out   std_logic                               := '1';
+        SRAM_OE  	: out   std_logic                               := '0';
+		SRAM_UB     : out   std_logic                               := '0';
+        SRAM_LB     : out   std_logic                               := '0';
 		-- VGA
 		VGA_HS     : out std_logic;
 		VGA_VS     : out std_logic;
@@ -175,8 +187,16 @@ architecture RTL of neptuno_top is
 	signal i2s_mclk : std_logic;
 
 	signal act_led : std_logic;
-
+	
+	signal sram_we_x : std_logic;
 begin
+
+	-- SRAM
+	SRAM_OE <= '0';
+	SRAM_WE <= sram_we_x;
+	--SRAM_OE <= not sram_we_x;
+	SRAM_UB <= '1';
+	SRAM_LB <= '0';
 
 	-- SPI
 	SD_CS_N_O <= sd_cs;
@@ -263,6 +283,11 @@ begin
 			SDRAM_BA   => DRAM_BA,
 			SDRAM_CLK  => DRAM_CLK,
 			SDRAM_CKE  => DRAM_CKE,
+			--SRAM
+			SRAM_A		=> SRAM_A,
+			SRAM_Q		=> SRAM_Q,
+			SRAM_WE		=> sram_we_x,
+
 			--UART
 			UART_TX => UART_TXD,
 			UART_RX => UART_RXD,
