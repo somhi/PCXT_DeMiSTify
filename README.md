@@ -2,6 +2,8 @@
 
 Port DeMiSTified by Somhic from original MiSTer port currently in development  https://github.com/spark2k06/PCXT_MiSTer
 
+Read DeMiSTifty [NOTES](README_NOTES_DeMiSTify.md).
+
 Now can be loaded SO through serial at GPIO addon. See pinout at sys.tcl.  Only needs Rx/Tx signals.
 
 ```
