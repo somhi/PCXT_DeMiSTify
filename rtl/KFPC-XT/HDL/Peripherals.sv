@@ -667,17 +667,18 @@ module PERIPHERALS #(
     // .douta(ram_cpu_dout)
     // );
 
-    // BIOS (BRAM MISTER)
-	bios bios
-	(
-        .clka(ioctl_download ? clk_sys : clock),
-        .ena((~address_enable_n && ~rom_select_n) || ioctl_download),
-        .wea(ioctl_download && ioctl_wr),
-        .addra(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-        .dina(ioctl_data),
-        .douta(bios_cpu_dout)
-	);
 
+
+    // // BIOS (BRAM MISTER)
+	// bios bios
+	// (
+    //     .clka(ioctl_download ? clk_sys : clock),
+    //     .ena((~address_enable_n && ~rom_select_n) || ioctl_download),
+    //     .wea(ioctl_download && ioctl_wr),
+    //     .addra(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+    //     .dina(ioctl_data),
+    //     .douta(bios_cpu_dout)
+	// );
 
     // //BIOS (BRAM NEPTUNO)
 	// bios bios
@@ -690,19 +691,19 @@ module PERIPHERALS #(
     //     .q(bios_cpu_dout)
 	// );
 
-    // //BIOS (SRAM)
-	// bios bios
-	// (
-    //     .clka(ioctl_download ? clk_sys : clock),
-    //     .ena((~address_enable_n && ~rom_select_n) || ioctl_download),
-    //     .wea(ioctl_download && ioctl_wr),
-    //     .addra(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-    //     .dina(ioctl_data),
-    //     .douta(bios_cpu_dout),
-	//     .SRAM_ADDR(SRAM_ADDR),
-	//     .SRAM_DATA(SRAM_DATA),
-	//     .SRAM_WE_n(SRAM_WE_n)
-	// );
+    //BIOS (SRAM)
+	bios bios
+	(
+        .clka(ioctl_download ? clk_sys : clock),
+        .ena((~address_enable_n && ~rom_select_n) || ioctl_download),
+        .wea(ioctl_download && ioctl_wr),
+        .addra(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+        .dina(ioctl_data),
+        .douta(bios_cpu_dout),
+	    .SRAM_ADDR(SRAM_ADDR),
+	    .SRAM_DATA(SRAM_DATA),
+	    .SRAM_WE_n(SRAM_WE_n)
+	);
 
 
     //

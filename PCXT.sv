@@ -72,8 +72,8 @@ module PCXT
 
 assign LED  =  1'b1;
 
-assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
-//assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
+//assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
+assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 //assign SDRAM_CLK = CLOCK_27;
 
@@ -443,9 +443,9 @@ always @(posedge clk_4_77)
 	    //  .uart_dsr_n                        (uart_dsr),
 	    //  .uart_rts_n                        (uart_rts),
 	    //  .uart_dtr_n                        (uart_dtr),
-		//  .SRAM_ADDR                         (SRAM_A),
-		//  .SRAM_DATA                         (SRAM_Q[7:0]),
-		//  .SRAM_WE_n                         (SRAM_WE)
+		    .SRAM_ADDR                         (SRAM_A),
+		    .SRAM_DATA                         (SRAM_Q[7:0]),
+		    .SRAM_WE_n                         (SRAM_WE),
 		//  .SRAM_ADDR                         (sramA),
 		//  .SRAM_DATA                         (sramDQ),
 		//  .SRAM_WE_n                         (sramWe)
