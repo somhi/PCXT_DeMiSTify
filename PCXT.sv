@@ -34,9 +34,9 @@ module PCXT
 	output        SDRAM_CLK,
 	output        SDRAM_CKE,
 
-	output	[20:0] SRAM_A,
-	inout   [15:0] SRAM_Q,     	
-	output         SRAM_WE,    
+	output [20:0] SRAM_A,
+	inout  [15:0] SRAM_Q,     	
+	output        SRAM_WE,    
 
 	output        SPI_DO,
 	input         SPI_DI,
@@ -75,7 +75,7 @@ assign LED  =  1'b1;
 assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
 //assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
-
+//assign SDRAM_CLK = CLOCK_27;
 
 //`include "build_id.v" 
 parameter CONF_STR = {
@@ -117,14 +117,14 @@ wire[63:0] usdImgSz;
 wire[ 0:0] usdImgMtd;
 
 //Keyboard Ps2
-//wire        ps2_kbd_clk_out;
-//wire        ps2_kbd_data_out;
+wire        ps2_kbd_clk_out;
+wire        ps2_kbd_data_out;
 wire        ps2_kbd_clk_in;
 wire        ps2_kbd_data_in;
 
 //Mouse PS2
-//wire        ps2_mouse_clk_out;
-//wire        ps2_mouse_data_out;
+wire        ps2_mouse_clk_out;
+wire        ps2_mouse_data_out;
 wire        ps2_mouse_clk_in;
 wire        ps2_mouse_data_in;
 
@@ -204,7 +204,7 @@ pll pll
 	.inclk0(CLOCK_27),
 	.areset(1'b0),
 	.c0(clk_100),
-	//.c1(clk_28_636),	
+	.c1(SDRAM_CLK),	
 	.c2(clk_uart),
 	.c3(cen_opl2),
 	.locked(pll_locked)
@@ -423,9 +423,8 @@ always @(posedge clk_4_77)
 	     .speaker_out                        (speaker_out),   
         .ps2_clock                          (ps2_kbd_clk_in),
 	     .ps2_data                           (ps2_kbd_data_in),
-//	     .ps2_clock_out                      (ps2_kbd_clk_out),
-//	     .ps2_data_out                       (ps2_kbd_data_out),
-	     .enable_sdram                       (0),	   // -> During the first tests, it shall not be used.		  
+	     .ps2_clock_out                      (ps2_kbd_clk_out),
+	     .ps2_data_out                       (ps2_kbd_data_out),
 		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
 		  .jtopl2_snd_e                       (jtopl2_snd_e),
 		  .adlibhide                          (adlibhide),
@@ -444,24 +443,46 @@ always @(posedge clk_4_77)
 	    //  .uart_dsr_n                        (uart_dsr),
 	    //  .uart_rts_n                        (uart_rts),
 	    //  .uart_dtr_n                        (uart_dtr),
-		    .SRAM_ADDR                         (SRAM_A),
-		    .SRAM_DATA                         (SRAM_Q[7:0]),
-		    .SRAM_WE_n                         (SRAM_WE)
+		//  .SRAM_ADDR                         (SRAM_A),
+		//  .SRAM_DATA                         (SRAM_Q[7:0]),
+		//  .SRAM_WE_n                         (SRAM_WE)
 		//  .SRAM_ADDR                         (sramA),
 		//  .SRAM_DATA                         (sramDQ),
 		//  .SRAM_WE_n                         (sramWe)
+		  .enable_sdram                       (1'b1),
+		  .sdram_clock                        (SDRAM_CLK),
+		  .sdram_address                      (SDRAM_A),
+        .sdram_cke                          (SDRAM_CKE),
+        .sdram_cs                           (SDRAM_nCS),
+        .sdram_ras                          (SDRAM_nRAS),
+        .sdram_cas                          (SDRAM_nCAS),
+        .sdram_we                           (SDRAM_nWE),
+        .sdram_ba                           (SDRAM_BA),
+        .sdram_dq_in                        (SDRAM_DQ_IN),
+        .sdram_dq_out                       (SDRAM_DQ_OUT),
+        .sdram_dq_io                        (SDRAM_DQ_IO),
+        .sdram_ldqm                         (SDRAM_DQML),
+        .sdram_udqm                         (SDRAM_DQMH)   
+    
     );
 	
 	wire speaker_out;
 	wire  [7:0]   tandy_snd_e;
 
 	wire [15:0] jtopl2_snd_e;	
-	wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + (tandy_snd_e << 8); // signed mixer
-		
+	wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + {tandy_snd_e, 6'd0}; // signed mixer
+	
+	wire [15:0] SDRAM_DQ_IN;
+	wire [15:0] SDRAM_DQ_OUT;
+	wire        SDRAM_DQ_IO;
+	
+	assign SDRAM_DQ_IN = SDRAM_DQ;
+	assign SDRAM_DQ = ~SDRAM_DQ_IO ? SDRAM_DQ_OUT : 16'hZZZZ;			
+	
 	assign AUDIO_R = sndmix >> 1;
 	assign AUDIO_L = AUDIO_R;	 
 
-	assign DAC_R = jtopl2_snd_e;
+	assign DAC_R = sndmix >> 1;
 	assign DAC_L = DAC_R;	 
 
 	wire s6_3_mux;

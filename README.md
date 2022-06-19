@@ -35,7 +35,7 @@ https://github.com/spark2k06/PCXT_MiSTer/blob/main/demo/MiSTer_PCXT.gif
 # TODO
 
 * Refactor Graphics Gremlin module, the new KFPC-XT system will make this refactor possible.
-* Use SDRAM as system memory. Currently BRAM is used for everything, providing the system with 256Kb of RAM, 64Kb for the BIOS and 32Kb for VRAM.
+* Use SDRAM as system memory. Currently BRAM is used for everything, providing the system with 256Kb of RAM, 64Kb for the BIOS and 64Kb for VRAM.
 * IDE module implementation
 * Floppy implementation
 * VHD support for easy integration with [XTIDE Universal BIOS](https://www.xtideuniversalbios.org/)
