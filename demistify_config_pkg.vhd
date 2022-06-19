@@ -81,13 +81,17 @@ constant demistify_serialdebug : std_logic := '0';
 			AUDIO_L  		: 	OUT std_logic;
 			AUDIO_R  		: 	OUT std_logic;
 			DAC_L			: 	OUT SIGNED(15 DOWNTO 0);
-			DAC_R			: 	OUT SIGNED(15 DOWNTO 0)
+			DAC_R			: 	OUT SIGNED(15 DOWNTO 0);
 
 			-- SD_SCK			:	 OUT STD_LOGIC;
 			-- SD_MOSI			:	 OUT STD_LOGIC;
 			-- SD_MISO			:	 IN STD_LOGIC;
 			-- SD_CS			:	 OUT STD_LOGIC;
 
+			--PS2K_CLK_IN 	: IN STD_LOGIC;
+			--PS2K_DAT_IN	 	: IN STD_LOGIC;
+			PS2K_CLK_OUT 	: OUT STD_LOGIC;
+			PS2K_DAT_OUT 	: OUT STD_LOGIC
 		);
 	END COMPONENT;
 	
