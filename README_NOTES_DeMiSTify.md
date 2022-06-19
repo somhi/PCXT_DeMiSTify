@@ -4,11 +4,7 @@
 
   * BIOS loaded in BRAM with RAM 1 port Altera IP  --> **I think this is not working well so it hungs in splash screen**
 
-<<<<<<< HEAD
-  * RAM is only defined at 32 kB to fit in NeptUNO/Deca BRAM  --> **Another reason because it  hungs in splash screen**
-=======
   * ~~RAM is only defined at 32 kB to fit in NeptUNO/Deca BRAM  --> **Another reason because it  hungs in splash screen**~~
->>>>>>> neptuno_sdram2
 
   * CGA RAM can be commented to compile it in Deca port
 

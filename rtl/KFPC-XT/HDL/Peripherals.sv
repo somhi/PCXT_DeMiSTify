@@ -593,38 +593,6 @@ module PERIPHERALS #(
 
 	// //(RAM 640 KB)
 	// ram #(.AW(20)) mram
-<<<<<<< HEAD
-	// (
-	//      .clka                       (clock),
-	//      .ena                        (~address_enable_n && ~ram_select_n),
-	//      .wea                        (~memory_write_n),
-	//      .addra                      (address[19:0]),
-	//      .dina                       (internal_data_bus),
-	//      .douta                      (ram_cpu_dout),
-    //      .SRAM_ADDR                  (SRAM_ADDR),
-    //      .SRAM_DATA                  (SRAM_DATA),
-    //      .SRAM_WE_n                  (SRAM_WE_n)
-	  
-	// );
-
-	// //(RAM 512 KB)
-	// ram #(.AW(19)) mram
-	// (
-	//      .clka                       (clock),
-	//      .ena                        (~address_enable_n && ~ram_select_n),
-	//      .wea                        (~memory_write_n),
-	//      .addra                      (address[18:0]),
-	//      .dina                       (internal_data_bus),
-	//      .douta                      (ram_cpu_dout),
-	//      .SRAM_ADDR                  (SRAM_ADDR),
-	//      .SRAM_DATA                  (SRAM_DATA),
-	//      .SRAM_WE_n                  (SRAM_WE_n)
-	// );
-    
-	// //(RAM 256 KB)
-	// ram #(.AW(18)) mram
-=======
->>>>>>> neptuno_sdram2
 	// (
 	//      .clka                       (clock),
 	//      .ena                        (~address_enable_n && ~ram_select_n),
@@ -638,8 +606,6 @@ module PERIPHERALS #(
 	  
 	// );
 
-<<<<<<< HEAD
-=======
 	// //(RAM 512 KB)
 	// ram #(.AW(19)) mram
 	// (
@@ -665,7 +631,6 @@ module PERIPHERALS #(
 	//  .douta(ram_cpu_dout)
 	//);
 
->>>>>>> neptuno_sdram2
     // //(RAM 128 KB)
     // ram #(.AW(17)) mram
     // (
@@ -702,11 +667,8 @@ module PERIPHERALS #(
     // .douta(ram_cpu_dout)
     // );
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> neptuno_sdram2
     // // BIOS (BRAM MISTER)
 	// bios bios
 	// (
@@ -729,11 +691,7 @@ module PERIPHERALS #(
     //     .q(bios_cpu_dout)
 	// );
 
-<<<<<<< HEAD
-    //BIOS (BRAM NEPTUNO)
-=======
     //BIOS (SRAM)
->>>>>>> neptuno_sdram2
 	bios bios
 	(
         .clka(ioctl_download ? clk_sys : clock),

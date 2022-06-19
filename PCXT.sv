@@ -34,15 +34,9 @@ module PCXT
 	output        SDRAM_CLK,
 	output        SDRAM_CKE,
 
-<<<<<<< HEAD
-	output	[20:0] SRAM_A,
-	inout   [15:0] SRAM_Q,     	
-	output         SRAM_WE,    
-=======
 	output [20:0] SRAM_A,
 	inout  [15:0] SRAM_Q,     	
 	output        SRAM_WE,    
->>>>>>> neptuno_sdram2
 
 	output        SPI_DO,
 	input         SPI_DI,
@@ -83,17 +77,10 @@ module PCXT
 
 assign LED  =  1'b1;
 
-<<<<<<< HEAD
-assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
-//assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
-//assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
-
-=======
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
 assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 assign SDRAM_CLK = CLOCK_27;
->>>>>>> neptuno_sdram2
 
 //`include "build_id.v" 
 parameter CONF_STR = {
@@ -226,11 +213,7 @@ pll pll
 	.inclk0(CLOCK_27),
 	.areset(1'b0),
 	.c0(clk_100),
-<<<<<<< HEAD
-	//.c1(clk_28_636),	
-=======
 //	.c1(SDRAM_CLK),	
->>>>>>> neptuno_sdram2
 	.c2(clk_uart),
 	.c3(cen_opl2),
 	.locked(pll_locked)
@@ -263,12 +246,8 @@ wire VSync;
 wire ce_pix;
 //wire [7:0] video;
 
-<<<<<<< HEAD
-assign CLK_VIDEO = clk_28_636;
-=======
 //assign CLK_VIDEO = clk_28_636;
 assign CLK_VIDEO = clk_56_875;
->>>>>>> neptuno_sdram2
 
 assign clk_cpu = clk_4_77;
 
@@ -473,12 +452,6 @@ always @(posedge clk_4_77)
 	    //  .uart_dcd_n                        (uart_dcd),
 	    //  .uart_dsr_n                        (uart_dsr),
 	    //  .uart_rts_n                        (uart_rts),
-<<<<<<< HEAD
-	    //  .uart_dtr_n                        (uart_dtr)
-		//  .SRAM_ADDR                         (SRAM_A),
-		//  .SRAM_DATA                         (SRAM_Q[7:0]),
-		//  .SRAM_WE_n                         (SRAM_WE)
-=======
 	    //  .uart_dtr_n                        (uart_dtr),
 		    .SRAM_ADDR                         (SRAM_A),
 		    .SRAM_DATA                         (SRAM_Q[7:0]),
@@ -501,7 +474,6 @@ always @(posedge clk_4_77)
         .sdram_ldqm                         (SDRAM_DQML),
         .sdram_udqm                         (SDRAM_DQMH)   
     
->>>>>>> neptuno_sdram2
     );
 	
 	wire speaker_out;
@@ -647,11 +619,7 @@ always @(posedge clk_4_77)
 	*/
 
 
-<<<<<<< HEAD
-	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer
-=======
 	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_mda
->>>>>>> neptuno_sdram2
 	(
 		.clk_sys(clk_113_750),
 		.ce_pix(clk_28_636),
