@@ -12,7 +12,8 @@
 
 #set sysclk ${topmodule}CLOCKS|altpll_component|auto_generated|pll1|clk[0]
 
-create_generated_clock -name sdramclk -source ${topmodule}pll|altpll_component|auto_generated|pll1|clk[1] [get_ports $RAM_CLK]
+#create_generated_clock -name sdramclk -source ${topmodule}pll|altpll_component|auto_generated|pll1|clk[1] [get_ports $RAM_CLK]
+create_generated_clock -name sdramclk -source [get_ports {FPGA_CLK1_50}]
 
 # Clock groups
 set_clock_groups -asynchronous -group [get_clocks spiclk] -group [get_clocks clk_50]
@@ -20,8 +21,8 @@ set_clock_groups -asynchronous -group [get_clocks spiclk] -group [get_clocks clk
 #set_clock_groups -asynchronous -group [get_clocks $supportclk] -group [get_clocks clk_50]
 
 set_clock_groups -asynchronous -group [get_clocks spiclk] -group [get_clocks sdramclk]
-set_clock_groups -asynchronous -group [get_clocks $hostclk] -group [get_clocks sdramclk]
-set_clock_groups -asynchronous -group [get_clocks $supportclk] -group [get_clocks sdramclk]
+#set_clock_groups -asynchronous -group [get_clocks $hostclk] -group [get_clocks sdramclk]
+#set_clock_groups -asynchronous -group [get_clocks $supportclk] -group [get_clocks sdramclk]
 
 
 # Some relaxed constrain to the VGA pins. The signals should arrive together, the delay is not really important.

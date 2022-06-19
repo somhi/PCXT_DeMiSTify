@@ -9,7 +9,14 @@ use work.demistify_config_pkg.all;
 
 
 -- add following in Neptuno_pins.tcl in demistify/board/neptuno
+-- #SRAM
 -- set_location_assignment PIN_AB15 -to SRAM_A[20]
+-- #UART
+-- #set_location_assignment PIN_C21 -to PS2_MOUSE_CLK
+-- set_location_assignment PIN_C21 -to UART_RXD
+-- #set_location_assignment PIN_B21 -to PS2_MOUSE_DAT
+-- set_location_assignment PIN_B21 -to UART_TXD
+
 --------------------------------------------------
 
 entity neptuno_top is
@@ -103,10 +110,10 @@ architecture RTL of neptuno_top is
 	signal ps2_keyboard_dat_out : std_logic;
 
 	-- PS/2 Mouse
-	-- signal ps2_mouse_clk_in  : std_logic;
-	-- signal ps2_mouse_dat_in  : std_logic;
-	-- signal ps2_mouse_clk_out : std_logic;
-	-- signal ps2_mouse_dat_out : std_logic;
+	signal ps2_mouse_clk_in  : std_logic;
+	signal ps2_mouse_dat_in  : std_logic;
+	signal ps2_mouse_clk_out : std_logic;
+	signal ps2_mouse_dat_out : std_logic;
 
 	signal intercept : std_logic;
 
@@ -189,6 +196,10 @@ architecture RTL of neptuno_top is
 	signal act_led : std_logic;
 	
 	signal sram_we_x : std_logic;
+	
+	signal PS2_MOUSE_CLK : std_logic;
+	signal PS2_MOUSE_DAT : std_logic;
+
 begin
 
 	-- SRAM
@@ -205,15 +216,15 @@ begin
 	SD_SCLK_O <= sd_clk;
 
 	-- External devices tied to GPIOs
-	-- ps2_mouse_dat_in <= ps2_mouse_dat;
-	-- ps2_mouse_dat    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
-	-- ps2_mouse_clk_in <= ps2_mouse_clk;
-	-- ps2_mouse_clk    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
+	ps2_mouse_dat_in <= PS2_MOUSE_DAT;
+	PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
+	ps2_mouse_clk_in <= PS2_MOUSE_CLK;
+	PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
 
-	ps2_keyboard_dat_in <= ps2_keyboard_dat;
-	ps2_keyboard_dat    <= '0' when ps2_keyboard_dat_out = '0' else 'Z';
-	ps2_keyboard_clk_in <= ps2_keyboard_clk;
-	ps2_keyboard_clk    <= '0' when ps2_keyboard_clk_out = '0' else 'Z';
+	ps2_keyboard_dat_in <= PS2_KEYBOARD_DAT;
+	PS2_KEYBOARD_DAT    <= '0' when ps2_keyboard_dat_out = '0' else 'Z';
+	ps2_keyboard_clk_in <= PS2_KEYBOARD_CLK;
+	PS2_KEYBOARD_CLK    <= '0' when ps2_keyboard_clk_out = '0' else 'Z';
 
 	joya <= "11" & joy1fire2 & joy1fire1 & joy1right & joy1left & joy1down & joy1up;
 	joyb <= "11" & joy2fire2 & joy2fire1 & joy2right & joy2left & joy2down & joy2up;
@@ -236,8 +247,6 @@ begin
 			dac_SDIN  => I2S_DATA,
 			L_data    => std_logic_vector(dac_l),
 			R_data    => std_logic_vector(dac_r)
-		--	L_data    => std_logic_vector(dac_l_s),
-		--	R_data    => std_logic_vector(dac_r_s)
 		);
 
 	--dac_l_s <= ('0' & dac_l & "00000");
@@ -311,6 +320,10 @@ begin
 				DAC_R   => dac_r,
 			AUDIO_L => SIGMA_L,
 			AUDIO_R => SIGMA_R
+			--PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
+			--PS2K_DAT_IN => ps2_keyboard_dat_in,
+	--		PS2K_CLK_OUT => ps2_keyboard_clk_out,
+	--		PS2K_DAT_OUT => ps2_keyboard_dat_out
 		);
 
 
@@ -345,12 +358,12 @@ begin
 				-- PS/2 signals
 				ps2k_clk_in  => ps2_keyboard_clk_in,
 				ps2k_dat_in  => ps2_keyboard_dat_in,
-				ps2k_clk_out => ps2_keyboard_clk_out,
-				ps2k_dat_out => ps2_keyboard_dat_out,
-				-- ps2m_clk_in  => ps2_mouse_clk_in,
-				-- ps2m_dat_in  => ps2_mouse_dat_in,
-				-- ps2m_clk_out => ps2_mouse_clk_out,
-				-- ps2m_dat_out => ps2_mouse_dat_out,
+		--		ps2k_clk_out => ps2_keyboard_clk_out,
+		--		ps2k_dat_out => ps2_keyboard_dat_out,
+				ps2m_clk_in  => ps2_mouse_clk_in,
+				ps2m_dat_in  => ps2_mouse_dat_in,
+				ps2m_clk_out => ps2_mouse_clk_out,
+				ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
 				buttons => (others => '1'),
@@ -362,6 +375,7 @@ begin
 				-- UART
 				rxd => rs232_rxd,
 				txd => rs232_txd,
+				--
 				intercept => intercept
 			);
 

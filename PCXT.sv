@@ -67,7 +67,12 @@ module PCXT
 	output        SD_CS,
 
 	input         UART_RX,
-	output        UART_TX
+	output        UART_TX,
+
+	//input         PS2K_CLK_IN,
+	//input         PS2K_DAT_IN,
+	output        PS2K_CLK_OUT,
+	output        PS2K_DAT_OUT
 );
 
 assign LED  =  1'b1;
@@ -75,7 +80,7 @@ assign LED  =  1'b1;
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
 assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
-//assign SDRAM_CLK = CLOCK_27;
+assign SDRAM_CLK = CLOCK_27;
 
 //`include "build_id.v" 
 parameter CONF_STR = {
@@ -167,10 +172,14 @@ mist_io #(.STRLEN($size(CONF_STR)>>3),.PS2DIV(2000)) mist_io
 	// .img_mounted   (usdImgMtd),
 	// .img_size	   (usdImgSz),	
 	
-	.ps2_kbd_clk	(ps2_kbd_clk_in),
-	.ps2_kbd_data	(ps2_kbd_data_in),
-//	.ps2_mouse_clk	(ps2_mouse_clk_in),
-//	.ps2_mouse_data	(ps2_mouse_data_in),
+	.ps2_kbd_clk		(ps2_kbd_clk_in),
+	.ps2_kbd_data		(ps2_kbd_data_in),
+//	.ps2_kbd_clk_in		(ps2_kbd_clk_out),
+//	.ps2_kbd_data_in	(ps2_kbd_data_out),
+//	.ps2_mouse_clk		(ps2_mouse_clk_in),
+//	.ps2_mouse_data		(ps2_mouse_data_in),
+//  .ps2_mouse_clk_in	(ps2_mouse_clk_out),
+//	.ps2_mouse_data_in	(ps2_mouse_data_out),
 
 	//.ps2_key(ps2_key),
 
@@ -204,7 +213,7 @@ pll pll
 	.inclk0(CLOCK_27),
 	.areset(1'b0),
 	.c0(clk_100),
-	.c1(SDRAM_CLK),	
+//	.c1(SDRAM_CLK),	
 	.c2(clk_uart),
 	.c3(cen_opl2),
 	.locked(pll_locked)
@@ -381,7 +390,8 @@ always @(posedge clk_4_77)
         .interrupt_to_cpu                   (interrupt_to_cpu),
         .splashscreen                       (splashscreen),
 		  .video_output                       (~status[4]),
-        .clk_vga_cga                        (clk_28_636),
+		//.clk_vga_cga                        (clk_28_636),
+        .clk_vga_cga                        (clk_56_875),
         .enable_cga                         (1'b1),
         .clk_vga_mda                        (clk_56_875),
         .enable_mda                         (1'b1),
@@ -423,8 +433,8 @@ always @(posedge clk_4_77)
 	     .speaker_out                        (speaker_out),   
         .ps2_clock                          (ps2_kbd_clk_in),
 	     .ps2_data                           (ps2_kbd_data_in),
-	     .ps2_clock_out                      (ps2_kbd_clk_out),
-	     .ps2_data_out                       (ps2_kbd_data_out),
+	     .ps2_clock_out                      (PS2K_CLK_OUT),
+	     .ps2_data_out                       (PS2K_DAT_OUT),
 		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
 		  .jtopl2_snd_e                       (jtopl2_snd_e),
 		  .adlibhide                          (adlibhide),
@@ -479,11 +489,19 @@ always @(posedge clk_4_77)
 	assign SDRAM_DQ_IN = SDRAM_DQ;
 	assign SDRAM_DQ = ~SDRAM_DQ_IO ? SDRAM_DQ_OUT : 16'hZZZZ;			
 	
-	assign AUDIO_R = sndmix >> 1;
-	assign AUDIO_L = AUDIO_R;	 
+	wire [14:0] audio_mix_l, audio_mix_r;
 
+	sigma_delta_dac sigma_delta_dac (
+		.clk      ( CLOCK_27    ),      // bus clock
+		.ldatasum ( sndmix >> 2 ),      // left channel data
+		.rdatasum ( sndmix >> 2 ),      // right channel data
+		.left     ( AUDIO_L     ),      // left bitstream output
+		.right    ( AUDIO_R     )       // right bitsteam output
+	);
+ 
 	assign DAC_R = sndmix >> 1;
 	assign DAC_L = DAC_R;	 
+
 
 	wire s6_3_mux;
 	wire [2:0] SEGMENT;
@@ -601,7 +619,7 @@ always @(posedge clk_4_77)
 	*/
 
 
-	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer
+	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_mda
 	(
 		.clk_sys(clk_113_750),
 		.ce_pix(clk_28_636),
@@ -612,7 +630,7 @@ always @(posedge clk_4_77)
 		.SPI_DI(SPI_DI),
 
 		.scanlines(2'b00),
-		.scandoubler_disable(1'b1),
+		.scandoubler_disable(1'b1),    //scandoubler disabled
 		.hq2x(1'b0),
 		.ypbpr(1'b0),
 	    .ypbpr_full(1'b0),
@@ -629,13 +647,68 @@ always @(posedge clk_4_77)
 		.HBlank(1'b0),
 		.VBlank(1'b0),
 
-		.VGA_R(VGA_R),
-		.VGA_G(VGA_G),
-		.VGA_B(VGA_B),
-		.VGA_VS(VGA_VS),
-		.VGA_HS(VGA_HS)
+		.VGA_R(vga_r_mda),
+		.VGA_G(vga_g_mda),
+		.VGA_B(vga_b_mda),
+		.VGA_VS(vga_vs_mda),
+		.VGA_HS(vga_hs_mda)
 	);
 	
+
+	video_mixer #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_cga
+	(
+		.clk_sys(clk_113_750),
+		.ce_pix(clk_28_636),
+	    .ce_pix_actual(clk_28_636),
+	   
+		.SPI_SCK(SPI_SCK),
+		.SPI_SS3(SPI_SS3),
+		.SPI_DI(SPI_DI),
+
+		.scanlines(2'b00),
+		.scandoubler_disable(1'b0),   //scandoubler enabled
+		.hq2x(1'b0),
+		.ypbpr(1'b0),
+	    .ypbpr_full(1'b0),
+		.mono(1'b0),
+	    .line_start(1'b0),
+	
+		.R(vga_r),
+		.G(vga_g),
+		.B(vga_b),
+	
+		// Positive pulses.
+		.HSync(vga_hs),
+		.VSync(vga_vs),
+		.HBlank(1'b0),
+		.VBlank(1'b0),
+
+		.VGA_R(vga_r_cga),
+		.VGA_G(vga_g_cga),
+		.VGA_B(vga_b_cga),
+		.VGA_VS(vga_vs_cga),
+		.VGA_HS(vga_hs_cga)
+	);
+
+
+	wire [5:0] vga_r_mda;
+	wire [5:0] vga_g_mda;
+	wire [5:0] vga_b_mda;
+	wire vga_hs_mda;
+	wire vga_vs_mda;
+
+	wire [5:0] vga_r_cga;
+	wire [5:0] vga_g_cga;
+	wire [5:0] vga_b_cga;
+	wire vga_hs_cga;
+	wire vga_vs_cga;
+
+	// 1 MDA, 0 CGA
+	assign VGA_R = ~status[4] ? vga_r_mda : vga_r_cga;
+	assign VGA_G = ~status[4] ? vga_g_mda : vga_g_cga ;
+	assign VGA_B = ~status[4] ? vga_b_mda : vga_b_cga;
+	assign VGA_HS = ~status[4] ? vga_hs_mda : vga_hs_cga;
+	assign VGA_VS = ~status[4] ? vga_vs_mda : vga_vs_cga;
 
 /*
 // SRAM management
