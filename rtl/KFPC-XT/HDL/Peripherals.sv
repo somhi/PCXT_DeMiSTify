@@ -120,7 +120,7 @@ module PERIPHERALS #(
 	 wire    rom_select_n           = ~(address[19:16] == 4'b1111); // F0000 - FFFFF (64 KB)
 	 //wire    ram_select_n           = ~(address[19:0] < 24'h0A0000); // 00000 - 9FFFF (640 KB)	 
      //wire    ram_select_n           = ~(address[19] == 1'b0);     // 00000 - 7FFFF (512 KB)
-     wire    ram_select_n           = ~(address[19:18] == 2'b00); // 00000 - 3FFFF (256 KB)
+     //wire    ram_select_n           = ~(address[19:18] == 2'b00); // 00000 - 3FFFF (256 KB)
      //wire    ram_select_n           = ~(address[19:17] == 3'b000);// 00000 - 1FFFF (128 KB)
      //wire    ram_select_n           = ~(address[19:16] == 4'b0000);  // 00000 - FFFF  (64 KB)
      //wire    ram_select_n           = ~(address[19:15] == 5'b00000);  // 00000 - 7FFF  (32 KB)
@@ -552,7 +552,7 @@ module PERIPHERALS #(
 
     defparam cga1.BLINK_MAX = 24'd4772727;
 	 defparam mda1.BLINK_MAX = 24'd9100000;
-	 wire [7:0] ram_cpu_dout;
+//	 wire [7:0] ram_cpu_dout;
 	 wire [7:0] bios_cpu_dout;
 	 wire [7:0] cga_vram_cpu_dout;
 	 wire [7:0] mda_vram_cpu_dout;
@@ -621,15 +621,15 @@ module PERIPHERALS #(
 	// );
     
 	//(RAM 256 KB)
-	ram #(.AW(18)) mram
-	(
-	  .clka(clock),
-	  .ena(~address_enable_n && ~ram_select_n),
-	  .wea(~memory_write_n),
-	  .addra(address[17:0]),
-	  .dina(internal_data_bus),
-	  .douta(ram_cpu_dout)
-	);
+	//ram #(.AW(18)) mram
+	//(
+	//  .clka(clock),
+	//  .ena(~address_enable_n && ~ram_select_n),
+	//  .wea(~memory_write_n),
+	//  .addra(address[17:0]),
+	//  .dina(internal_data_bus),
+	//  .douta(ram_cpu_dout)
+	//);
 
     // //(RAM 128 KB)
     // ram #(.AW(17)) mram
@@ -764,10 +764,10 @@ module PERIPHERALS #(
 		  else if ((~rom_select_n) && (~memory_read_n)) begin
             data_bus_out_from_chipset = 1'b1;
             data_bus_out = bios_cpu_dout;
-        end
-		  else if ((~ram_select_n) && (~memory_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = ram_cpu_dout;			
+//        end
+//		  else if ((~ram_select_n) && (~memory_read_n)) begin
+//            data_bus_out_from_chipset = 1'b1;
+//            data_bus_out = ram_cpu_dout;			
         end
 		  else if (CGA_CRTC_OE) begin
             data_bus_out_from_chipset = 1'b1;
