@@ -9,9 +9,6 @@ use work.demistify_config_pkg.all;
 
 
 -- add following in Neptuno_pins.tcl in demistify/board/neptuno
-<<<<<<< HEAD
--- set_location_assignment PIN_AB15 -to SRAM_A[20]
-=======
 -- #SRAM
 -- set_location_assignment PIN_AB15 -to SRAM_A[20]
 -- #UART
@@ -20,7 +17,6 @@ use work.demistify_config_pkg.all;
 -- #set_location_assignment PIN_B21 -to PS2_MOUSE_DAT
 -- set_location_assignment PIN_B21 -to UART_TXD
 
->>>>>>> neptuno_sdram2
 --------------------------------------------------
 
 entity neptuno_top is
@@ -200,13 +196,10 @@ architecture RTL of neptuno_top is
 	signal act_led : std_logic;
 	
 	signal sram_we_x : std_logic;
-<<<<<<< HEAD
-=======
 	
 	signal PS2_MOUSE_CLK : std_logic;
 	signal PS2_MOUSE_DAT : std_logic;
 
->>>>>>> neptuno_sdram2
 begin
 
 	-- SRAM
