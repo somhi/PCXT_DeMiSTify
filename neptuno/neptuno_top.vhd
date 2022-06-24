@@ -296,7 +296,6 @@ begin
 			SRAM_A		=> SRAM_A,
 			SRAM_Q		=> SRAM_Q,
 			SRAM_WE		=> sram_we_x,
-
 			--UART
 			UART_TX => UART_TXD,
 			UART_RX => UART_RXD,

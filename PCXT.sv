@@ -80,7 +80,7 @@ assign LED  =  1'b1;
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
 assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
-assign SDRAM_CLK = CLOCK_27;
+//assign SDRAM_CLK = CLOCK_27;
 
 //`include "build_id.v" 
 parameter CONF_STR = {
@@ -91,7 +91,7 @@ parameter CONF_STR = {
 	"-;",
 	"OA,Adlib,On,Invisible;",
 	"-;",
-	"O4,Video Output,Tandy/CGA,MDA;",
+	"O4,Video Output,MDA,Tandy/CGA;",
 	"O12,CGA RGB,Color,Green,Amber,B/W;",
 	"O56,MDA RGB,Green,Amber,B/W;",
 	"O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
@@ -196,31 +196,29 @@ mist_io #(.STRLEN($size(CONF_STR)>>3),.PS2DIV(2000)) mist_io
 
 wire clk_sys;
 wire pll_locked;
+wire pll_locked2;
 
 wire clk_100;
 wire clk_28_636;
 wire clk_56_875;
-reg clk_14_318 = 1'b0;
-//reg clk_7_16 = 1'b0;
+wire clk_14_318;
+wire clk_7_16;
 wire clk_4_77;
 wire clk_cpu;
 wire cen_opl2;
 wire peripheral_clock;
-
+wire clk_113_750;
 
 pll pll
 (
 	.inclk0(CLOCK_27),
 	.areset(1'b0),
 	.c0(clk_100),
-//	.c1(SDRAM_CLK),	
+	.c1(SDRAM_CLK),	
 	.c2(clk_uart),
 	.c3(cen_opl2),
 	.locked(pll_locked)
 );
-
-wire clk_113_750;
-wire pll_locked2;
 
 pllvideo pllvideo
 (
@@ -229,12 +227,12 @@ pllvideo pllvideo
 	.c0(clk_28_636),
 	.c1(clk_56_875),	
 	.c2(clk_113_750),
+	.c3(clk_14_318),
+	.c4(clk_7_16),
 	.locked(pll_locked2)
 );
 
-
-//wire reset = !RESET_N | status[0] | buttons[1] | !pll_locked | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
-wire reset = status[0] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
+wire reset = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
 
 
 //////////////////////////////////////////////////////////////////
@@ -244,19 +242,17 @@ wire HSync;
 wire VBlank;
 wire VSync;
 wire ce_pix;
-//wire [7:0] video;
 
 //assign CLK_VIDEO = clk_28_636;
 assign CLK_VIDEO = clk_56_875;
 
 assign clk_cpu = clk_4_77;
 
-always @(posedge clk_28_636)
-	clk_14_318 <= ~clk_14_318; // 14.318Mhz
+// always @(posedge clk_28_636)
+// 	clk_14_318 <= ~clk_14_318; // 14.318Mhz
 	
-
-//always @(posedge clk_14_318)
-//	clk_7_16 <= ~clk_7_16; // 7.16Mhz
+// always @(posedge clk_14_318)
+// 	clk_7_16 <= ~clk_7_16; // 7.16Mhz
 	
 	
 clk_div3 clk_normal // 4.77MHz
@@ -390,8 +386,7 @@ always @(posedge clk_4_77)
         .interrupt_to_cpu                   (interrupt_to_cpu),
         .splashscreen                       (splashscreen),
 		  .video_output                       (~status[4]),
-		//.clk_vga_cga                        (clk_28_636),
-        .clk_vga_cga                        (clk_56_875),
+		.clk_vga_cga                        (clk_28_636),
         .enable_cga                         (1'b1),
         .clk_vga_mda                        (clk_56_875),
         .enable_mda                         (1'b1),
@@ -435,10 +430,10 @@ always @(posedge clk_4_77)
 	     .ps2_data                           (ps2_kbd_data_in),
 	     .ps2_clock_out                      (PS2K_CLK_OUT),
 	     .ps2_data_out                       (PS2K_DAT_OUT),
-		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
-		  .jtopl2_snd_e                       (jtopl2_snd_e),
-		  .adlibhide                          (adlibhide),
-		  .tandy_snd_e                        (tandy_snd_e),
+		//   .clk_en_opl2                        (cen_opl2), // clk_en_opl2
+		//   .jtopl2_snd_e                       (jtopl2_snd_e),
+		//   .adlibhide                          (adlibhide),
+		//   .tandy_snd_e                        (tandy_snd_e),
 		  .ioctl_download                     (ioctl_download),
 		  .ioctl_index                        (ioctl_index),
 		  .ioctl_wr                           (ioctl_wr),
@@ -525,29 +520,6 @@ always @(posedge clk_4_77)
 	  .SEGMENT(SEGMENT)
 	);
 	
-	/// UART
-
-
-	// assign USER_OUT = {1'b1, 1'b1, uart_dtr, 1'b1, uart_rts, uart_tx, 1'b1};
-
-	// //
-	// // Pin | USB Name |   |Signal
-	// // ----+----------+---+-------------
-	// // 0   | D+       | I |RX
-	// // 1   | D-       | O |TX
-	// // 2   | TX-      | O |RTS
-	// // 3   | GND_d    | I |CTS
-	// // 4   | RX+      | O |DTR
-	// // 5   | RX-      | I |DSR
-	// // 6   | TX+      | I |DCD
-	// //
-
-	// wire uart_tx, uart_rts, uart_dtr;
-
-	// wire uart_rx  = USER_IN[0];
-	// wire uart_cts = USER_IN[3];
-	// wire uart_dsr = USER_IN[5];
-	// wire uart_dcd = USER_IN[6];
 
 	///
 
@@ -603,21 +575,6 @@ always @(posedge clk_4_77)
 	assign vga_b = ~status[4] ? b : baux;
 
 
-	/*
-	wire [1:0] scale = status[8:7];
-	assign VGA_SL = scale;
-	wire freeze_sync;	
-	video_mixer #(640, 1) mixer
-	(
-		.*,
-        .hq2x(scale),
-        .scandoubler (scale || forced_scandoubler),
-        .R({raux, 2'b0}), 
-        .G({gaux, 2'b0}), 
-        .B({baux, 2'b0})
-	);
-	*/
-
 
 	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_mda
 	(
@@ -655,18 +612,18 @@ always @(posedge clk_4_77)
 	);
 	
 
-	video_mixer #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_cga
+	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_cga
 	(
 		.clk_sys(clk_113_750),
 		.ce_pix(clk_28_636),
 	    .ce_pix_actual(clk_28_636),
-	   
+
 		.SPI_SCK(SPI_SCK),
 		.SPI_SS3(SPI_SS3),
 		.SPI_DI(SPI_DI),
 
 		.scanlines(2'b00),
-		.scandoubler_disable(1'b0),   //scandoubler enabled
+		.scandoubler_disable(1'b1),    //scandoubler disabled
 		.hq2x(1'b0),
 		.ypbpr(1'b0),
 	    .ypbpr_full(1'b0),
@@ -691,6 +648,12 @@ always @(posedge clk_4_77)
 	);
 
 
+	// assign vga_r_cga = vga_r;
+	// assign vga_g_cga = vga_g;
+	// assign vga_b_cga = vga_b;
+	// assign vga_hs_cga = vga_hs;
+	// assign vga_vs_cga = vga_vs;
+
 	wire [5:0] vga_r_mda;
 	wire [5:0] vga_g_mda;
 	wire [5:0] vga_b_mda;
@@ -704,9 +667,9 @@ always @(posedge clk_4_77)
 	wire vga_vs_cga;
 
 	// 1 MDA, 0 CGA
-	assign VGA_R = ~status[4] ? vga_r_mda : vga_r_cga;
-	assign VGA_G = ~status[4] ? vga_g_mda : vga_g_cga ;
-	assign VGA_B = ~status[4] ? vga_b_mda : vga_b_cga;
+	assign VGA_R  = ~status[4] ? vga_r_mda : vga_r_cga;
+	assign VGA_G  = ~status[4] ? vga_g_mda : vga_g_cga ;
+	assign VGA_B  = ~status[4] ? vga_b_mda : vga_b_cga;
 	assign VGA_HS = ~status[4] ? vga_hs_mda : vga_hs_cga;
 	assign VGA_VS = ~status[4] ? vga_vs_mda : vga_vs_cga;
 

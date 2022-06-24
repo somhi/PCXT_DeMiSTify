@@ -370,8 +370,6 @@ begin
 			dac_SDIN  => i2s_D_o,
 			L_data    => std_logic_vector(dac_l),
 			R_data    => std_logic_vector(dac_r)
-		--	L_data    => std_logic_vector(dac_l_s),
-		--	R_data    => std_logic_vector(dac_r_s)
 		);
 
 	--dac_l_s <= ('0' & dac_l & "00000");
