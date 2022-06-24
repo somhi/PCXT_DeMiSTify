@@ -324,36 +324,36 @@ module PERIPHERALS #(
    wire [7:0] jtopl2_dout;
 	wire [7:0]opl32_data;	
    assign opl32_data = adlibhide ? 8'hFF : jtopl2_dout;
-	 
-	jtopl2 jtopl2_inst
-	(
-		.rst(reset),
-		.clk(clock),
-		.cen(clk_en_opl2),
-		.din(internal_data_bus),
-		.dout(jtopl2_dout),
-		.addr(address[0]),
-		.cs_n(opl_chip_select_n),
-		.wr_n(io_write_n),
-		.irq_n(),
-		.snd(jtopl2_snd_e),
-		.sample()
-	);	
+	
+	// jtopl2 jtopl2_inst
+	// (
+	// 	.rst(reset),
+	// 	.clk(clock),
+	// 	.cen(clk_en_opl2),
+	// 	.din(internal_data_bus),
+	// 	.dout(jtopl2_dout),
+	// 	.addr(address[0]),
+	// 	.cs_n(opl_chip_select_n),
+	// 	.wr_n(io_write_n),
+	// 	.irq_n(),
+	// 	.snd(jtopl2_snd_e),
+	// 	.sample()
+	// );	
 	
 	wire TANDY_SND_RDY;
 	
-	// Tandy sound
-	sn76489_top sn76489
-	(
-		.clock_i(clock),
-		.clock_en_i(clk_en_opl2), // 3.579MHz
-		.res_n_i(~reset),
-		.ce_n_i(tandy_chip_select_n),
-		.we_n_i(io_write_n),
-		.ready_o(TANDY_SND_RDY),
-		.d_i(internal_data_bus),
-		.aout_o(tandy_snd_e)
-	);	
+	// // Tandy sound
+	// sn76489_top sn76489
+	// (
+	// 	.clock_i(clock),
+	// 	.clock_en_i(clk_en_opl2), // 3.579MHz
+	// 	.res_n_i(~reset),
+	// 	.ce_n_i(tandy_chip_select_n),
+	// 	.we_n_i(io_write_n),
+	// 	.ready_o(TANDY_SND_RDY),
+	// 	.d_i(internal_data_bus),
+	// 	.aout_o(tandy_snd_e)
+	// );	
 	
 	    logic   keybord_interrupt_ff;
     always_ff @(negedge clock, posedge reset) begin
@@ -446,6 +446,7 @@ module PERIPHERALS #(
 	 reg           de_o_mda;
 	 	 
 	 wire[3:0] video_cga;
+     wire[3:0] vga_video;
 	 wire video_mda;
 	 
 	 assign VGA_R = video_output ? R_MDA : R_CGA;
@@ -522,7 +523,8 @@ module PERIPHERALS #(
     // CGA digital to analog converter
     cga_vgaport vga_cga (
         .clk(clk_vga_cga),		  
-        .video(video_cga),
+    //    .video(video_cga),
+        .video(vga_video),      // scandoubler
         .red(R_CGA),
         .green(G_CGA),
         .blue(B_CGA)
@@ -542,10 +544,12 @@ module PERIPHERALS #(
         .ram_we_l                   (CGA_VRAM_ENABLE),
         .ram_a                      (CGA_VRAM_ADDR),
         .ram_d                      (CGA_VRAM_DOUT),
-		  .hsync                      (HSYNC_CGA),
+	//	  .hsync                      (HSYNC_CGA),       
+          .dbl_hsync                  (HSYNC_CGA),              // scandoubler
         .vsync                      (VSYNC_CGA),
 		  .de_o                       (de_o_cga),
         .video                      (video_cga),
+        .dbl_video                  (vga_video),                // scandoubler
 		  .splashscreen               (splashscreen),
         .thin_font                  (thin_font)
     );
@@ -680,7 +684,7 @@ module PERIPHERALS #(
     //     .douta(bios_cpu_dout)
 	// );
 
-    // //BIOS (BRAM NEPTUNO)
+    //BIOS (RAM 1 Port)
 	// bios bios
 	// (
     //     .clock(ioctl_download ? clk_sys : clock),

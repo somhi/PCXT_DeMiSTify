@@ -343,7 +343,7 @@ endgenerate
 		end
     end
 
-	 /*
+	 
     cga_scandoubler scandoubler (
         .clk(clk),
         .line_reset(line_reset),
@@ -351,6 +351,6 @@ endgenerate
         .dbl_hsync(dbl_hsync),
         .dbl_video(dbl_video)
     );
-	 */
+	
 
 endmodule
