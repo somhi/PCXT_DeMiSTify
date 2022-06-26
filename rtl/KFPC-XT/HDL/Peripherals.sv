@@ -629,8 +629,8 @@ module PERIPHERALS #(
         .enable((~address_enable_n && ~rom_select_n) || ioctl_download),
         .wren_a(ioctl_download && ioctl_wr),
         .wren_b(ioctl_download && ioctl_wr),
-        .q_a(bios_cpu_dout),
-    //  .q_b(bios_cpu_dout)
+    //    .q_a(bios_cpu_dout),
+        .q_b(bios_cpu_dout)
 	);
 	`endif
 
