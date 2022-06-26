@@ -556,6 +556,21 @@ module PERIPHERALS #(
 	 wire [7:0] mda_vram_cpu_dout;
 
      `ifdef DEMISTIFY_DECA
+     vram_16 cga_vram
+	 (
+        .clka                       (clock),
+        .ena                        (~address_enable_n && ~cga_chip_select_n),
+        .wea                        (~memory_write_n),
+        .addra                      (address[14:0]),
+        .dina                       (internal_data_bus),
+        .douta                      (cga_vram_cpu_dout),
+        .clkb                       (clk_vga_cga),
+        .web                        (1'b0),
+        .enb                        (CGA_VRAM_ENABLE),
+        .addrb                      (CGA_VRAM_ADDR[14:0]),
+        .dinb                       (8'h0),
+        .doutb                      (CGA_VRAM_DOUT)
+	);
      `else
     vram cga_vram
 	 (
@@ -618,44 +633,34 @@ module PERIPHERALS #(
 	    .SRAM_WE_n(SRAM_WE_n)
 	);
     `else
-    //BIOS (RAM 2 Port)
+    //BIOS (simple RAM 2 Port )
 	bios_ip bios
 	(
-        .address_a(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-        .address_b(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+        .rdaddress(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+        .wraddress(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
         .clock(ioctl_download ? clk_sys : clock),
-        .data_a(ioctl_data),
-        .data_b(ioctl_data),
+        .data(ioctl_data),
         .enable((~address_enable_n && ~rom_select_n) || ioctl_download),
-        .wren_a(ioctl_download && ioctl_wr),
-        .wren_b(ioctl_download && ioctl_wr),
-    //    .q_a(bios_cpu_dout),
-        .q_b(bios_cpu_dout)
+        .wren(ioctl_download && ioctl_wr),
+        .q(bios_cpu_dout),
 	);
 	`endif
+    
 
-
-    // //BIOS (RAM 1 Port)
-	// bios bios
+    // //BIOS (true RAM 2 Port)
+	// bios_ip bios
 	// (
+    //     .address_a(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+    //     .address_b(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
     //     .clock(ioctl_download ? clk_sys : clock),
-    //     .clken((~address_enable_n && ~rom_select_n) || ioctl_download),
-    //     .wren(ioctl_download && ioctl_wr),
-    //     .address(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-    //     .data(ioctl_data),
-    //     .q(bios_cpu_dout)
+    //     .data_a(ioctl_data),
+    //     .data_b(ioctl_data),
+    //     .enable((~address_enable_n && ~rom_select_n) || ioctl_download),
+    //     .wren_a(ioctl_download && ioctl_wr),
+    //     .wren_b(ioctl_download && ioctl_wr),
+    // //    .q_a(bios_cpu_dout),
+    //     .q_b(bios_cpu_dout)
 	// );
-
-
-    // //BIOS (ROM 1 Port)
-	// bios bios
-	// (
-    //     .clock(clock),
-    //     .rden((~address_enable_n && ~rom_select_n)),
-    //     .address(address[15:0]),
-    //     .q(bios_cpu_dout)
-	// );
-
 
 
     //
