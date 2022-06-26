@@ -1,5 +1,4 @@
-module bios
-(
+module bios_sram (
   input               clka,
   input               ena,
   input               wea,

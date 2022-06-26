@@ -1,6 +1,3 @@
-
-
-
 set_global_assignment -name SDC_FILE [file join $::quartus(qip_path) PCXT.sdc]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) PCXT.sv]
 #set_global_assignment -name QIP_FILE rtl/pll.qip
