@@ -75,6 +75,8 @@ module PCXT
 	output        PS2K_DAT_OUT
 );
 
+///////// Default values for ports not used in this core /////////
+
 assign LED  =  1'b1;
 
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
@@ -172,14 +174,14 @@ mist_io #(.STRLEN($size(CONF_STR)>>3),.PS2DIV(2000)) mist_io
 	// .img_mounted   (usdImgMtd),
 	// .img_size	   (usdImgSz),	
 	
-	.ps2_kbd_clk		(ps2_kbd_clk_in),
-	.ps2_kbd_data		(ps2_kbd_data_in),
 //	.ps2_kbd_clk_in		(ps2_kbd_clk_out),
 //	.ps2_kbd_data_in	(ps2_kbd_data_out),
-//	.ps2_mouse_clk		(ps2_mouse_clk_in),
-//	.ps2_mouse_data		(ps2_mouse_data_in),
+	.ps2_kbd_clk		(ps2_kbd_clk_in),
+	.ps2_kbd_data		(ps2_kbd_data_in),
 //  .ps2_mouse_clk_in	(ps2_mouse_clk_out),
 //	.ps2_mouse_data_in	(ps2_mouse_data_out),
+//	.ps2_mouse_clk		(ps2_mouse_clk_in),
+//	.ps2_mouse_data		(ps2_mouse_data_in),
 
 	//.ps2_key(ps2_key),
 
@@ -246,13 +248,15 @@ wire ce_pix;
 //assign CLK_VIDEO = clk_28_636;
 assign CLK_VIDEO = clk_56_875;
 
+//assign clk_cpu = status[x] ? clk_7_16 : clk_4_77;
 assign clk_cpu = clk_4_77;
 
-// always @(posedge clk_28_636)
-// 	clk_14_318 <= ~clk_14_318; // 14.318Mhz
+//always @(posedge clk_28_636)
+//	clk_14_318 <= ~clk_14_318; // 14.318Mhz
 	
-// always @(posedge clk_14_318)
-// 	clk_7_16 <= ~clk_7_16; // 7.16Mhz
+
+//always @(posedge clk_14_318)
+//	clk_7_16 <= ~clk_7_16; // 7.16Mhz
 	
 	
 clk_div3 clk_normal // 4.77MHz
@@ -386,7 +390,7 @@ always @(posedge clk_4_77)
         .interrupt_to_cpu                   (interrupt_to_cpu),
         .splashscreen                       (splashscreen),
 		  .video_output                       (~status[4]),
-		.clk_vga_cga                        (clk_28_636),
+        .clk_vga_cga                        (clk_28_636),
         .enable_cga                         (1'b1),
         .clk_vga_mda                        (clk_56_875),
         .enable_mda                         (1'b1),
@@ -428,6 +432,8 @@ always @(posedge clk_4_77)
 	     .speaker_out                        (speaker_out),   
         .ps2_clock                          (ps2_kbd_clk_in),
 	     .ps2_data                           (ps2_kbd_data_in),
+//	     .ps2_clock_out                      (ps2_kbd_clk_out),
+//	     .ps2_data_out                       (ps2_kbd_data_out),
 	     .ps2_clock_out                      (PS2K_CLK_OUT),
 	     .ps2_data_out                       (PS2K_DAT_OUT),
 		//   .clk_en_opl2                        (cen_opl2), // clk_en_opl2
@@ -455,7 +461,7 @@ always @(posedge clk_4_77)
 		//  .SRAM_DATA                         (sramDQ),
 		//  .SRAM_WE_n                         (sramWe)
 		  .enable_sdram                       (1'b1),
-		  .sdram_clock                        (SDRAM_CLK),
+		  .sdram_clock                        (CLOCK_27),
 		  .sdram_address                      (SDRAM_A),
         .sdram_cke                          (SDRAM_CKE),
         .sdram_cs                           (SDRAM_nCS),

@@ -116,7 +116,7 @@ architecture RTL of sockit_top is
 	signal vga_vsync : std_logic;
 
 	signal vga_clk_x : std_logic;
-	signal vga_blank : std_logic;
+	signal vga_de : std_logic;
 
 	-- RS232 serial
 	signal rs232_rxd : std_logic;
@@ -243,7 +243,7 @@ begin
 	VGA_VS <= vga_vsync;
 
 	VGA_SYNC_n  <= '0';			-- RGB/Composite sync
-	VGA_BLANK_n <= '1';     -- '1'; 		-- not vga_blank;  	-- NOT? (vga_hsync and vga_vsync); (blank signal usually gives darker blacks)
+	VGA_BLANK_n <= '1';     -- '1'; 		-- vga_de;  	-- NOT? (vga_hsync and vga_vsync); (blank signal usually gives darker blacks)
 	VGA_CLK     <= vga_clk_x;	-- use clk_sys from top mist core. Could be used pll2 like UA reloaded
 								-- UA reloaded has the same Video DAC ADV7123 
 
@@ -270,8 +270,6 @@ begin
 		dac_SDIN  => AUD_DACDAT,
 		L_data    => std_logic_vector(dac_l),
 		R_data    => std_logic_vector(dac_r)
-	--	L_data    => std_logic_vector(dac_l_s),
-	--	R_data    => std_logic_vector(dac_r_s)
 	);		
 
 	-- dac_l_s <= ('0' & dac_l(14 downto 0));
@@ -341,10 +339,14 @@ begin
 			VGA_G   => vga_green(7 downto 2),
 			VGA_B   => vga_blue(7 downto 2),
 			CLK_VIDEO   => vga_clk_x,
-			VGA_DE => vga_blank,
+			VGA_DE => vga_de,
 			--AUDIO
 			DAC_L   => dac_l,
 			DAC_R   => dac_r
+			-- PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
+			-- PS2K_DAT_IN => ps2_keyboard_dat_in,
+	--		PS2K_CLK_OUT => ps2_keyboard_clk_out,
+	--		PS2K_DAT_OUT => ps2_keyboard_dat_out
 		);
 
 
@@ -379,8 +381,8 @@ begin
 				-- PS/2 signals
 				ps2k_clk_in  => ps2_keyboard_clk_in,
 				ps2k_dat_in  => ps2_keyboard_dat_in,
-				ps2k_clk_out => ps2_keyboard_clk_out,
-				ps2k_dat_out => ps2_keyboard_dat_out,
+		--		ps2k_clk_out => ps2_keyboard_clk_out,
+		--		ps2k_dat_out => ps2_keyboard_dat_out,
 				ps2m_clk_in  => ps2_mouse_clk_in,
 				ps2m_dat_in  => ps2_mouse_dat_in,
 				ps2m_clk_out => ps2_mouse_clk_out,

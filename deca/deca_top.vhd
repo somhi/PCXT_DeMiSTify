@@ -226,9 +226,7 @@ architecture RTL of deca_top is
 	signal vga_x_hs  : std_logic;
 	signal vga_x_vs  : std_logic;
 	signal vga_clk   : std_logic;
-	signal vga_blank : std_logic;
-
-
+	signal vga_de : std_logic;
 
 	-- USB ULPI KEYBOARD
 	signal USB_CLK_PHASE  : std_logic;
@@ -404,7 +402,7 @@ begin
 
 	-- --  HDMI VIDEO   
 	-- HDMI_TX_CLK <= vga_clk;
-	-- HDMI_TX_DE  <= not vga_blank;
+	-- HDMI_TX_DE  <= vga_de;
 	-- HDMI_TX_HS  <= vga_x_hs;
 	-- HDMI_TX_VS  <= vga_x_vs;
 	-- HDMI_TX_D   <= vga_x_r & vga_x_r(4 downto 3) & vga_x_g & vga_x_g(4 downto 3) & vga_x_b & vga_x_b(4 downto 3);
@@ -455,8 +453,8 @@ begin
 			VGA_R     => vga_red(7 downto 2),
 			VGA_G     => vga_green(7 downto 2),
 			VGA_B     => vga_blue(7 downto 2),
-				-- VGA_BLANK => vga_blank,
-				-- VGA_CLK   => vga_clk
+				-- VGA_DE => vga_de,
+				-- CLK_VIDEO   => vga_clk
 				-- vga_x_r   => vga_x_r,
 				-- vga_x_g   => vga_x_g,
 				-- vga_x_b   => vga_x_b,
@@ -467,6 +465,10 @@ begin
 				DAC_R   => dac_r
 			-- AUDIO_L => SIGMA_L,
 			-- AUDIO_R => SIGMA_R
+			-- PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
+			-- PS2K_DAT_IN => ps2_keyboard_dat_in,
+	--		PS2K_CLK_OUT => ps2_keyboard_clk_out,
+	--		PS2K_DAT_OUT => ps2_keyboard_dat_out
 		);
 
 
@@ -501,8 +503,8 @@ begin
 				-- PS/2 signals
 				ps2k_clk_in  => ps2_keyboard_clk_in,
 				ps2k_dat_in  => ps2_keyboard_dat_in,
-				ps2k_clk_out => ps2_keyboard_clk_out,
-				ps2k_dat_out => ps2_keyboard_dat_out,
+		--		ps2k_clk_out => ps2_keyboard_clk_out,
+		--		ps2k_dat_out => ps2_keyboard_dat_out,
 				ps2m_clk_in  => ps2_mouse_clk_in,
 				ps2m_dat_in  => ps2_mouse_dat_in,
 				ps2m_clk_out => ps2_mouse_clk_out,
