@@ -258,7 +258,6 @@ assign clk_cpu = clk_4_77;
 //always @(posedge clk_14_318)
 //	clk_7_16 <= ~clk_7_16; // 7.16Mhz
 	
-	
 clk_div3 clk_normal // 4.77MHz
 (
 	.clk(clk_14_318),
