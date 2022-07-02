@@ -218,7 +218,7 @@ pll pll
 	.c0(clk_100),
 	.c1(SDRAM_CLK),	
 	.c2(clk_uart),
-	.c3(cen_opl2),
+//	.c3(cen_opl2),
 	.locked(pll_locked)
 );
 
@@ -230,7 +230,7 @@ pllvideo pllvideo
 	.c1(clk_56_875),	
 	.c2(clk_113_750),
 	.c3(clk_14_318),
-	.c4(clk_7_16),
+//	.c4(clk_7_16),
 	.locked(pll_locked2)
 );
 
@@ -457,9 +457,6 @@ always @(posedge clk_4_77)
 		    .SRAM_ADDR                         (SRAM_A),
 		    .SRAM_DATA                         (SRAM_Q[7:0]),
 		    .SRAM_WE_n                         (SRAM_WE),
-		//  .SRAM_ADDR                         (sramA),
-		//  .SRAM_DATA                         (sramDQ),
-		//  .SRAM_WE_n                         (sramWe)
 		  .enable_sdram                       (1'b1),
 		  .sdram_clock                        (CLOCK_27),
 		  .sdram_address                      (SDRAM_A),
