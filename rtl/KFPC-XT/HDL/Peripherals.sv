@@ -633,29 +633,33 @@ module PERIPHERALS #(
         .q_b(bios_cpu_dout)
 	);
 	`endif
-
-
-    // //BIOS (RAM 1 Port)
-	// bios bios
+    
+    // //BIOS (simple RAM 2 Port )
+	// bios_ip bios
 	// (
+    //     .rdaddress(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+    //     .wraddress(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
     //     .clock(ioctl_download ? clk_sys : clock),
-    //     .clken((~address_enable_n && ~rom_select_n) || ioctl_download),
-    //     .wren(ioctl_download && ioctl_wr),
-    //     .address(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
     //     .data(ioctl_data),
-    //     .q(bios_cpu_dout)
+    //     .enable((~address_enable_n && ~rom_select_n) || ioctl_download),
+    //     .wren(ioctl_download && ioctl_wr),
+    //     .q(bios_cpu_dout),
 	// );
 
-
-    // //BIOS (ROM 1 Port)
-	// bios bios
+    // //BIOS (true RAM 2 Port)
+	// bios_ip bios
 	// (
-    //     .clock(clock),
-    //     .rden((~address_enable_n && ~rom_select_n)),
-    //     .address(address[15:0]),
-    //     .q(bios_cpu_dout)
+    //     .address_a(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+    //     .address_b(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+    //     .clock(ioctl_download ? clk_sys : clock),
+    //     .data_a(ioctl_data),
+    //     .data_b(ioctl_data),
+    //     .enable((~address_enable_n && ~rom_select_n) || ioctl_download),
+    //     .wren_a(ioctl_download && ioctl_wr),
+    //     .wren_b(ioctl_download && ioctl_wr),
+    // //    .q_a(bios_cpu_dout),
+    //     .q_b(bios_cpu_dout)
 	// );
-
 
 
     //
