@@ -6,6 +6,7 @@ module RAM (
     input   logic           clock,
     input   logic           sdram_clock,
     input   logic           reset,
+    input   logic           sdram_reset,
     input   logic           enable_sdram,
     // I/O Ports
     input   logic   [19:0]  address,
@@ -60,32 +61,32 @@ module RAM (
     // Latch I/O Ports
     //
     // Address
-    always_ff @(posedge clock, posedge reset) begin
-        if (reset)
+    always_ff @(posedge clock, posedge sdram_reset) begin
+        if (sdram_reset)
             latch_address   <= 0;
         else
             latch_address   <= address;
     end
 
     // Data Bus
-    always_ff @(posedge clock, posedge reset) begin
-        if (reset)
+    always_ff @(posedge clock, posedge sdram_reset) begin
+        if (sdram_reset)
             latch_data      <= 0;
         else
             latch_data      <= internal_data_bus;
     end
 
     // Write Command
-    always_ff @(posedge clock, posedge reset) begin
-        if (reset)
+    always_ff @(posedge clock, posedge sdram_reset) begin
+        if (sdram_reset)
             write_command   <= 1'b0;
         else
             write_command   <= ~ram_address_select_n & ~memory_write_n;
     end
 
     // Read Command
-    always_ff @(posedge clock, posedge reset) begin
-        if (reset)
+    always_ff @(posedge clock, posedge sdram_reset) begin
+        if (sdram_reset)
             read_command    <= 1'b0;
         else
             read_command    <= ~ram_address_select_n & ~memory_read_n;
@@ -107,7 +108,7 @@ module RAM (
 
     KFSDRAM u_KFSDRAM (
         .sdram_clock        (sdram_clock),
-        .sdram_reset        (reset),
+        .sdram_reset        (sdram_reset),
         .address            (access_address),
         .access_num         (access_num),
         .data_in            (access_data_in),
@@ -177,8 +178,8 @@ module RAM (
         endcase
     end
 
-    always_ff @(posedge sdram_clock, posedge reset) begin
-        if (reset)
+    always_ff @(posedge sdram_clock, posedge sdram_reset) begin
+        if (sdram_reset)
             state = IDLE;
         else
             state = next_state;
@@ -262,8 +263,8 @@ module RAM (
     //
     logic   [15:0]  data_out_tmp;
 
-    always_ff @(posedge sdram_clock, posedge reset) begin
-        if (reset)
+    always_ff @(posedge sdram_clock, posedge sdram_reset) begin
+        if (sdram_reset)
             data_out_tmp <= 0;
         else if (read_flag)
             data_out_tmp <= access_data_out;
@@ -284,8 +285,8 @@ module RAM (
     //
     // Ready/Wait Signal
     //
-    always_ff @(posedge sdram_clock, posedge reset) begin
-        if (reset)
+    always_ff @(posedge sdram_clock, posedge sdram_reset) begin
+        if (sdram_reset)
             access_ready <= 1'b0;
         else if (state == COMPLETE_RAM_RW)
             access_ready <= 1'b1;

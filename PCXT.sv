@@ -234,8 +234,8 @@ pllvideo pllvideo
 	.locked(pll_locked2)
 );
 
-wire reset = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
-
+//wire reset = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
+wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0) | splashscreen;
 
 //////////////////////////////////////////////////////////////////
 
@@ -268,6 +268,77 @@ clk_div3 clk_normal // 4.77MHz
 always @(posedge clk_4_77)
 	peripheral_clock <= ~peripheral_clock; // 2.385Mhz
 
+//////////////////////////////////////////////////////////////////
+
+logic reset = 1'b1;
+logic [15:0] reset_count = 16'h0000;
+
+always @(posedge CLOCK_27, posedge reset_wire) begin
+	if (reset_wire) begin
+		reset <= 1'b1;
+		reset_count <= 16'h0000;
+	end
+	else if (reset) begin
+		if (reset_count != 16'hffff) begin
+			reset <= 1'b1;
+			reset_count <= reset_count + 16'h0001;
+		end
+		else begin
+			reset <= 1'b0;
+			reset_count <= reset_count;
+		end
+	end 
+	else begin
+		reset <= 1'b0;
+		reset_count <= reset_count;
+	end
+end
+
+logic reset_chipset_ff = 1'b1;
+logic reset_chipset = 1'b1;
+
+always @(negedge clk_4_77, posedge reset) begin
+	if (reset) begin
+		reset_chipset_ff <= 1'b1;
+		reset_chipset <= 1'b1;
+	end
+	else begin
+		reset_chipset_ff <= reset;
+		reset_chipset <= reset_chipset_ff;
+	end
+end
+
+logic reset_cpu_ff = 1'b1;
+logic reset_cpu = 1'b1;
+logic [15:0] reset_cpu_count = 16'h0000;
+
+always @(negedge clk_100, posedge reset) begin
+	if (reset)
+		reset_cpu_ff <= 1'b1;
+	else
+		reset_cpu_ff <= reset;
+end
+
+always @(negedge clk_100, posedge reset) begin
+	if (reset) begin
+		reset_cpu <= 1'b1;
+		reset_cpu_count <= 16'h0000;
+	end
+	else if (reset_cpu) begin
+		reset_cpu <= reset_cpu_ff;
+		reset_cpu_count <= 16'h0000;
+	end
+	else begin
+		if (reset_cpu_count != 16'h002A) begin
+			reset_cpu <= reset_cpu_ff;
+			reset_cpu_count <= reset_cpu_count + 16'h0001;
+		end
+		else begin
+			reset_cpu <= 1'b0;
+			reset_cpu_count <= reset_cpu_count;
+		end
+	end
+end
 
 //////////////////////////////////////////////////////////////////
 
@@ -380,7 +451,8 @@ always @(posedge clk_4_77)
 		  .clk_sys                            (CLOCK_27),
 		  .peripheral_clock                   (peripheral_clock),
 		  
-        .reset                              (reset || splashscreen),
+        .reset                              (reset_chipset),
+        .sdram_reset                        (reset),
         .cpu_address                        (cpu_address),
         .cpu_data_bus                       (cpu_data_bus),
         .processor_status                   (processor_status),
@@ -508,7 +580,7 @@ always @(posedge clk_4_77)
 	  .CORE_CLK(clk_100),
 	  .CLK(clk_cpu),
 
-	  .RESET(reset || splashscreen),
+	  .RESET(reset_cpu),
 	  .READY(processor_ready),	  
 	  .NMI(1'b0),
 	  .INTR(interrupt_to_cpu),
