@@ -1,5 +1,5 @@
 # files inherited from the guest core:
-project.qip
+files.qip
 sys/sys.qip
 
 # The controller module

@@ -12,7 +12,9 @@ create_generated_clock -name clk_4_77 -source [get_pins $CLOCK_14_318] -divide_b
 create_generated_clock -name peripheral_clock -source [get_pins $CLOCK_4_77] -divide_by 2 [get_pins $PCLK]
 #{MAX10_CLK1_50}  not generic for all demistify boards
 # does not work [get_clocks clk_50], clk_50, {clk_50}
-create_generated_clock -name SDRAM_CLK -source {MAX10_CLK1_50}  [get_ports $RAM_CLK]
+#create_generated_clock -name SDRAM_CLK -source {MAX10_CLK1_50}  [get_ports $RAM_CLK]
+create_generated_clock -name SDRAM_CLK -source [get_clocks clk_50]  [get_ports $RAM_CLK]
+
 
 # SDRAM
 set_input_delay -clock { SDRAM_CLK } -max 6.4 [get_ports $RAM_IN]

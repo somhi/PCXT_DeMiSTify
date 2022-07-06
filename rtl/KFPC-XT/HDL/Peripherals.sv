@@ -77,6 +77,9 @@ module PERIPHERALS #(
 	 input   logic           uart_dsr_n,
 	 output  logic           uart_rts_n,
 	 output  logic           uart_dtr_n,
+	 output          [20:0]  SRAM_ADDR,
+	 inout           [7:0]   SRAM_DATA,
+	 output                  SRAM_WE_n,     
 	 // EMS
 	 input   logic           ems_enabled,
 	 input   logic   [1:0]   ems_address,

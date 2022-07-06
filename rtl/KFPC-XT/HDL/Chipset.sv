@@ -110,6 +110,9 @@ module CHIPSET (
     output  logic           sdram_dq_io,
     output  logic           sdram_ldqm,
     output  logic           sdram_udqm,
+    output          [20:0]  SRAM_ADDR,
+    inout           [7:0]   SRAM_DATA,
+    output                  SRAM_WE_n,
 	 // EMS
 	 input   logic           ems_enabled,
 	 input   logic   [1:0]   ems_address
@@ -284,7 +287,10 @@ module CHIPSET (
 	     .ems_b1                            (ems_b1),
 	     .ems_b2                            (ems_b2),
 	     .ems_b3                            (ems_b3),
-	     .ems_b4                            (ems_b4)
+	     .ems_b4                            (ems_b4),
+         .SRAM_ADDR                         (SRAM_ADDR),
+         .SRAM_DATA                         (SRAM_DATA),
+         .SRAM_WE_n                         (SRAM_WE_n)         
 		  
     );
 
