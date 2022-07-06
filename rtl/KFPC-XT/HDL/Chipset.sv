@@ -4,6 +4,7 @@
 //
 module CHIPSET (
     input   logic           clock,
+    input   logic           cpu_clock,
 	 input   logic           clk_sys,
     input   logic           peripheral_clock,
     input   logic           reset,
@@ -109,9 +110,9 @@ module CHIPSET (
     output  logic           sdram_dq_io,
     output  logic           sdram_ldqm,
     output  logic           sdram_udqm,
-	 output          [20:0]  SRAM_ADDR,
-	 inout           [7:0]   SRAM_DATA,
-	 output                  SRAM_WE_n
+	 // EMS
+	 input   logic           ems_enabled,
+	 input   logic   [1:0]   ems_address
 );
 
     logic           dma_ready;
@@ -127,9 +128,40 @@ module CHIPSET (
     logic   [7:0]   internal_data_bus_ram;
     logic           data_bus_out_from_chipset;
     logic           internal_data_bus_direction;
+    logic           no_command_state;
+
+    logic           prev_timer_count_1;
+    logic           DRQ0;
+	 
+	 logic   [6:0]   map_ems[0:3];
+	 logic           ena_ems[0:3];
+	 logic           ems_b1;
+	 logic           ems_b2;
+	 logic           ems_b3;
+	 logic           ems_b4;
+	 
+
+   always_ff @(posedge clock) begin
+       if (reset)
+            prev_timer_count_1 <= 1'b1;
+        else
+            prev_timer_count_1 <= timer_counter_out[1];
+    end
+
+    always_ff @(posedge clock, posedge reset) begin
+        if (reset)
+            DRQ0 <= 1'b0;
+        else if (~dma_acknowledge_n[0])
+            DRQ0 <= 1'b0;
+        else if (~prev_timer_count_1 & timer_counter_out[1])
+            DRQ0 <= 1'b1;
+        else
+            DRQ0 <= DRQ0;
+    end
 
     READY u_READY (
         .clock                              (clock),
+        .cpu_clock                          (cpu_clock),
         .reset                              (reset),
         .processor_ready                    (processor_ready),
         .dma_ready                          (dma_ready),
@@ -144,6 +176,7 @@ module CHIPSET (
 
     BUS_ARBITER u_BUS_ARBITER (
         .clock                              (clock),
+        .cpu_clock                          (cpu_clock),
         .reset                              (reset),
         .cpu_address                        (cpu_address),
         .cpu_data_bus                       (cpu_data_bus),
@@ -174,7 +207,8 @@ module CHIPSET (
         .memory_write_n                     (memory_write_n),
         .memory_write_n_ext                 (memory_write_n_ext),
         .memory_write_n_direction           (memory_write_n_direction),
-        .dma_request                        (dma_request),
+        .no_command_state                   (no_command_state),
+        .dma_request                        ({dma_request[3:1], DRQ0}),
         .dma_acknowledge_n                  (dma_acknowledge_n),
         .address_enable_n                   (address_enable_n),
         .terminal_count_n                   (terminal_count_n)
@@ -243,9 +277,14 @@ module CHIPSET (
 	     .uart_dsr_n                        (uart_dsr),
 	     .uart_rts_n                        (uart_rts),
 	     .uart_dtr_n                        (uart_dtr),
-		  .SRAM_ADDR                         (SRAM_ADDR),
-		  .SRAM_DATA                         (SRAM_DATA),
-		  .SRAM_WE_n                         (SRAM_WE_n)
+		  .ems_enabled                       (ems_enabled),
+		  .ems_address                       (ems_address),
+		  .map_ems                           (map_ems),
+	     .ena_ems                           (ena_ems),
+	     .ems_b1                            (ems_b1),
+	     .ems_b2                            (ems_b2),
+	     .ems_b3                            (ems_b3),
+	     .ems_b4                            (ems_b4)
 		  
     );
 
@@ -260,6 +299,7 @@ module CHIPSET (
         .data_bus_out                       (internal_data_bus_ram),
         .memory_read_n                      (memory_read_n),
         .memory_write_n                     (memory_write_n),
+        .no_command_state                   (no_command_state),
         .memory_access_ready                (memory_access_ready),
         .ram_address_select_n               (ram_address_select_n),
         .sdram_address                      (sdram_address),
@@ -273,7 +313,12 @@ module CHIPSET (
         .sdram_dq_out                       (sdram_dq_out),
         .sdram_dq_io                        (sdram_dq_io),
         .sdram_ldqm                         (sdram_ldqm),
-        .sdram_udqm                         (sdram_udqm)
+        .sdram_udqm                         (sdram_udqm),		  
+		  .map_ems                            (map_ems),	     
+	     .ems_b1                             (ems_b1),
+	     .ems_b2                             (ems_b2),
+	     .ems_b3                             (ems_b3),
+	     .ems_b4                             (ems_b4)
     );
 
     assign  data_bus = internal_data_bus;

@@ -14,6 +14,7 @@ module RAM (
     output  logic   [7:0]   data_bus_out,
     input   logic           memory_read_n,
     input   logic           memory_write_n,
+    input   logic           no_command_state,
     output  logic           memory_access_ready,
     output  logic           ram_address_select_n,
     // VRAM FIFO
@@ -30,67 +31,131 @@ module RAM (
     output  logic   [15:0]  sdram_dq_out,
     output  logic           sdram_dq_io,
     output  logic           sdram_ldqm,
-    output  logic           sdram_udqm
+    output  logic           sdram_udqm,
+	 // EMS	 
+	 input   logic   [6:0]   map_ems[0:3],	 
+	 input   logic           ems_b1,
+	 input   logic           ems_b2,
+	 input   logic           ems_b3,
+	 input   logic           ems_b4
+	 
 );
 
     typedef enum {IDLE, RAM_WRITE_1, RAM_WRITE_2, RAM_READ_1, RAM_READ_2, COMPLETE_RAM_RW, WAIT} state_t;
 
     state_t         state;
     state_t         next_state;
-    logic   [19:0]  latch_address;
+    logic   [21:0]  latch_address_ff;
+    logic   [21:0]  latch_address;
+    logic   [7:0]   latch_data_ff;
     logic   [7:0]   latch_data;
+    logic           write_command_ff_1;
+    logic           write_command_ff_2;
     logic           write_command;
+    logic           read_command_ff_1;
+    logic           read_command_ff_2;
     logic           read_command;
+    logic           no_command_state_ff_1;
+    logic           no_command_state_ff_2;
+    logic           no_command_state_ff_3;
+    logic           enable_refresh;
 
     logic           access_ready;
 
-    // //
-    // // RAM Address Select (0x00000-0xAFFFF and 0xC0000-0xEFFFF)
-    // //
-	//  assign  ram_address_select_n =  ~(enable_sdram && (address < 20'h0B0000 ||
-	//    (~(address[19:16] == 4'b1111)       // B0000h reserved for VRAM
-	// 	  && ~(address[19:16] == 4'b1011)))); // F0000h reserved for BIOS
-    
     //
-    // RAM Address Select (0x00000-0x9FFFF)
-    //
-    assign  ram_address_select_n =  ~((enable_sdram) && ((~address[19]) || ((address[19]) && ~((address[18]) || (address[17])))));
-     //assign  ram_address_select_n =  ~((enable_sdram) && (address >= 20'h010000 && address < 20'h0A0000));
+    // RAM Address Select (0x00000-0xAFFFF and 0xC0000-0xEFFFF)
+    //	 
+	 assign  ram_address_select_n = ~(enable_sdram && 
+	                                ~(address[19:16] == 4'b1111) &&  // B0000h reserved for VRAM
+											  ~(address[19:16] == 4'b1011));   // F0000h reserved for BIOS
+											  
 
     //
     // Latch I/O Ports
     //
     // Address
-    always_ff @(posedge clock, posedge sdram_reset) begin
+    always_ff @(posedge sdram_clock, posedge sdram_reset) begin
+        if (sdram_reset)
+            latch_address_ff   <= 0;
+        else begin
+		  			
+			  if (ems_b1)
+					latch_address_ff   <= {1'b1, map_ems[0], address[13:0]};
+			  else if (ems_b2)
+					latch_address_ff   <= {1'b1, map_ems[1], address[13:0]};
+			  else if (ems_b3)
+					latch_address_ff   <= {1'b1, map_ems[2], address[13:0]};
+			  else if (ems_b4)
+					latch_address_ff   <= {1'b1, map_ems[3], address[13:0]};
+			  else
+					latch_address_ff   <= {2'b00, address};
+				
+		  end
+		  
+    end
+
+    always_ff @(posedge sdram_clock, posedge sdram_reset) begin
         if (sdram_reset)
             latch_address   <= 0;
         else
-            latch_address   <= address;
+            latch_address   <= latch_address_ff;
     end
 
     // Data Bus
-    always_ff @(posedge clock, posedge sdram_reset) begin
-        if (sdram_reset)
+    always_ff @(posedge sdram_clock, posedge sdram_reset) begin
+        if (sdram_reset) begin
+            latch_data_ff   <= 0;
             latch_data      <= 0;
-        else
-            latch_data      <= internal_data_bus;
+        end
+        else begin
+            latch_data_ff   <= internal_data_bus;
+            latch_data      <= latch_data_ff;
+        end
     end
 
     // Write Command
-    always_ff @(posedge clock, posedge sdram_reset) begin
-        if (sdram_reset)
-            write_command   <= 1'b0;
-        else
-            write_command   <= ~ram_address_select_n & ~memory_write_n;
+    always_ff @(posedge sdram_clock, posedge sdram_reset) begin
+        if (sdram_reset) begin
+            write_command_ff_1  <= 1'b0;
+            write_command_ff_2  <= 1'b0;
+            write_command       <= 1'b0;
+        end
+        else begin
+            write_command_ff_1  <= ~ram_address_select_n & ~memory_write_n;
+            write_command_ff_2  <= write_command_ff_1;
+            write_command       <= write_command_ff_2;
+        end
     end
 
     // Read Command
-    always_ff @(posedge clock, posedge sdram_reset) begin
-        if (sdram_reset)
-            read_command    <= 1'b0;
-        else
-            read_command    <= ~ram_address_select_n & ~memory_read_n;
+    always_ff @(posedge sdram_clock, posedge sdram_reset) begin
+        if (sdram_reset) begin
+            read_command_ff_1   <= 1'b0;
+            read_command_ff_2   <= 1'b0;
+            read_command        <= 1'b0;
+        end
+        else begin
+            read_command_ff_1   <= ~ram_address_select_n & ~memory_read_n;
+            read_command_ff_2   <= read_command_ff_1;
+            read_command        <= read_command_ff_2;
+        end
     end
+
+    // Generate refresh timing
+    always_ff @(posedge sdram_clock, posedge sdram_reset) begin
+        if (sdram_reset) begin
+            no_command_state_ff_1 <= 1'b0;
+            no_command_state_ff_2 <= 1'b0;
+            no_command_state_ff_3 <= 1'b0;
+        end
+        else begin
+            no_command_state_ff_1 <= no_command_state;
+            no_command_state_ff_2 <= no_command_state_ff_1;
+            no_command_state_ff_3 <= no_command_state_ff_2;
+        end
+    end
+
+    assign  enable_refresh  = no_command_state_ff_2 & ~no_command_state_ff_3;
 
 
     //
@@ -105,6 +170,7 @@ module RAM (
     logic           write_flag;
     logic           read_flag;
     logic           idle;
+    logic           refresh_mode;
 
     KFSDRAM u_KFSDRAM (
         .sdram_clock        (sdram_clock),
@@ -115,9 +181,11 @@ module RAM (
         .data_out           (access_data_out),
         .write_request      (write_request),
         .read_request       (read_request),
+        .enable_refresh     (enable_refresh),
         .write_flag         (write_flag),
         .read_flag          (read_flag),
         .idle               (idle),
+        .refresh_mode       (refresh_mode),
         .sdram_address      (sdram_address),
         .sdram_cke          (sdram_cke),
         .sdram_cs           (sdram_cs),
@@ -201,7 +269,7 @@ module RAM (
                 sdram_udqm      = 1'b0;
             end
             RAM_WRITE_1: begin
-                access_address  = {9'h000, latch_address};
+                access_address  = {7'h00, latch_address};
                 access_num      = 10'h001;
                 access_data_in  = {8'h00, latch_data};
                 write_request   = 1'b1;
@@ -210,7 +278,7 @@ module RAM (
                 sdram_udqm      = 1'b0;
             end
             RAM_WRITE_2: begin
-                access_address  = {9'h000, latch_address};
+                access_address  = {7'h00, latch_address};
                 access_num      = 10'h001;
                 access_data_in  = {8'h00, latch_data};
                 write_request   = 1'b0;
@@ -219,7 +287,7 @@ module RAM (
                 sdram_udqm      = 1'b0;
             end
             RAM_READ_1: begin
-                access_address  = {9'h000, latch_address};
+                access_address  = {7'h00, latch_address};
                 access_num      = 10'h001;
                 access_data_in  = 16'h0000;
                 write_request   = 1'b0;
@@ -228,7 +296,7 @@ module RAM (
                 sdram_udqm      = 1'b0;
             end
             RAM_READ_2: begin
-                access_address  = {9'h000, latch_address};
+                access_address  = {7'h00, latch_address};
                 access_num      = 10'h001;
                 access_data_in  = 16'h0000;
                 write_request   = 1'b0;
@@ -290,8 +358,14 @@ module RAM (
             access_ready <= 1'b0;
         else if (state == COMPLETE_RAM_RW)
             access_ready <= 1'b1;
-        else
+        else if (state == IDLE)
+            access_ready <= idle;
+        else if ((write_command) && (refresh_mode))
             access_ready <= 1'b0;
+        else if ((read_command)  && (refresh_mode))
+            access_ready <= 1'b0;
+        else
+            access_ready <= access_ready;
     end
 
     assign  memory_access_ready = ((~ram_address_select_n) && ((~memory_read_n) || (~memory_write_n))) ? access_ready : 1'b1;

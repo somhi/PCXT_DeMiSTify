@@ -34,9 +34,9 @@ module PCXT
 	output        SDRAM_CLK,
 	output        SDRAM_CKE,
 
-	output [20:0] SRAM_A,
-	inout  [15:0] SRAM_Q,     	
-	output        SRAM_WE,    
+	//output [20:0] SRAM_A,
+	//inout  [15:0] SRAM_Q,     	
+	//output        SRAM_WE,    
 
 	output        SPI_DO,
 	input         SPI_DI,
@@ -80,9 +80,9 @@ module PCXT
 assign LED  =  1'b1;
 
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
-assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
+//assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
-//assign SDRAM_CLK = CLOCK_27;
+assign SDRAM_CLK = CLOCK_27;
 
 //`include "build_id.v" 
 parameter CONF_STR = {
@@ -92,6 +92,9 @@ parameter CONF_STR = {
 	//"O4,CPU Speed,4.77Mhz,7.16Mhz;",	
 	"-;",
 	"OA,Adlib,On,Invisible;",
+	"-;",
+	"OB,Lo-tech 2MB EMS, Enabled, Disabled;",
+	"OCD,EMS Frame,A000,C000,D000,E000;",
 	"-;",
 	"O4,Video Output,MDA,Tandy/CGA;",
 	"O12,CGA RGB,Color,Green,Amber,B/W;",
@@ -198,16 +201,15 @@ mist_io #(.STRLEN($size(CONF_STR)>>3),.PS2DIV(2000)) mist_io
 
 wire clk_sys;
 wire pll_locked;
-wire pll_locked2;
 
 wire clk_100;
 wire clk_28_636;
 wire clk_56_875;
-wire clk_14_318;
-wire clk_7_16;
+reg clk_14_318 = 1'b0;
+//reg clk_7_16 = 1'b0;
 wire clk_4_77;
 wire clk_cpu;
-wire cen_opl2;
+wire clk_opl2;
 wire peripheral_clock;
 wire clk_113_750;
 
@@ -216,12 +218,13 @@ pll pll
 	.inclk0(CLOCK_27),
 	.areset(1'b0),
 	.c0(clk_100),
-	.c1(SDRAM_CLK),	
+//	.c1(SDRAM_CLK),	
 	.c2(clk_uart),
-//	.c3(cen_opl2),
+	.c3(clk_opl2),
 	.locked(pll_locked)
 );
 
+wire pll_locked2;
 pllvideo pllvideo
 (
 	.inclk0(CLOCK_27),
@@ -229,12 +232,11 @@ pllvideo pllvideo
 	.c0(clk_28_636),
 	.c1(clk_56_875),	
 	.c2(clk_113_750),
-	.c3(clk_14_318),
+//	.c3(clk_14_318),
 //	.c4(clk_7_16),
 	.locked(pll_locked2)
 );
 
-//wire reset = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
 wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0) | splashscreen;
 
 //////////////////////////////////////////////////////////////////
@@ -244,19 +246,18 @@ wire HSync;
 wire VBlank;
 wire VSync;
 wire ce_pix;
+//wire [7:0] video;
 
 //assign CLK_VIDEO = clk_28_636;
 assign CLK_VIDEO = clk_56_875;
 
-//assign clk_cpu = status[x] ? clk_7_16 : clk_4_77;
-assign clk_cpu = clk_4_77;
-
-//always @(posedge clk_28_636)
-//	clk_14_318 <= ~clk_14_318; // 14.318Mhz
+always @(posedge clk_28_636)
+	clk_14_318 <= ~clk_14_318; // 14.318Mhz
 	
 
 //always @(posedge clk_14_318)
 //	clk_7_16 <= ~clk_7_16; // 7.16Mhz
+	
 	
 clk_div3 clk_normal // 4.77MHz
 (
@@ -266,6 +267,28 @@ clk_div3 clk_normal // 4.77MHz
 
 always @(posedge clk_4_77)
 	peripheral_clock <= ~peripheral_clock; // 2.385Mhz
+
+logic  clk_cpu_ff_1;
+logic  clk_cpu_ff_2;
+
+always @(posedge clk_100) begin
+    clk_cpu_ff_1 <= clk_4_77;
+    clk_cpu_ff_2 <= clk_cpu_ff_1;
+    clk_cpu      <= clk_cpu_ff_2;
+end
+
+logic   clk_opl2_ff_1;
+logic   clk_opl2_ff_2;
+logic   clk_opl2_ff_3;
+logic   cen_opl2;
+
+always @(posedge clk_100) begin
+    clk_opl2_ff_1 <= clk_opl2;
+    clk_opl2_ff_2 <= clk_opl2_ff_1;
+    clk_opl2_ff_3 <= clk_opl2_ff_2;
+    cen_opl2 <= clk_opl2_ff_2 & ~clk_opl2_ff_3;
+end
+
 
 //////////////////////////////////////////////////////////////////
 
@@ -290,20 +313,6 @@ always @(posedge CLOCK_27, posedge reset_wire) begin
 	else begin
 		reset <= 1'b0;
 		reset_count <= reset_count;
-	end
-end
-
-logic reset_chipset_ff = 1'b1;
-logic reset_chipset = 1'b1;
-
-always @(negedge clk_4_77, posedge reset) begin
-	if (reset) begin
-		reset_chipset_ff <= 1'b1;
-		reset_chipset <= 1'b1;
-	end
-	else begin
-		reset_chipset_ff <= reset;
-		reset_chipset <= reset_chipset_ff;
 	end
 end
 
@@ -446,11 +455,12 @@ end
 	 assign  port_c_in[3:0] = port_b_out[3] ? sw[7:4] : sw[3:0];
 
    CHIPSET u_CHIPSET (
-        .clock                              (clk_cpu),
+        .clock                              (clk_100),
+        .cpu_clock                            (clk_cpu),
 		  .clk_sys                            (CLOCK_27),
 		  .peripheral_clock                   (peripheral_clock),
 		  
-        .reset                              (reset_chipset),
+        .reset                              (reset_cpu),
         .sdram_reset                        (reset),
         .cpu_address                        (cpu_address),
         .cpu_data_bus                       (cpu_data_bus),
@@ -473,10 +483,10 @@ end
         .VGA_HSYNC                          (vga_hs),
         .VGA_VSYNC                          (vga_vs),
 //      .address                            (address),
-        .address_ext                        (0),
+        .address_ext                        (20'hFFFFF),
 //      .address_direction                  (address_direction),
         .data_bus                           (data_bus),
-//      .data_bus_ext                       (data_bus_ext),
+        .data_bus_ext                       (8'hFF),
 //      .data_bus_direction                 (data_bus_direction),
         .address_latch_enable               (address_latch_enable),
 //      .io_channel_check                   (),
@@ -501,8 +511,10 @@ end
         .port_b_out                         (port_b_out),
 		  .port_c_in                          (port_c_in),
 	     .speaker_out                        (speaker_out),   
-        .ps2_clock                          (ps2_kbd_clk_in),
-	     .ps2_data                           (ps2_kbd_data_in),
+//        .ps2_clock                          (ps2_kbd_clk_in),
+//	     .ps2_data                           (ps2_kbd_data_in),
+        .ps2_clock                          (device_clock),
+	     .ps2_data                           (device_data),
 //	     .ps2_clock_out                      (ps2_kbd_clk_out),
 //	     .ps2_data_out                       (ps2_kbd_data_out),
 	     .ps2_clock_out                      (PS2K_CLK_OUT),
@@ -525,9 +537,9 @@ end
 	    //  .uart_dsr_n                        (uart_dsr),
 	    //  .uart_rts_n                        (uart_rts),
 	    //  .uart_dtr_n                        (uart_dtr),
-		    .SRAM_ADDR                         (SRAM_A),
-		    .SRAM_DATA                         (SRAM_Q[7:0]),
-		    .SRAM_WE_n                         (SRAM_WE),
+		//    .SRAM_ADDR                         (SRAM_A),
+		//    .SRAM_DATA                         (SRAM_Q[7:0]),
+		//    .SRAM_WE_n                         (SRAM_WE),
 		  .enable_sdram                       (1'b1),
 		  .sdram_clock                        (CLOCK_27),
 		  .sdram_address                      (SDRAM_A),
@@ -541,7 +553,9 @@ end
         .sdram_dq_out                       (SDRAM_DQ_OUT),
         .sdram_dq_io                        (SDRAM_DQ_IO),
         .sdram_ldqm                         (SDRAM_DQML),
-        .sdram_udqm                         (SDRAM_DQMH)   
+        .sdram_udqm                         (SDRAM_DQMH),
+		  .ems_enabled                        (~status[11]),
+		  .ems_address                        (status[13:12])
     
     );
 	
@@ -685,7 +699,7 @@ end
 		.VGA_HS(vga_hs_mda)
 	);
 	
-
+/*
 	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_cga
 	(
 		.clk_sys(clk_113_750),
@@ -720,7 +734,7 @@ end
 		.VGA_VS(vga_vs_cga),
 		.VGA_HS(vga_hs_cga)
 	);
-
+*/
 
 	// assign vga_r_cga = vga_r;
 	// assign vga_g_cga = vga_g;

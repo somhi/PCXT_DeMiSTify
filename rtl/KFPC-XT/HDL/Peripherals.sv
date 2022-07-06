@@ -77,9 +77,15 @@ module PERIPHERALS #(
 	 input   logic           uart_dsr_n,
 	 output  logic           uart_rts_n,
 	 output  logic           uart_dtr_n,
-	 output          [20:0]  SRAM_ADDR,
-	 inout           [7:0]   SRAM_DATA,
-	 output                  SRAM_WE_n
+	 // EMS
+	 input   logic           ems_enabled,
+	 input   logic   [1:0]   ems_address,
+	 output  reg     [6:0]   map_ems[0:3], // Segment hE000, hE400, hE800, hEC00
+	 output  reg             ena_ems[0:3], // Enable Segment Map hE000, hE400, hE800, hEC00
+	 output  logic           ems_b1,
+	 output  logic           ems_b2,
+	 output  logic           ems_b3,
+	 output  logic           ems_b4
 
 	 
 );
@@ -118,9 +124,27 @@ module PERIPHERALS #(
     wire    cga_chip_select_n      = ~(enable_cga & (address[19:14] == 6'b1011_10)); // B8000 - BFFFF (32 KB)
 	 wire    mda_chip_select_n      = ~(enable_mda & (address[19:14] == 6'b1011_00)); // B0000 - B7FFF (32 KB)
 	 wire    rom_select_n           = ~(address[19:16] == 4'b1111); // F0000 - FFFFF (64 KB)
-	 //wire    ram_select_n           = ~(address[19:0] < 24'h0A0000);  // 00000 - 9FFFF (640 KB)	 
-     wire    uart_cs                = ({address[15:3], 3'd0} == 16'h03F8);
+	 wire    uart_cs                = ({address[15:3], 3'd0} == 16'h03F8);
 	 
+	 
+	 wire    [3:0] ems_page_address = (ems_address == 2'b00) ? 4'b1010 : (ems_address == 2'b01) ? 4'b1100 : (ems_address == 2'b10) ? 4'b1101 : 4'b1110;
+	 wire    ems_oe                 = (ems_enabled && ({address[15:2], 2'd0} == 16'h0260));          // 260h..263h	 
+	 assign  ems_b1                 = (ena_ems[0] && (address[19:14] == {ems_page_address, 2'b00})); // A0000h - C0000h - D0000h - E0000h
+	 assign  ems_b2                 = (ena_ems[1] && (address[19:14] == {ems_page_address, 2'b01})); // A4000h - C4000h - D4000h - E4000h
+	 assign  ems_b3                 = (ena_ems[2] && (address[19:14] == {ems_page_address, 2'b10})); // A8000h - C8000h - D8000h - E8000h
+	 assign  ems_b4                 = (ena_ems[3] && (address[19:14] == {ems_page_address, 2'b11})); // AC000h - CC000h - DC000h - EC000h
+	 
+	 always_ff @(posedge clock, posedge reset)
+    begin
+        if (reset) begin
+		      map_ems = '{7'h00, 7'h00, 7'h00, 7'h00};
+            ena_ems = '{1'b0, 1'b0, 1'b0, 1'b0};
+        end
+        else if (ems_oe && ~io_write_n && ~address_enable_n) begin
+					map_ems[address[1:0]] <= (internal_data_bus == 8'hFF) ? 7'hFF : (internal_data_bus < 8'h80) ? internal_data_bus[6:0] : map_ems[address[1:0]];
+					ena_ems[address[1:0]] <= (internal_data_bus == 8'hFF) ? 1'b0 : (internal_data_bus < 8'h80) ? 1'b1 : ena_ems[address[1:0]];
+		  end
+    end
 
     //
     // 8259
@@ -159,7 +183,7 @@ module PERIPHERALS #(
     //
     // Clock domain crossing
     logic   timer_clock_ff_1;
-    always_ff @(negedge peripheral_clock, posedge reset) begin
+    always_ff @(posedge peripheral_clock, posedge reset) begin
         if (reset)
             timer_clock_ff_1 <= 1'b0;
         else
@@ -168,7 +192,7 @@ module PERIPHERALS #(
 
     logic   timer_clock_ff_2;
     logic   timer_clock;
-    always_ff @(negedge clock, posedge reset) begin
+    always_ff @(posedge clock, posedge reset) begin
         if (reset) begin
             timer_clock_ff_2    <= 1'b0;
             timer_clock         <= 1'b0;
@@ -242,34 +266,16 @@ module PERIPHERALS #(
     //
     // KFPS2KB
     //
-
-    // Clock domain crossing
-    logic   clear_keycode_ff;
-    logic   clear_keycode;
-    logic   ps2_reset_n_ff;
-    logic   ps2_reset_n;
-    always_ff @(negedge peripheral_clock, posedge reset) begin
-        if (reset) begin
-            clear_keycode_ff    <= 1'b0;
-            clear_keycode       <= 1'b0;
-            ps2_reset_n_ff      <= 1'b0;
-            ps2_reset_n         <= 1'b0;
-        end
-        else begin
-            clear_keycode_ff    <= port_b_out[7];
-            clear_keycode       <= clear_keycode_ff;
-            ps2_reset_n_ff      <= port_b_out[6];
-            ps2_reset_n         <= ps2_reset_n_ff;
-        end
-    end
-
     logic           ps2_send_clock;
     logic           keybord_irq;
     logic   [7:0]   keycode;
     logic           prev_ps2_reset;
     logic           lock_recv_clock;
 
-    always_ff @(negedge peripheral_clock, posedge reset) begin
+    wire    clear_keycode = port_b_out[7];
+    wire    ps2_reset_n   = port_b_out[6];
+
+    always_ff @(posedge clock, posedge reset) begin
         if (reset)
             prev_ps2_reset_n <= 1'b0;
         else
@@ -278,7 +284,8 @@ module PERIPHERALS #(
 
     KFPS2KB u_KFPS2KB (
         // Bus
-        .clock                      (peripheral_clock),
+        .clock                      (clock),
+        .peripheral_clock           (peripheral_clock),
         .reset                      (reset),
 
         // PS/2 I/O
@@ -294,7 +301,8 @@ module PERIPHERALS #(
     // Keybord reset
     KFPS2KB_Send_Data u_KFPS2KB_Send_Data (
         // Bus
-        .clock                      (peripheral_clock),
+        .clock                      (clock),
+        .peripheral_clock           (peripheral_clock),
         .reset                      (reset),
 
         // PS/2 I/O
@@ -308,7 +316,7 @@ module PERIPHERALS #(
         .send_data                  (8'hFF)
     );
 
-    always_ff @(negedge peripheral_clock, posedge reset) begin
+    always_ff @(posedge clock, posedge reset) begin
         if (reset)
             ps2_clock_out = 1'b1;
         else
@@ -351,7 +359,7 @@ module PERIPHERALS #(
 	// );	
 	
 	    logic   keybord_interrupt_ff;
-    always_ff @(negedge clock, posedge reset) begin
+    always_ff @(posedge clock, posedge reset) begin
         if (reset) begin
             keybord_interrupt_ff    <= 1'b0;
             keybord_interrupt       <= 1'b0;
@@ -369,13 +377,13 @@ module PERIPHERALS #(
 	logic [7:0] uart_readdata_2;
 	logic [7:0] uart_readdata;
 
-	always_ff @(negedge clock) begin
+	always_ff @(posedge clock) begin
 		prev_io_read_n <= io_read_n;
 		prev_io_write_n <= io_write_n;
 	end
 
     logic   [7:0]   keycode_ff;
-    always_ff @(negedge clock, posedge reset) begin
+    always_ff @(posedge clock, posedge reset) begin
         if (reset) begin
             keycode_ff  <= 8'h00;
             port_a_in   <= 8'h00;
@@ -385,7 +393,7 @@ module PERIPHERALS #(
             port_a_in   <= keycode_ff;
         end
     end
-	always_ff @(negedge clock) begin
+	always_ff @(posedge clock) begin
 		if (~io_write_n)
 			write_to_uart <= internal_data_bus;
 		else
@@ -400,10 +408,10 @@ module PERIPHERALS #(
 
 		.address           (address[2:0]),
 		.writedata         (write_to_uart),
-		.read              (~io_read_n & prev_io_read_n),
+		.read              (~io_read_n  & prev_io_read_n),
 		.write             (io_write_n & ~prev_io_write_n),
 		.readdata          (uart_readdata_1),
-		.cs                (uart_cs),
+		.cs                (uart_cs && (~address_enable_n)),
 
 		.rx                (uart_rx),
 		.tx                (uart_tx),
@@ -418,8 +426,8 @@ module PERIPHERALS #(
 	);
 
 	// Timing of the readings may need to be reviewed.
-	always_ff @(negedge clock) begin
-		if (~io_read_n & prev_io_read_n)
+	always_ff @(posedge clock) begin
+		if (~io_read_n)
 			uart_readdata <= uart_readdata_1;
 		else
 			uart_readdata <= uart_readdata;
@@ -734,9 +742,13 @@ module PERIPHERALS #(
             data_bus_out_from_chipset = 1'b1;
             data_bus_out = opl32_data;			
         end
-		  else if ((uart_cs) && (~io_read_n)) begin
+		  else if ((uart_cs) && (~io_read_n) && (~address_enable_n)) begin
             data_bus_out_from_chipset = 1'b1;
             data_bus_out = uart_readdata;			
+        end
+		  else if ((ems_oe) && (~io_read_n) && (~address_enable_n)) begin
+            data_bus_out_from_chipset = 1'b1;				
+				data_bus_out = ena_ems[address[1:0]] ? map_ems[address[1:0]] : 8'hFF;            
         end
         else begin
             data_bus_out_from_chipset = 1'b0;

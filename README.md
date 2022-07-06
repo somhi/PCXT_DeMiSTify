@@ -38,10 +38,7 @@ https://github.com/spark2k06/PCXT_MiSTer/blob/main/demo/MiSTer_PCXT.gif
 * IDE module implementation
 * Floppy implementation
 * VHD support for easy integration with [XTIDE Universal BIOS](https://www.xtideuniversalbios.org/)
-* Addition of other modules:
-    * EMS    
-    * Others...
-
+* Addition of other modules
 * Turbo mode (7.16Mhz)
 
 # Mounting the disk image
@@ -53,6 +50,22 @@ That's all that is needed, just launch the script and boot the core.
 In the SW folder there is also a file called "boot.rom" which contains Sergey Kiselev's open source 8088 BIOS, along with the XTIDE UniversalBIOS ready to boot from the serial port. However, Sergey Kiselev's BIOS has some problems with the keyboard and is a bit slow... while this issue is being solved, you can run the python script "make_boot_with_jukost.py" from inside the SW folder, which will generate a boot.rom file with the Juko ST BIOS in place, much more stable and with good performance.
 
 # ChangeLog
+
+### Beta 1.2
+
+* Fix input device_clock and data_clock to the chipset
+* Fixed KF8259 bugs.
+* Create reset signals for each clock domain.
+* Changed SDRAM reset signal and bus input logic.
+* Fix timmings in PCXT.sdc
+* cleaning up project files
+* Default value to FFh for unused I/O ports 
+
+### Beta 1.1
+
+* Lo-Tech 2Mb EMS
+* Fix in UART access
+* video vectors corrected, sdc constraints for sdram, minor tipos to clear warnings
 
 ### Beta 1.0
 
