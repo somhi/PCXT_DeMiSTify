@@ -1,4 +1,4 @@
-# PCXT DeMiSTtified
+# PCXT DeMiSTified
 
 Port DeMiSTified by Somhic from original MiSTer port currently in development  https://github.com/spark2k06/PCXT_MiSTer
 
