@@ -82,7 +82,7 @@ assign LED  =  1'b1;
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
 assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
-assign SDRAM_CLK = CLOCK_27;
+//assign SDRAM_CLK = CLOCK_27;
 
 //`include "build_id.v" 
 parameter CONF_STR = {
@@ -105,8 +105,8 @@ parameter CONF_STR = {
 	"F1,ROM,Load ROM;",	
 	"-;",
 	"T0,Reset;",
-	"R0,Reset and close OSD;"//,
-//	"V,v",`BUILD_DATE 
+	"R0,Reset and close OSD;",
+	"V,v",`BUILD_DATE 
 };
 
 //wire forced_scandoubler;
@@ -218,7 +218,7 @@ pll pll
 	.inclk0(CLOCK_27),
 	.areset(1'b0),
 	.c0(clk_100),
-//	.c1(SDRAM_CLK),	
+	.c1(SDRAM_CLK),	
 	.c2(clk_uart),
 	.c3(clk_opl2),
 	.locked(pll_locked)

@@ -10,11 +10,15 @@ set clk_28_636   ${topmodule}pllvideo|altpll_component|auto_generated|pll1|clk[0
 create_generated_clock -name clk_14_318 -source $clk_28_636 -divide_by 2 [get_pins $CLOCK_14_318]
 create_generated_clock -name clk_4_77 -source [get_pins $CLOCK_14_318] -divide_by 3 -duty_cycle 33 [get_pins $CLOCK_4_77]
 create_generated_clock -name peripheral_clock -source [get_pins $CLOCK_4_77] -divide_by 2 [get_pins $PCLK]
-#{MAX10_CLK1_50}  not generic for all demistify boards
-# does not work [get_clocks clk_50], clk_50, {clk_50}
+#{MAX10_CLK1_50}  not generic for all demistify boards;  does not work [get_clocks clk_50], clk_50, {clk_50}
 #create_generated_clock -name SDRAM_CLK -source {MAX10_CLK1_50}  [get_ports $RAM_CLK]
-create_generated_clock -name SDRAM_CLK -source { clock_50_i }  [get_ports $RAM_CLK]
 
+
+if {[info exists cyclonev] && ($cyclonev==1)} {
+    create_generated_clock -name SDRAM_CLK -source ${topmodule}pll|altpll_component|auto_generated|generic_pll2~PLL_OUTPUT_COUNTER|divclk [get_ports $RAM_CLK]
+} else {
+    create_generated_clock -name SDRAM_CLK -source ${topmodule}pll|altpll_component|auto_generated|pll1|clk[1] [get_ports $RAM_CLK]
+}
 
 # SDRAM
 set_input_delay -clock { SDRAM_CLK } -max 6.4 [get_ports $RAM_IN]

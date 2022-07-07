@@ -567,23 +567,23 @@ module PERIPHERALS #(
 	 wire [7:0] mda_vram_cpu_dout;
 
      `ifdef DEMISTIFY_DECA
-     vram16 cga_vram
-	 (
-        .clka                       (clock),
-        .ena                        (~address_enable_n && ~cga_chip_select_n),
-        .wea                        (~memory_write_n),
-        .addra                      (address[14:0]),
-        .dina                       (internal_data_bus),
-        .douta                      (cga_vram_cpu_dout),
-        .clkb                       (clk_vga_cga),
-        .web                        (1'b0),
-        .enb                        (CGA_VRAM_ENABLE),
-        .addrb                      (CGA_VRAM_ADDR[14:0]),
-        .dinb                       (8'h0),
-        .doutb                      (CGA_VRAM_DOUT)
-	);     
+    //  vram cga_vram
+	//  (
+    //     .clka                       (clock),
+    //     .ena                        (~address_enable_n && ~cga_chip_select_n),
+    //     .wea                        (~memory_write_n),
+    //     .addra                      (address[14:0]),
+    //     .dina                       (internal_data_bus),
+    //     .douta                      (cga_vram_cpu_dout),
+    //     .clkb                       (clk_vga_cga),
+    //     .web                        (1'b0),
+    //     .enb                        (CGA_VRAM_ENABLE),
+    //     .addrb                      (CGA_VRAM_ADDR[14:0]),
+    //     .dinb                       (8'h0),
+    //     .doutb                      (CGA_VRAM_DOUT)
+	// );     
 
-    vram16 mda_vram
+    vram mda_vram
     (
        .clka                       (clock),
        .ena                        (~address_enable_n && ~mda_chip_select_n),
@@ -702,7 +702,7 @@ module PERIPHERALS #(
     //     .q_b(bios_cpu_dout)
 	// );
 
-    
+
     //
     // KFTVGA
     //
