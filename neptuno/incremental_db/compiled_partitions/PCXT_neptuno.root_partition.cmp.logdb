@@ -1,5 +1,0 @@
-v1
-DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,substitute_mcu:controller|eightthirtytwo_cpu:cpu|eightthirtytwo_alu:alu|lpm_mult:Mult0|mult_86t:auto_generated|mac_out2,
-DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,substitute_mcu:controller|eightthirtytwo_cpu:cpu|eightthirtytwo_alu:alu|lpm_mult:Mult0|mult_86t:auto_generated|mac_out4,
-DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,substitute_mcu:controller|eightthirtytwo_cpu:cpu|eightthirtytwo_alu:alu|lpm_mult:Mult0|mult_86t:auto_generated|mac_out6,
-DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,substitute_mcu:controller|eightthirtytwo_cpu:cpu|eightthirtytwo_alu:alu|lpm_mult:Mult0|mult_86t:auto_generated|mac_out8,

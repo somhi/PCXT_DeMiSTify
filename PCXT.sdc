@@ -13,7 +13,7 @@ create_generated_clock -name peripheral_clock -source [get_pins $CLOCK_4_77] -di
 #{MAX10_CLK1_50}  not generic for all demistify boards
 # does not work [get_clocks clk_50], clk_50, {clk_50}
 #create_generated_clock -name SDRAM_CLK -source {MAX10_CLK1_50}  [get_ports $RAM_CLK]
-create_generated_clock -name SDRAM_CLK -source [get_clocks clk_50]  [get_ports $RAM_CLK]
+create_generated_clock -name SDRAM_CLK -source { clock_50_i }  [get_ports $RAM_CLK]
 
 
 # SDRAM

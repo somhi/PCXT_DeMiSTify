@@ -519,10 +519,10 @@ end
 //	     .ps2_data_out                       (ps2_kbd_data_out),
 	     .ps2_clock_out                      (PS2K_CLK_OUT),
 	     .ps2_data_out                       (PS2K_DAT_OUT),
-		//   .clk_en_opl2                        (cen_opl2), // clk_en_opl2
-		//   .jtopl2_snd_e                       (jtopl2_snd_e),
-		//   .adlibhide                          (adlibhide),
-		//   .tandy_snd_e                        (tandy_snd_e),
+		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
+		  .jtopl2_snd_e                       (jtopl2_snd_e),
+		  .adlibhide                          (adlibhide),
+		  .tandy_snd_e                        (tandy_snd_e),
 		  .ioctl_download                     (ioctl_download),
 		  .ioctl_index                        (ioctl_index),
 		  .ioctl_wr                           (ioctl_wr),

@@ -330,36 +330,36 @@ module PERIPHERALS #(
    wire [7:0] jtopl2_dout;
 	wire [7:0]opl32_data;	
    assign opl32_data = adlibhide ? 8'hFF : jtopl2_dout;
-	
-	// jtopl2 jtopl2_inst
-	// (
-	// 	.rst(reset),
-	// 	.clk(clock),
-	// 	.cen(clk_en_opl2),
-	// 	.din(internal_data_bus),
-	// 	.dout(jtopl2_dout),
-	// 	.addr(address[0]),
-	// 	.cs_n(opl_chip_select_n),
-	// 	.wr_n(io_write_n),
-	// 	.irq_n(),
-	// 	.snd(jtopl2_snd_e),
-	// 	.sample()
-	// );	
+	 
+	jtopl2 jtopl2_inst
+	(
+		.rst(reset),
+		.clk(clock),
+		.cen(clk_en_opl2),
+		.din(internal_data_bus),
+		.dout(jtopl2_dout),
+		.addr(address[0]),
+		.cs_n(opl_chip_select_n),
+		.wr_n(io_write_n),
+		.irq_n(),
+		.snd(jtopl2_snd_e),
+		.sample()
+	);	
 	
 	wire TANDY_SND_RDY;
 	
-	// // Tandy sound
-	// sn76489_top sn76489
-	// (
-	// 	.clock_i(clock),
-	// 	.clock_en_i(clk_en_opl2), // 3.579MHz
-	// 	.res_n_i(~reset),
-	// 	.ce_n_i(tandy_chip_select_n),
-	// 	.we_n_i(io_write_n),
-	// 	.ready_o(TANDY_SND_RDY),
-	// 	.d_i(internal_data_bus),
-	// 	.aout_o(tandy_snd_e)
-	// );	
+	// Tandy sound
+	sn76489_top sn76489
+	(
+		.clock_i(clock),
+		.clock_en_i(clk_en_opl2), // 3.579MHz
+		.res_n_i(~reset),
+		.ce_n_i(tandy_chip_select_n),
+		.we_n_i(io_write_n),
+		.ready_o(TANDY_SND_RDY),
+		.d_i(internal_data_bus),
+		.aout_o(tandy_snd_e)
+	);	
 	
 	    logic   keybord_interrupt_ff;
     always_ff @(posedge clock, posedge reset) begin
@@ -567,6 +567,37 @@ module PERIPHERALS #(
 	 wire [7:0] mda_vram_cpu_dout;
 
      `ifdef DEMISTIFY_DECA
+     vram16 cga_vram
+	 (
+        .clka                       (clock),
+        .ena                        (~address_enable_n && ~cga_chip_select_n),
+        .wea                        (~memory_write_n),
+        .addra                      (address[14:0]),
+        .dina                       (internal_data_bus),
+        .douta                      (cga_vram_cpu_dout),
+        .clkb                       (clk_vga_cga),
+        .web                        (1'b0),
+        .enb                        (CGA_VRAM_ENABLE),
+        .addrb                      (CGA_VRAM_ADDR[14:0]),
+        .dinb                       (8'h0),
+        .doutb                      (CGA_VRAM_DOUT)
+	);     
+
+    vram16 mda_vram
+    (
+       .clka                       (clock),
+       .ena                        (~address_enable_n && ~mda_chip_select_n),
+       .wea                        (~memory_write_n),
+       .addra                      (address[14:0]),
+       .dina                       (internal_data_bus),
+       .douta                      (mda_vram_cpu_dout),
+       .clkb                       (clk_vga_mda),
+       .web                        (1'b0),
+       .enb                        (MDA_VRAM_ENABLE),
+       .addrb                      (MDA_VRAM_ADDR[14:0]),
+       .dinb                       (8'h0),
+       .doutb                      (MDA_VRAM_DOUT)
+   );
      `else
     vram cga_vram
 	 (
@@ -583,24 +614,26 @@ module PERIPHERALS #(
         .dinb                       (8'h0),
         .doutb                      (CGA_VRAM_DOUT)
 	);
+
+    vram mda_vram
+    (
+       .clka                       (clock),
+       .ena                        (~address_enable_n && ~mda_chip_select_n),
+       .wea                        (~memory_write_n),
+       .addra                      (address[14:0]),
+       .dina                       (internal_data_bus),
+       .douta                      (mda_vram_cpu_dout),
+       .clkb                       (clk_vga_mda),
+       .web                        (1'b0),
+       .enb                        (MDA_VRAM_ENABLE),
+       .addrb                      (MDA_VRAM_ADDR[14:0]),
+       .dinb                       (8'h0),
+       .doutb                      (MDA_VRAM_DOUT)
+   );
 	`endif
 
 	 
-    vram mda_vram
-	 (
-        .clka                       (clock),
-        .ena                        (~address_enable_n && ~mda_chip_select_n),
-        .wea                        (~memory_write_n),
-        .addra                      (address[14:0]),
-        .dina                       (internal_data_bus),
-        .douta                      (mda_vram_cpu_dout),
-        .clkb                       (clk_vga_mda),
-        .web                        (1'b0),
-        .enb                        (MDA_VRAM_ENABLE),
-        .addrb                      (MDA_VRAM_ADDR[14:0]),
-        .dinb                       (8'h0),
-        .doutb                      (MDA_VRAM_DOUT)
-	);
+
 	 
 
     `ifdef DEMISTIFY_sockit
@@ -614,34 +647,31 @@ module PERIPHERALS #(
         .dina(ioctl_data),
         .douta(bios_cpu_dout)
 	);
-    `elsif DEMISTIFY_NEPTUNO
-    //BIOS (SRAM)
-	bios_sram bios
-	(
-        .clka(ioctl_download ? clk_sys : clock),
-        .ena((~address_enable_n && ~rom_select_n) || ioctl_download),
-        .wea(ioctl_download && ioctl_wr),
-        .addra(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-        .dina(ioctl_data),
-        .douta(bios_cpu_dout),
-	    .SRAM_ADDR(SRAM_ADDR),
-	    .SRAM_DATA(SRAM_DATA),
-	    .SRAM_WE_n(SRAM_WE_n)
-	);
+    // `elsif DEMISTIFY_NEPTUNO
+    // //BIOS (SRAM)
+	// bios_sram bios
+	// (
+    //     .clka(ioctl_download ? clk_sys : clock),
+    //     .ena((~address_enable_n && ~rom_select_n) || ioctl_download),
+    //     .wea(ioctl_download && ioctl_wr),
+    //     .addra(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+    //     .dina(ioctl_data),
+    //     .douta(bios_cpu_dout),
+	//     .SRAM_ADDR(SRAM_ADDR),
+	//     .SRAM_DATA(SRAM_DATA),
+	//     .SRAM_WE_n(SRAM_WE_n)
+	// );
     `else
-    //BIOS (RAM 2 Port)
+    //BIOS (simple RAM 2 Port )
 	bios_ip bios
 	(
-        .address_a(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-        .address_b(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+        .rdaddress(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+        .wraddress(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
         .clock(ioctl_download ? clk_sys : clock),
-        .data_a(ioctl_data),
-        .data_b(ioctl_data),
+        .data(ioctl_data),
         .enable((~address_enable_n && ~rom_select_n) || ioctl_download),
-        .wren_a(ioctl_download && ioctl_wr),
-        .wren_b(ioctl_download && ioctl_wr),
-    //    .q_a(bios_cpu_dout),
-        .q_b(bios_cpu_dout)
+        .wren(ioctl_download && ioctl_wr),
+        .q(bios_cpu_dout),
 	);
 	`endif
     
@@ -668,11 +698,11 @@ module PERIPHERALS #(
     //     .enable((~address_enable_n && ~rom_select_n) || ioctl_download),
     //     .wren_a(ioctl_download && ioctl_wr),
     //     .wren_b(ioctl_download && ioctl_wr),
-    // //    .q_a(bios_cpu_dout),
+    // //  .q_a(bios_cpu_dout),
     //     .q_b(bios_cpu_dout)
 	// );
 
-
+    
     //
     // KFTVGA
     //
