@@ -2,13 +2,15 @@
 
 07/07/22 Neptuno port DeMiSTified by Somhic from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
 
+commit fe95d75cab305928fb4628ff46f9aece5c0d92a2 (HEAD -> pre_beta_1_3)
 
+Merge pull request #23 from kitune-san/sdram_and_dma
 
 ### STATUS
 
-* Load OS using the two ps2 mouse pins.  See pinout and instructions on top of neptuno_top.vhd file
+* Load OS using Serial Rx/Tx interface using the two ps2 mouse pins.  See pinout below.
 
-* Project already has the firmware already generated so if you have cloned recursively then you can open the project with Quartus
+* Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus
 
   ```sh
   git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
@@ -47,7 +49,6 @@ make BOARD=neptuno
 
 After that you can:
 
-* Flash bitstream directly from [command line](https://github.com/DECAfpga/DECA_binaries#flash-bitstream-to-fgpa-with-quartus)
 * Load project in Quartus from /deca/[core_name]_deca.qpf
 
 
