@@ -357,8 +357,8 @@ begin
 				-- PS/2 signals
 				ps2k_clk_in  => ps2_keyboard_clk_in,
 				ps2k_dat_in  => ps2_keyboard_dat_in,
-		--		ps2k_clk_out => ps2_keyboard_clk_out,
-		--		ps2k_dat_out => ps2_keyboard_dat_out,
+				ps2k_clk_out => ps2_keyboard_clk_out,
+				ps2k_dat_out => ps2_keyboard_dat_out,
 				ps2m_clk_in  => ps2_mouse_clk_in,
 				ps2m_dat_in  => ps2_mouse_dat_in,
 				ps2m_clk_out => ps2_mouse_clk_out,

@@ -52,14 +52,17 @@ module PCXT
 	output  [5:0] VGA_G,
 	output  [5:0] VGA_B,
 	output        VGA_DE,    // = ~(VBlank | HBlank)
+
+	`ifdef DEMISTIFY
 	output        CLK_VIDEO,
+
+	output [15:0]  DAC_L, 
+	output [15:0]  DAC_R, 
+	`endif
 
 	output        AUDIO_L,
 	output        AUDIO_R, 
-	
-	output [15:0]  DAC_L, 
-	output [15:0]  DAC_R, 
-	
+
 	//SD-SPI
 	output        SD_SCK,
 	output        SD_MOSI,
@@ -77,14 +80,14 @@ module PCXT
 
 ///////// Default values for ports not used in this core /////////
 
-assign LED  =  1'b1;
+assign LED  =  ~ioctl_download;   //1'b1;
 
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
 assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 //assign SDRAM_CLK = CLOCK_27;
 
-//`include "build_id.v" 
+`include "build_id.v" 
 parameter CONF_STR = {
 	"PCXT;;",
 	"-;",
@@ -149,53 +152,100 @@ wire        clk_uart;
 wire        adlibhide = status[10];
 
 
-mist_io #(.STRLEN($size(CONF_STR)>>3),.PS2DIV(2000)) mist_io
-(
-	.SPI_SCK   (SPI_SCK),
-    .CONF_DATA0(CONF_DATA0),
-    .SPI_SS2   (SPI_SS2),
-    .SPI_DO    (SPI_DO),
-    .SPI_DI    (SPI_DI),
+// mist_io #(.STRLEN($size(CONF_STR)>>3),.PS2DIV(2000)) mist_io
+// (
+// 	.SPI_SCK   (SPI_SCK),
+//     .CONF_DATA0(CONF_DATA0),
+//     .SPI_SS2   (SPI_SS2),
+//     .SPI_DO    (SPI_DO),
+//     .SPI_DI    (SPI_DI),
 
-    .clk_sys(CLOCK_27),
-    .conf_str(CONF_STR),
+//     .clk_sys(CLOCK_27),
+//     .conf_str(CONF_STR),
 
-	//.scandoubler_disable(forced_scandoubler),
+// 	//.scandoubler_disable(forced_scandoubler),
 
-	.buttons(buttons),
-	.status(status),
+// 	.buttons(buttons),
+// 	.status(status),
 	
-	//VHD	
-	// .sd_rd         (usdRd),
-	// .sd_wr         (usdWr),
-	// .sd_ack        (usdAck),
-	// .sd_lba        (usdLba),
-	// .sd_buff_wr    (usdBuffWr),
-	// .sd_buff_addr  (usdBuffA),
-	// .sd_buff_din   (usdBuffD),
-	// .sd_buff_dout  (usdBuffQ),
-	// .img_mounted   (usdImgMtd),
-	// .img_size	   (usdImgSz),	
+// 	//VHD	
+// 	// .sd_rd         (usdRd),
+// 	// .sd_wr         (usdWr),
+// 	// .sd_ack        (usdAck),
+// 	// .sd_lba        (usdLba),
+// 	// .sd_buff_wr    (usdBuffWr),
+// 	// .sd_buff_addr  (usdBuffA),
+// 	// .sd_buff_din   (usdBuffD),
+// 	// .sd_buff_dout  (usdBuffQ),
+// 	// .img_mounted   (usdImgMtd),
+// 	// .img_size	   (usdImgSz),	
 	
-//	.ps2_kbd_clk_in		(ps2_kbd_clk_out),
-//	.ps2_kbd_data_in	(ps2_kbd_data_out),
+// //	.ps2_kbd_clk_in		(ps2_kbd_clk_out),
+// //	.ps2_kbd_data_in	(ps2_kbd_data_out),
+// 	.ps2_kbd_clk		(ps2_kbd_clk_in),
+// 	.ps2_kbd_data		(ps2_kbd_data_in),
+// //  .ps2_mouse_clk_in	(ps2_mouse_clk_out),
+// //	.ps2_mouse_data_in	(ps2_mouse_data_out),
+// //	.ps2_mouse_clk		(ps2_mouse_clk_in),
+// //	.ps2_mouse_data		(ps2_mouse_data_in),
+
+// 	//.ps2_key(ps2_key),
+
+// 	//ioctl
+// 	.ioctl_ce(1),
+// 	.ioctl_download(ioctl_download),
+// 	.ioctl_index(ioctl_index),
+// 	.ioctl_wr(ioctl_wr),
+// 	.ioctl_addr(ioctl_addr),
+// 	.ioctl_dout(ioctl_data)	
+// );
+
+
+
+user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io(
+	.conf_str      ( CONF_STR       ),
+	.clk_sys       ( CLOCK_27        ),
+
+	// the spi interface
+	.SPI_CLK        ( SPI_SCK       ),
+	.SPI_SS_IO      ( CONF_DATA0    ),
+	.SPI_MISO       ( SPI_DO        ),   // tristate handling inside user_io
+	.SPI_MOSI       ( SPI_DI        ),
+	
+	.status         ( status        ),
+	.buttons        ( buttons       ),
+	// .scandoubler_disable ( forced_scandoubler ),
+
+	.ps2_kbd_clk_i		(ps2_kbd_clk_out),
+	.ps2_kbd_data_i		(ps2_kbd_data_out),
 	.ps2_kbd_clk		(ps2_kbd_clk_in),
-	.ps2_kbd_data		(ps2_kbd_data_in),
-//  .ps2_mouse_clk_in	(ps2_mouse_clk_out),
-//	.ps2_mouse_data_in	(ps2_mouse_data_out),
+	.ps2_kbd_data		(ps2_kbd_data_in)
+//  .ps2_mouse_clk_i	(ps2_mouse_clk_out),
+//	.ps2_mouse_data_i	(ps2_mouse_data_out),
 //	.ps2_mouse_clk		(ps2_mouse_clk_in),
 //	.ps2_mouse_data		(ps2_mouse_data_in),
-
-	//.ps2_key(ps2_key),
-
-	//ioctl
-	.ioctl_ce(1),
-	.ioctl_download(ioctl_download),
-	.ioctl_index(ioctl_index),
-	.ioctl_wr(ioctl_wr),
-	.ioctl_addr(ioctl_addr),
-	.ioctl_dout(ioctl_data)	
 );
+
+
+data_io DATA_IO (
+	.clk_sys    ( CLOCK_27 ),
+	.SPI_SCK    ( SPI_SCK ),
+	.SPI_SS2    ( SPI_SS2 ),
+	.SPI_DI     ( SPI_DI  ),
+	.SPI_DO     ( SPI_DO  ),
+
+	.ioctl_download ( ioctl_download ),
+	// .ioctl_upload   ( upload_active  ),
+	.ioctl_index( ioctl_index  ),
+
+   // ram interface
+	.ioctl_wr   ( ioctl_wr     ),
+	.ioctl_addr ( ioctl_addr   ),
+	.ioctl_dout ( ioctl_data   )
+	// .ioctl_din  ( ioctl_din    )
+);
+
+
 
 ///////////////////////   CLOCKS   ///////////////////////////////
 
@@ -515,10 +565,10 @@ end
 //	     .ps2_data                           (ps2_kbd_data_in),
         .ps2_clock                          (device_clock),
 	     .ps2_data                           (device_data),
-//	     .ps2_clock_out                      (ps2_kbd_clk_out),
-//	     .ps2_data_out                       (ps2_kbd_data_out),
-	     .ps2_clock_out                      (PS2K_CLK_OUT),
-	     .ps2_data_out                       (PS2K_DAT_OUT),
+	     .ps2_clock_out                      (ps2_kbd_clk_out),
+	     .ps2_data_out                       (ps2_kbd_data_out),
+//	     .ps2_clock_out                      (PS2K_CLK_OUT),
+//	     .ps2_data_out                       (PS2K_DAT_OUT),
 		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
 		  .jtopl2_snd_e                       (jtopl2_snd_e),
 		  .adlibhide                          (adlibhide),
