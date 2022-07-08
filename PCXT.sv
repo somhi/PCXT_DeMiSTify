@@ -72,8 +72,8 @@ module PCXT
 	input         UART_RX,
 	output        UART_TX,
 
-	//input         PS2K_CLK_IN,
-	//input         PS2K_DAT_IN,
+	input         PS2K_CLK_IN,
+	input         PS2K_DAT_IN,
 	output        PS2K_CLK_OUT,
 	output        PS2K_DAT_OUT
 );
@@ -102,7 +102,7 @@ parameter CONF_STR = {
 	"O4,Video Output,MDA,Tandy/CGA;",
 	"O12,CGA RGB,Color,Green,Amber,B/W;",
 	"O56,MDA RGB,Green,Amber,B/W;",
-	"O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
+	//"O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
 	//"O78,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",	
 	"-;",
 	"F1,ROM,Load ROM;",	
@@ -154,11 +154,12 @@ wire        adlibhide = status[10];
 
 
 //user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io(
-// without .PS2BIDIR(1)  timings increase
+// without .PS2BIDIR(1)  											timings 21  DO NOT BOOT
+//user_io #(.STRLEN($size(CONF_STR)>>3), .PS2BIDIR(1)) user_io(    	timings 18 boot
 
-user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(10), .PS2BIDIR(1)) user_io(
+user_io #(.STRLEN($size(CONF_STR)>>3), .PS2BIDIR(1)) user_io(
 	.conf_str      ( CONF_STR       ),
-	.clk_sys       ( CLOCK_27        ),
+	.clk_sys       ( CLOCK_27       ),
 
 	// the spi interface
 	.SPI_CLK        ( SPI_SCK       ),
@@ -170,10 +171,10 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(10), .PS2BIDIR(1)) user_io(
 	.buttons        ( buttons       ),
 	// .scandoubler_disable ( forced_scandoubler ),
 
-	.ps2_kbd_clk_i		(ps2_kbd_clk_out),
-	.ps2_kbd_data_i		(ps2_kbd_data_out),
-	.ps2_kbd_clk		(ps2_kbd_clk_in),
-	.ps2_kbd_data		(ps2_kbd_data_in)
+	// .ps2_kbd_clk_i		(ps2_kbd_clk_out),
+	// .ps2_kbd_data_i		(ps2_kbd_data_out),
+	// .ps2_kbd_clk		(ps2_kbd_clk_in),
+	// .ps2_kbd_data		(ps2_kbd_data_in)
 //  .ps2_mouse_clk_i	(ps2_mouse_clk_out),
 //	.ps2_mouse_data_i	(ps2_mouse_data_out),
 //	.ps2_mouse_clk		(ps2_mouse_clk_in),
@@ -235,7 +236,7 @@ pllvideo pllvideo
 	.areset(1'b0),
 	.c0(clk_28_636),
 	.c1(clk_56_875),	
-	.c2(clk_113_750),
+//	.c2(clk_113_750),
 //	.c3(clk_14_318),
 //	.c4(clk_7_16),
 	.locked(pll_locked2)
@@ -415,7 +416,7 @@ end
             device_clock    <= 1'b0;
         end
         else begin
-            device_clock_ff <= ps2_kbd_clk_in;
+            device_clock_ff <= PS2K_CLK_IN;			//ps2_kbd_clk_in;
             device_clock    <= device_clock_ff ;
         end
     end
@@ -434,7 +435,7 @@ end
             device_data    <= 1'b0;
         end
         else begin
-            device_data_ff <= ps2_kbd_data_in;
+            device_data_ff <= PS2K_DAT_IN;			//ps2_kbd_data_in;
             device_data    <= device_data_ff;
         end
     end
@@ -519,14 +520,16 @@ end
 //	     .ps2_data                           (ps2_kbd_data_in),
         .ps2_clock                          (device_clock),
 	     .ps2_data                           (device_data),
-	     .ps2_clock_out                      (ps2_kbd_clk_out),
-	     .ps2_data_out                       (ps2_kbd_data_out),
-//	     .ps2_clock_out                      (PS2K_CLK_OUT),
-//	     .ps2_data_out                       (PS2K_DAT_OUT),
-		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
-		  .jtopl2_snd_e                       (jtopl2_snd_e),
-		  .adlibhide                          (adlibhide),
-		  .tandy_snd_e                        (tandy_snd_e),
+//         .ps2_clock                          (PS2K_CLK_IN),
+//	     .ps2_data                           (PS2K_DAT_IN),
+//		 .ps2_clock_out                      (ps2_kbd_clk_out),
+//	     .ps2_data_out                       (ps2_kbd_data_out),
+	     .ps2_clock_out                      (PS2K_CLK_OUT),
+	     .ps2_data_out                       (PS2K_DAT_OUT),
+		//   .clk_en_opl2                        (cen_opl2), // clk_en_opl2
+		//   .jtopl2_snd_e                       (jtopl2_snd_e),
+		//   .adlibhide                          (adlibhide),
+		//   .tandy_snd_e                        (tandy_snd_e),
 		  .ioctl_download                     (ioctl_download),
 		  .ioctl_index                        (ioctl_index),
 		  .ioctl_wr                           (ioctl_wr),
@@ -667,7 +670,8 @@ end
 	assign vga_b = ~status[4] ? b : baux;
 
 	osd #(.OSD_COLOR(3'd4)) osd  (
-		.clk_sys ( clk_113_750 ),
+		// .clk_sys ( clk_113_750 ),
+		.clk_sys ( clk_56_875 ),
 		.rotate  ( 2'b00   ),		// Rotate OSD [0] - rotate [1] - left or right
 		.ce      ( clk_28_636  ),	// clk_sys/4
 		.SPI_DI  ( SPI_DI  ),

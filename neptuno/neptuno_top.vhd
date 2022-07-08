@@ -318,11 +318,11 @@ begin
 				DAC_L   => dac_l,
 				DAC_R   => dac_r,
 			AUDIO_L => SIGMA_L,
-			AUDIO_R => SIGMA_R
-			--PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
-			--PS2K_DAT_IN => ps2_keyboard_dat_in,
-	--		PS2K_CLK_OUT => ps2_keyboard_clk_out,
-	--		PS2K_DAT_OUT => ps2_keyboard_dat_out
+			AUDIO_R => SIGMA_R,
+			PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
+			PS2K_DAT_IN => ps2_keyboard_dat_in,
+			PS2K_CLK_OUT => ps2_keyboard_clk_out,
+			PS2K_DAT_OUT => ps2_keyboard_dat_out
 		);
 
 
@@ -357,8 +357,8 @@ begin
 				-- PS/2 signals
 				ps2k_clk_in  => ps2_keyboard_clk_in,
 				ps2k_dat_in  => ps2_keyboard_dat_in,
-				ps2k_clk_out => ps2_keyboard_clk_out,
-				ps2k_dat_out => ps2_keyboard_dat_out,
+			--	ps2k_clk_out => ps2_keyboard_clk_out,
+			--	ps2k_dat_out => ps2_keyboard_dat_out,
 				ps2m_clk_in  => ps2_mouse_clk_in,
 				ps2m_dat_in  => ps2_mouse_dat_in,
 				ps2m_clk_out => ps2_mouse_clk_out,
