@@ -2,10 +2,8 @@
 files.qip
 mist-modules/mist_core.qip
 mist-modules/data_io.v
-
-# DELETE DELETE
-sys/sys.qip
-
+rtl/sigma_delta_dac.v
+#sys/sys.qip
 
 # The controller module
 DeMiSTify/controller/controller.qip

@@ -83,7 +83,7 @@ module PCXT
 assign LED  =  ~ioctl_download;   //1'b1;
 
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
-assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
+//assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 //assign SDRAM_CLK = CLOCK_27;
 
@@ -152,57 +152,10 @@ wire        clk_uart;
 wire        adlibhide = status[10];
 
 
-// mist_io #(.STRLEN($size(CONF_STR)>>3),.PS2DIV(2000)) mist_io
-// (
-// 	.SPI_SCK   (SPI_SCK),
-//     .CONF_DATA0(CONF_DATA0),
-//     .SPI_SS2   (SPI_SS2),
-//     .SPI_DO    (SPI_DO),
-//     .SPI_DI    (SPI_DI),
 
-//     .clk_sys(CLOCK_27),
-//     .conf_str(CONF_STR),
+//user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io(
 
-// 	//.scandoubler_disable(forced_scandoubler),
-
-// 	.buttons(buttons),
-// 	.status(status),
-	
-// 	//VHD	
-// 	// .sd_rd         (usdRd),
-// 	// .sd_wr         (usdWr),
-// 	// .sd_ack        (usdAck),
-// 	// .sd_lba        (usdLba),
-// 	// .sd_buff_wr    (usdBuffWr),
-// 	// .sd_buff_addr  (usdBuffA),
-// 	// .sd_buff_din   (usdBuffD),
-// 	// .sd_buff_dout  (usdBuffQ),
-// 	// .img_mounted   (usdImgMtd),
-// 	// .img_size	   (usdImgSz),	
-	
-// //	.ps2_kbd_clk_in		(ps2_kbd_clk_out),
-// //	.ps2_kbd_data_in	(ps2_kbd_data_out),
-// 	.ps2_kbd_clk		(ps2_kbd_clk_in),
-// 	.ps2_kbd_data		(ps2_kbd_data_in),
-// //  .ps2_mouse_clk_in	(ps2_mouse_clk_out),
-// //	.ps2_mouse_data_in	(ps2_mouse_data_out),
-// //	.ps2_mouse_clk		(ps2_mouse_clk_in),
-// //	.ps2_mouse_data		(ps2_mouse_data_in),
-
-// 	//.ps2_key(ps2_key),
-
-// 	//ioctl
-// 	.ioctl_ce(1),
-// 	.ioctl_download(ioctl_download),
-// 	.ioctl_index(ioctl_index),
-// 	.ioctl_wr(ioctl_wr),
-// 	.ioctl_addr(ioctl_addr),
-// 	.ioctl_dout(ioctl_data)	
-// );
-
-
-
-user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io(
+user_io #(.STRLEN($size(CONF_STR)>>3), .PS2BIDIR(1)) user_io(
 	.conf_str      ( CONF_STR       ),
 	.clk_sys       ( CLOCK_27        ),
 
@@ -238,7 +191,7 @@ data_io DATA_IO (
 	// .ioctl_upload   ( upload_active  ),
 	.ioctl_index( ioctl_index  ),
 
-   // ram interface
+    // ram interface
 	.ioctl_wr   ( ioctl_wr     ),
 	.ioctl_addr ( ioctl_addr   ),
 	.ioctl_dout ( ioctl_data   )
@@ -712,104 +665,26 @@ end
 	assign vga_g = ~status[4] ? g : gaux;
 	assign vga_b = ~status[4] ? b : baux;
 
-
-
-	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_mda
-	(
-		.clk_sys(clk_113_750),
-		.ce_pix(clk_28_636),
-	    .ce_pix_actual(clk_28_636),
-	   
-		.SPI_SCK(SPI_SCK),
-		.SPI_SS3(SPI_SS3),
-		.SPI_DI(SPI_DI),
-
-		.scanlines(2'b00),
-		.scandoubler_disable(1'b1),    //scandoubler disabled
-		.hq2x(1'b0),
-		.ypbpr(1'b0),
-	    .ypbpr_full(1'b0),
-		.mono(1'b0),
-	    .line_start(1'b0),
-	
-		.R(vga_r),
-		.G(vga_g),
-		.B(vga_b),
-	
-		// Positive pulses.
-		.HSync(vga_hs),
-		.VSync(vga_vs),
-		.HBlank(1'b0),
-		.VBlank(1'b0),
-
-		.VGA_R(vga_r_mda),
-		.VGA_G(vga_g_mda),
-		.VGA_B(vga_b_mda),
-		.VGA_VS(vga_vs_mda),
-		.VGA_HS(vga_hs_mda)
-	);
-	
-
-	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_cga
-	(
-		.clk_sys(clk_113_750),
-		.ce_pix(clk_28_636),
-	    .ce_pix_actual(clk_28_636),
-
-		.SPI_SCK(SPI_SCK),
-		.SPI_SS3(SPI_SS3),
-		.SPI_DI(SPI_DI),
-
-		.scanlines(2'b00),
-		.scandoubler_disable(1'b1),    //scandoubler disabled
-		.hq2x(1'b0),
-		.ypbpr(1'b0),
-	    .ypbpr_full(1'b0),
-		.mono(1'b0),
-	    .line_start(1'b0),
-	
-		.R(vga_r),
-		.G(vga_g),
-		.B(vga_b),
-	
-		// Positive pulses.
-		.HSync(vga_hs),
-		.VSync(vga_vs),
-		.HBlank(1'b0),
-		.VBlank(1'b0),
-
-		.VGA_R(vga_r_cga),
-		.VGA_G(vga_g_cga),
-		.VGA_B(vga_b_cga),
-		.VGA_VS(vga_vs_cga),
-		.VGA_HS(vga_hs_cga)
+	osd #(.OSD_COLOR(3'd4)) osd  (
+		.clk_sys ( clk_113_750 ),
+		.rotate  ( 2'b00   ),		// Rotate OSD [0] - rotate [1] - left or right
+		.ce      ( clk_28_636  ),	// clk_sys/4
+		.SPI_DI  ( SPI_DI  ),
+		.SPI_SCK ( SPI_SCK ),
+		.SPI_SS3 ( SPI_SS3 ),
+		.R_in    ( vga_r ),
+		.G_in    ( vga_g ),
+		.B_in    ( vga_b ),
+		.HSync   ( ~vga_hs ),
+		.VSync   ( ~vga_vs ),
+		.R_out   ( VGA_R ),
+		.G_out   ( VGA_G ),
+		.B_out   ( VGA_B )
 	);
 
+	assign VGA_HS = ~vga_hs;
+	assign VGA_VS = ~vga_vs;
 
-	// assign vga_r_cga = vga_r;
-	// assign vga_g_cga = vga_g;
-	// assign vga_b_cga = vga_b;
-	// assign vga_hs_cga = vga_hs;
-	// assign vga_vs_cga = vga_vs;
-
-	wire [5:0] vga_r_mda;
-	wire [5:0] vga_g_mda;
-	wire [5:0] vga_b_mda;
-	wire vga_hs_mda;
-	wire vga_vs_mda;
-
-	wire [5:0] vga_r_cga;
-	wire [5:0] vga_g_cga;
-	wire [5:0] vga_b_cga;
-	wire vga_hs_cga;
-	wire vga_vs_cga;
-
-	// 1 MDA, 0 CGA
-	assign VGA_R  = ~status[4] ? vga_r_mda : vga_r_cga;
-	assign VGA_G  = ~status[4] ? vga_g_mda : vga_g_cga ;
-	assign VGA_B  = ~status[4] ? vga_b_mda : vga_b_cga;
-	assign VGA_HS = ~status[4] ? vga_hs_mda : vga_hs_cga;
-	assign VGA_VS = ~status[4] ? vga_vs_mda : vga_vs_cga;
 
 /*
 // SRAM management
