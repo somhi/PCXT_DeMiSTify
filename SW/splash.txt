@@ -15,4 +15,7 @@
                                 Contributors
                                 ------------
 
-                @JasonA, @gyurco, @kitune-san, @MicroCoreLabs
+              @naeloob, @JasonA, @gyurco, @somhi, @Adr1048
+                             @pgimeno, @Mills
+
+
