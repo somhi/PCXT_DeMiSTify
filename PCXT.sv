@@ -154,8 +154,9 @@ wire        adlibhide = status[10];
 
 
 //user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io(
+// without .PS2BIDIR(1)  timings increase
 
-user_io #(.STRLEN($size(CONF_STR)>>3), .PS2BIDIR(1)) user_io(
+user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(10), .PS2BIDIR(1)) user_io(
 	.conf_str      ( CONF_STR       ),
 	.clk_sys       ( CLOCK_27        ),
 
