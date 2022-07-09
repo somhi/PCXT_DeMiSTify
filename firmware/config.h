@@ -29,7 +29,7 @@ here, the number of units defaults to 4. */
 #undef CONFIG_FILEBOOKMARKS 6
 
 /* Keyboard-based Joystick emulation */
-#undef CONFIG_JOYKEYS
+#define CONFIG_JOYKEYS
 #undef CONFIG_JOYKEYS_TOGGLE
 
 /* Send key events via the mist_io block. If the core can support
@@ -39,7 +39,7 @@ here, the number of units defaults to 4. */
 /* Send joystick events using the "new" extended joystick protocol.
    This could support more buttons (if DeMiSTify itself supported them,
    which it currently doesn't) - but some cores still use the older protocol. */
-#undef CONFIG_EXTJOYSTICK
+#define CONFIG_EXTJOYSTICK
 
 /* Do we require an autoboot ROM, and thus should we notify the user if it's not found? */
 #define ROM_REQUIRED
@@ -49,7 +49,7 @@ here, the number of units defaults to 4. */
 
 /* Do we support configuration files? */
 #undef CONFIG_SETTINGS
-#undef CONFIG_SETTINGS_FILENAME "PCXT    CFG"
+#undef CONFIG_SETTINGS_FILENAME "VIC20   CFG"
 
 #endif
 

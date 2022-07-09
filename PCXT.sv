@@ -70,10 +70,10 @@ module PCXT
 	output        SD_CS,
 
 	input         UART_RX,
-	output        UART_TX,
+	output        UART_TX
 
-	input         PS2K_CLK_IN,
-	input         PS2K_DAT_IN  //,
+//	input         PS2K_CLK_IN,
+//	input         PS2K_DAT_IN  //,
 //	output        PS2K_CLK_OUT,
 //	output        PS2K_DAT_OUT
 );
@@ -153,9 +153,7 @@ wire        adlibhide = status[10];
 
 
 
-//user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io(
-// without .PS2BIDIR(1)  											timings 21  DO NOT BOOT
-//user_io #(.STRLEN($size(CONF_STR)>>3), .PS2BIDIR(1)) user_io(    	timings 18 boot
+// without .PS2BIDIR(1) do not boot // with .PS2DIV(2000) better than without it
 
 user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io(
 	.conf_str      ( CONF_STR       ),
@@ -416,7 +414,7 @@ end
             device_clock    <= 1'b0;
         end
         else begin
-            device_clock_ff <= PS2K_CLK_IN;			//ps2_kbd_clk_in;
+            device_clock_ff <= ps2_kbd_clk_in;
             device_clock    <= device_clock_ff ;
         end
     end
@@ -435,7 +433,7 @@ end
             device_data    <= 1'b0;
         end
         else begin
-            device_data_ff <= PS2K_DAT_IN;			//ps2_kbd_data_in;
+            device_data_ff <= ps2_kbd_data_in;
             device_data    <= device_data_ff;
         end
     end
@@ -518,10 +516,10 @@ end
 	     .speaker_out                        (speaker_out),   
 //        .ps2_clock                          (ps2_kbd_clk_in),
 //	     .ps2_data                           (ps2_kbd_data_in),
-//        .ps2_clock                          (device_clock),
-//	     .ps2_data                           (device_data),
-         .ps2_clock                          (PS2K_CLK_IN),
-	     .ps2_data                           (PS2K_DAT_IN),
+        .ps2_clock                          (device_clock),
+	     .ps2_data                           (device_data),
+//         .ps2_clock                          (PS2K_CLK_IN),
+//	     .ps2_data                           (PS2K_DAT_IN),
 		 .ps2_clock_out                      (ps2_kbd_clk_out),
 	     .ps2_data_out                       (ps2_kbd_data_out),
 //	     .ps2_clock_out                      (PS2K_CLK_OUT),
