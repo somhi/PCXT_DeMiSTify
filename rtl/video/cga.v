@@ -12,7 +12,7 @@ module cga(
     input clk,
 
     // ISA bus
-    input[15:0] bus_a,
+    input[14:0] bus_a,
     input bus_ior_l,
     input bus_iow_l,
     input bus_memr_l,
@@ -38,7 +38,8 @@ module cga(
     output[6:0] comp_video,
 
 	 input splashscreen,
-    input thin_font
+    input thin_font,
+	 input tandy_video
     );
 
     parameter MDA_70HZ = 0;
@@ -134,7 +135,7 @@ module cga(
     assign vsync = ~vsync_l;
 
     // Mapped IO
-    assign crtc_cs = (bus_a[15:3] == IO_BASE_ADDR[15:3]) & ~bus_aen; // 3D4/3D5
+    assign crtc_cs = (bus_a[14:3] == IO_BASE_ADDR[14:3]) & ~bus_aen; // 3D4/3D5
     assign status_cs = (bus_a == IO_BASE_ADDR + 20'hA) & ~bus_aen;
 	 assign control_cs = (bus_a == IO_BASE_ADDR + 16'h8) & ~bus_aen;
     assign colorsel_cs = (bus_a == IO_BASE_ADDR + 20'h9) & ~bus_aen;	 
@@ -227,7 +228,7 @@ endgenerate
     assign blink_enabled = cga_control_reg[5];
 
     // FIXME: temporary for testing
-    assign tandy_16_mode = cga_control_reg[6];
+    assign tandy_16_mode = tandy_video; //cga_control_reg[6];
 
     assign hsync = hsync_int;
 

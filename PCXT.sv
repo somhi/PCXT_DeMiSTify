@@ -91,21 +91,22 @@ assign LED  =  ~ioctl_download;   //1'b1;
 parameter CONF_STR = {
 	"PCXT;;",
 	"-;",
-	"O3,Splash Screen,Yes,No;",
+	"O7,Splash Screen,Yes,No;",
 	//"O4,CPU Speed,4.77Mhz,7.16Mhz;",	
 	"-;",
 	"OA,Adlib,On,Invisible;",
 	"-;",
 	"OB,Lo-tech 2MB EMS, Enabled, Disabled;",
-	"OCD,EMS Frame,A000,C000,D000,E000;",
+	"OCD,EMS Frame,A000,C000,D000;",
 	"-;",
-	"O4,Video Output,MDA,Tandy/CGA;",
-	"O12,CGA RGB,Color,Green,Amber,B/W;",
+	"O34,Video Output,CGA,Tandy,MDA;",
+	"O12,CGA/Tandy RGB,Color,Green,Amber,B/W;",
 	"O56,MDA RGB,Green,Amber,B/W;",
 	//"O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
 	//"O78,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",	
 	"-;",
-	"F1,ROM,Load ROM;",	
+	"F,ROM,Load BIOS  (F000);",	
+	"F,ROM,Load XTIDE (EC00);",	
 	"-;",
 	"T0,Reset;",
 	"R0,Reset and close OSD;",
@@ -198,8 +199,6 @@ data_io DATA_IO (
 	// .ioctl_din  ( ioctl_din    )
 );
 
-
-
 ///////////////////////   CLOCKS   ///////////////////////////////
 
 wire clk_sys;
@@ -214,7 +213,7 @@ wire clk_4_77;
 wire clk_cpu;
 wire clk_opl2;
 wire peripheral_clock;
-wire clk_113_750;
+//wire clk_113_750;
 
 pll pll
 (
@@ -251,7 +250,6 @@ wire VSync;
 wire ce_pix;
 //wire [7:0] video;
 
-//assign CLK_VIDEO = clk_28_636;
 assign CLK_VIDEO = clk_56_875;
 
 always @(posedge clk_28_636)
@@ -387,7 +385,7 @@ end
 	always @ (posedge clk_14_318) begin
 	
 		if (splashscreen) begin
-			if (status[3])
+			if (status[7])
 				splashscreen <= 0;
 			else if(splash_cnt2 == 5) // 5 seconds delay
 				splashscreen <= 0;
@@ -454,7 +452,14 @@ end
     logic   [7:0]   port_c_in;	 
 	 reg     [7:0]   sw;
 	 
-	 assign  sw = ~status[4] ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
+	 wire tandy_mode;
+	 wire mda_mode;
+	 assign tandy_mode = (status[4:3] == 1);
+	 assign mda_mode = (status[4:3] == 2);
+	 
+	 
+	 
+	 assign  sw = mda_mode ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
 	 assign  port_c_in[3:0] = port_b_out[3] ? sw[7:4] : sw[3:0];
 
    CHIPSET u_CHIPSET (
@@ -473,7 +478,7 @@ end
 		  .processor_ready                    (processor_ready),
         .interrupt_to_cpu                   (interrupt_to_cpu),
         .splashscreen                       (splashscreen),
-		  .video_output                       (~status[4]),
+		  .video_output                       (mda_mode),
         .clk_vga_cga                        (clk_28_636),
         .enable_cga                         (1'b1),
         .clk_vga_mda                        (clk_56_875),
@@ -516,17 +521,18 @@ end
 	     .speaker_out                        (speaker_out),   
 //        .ps2_clock                          (ps2_kbd_clk_in),
 //	     .ps2_data                           (ps2_kbd_data_in),
-        .ps2_clock                          (device_clock),
-	     .ps2_data                           (device_data),
 //         .ps2_clock                          (PS2K_CLK_IN),
 //	     .ps2_data                           (PS2K_DAT_IN),
-		 .ps2_clock_out                      (ps2_kbd_clk_out),
+        .ps2_clock                          (device_clock),
+	     .ps2_data                           (device_data),
+	     .ps2_clock_out                      (ps2_kbd_clk_out),
 	     .ps2_data_out                       (ps2_kbd_data_out),
 //	     .ps2_clock_out                      (PS2K_CLK_OUT),
 //	     .ps2_data_out                       (PS2K_DAT_OUT),
 		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
 		  .jtopl2_snd_e                       (jtopl2_snd_e),
 		  .adlibhide                          (adlibhide),
+		  .tandy_video                        (tandy_mode),
 		  .tandy_snd_e                        (tandy_snd_e),
 		  .ioctl_download                     (ioctl_download),
 		  .ioctl_index                        (ioctl_index),
@@ -663,9 +669,9 @@ end
 	wire vga_vs;
 
 	// 1 MDA, 0 CGA
-	assign vga_r = ~status[4] ? r : raux;
-	assign vga_g = ~status[4] ? g : gaux;
-	assign vga_b = ~status[4] ? b : baux;
+	assign vga_r = mda_mode ? r : raux;
+	assign vga_g = mda_mode ? g : gaux;
+	assign vga_b = mda_mode ? b : baux;
 
 	osd #(.OSD_COLOR(3'd4)) osd  (
 		// .clk_sys ( clk_113_750 ),
@@ -684,7 +690,7 @@ end
 		.G_out   ( VGA_G ),
 		.B_out   ( VGA_B )
 	);
-
+	
 	assign VGA_HS = ~vga_hs;
 	assign VGA_VS = ~vga_vs;
 

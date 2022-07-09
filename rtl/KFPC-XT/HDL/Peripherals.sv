@@ -60,7 +60,8 @@ module PERIPHERALS #(
 	 input   logic           clk_en_opl2,
 	 output  logic   [15:0]  jtopl2_snd_e,
 	 input   logic           adlibhide,
-	 // TANDY SND
+	 // TANDY
+	 input   logic           tandy_video,
 	 output  logic   [7:0]   tandy_snd_e,
 	 // IOCTL
     input   logic           ioctl_download,
@@ -124,18 +125,20 @@ module PERIPHERALS #(
 	 
 	 wire    tandy_chip_select_n    = ~(address[15:3] == (16'h00c0 >> 3)); // 0xc0 - 0xc7
 	 wire    opl_chip_select_n      = ~(address[15:1] == (16'h0388 >> 1)); // 0x388 .. 0x389
-    wire    cga_chip_select_n      = ~(enable_cga & (address[19:14] == 6'b1011_10)); // B8000 - BFFFF (32 KB)
-	 wire    mda_chip_select_n      = ~(enable_mda & (address[19:14] == 6'b1011_00)); // B0000 - B7FFF (32 KB)
-	 wire    rom_select_n           = ~(address[19:16] == 4'b1111); // F0000 - FFFFF (64 KB)
+    wire    cga_chip_select_n      = ~(enable_cga & (address[19:15] == 6'b10111)); // B8000 - BFFFF (32 KB)
+	 wire    mda_chip_select_n      = ~(enable_mda & (address[19:15] == 6'b10110)); // B0000 - B7FFF (32 KB)	 
+	 wire    bios_select_n           = ~(address[19:16] == 4'b1111); // F0000 - FFFFF (64 KB)
+	 wire    xtide_select_n          = ~(address[19:14] == 6'b111011); // EC000 - EFFFF (16 KB)
 	 wire    uart_cs                = ({address[15:3], 3'd0} == 16'h03F8);
+	 wire    lpt_cs                = ({address[15:3], 3'd0} == 16'h0378);
 	 
 	 
-	 wire    [3:0] ems_page_address = (ems_address == 2'b00) ? 4'b1010 : (ems_address == 2'b01) ? 4'b1100 : (ems_address == 2'b10) ? 4'b1101 : 4'b1110;
+	 wire    [3:0] ems_page_address = (ems_address == 2'b00) ? 4'b1010 : (ems_address == 2'b01) ? 4'b1100 : 4'b1101;
 	 wire    ems_oe                 = (ems_enabled && ({address[15:2], 2'd0} == 16'h0260));          // 260h..263h	 
-	 assign  ems_b1                 = (ena_ems[0] && (address[19:14] == {ems_page_address, 2'b00})); // A0000h - C0000h - D0000h - E0000h
-	 assign  ems_b2                 = (ena_ems[1] && (address[19:14] == {ems_page_address, 2'b01})); // A4000h - C4000h - D4000h - E4000h
-	 assign  ems_b3                 = (ena_ems[2] && (address[19:14] == {ems_page_address, 2'b10})); // A8000h - C8000h - D8000h - E8000h
-	 assign  ems_b4                 = (ena_ems[3] && (address[19:14] == {ems_page_address, 2'b11})); // AC000h - CC000h - DC000h - EC000h
+	 assign  ems_b1                 = (ena_ems[0] && (address[19:14] == {ems_page_address, 2'b00})); // A0000h - C0000h - D0000h
+	 assign  ems_b2                 = (ena_ems[1] && (address[19:14] == {ems_page_address, 2'b01})); // A4000h - C4000h - D4000h
+	 assign  ems_b3                 = (ena_ems[2] && (address[19:14] == {ems_page_address, 2'b10})); // A8000h - C8000h - D8000h
+	 assign  ems_b4                 = (ena_ems[3] && (address[19:14] == {ems_page_address, 2'b11})); // AC000h - CC000h - DC000h
 	 
 	 always_ff @(posedge clock, posedge reset)
     begin
@@ -396,11 +399,17 @@ module PERIPHERALS #(
             port_a_in   <= keycode_ff;
         end
     end
+	
+	reg [7:0] lpt_data = 8'hFF;
 	always_ff @(posedge clock) begin
 		if (~io_write_n)
 			write_to_uart <= internal_data_bus;
 		else
 			write_to_uart <= write_to_uart;
+			
+      if ((lpt_cs) && (~io_write_n) && (~address_enable_n))
+            lpt_data <= internal_data_bus;				
+        
 	end
 
 	uart uart1
@@ -484,7 +493,7 @@ module PERIPHERALS #(
 	 
     mda mda1 (
         .clk                        (clk_vga_mda),
-        .bus_a                      (address[15:0]),
+        .bus_a                      (address[14:0]),
         .bus_ior_l                  (io_read_n),
         .bus_iow_l                  (io_write_n),
         .bus_memr_l                 (1'd0),
@@ -538,7 +547,7 @@ module PERIPHERALS #(
 
 	 cga cga1 (
 	     .clk                        (clk_vga_cga),
-		  .bus_a                      (address[15:0]),
+		  .bus_a                      (address[14:0]),
 		  .bus_ior_l                  (io_read_n),
 		  .bus_iow_l                  (io_write_n),
         .bus_memr_l                 (1'd0),
@@ -557,12 +566,14 @@ module PERIPHERALS #(
         .video                      (video_cga),
         .dbl_video                  (vga_video),                // scandoubler
 		  .splashscreen               (splashscreen),
-        .thin_font                  (thin_font)
+        .thin_font                  (thin_font),
+		  .tandy_video                (tandy_video)
     );
 
     defparam cga1.BLINK_MAX = 24'd4772727;
 	 defparam mda1.BLINK_MAX = 24'd9100000;
 	 wire [7:0] bios_cpu_dout;
+	 wire [7:0] xtide_cpu_dout;
 	 wire [7:0] cga_vram_cpu_dout;
 	 wire [7:0] mda_vram_cpu_dout;
 
@@ -614,39 +625,51 @@ module PERIPHERALS #(
         .dinb                       (8'h0),
         .doutb                      (CGA_VRAM_DOUT)
 	);
-
+	
+	 
     vram mda_vram
-    (
-       .clka                       (clock),
-       .ena                        (~address_enable_n && ~mda_chip_select_n),
-       .wea                        (~memory_write_n),
-       .addra                      (address[14:0]),
-       .dina                       (internal_data_bus),
-       .douta                      (mda_vram_cpu_dout),
-       .clkb                       (clk_vga_mda),
-       .web                        (1'b0),
-       .enb                        (MDA_VRAM_ENABLE),
-       .addrb                      (MDA_VRAM_ADDR[14:0]),
-       .dinb                       (8'h0),
-       .doutb                      (MDA_VRAM_DOUT)
-   );
-	`endif
+	 (
+        .clka                       (clock),
+        .ena                        (~address_enable_n && ~mda_chip_select_n),
+        .wea                        (~memory_write_n),
+        .addra                      (address[14:0]),
+        .dina                       (internal_data_bus),
+        .douta                      (mda_vram_cpu_dout),
+        .clkb                       (clk_vga_mda),
+        .web                        (1'b0),
+        .enb                        (MDA_VRAM_ENABLE),
+        .addrb                      (MDA_VRAM_ADDR[14:0]),
+        .dinb                       (8'h0),
+        .doutb                      (MDA_VRAM_DOUT)
+	);
+     `endif
 
-	 
-
-	 
-
+   wire bios_loader  = (ioctl_download && ioctl_index < 2 && ioctl_addr[24:16] == 9'b000000000);
+   wire xtide_loader = ((ioctl_download && ioctl_index == 2) ||
+                        (ioctl_download && ioctl_index == 0 && ioctl_addr[24:16] == 9'b000000001));
+	
     `ifdef DEMISTIFY_sockit
     // BIOS (BRAM)
     bios_bram bios
 	(
-        .clka(ioctl_download ? clk_sys : clock),
-        .ena((~address_enable_n && ~rom_select_n) || ioctl_download),
-        .wea(ioctl_download && ioctl_wr),
-        .addra(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+        .clka(bios_loader ? clk_sys : clock),
+        .ena((~address_enable_n && ~bios_select_n) || ioctl_download),
+        .wea(bios_loader && ioctl_wr),
+        .addra(bios_loader ? ioctl_addr[15:0] : address[15:0]),
         .dina(ioctl_data),
         .douta(bios_cpu_dout)
 	);
+	
+	xtide xtide
+	(
+        .clka(xtide_loader ? clk_sys : clock),
+        .ena((~address_enable_n && ~xtide_select_n) || ioctl_download),
+        .wea(xtide_loader && ioctl_wr),
+        .addra(xtide_loader ? ioctl_addr[13:0] : address[13:0]),
+        .dina(ioctl_data),
+        .douta(xtide_cpu_dout)
+	);
+    
     // `elsif DEMISTIFY_NEPTUNO
     // //BIOS (SRAM)
 	// bios_sram bios
@@ -665,13 +688,24 @@ module PERIPHERALS #(
     //BIOS (simple RAM 2 Port )
 	bios_ip bios
 	(
-        .rdaddress(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-        .wraddress(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-        .clock(ioctl_download ? clk_sys : clock),
+        .clock(bios_loader ? clk_sys : clock),
+        .enable((~address_enable_n && ~bios_select_n) || ioctl_download),
+        .wren(bios_loader && ioctl_wr),
+        .rdaddress(bios_loader ? ioctl_addr[15:0] : address[15:0]),
+        .wraddress(bios_loader ? ioctl_addr[15:0] : address[15:0]),
         .data(ioctl_data),
-        .enable((~address_enable_n && ~rom_select_n) || ioctl_download),
-        .wren(ioctl_download && ioctl_wr),
-        .q(bios_cpu_dout)
+        .q(bios_cpu_dout),
+	);
+    
+    bios_ip_16 xtide
+	(
+        .clock(xtide_loader ? clk_sys : clock),
+        .enable((~address_enable_n && ~xtide_select_n) || ioctl_download),
+        .wren(xtide_loader && ioctl_wr),
+        .rdaddress(xtide_loader ? ioctl_addr[13:0] : address[13:0]),
+        .wraddress(xtide_loader ? ioctl_addr[13:0] : address[13:0]),      
+        .data(ioctl_data),
+        .q(xtide_cpu_dout)
 	);
 	`endif
     
@@ -759,9 +793,13 @@ module PERIPHERALS #(
             data_bus_out_from_chipset = 1'b1;
             data_bus_out = mda_vram_cpu_dout;
         end
-		  else if ((~rom_select_n) && (~memory_read_n)) begin
+		  else if ((~bios_select_n) && (~memory_read_n)) begin
             data_bus_out_from_chipset = 1'b1;
             data_bus_out = bios_cpu_dout;
+        end
+		  else if ((~xtide_select_n) && (~memory_read_n)) begin
+            data_bus_out_from_chipset = 1'b1;
+            data_bus_out = xtide_cpu_dout;
         end
 		  else if (CGA_CRTC_OE) begin
             data_bus_out_from_chipset = 1'b1;
@@ -782,6 +820,10 @@ module PERIPHERALS #(
 		  else if ((ems_oe) && (~io_read_n) && (~address_enable_n)) begin
             data_bus_out_from_chipset = 1'b1;				
 				data_bus_out = ena_ems[address[1:0]] ? map_ems[address[1:0]] : 8'hFF;            
+        end
+		  else if ((lpt_cs) && (~io_read_n) && (~address_enable_n)) begin
+            data_bus_out_from_chipset = 1'b1;				
+				data_bus_out = lpt_data;
         end
         else begin
             data_bus_out_from_chipset = 1'b0;
