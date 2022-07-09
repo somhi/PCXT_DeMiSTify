@@ -650,7 +650,7 @@ module PERIPHERALS #(
 	
     `ifdef DEMISTIFY_sockit
     // BIOS (BRAM)
-    bios_bram bios
+    bios bios
 	(
         .clka(bios_loader ? clk_sys : clock),
         .ena((~address_enable_n && ~bios_select_n) || ioctl_download),
