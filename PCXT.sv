@@ -73,9 +73,9 @@ module PCXT
 	output        UART_TX,
 
 	input         PS2K_CLK_IN,
-	input         PS2K_DAT_IN,
-	output        PS2K_CLK_OUT,
-	output        PS2K_DAT_OUT
+	input         PS2K_DAT_IN  //,
+//	output        PS2K_CLK_OUT,
+//	output        PS2K_DAT_OUT
 );
 
 ///////// Default values for ports not used in this core /////////
@@ -157,7 +157,7 @@ wire        adlibhide = status[10];
 // without .PS2BIDIR(1)  											timings 21  DO NOT BOOT
 //user_io #(.STRLEN($size(CONF_STR)>>3), .PS2BIDIR(1)) user_io(    	timings 18 boot
 
-user_io #(.STRLEN($size(CONF_STR)>>3), .PS2BIDIR(1)) user_io(
+user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io(
 	.conf_str      ( CONF_STR       ),
 	.clk_sys       ( CLOCK_27       ),
 
@@ -171,10 +171,10 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2BIDIR(1)) user_io(
 	.buttons        ( buttons       ),
 	// .scandoubler_disable ( forced_scandoubler ),
 
-	// .ps2_kbd_clk_i		(ps2_kbd_clk_out),
-	// .ps2_kbd_data_i		(ps2_kbd_data_out),
-	// .ps2_kbd_clk		(ps2_kbd_clk_in),
-	// .ps2_kbd_data		(ps2_kbd_data_in)
+	.ps2_kbd_clk_i		(ps2_kbd_clk_out),
+	.ps2_kbd_data_i		(ps2_kbd_data_out),
+	.ps2_kbd_clk		(ps2_kbd_clk_in),
+	.ps2_kbd_data		(ps2_kbd_data_in)
 //  .ps2_mouse_clk_i	(ps2_mouse_clk_out),
 //	.ps2_mouse_data_i	(ps2_mouse_data_out),
 //	.ps2_mouse_clk		(ps2_mouse_clk_in),
@@ -518,18 +518,18 @@ end
 	     .speaker_out                        (speaker_out),   
 //        .ps2_clock                          (ps2_kbd_clk_in),
 //	     .ps2_data                           (ps2_kbd_data_in),
-        .ps2_clock                          (device_clock),
-	     .ps2_data                           (device_data),
-//         .ps2_clock                          (PS2K_CLK_IN),
-//	     .ps2_data                           (PS2K_DAT_IN),
-//		 .ps2_clock_out                      (ps2_kbd_clk_out),
-//	     .ps2_data_out                       (ps2_kbd_data_out),
-	     .ps2_clock_out                      (PS2K_CLK_OUT),
-	     .ps2_data_out                       (PS2K_DAT_OUT),
-		//   .clk_en_opl2                        (cen_opl2), // clk_en_opl2
-		//   .jtopl2_snd_e                       (jtopl2_snd_e),
-		//   .adlibhide                          (adlibhide),
-		//   .tandy_snd_e                        (tandy_snd_e),
+//        .ps2_clock                          (device_clock),
+//	     .ps2_data                           (device_data),
+         .ps2_clock                          (PS2K_CLK_IN),
+	     .ps2_data                           (PS2K_DAT_IN),
+		 .ps2_clock_out                      (ps2_kbd_clk_out),
+	     .ps2_data_out                       (ps2_kbd_data_out),
+//	     .ps2_clock_out                      (PS2K_CLK_OUT),
+//	     .ps2_data_out                       (PS2K_DAT_OUT),
+		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
+		  .jtopl2_snd_e                       (jtopl2_snd_e),
+		  .adlibhide                          (adlibhide),
+		  .tandy_snd_e                        (tandy_snd_e),
 		  .ioctl_download                     (ioctl_download),
 		  .ioctl_index                        (ioctl_index),
 		  .ioctl_wr                           (ioctl_wr),

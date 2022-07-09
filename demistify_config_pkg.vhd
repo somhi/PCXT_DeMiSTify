@@ -89,9 +89,9 @@ constant demistify_serialdebug : std_logic := '0';
 			-- SD_CS			:	 OUT STD_LOGIC;
 
 			PS2K_CLK_IN 	: IN STD_LOGIC;
-			PS2K_DAT_IN	 	: IN STD_LOGIC;
-			PS2K_CLK_OUT 	: OUT STD_LOGIC;
-			PS2K_DAT_OUT 	: OUT STD_LOGIC
+			PS2K_DAT_IN	 	: IN STD_LOGIC
+		--	PS2K_CLK_OUT 	: OUT STD_LOGIC;
+		--	PS2K_DAT_OUT 	: OUT STD_LOGIC
 		);
 	END COMPONENT;
 	

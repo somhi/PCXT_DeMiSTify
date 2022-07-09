@@ -921,7 +921,7 @@ _Menu_Joystick:
 						//save_temp done
 						// freereg r1
 
-						//../DeMiSTify/firmware/menu.c, line 137
+						//../DeMiSTify/firmware/menu.c, line 139
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
 						// (obj to tmp) flags 2 type 3
@@ -933,7 +933,7 @@ _Menu_Joystick:
 	stdec	r6
 						// allocreg r1
 
-						//../DeMiSTify/firmware/menu.c, line 137
+						//../DeMiSTify/firmware/menu.c, line 139
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
@@ -945,10 +945,10 @@ _Menu_Joystick:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/menu.c, line 137
+						//../DeMiSTify/firmware/menu.c, line 139
 						//call
 						//pcreltotemp
-	.lipcrel	_user_io_digital_joystick_ext
+	.lipcrel	_user_io_digital_joystick
 	add	r7
 						// Deferred popping of 4 bytes (4 in total)
 						// freereg r1
