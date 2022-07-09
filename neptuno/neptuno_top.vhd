@@ -332,8 +332,8 @@ begin
 		controller : entity work.substitute_mcu
 			generic map(
 				sysclk_frequency => 500,
-				SPI_FASTBIT=>3,
-				SPI_INTERNALBIT=>2,		--needed if OSD hungs
+		--		SPI_FASTBIT=>3,
+		--		SPI_INTERNALBIT=>2,		--keyb beeps if I discomment these two lines
 				debug     => false,
 				jtag_uart => false
 			)
