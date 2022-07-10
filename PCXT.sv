@@ -99,7 +99,7 @@ parameter CONF_STR = {
 	"OB,Lo-tech 2MB EMS, Enabled, Disabled;",
 	"OCD,EMS Frame,A000,C000,D000;",
 	"-;",
-	"O34,Video Output,CGA,Tandy,MDA;",
+	"O34,Video Output,MDA,Tandy,CGA;",
 	"O12,CGA/Tandy RGB,Color,Green,Amber,B/W;",
 	"O56,MDA RGB,Green,Amber,B/W;",
 	//"O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
@@ -155,8 +155,17 @@ wire        adlibhide = status[10];
 
 
 // without .PS2BIDIR(1) do not boot // with .PS2DIV(2000) better than without it
+//4000 beeps, keyb problems
+//2000 -17.9,  10m seed 1 ps2_kbd_clk_in directe,  beeps, keyb problems
+//2000 -17.6 beeps, keyb problems
+//1000 -18.6 beeps, keyb problems, msdos hungs
+//500  -18.6 diagnostic roms fails
+//100  -18.1 13m seed 8 ps2_kbd_clk_in directe
+//100 -20  8m  PS2BIDIR(0), no disk 
+//50  -19 no beeps, ibm+xtide starts ok,  hungs at loading msdos
+//10  -19 no beeps, ibm+xtide starts ok,  hungs at loading msdos
 
-user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io(
+user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	.conf_str      ( CONF_STR       ),
 	.clk_sys       ( CLOCK_27       ),
 
@@ -455,8 +464,9 @@ end
 	 wire tandy_mode;
 	 wire mda_mode;
 	 assign tandy_mode = (status[4:3] == 1);
-	 assign mda_mode = (status[4:3] == 2);
-	 
+	//  assign mda_mode = (status[4:3] == 2);	//Starts CGA by default (2=MDA)
+	 assign mda_mode = (status[4:3] == 0);    	//Starts MDA by default (0=CGA)
+
 	 
 	 
 	 assign  sw = mda_mode ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
