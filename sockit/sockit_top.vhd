@@ -174,31 +174,31 @@ architecture RTL of sockit_top is
 
 
 	-- ADC AUDIO     
-	component i2s_decoder is
-		port (
-			clk       : in std_logic;
-			sck       : in std_logic;
-			ws        : in std_logic;
-			sd        : in std_logic;
-			left_out  : out SIGNED(15 downto 0);
-			right_out : out SIGNED(15 downto 0)
-		);
-	end component;
+	-- component i2s_decoder is
+	-- 	port (
+	-- 		clk       : in std_logic;
+	-- 		sck       : in std_logic;
+	-- 		ws        : in std_logic;
+	-- 		sd        : in std_logic;
+	-- 		left_out  : out SIGNED(15 downto 0);
+	-- 		right_out : out SIGNED(15 downto 0)
+	-- 	);
+	-- end component;
 
-	signal adc_l : SIGNED(15 downto 0);
-	signal adc_r : SIGNED(15 downto 0);
+	-- signal adc_l : SIGNED(15 downto 0);
+	-- signal adc_r : SIGNED(15 downto 0);
 
-	-- EAR
-	signal ear : std_logic;
+	-- -- EAR
+	-- signal ear : std_logic;
 
 	-- PLL2
-	component pll2
-		port (
-			inclk0 : in std_logic;
-			c0     : out std_logic;
-			locked : out std_logic
-		);
-	end component;
+	-- component pll2
+	-- 	port (
+	-- 		inclk0 : in std_logic;
+	-- 		c0     : out std_logic;
+	-- 		locked : out std_logic
+	-- 	);
+	-- end component;
 
 	signal act_led : std_logic;
 
@@ -275,31 +275,31 @@ begin
 	-- dac_l_s <= ('0' & dac_l(14 downto 0));
 	-- dac_r_s <= ('0' & dac_r(14 downto 0));
 
-	-- EAR
-	midi_module : i2s_decoder
-	port map(
-		clk       => FPGA_CLK1_50,
-		sck       => AUD_BCLK,
-		ws        => AUD_ADCLRCK,
-		sd        => AUD_ADCDAT,
-		left_out  => adc_l,
-		right_out => adc_r
-	);
+	-- -- EAR
+	-- midi_module : i2s_decoder
+	-- port map(
+	-- 	clk       => FPGA_CLK1_50,
+	-- 	sck       => AUD_BCLK,
+	-- 	ws        => AUD_ADCLRCK,
+	-- 	sd        => AUD_ADCDAT,
+	-- 	left_out  => adc_l,
+	-- 	right_out => adc_r
+	-- );
 
-	--Convert adc_l  to  EAR signal 
-	--Ramon Martinez Palomares, [7/5/22 23:43]
-	--https://github.com/MiSTer-devel/Template_MiSTer/blob/master/sys/ltc2308.sv#L105
-	--Puedes hacerte un process buscando la histeresis superior e inferior sobre el sample.
-	--Por ejemplo > 20000 que te dé un 1 y < -20000 0
+	-- --Convert adc_l  to  EAR signal 
+	-- --Ramon Martinez Palomares, [7/5/22 23:43]
+	-- --https://github.com/MiSTer-devel/Template_MiSTer/blob/master/sys/ltc2308.sv#L105
+	-- --Puedes hacerte un process buscando la histeresis superior e inferior sobre el sample.
+	-- --Por ejemplo > 20000 que te dé un 1 y < -20000 0
 
-	process (adc_l)
-	begin
-		if (adc_l > 20000) then
-			ear <= '1';
-		elsif (adc_l < -20000) then
-			ear <= '0';
-		end if;
-	end process;
+	-- process (adc_l)
+	-- begin
+	-- 	if (adc_l > 20000) then
+	-- 		ear <= '1';
+	-- 	elsif (adc_l < -20000) then
+	-- 		ear <= '0';
+	-- 	end if;
+	-- end process;
 
 
 	guest : component PCXT

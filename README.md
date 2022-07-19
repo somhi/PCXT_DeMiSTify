@@ -7,7 +7,7 @@ Read DeMiSTifty [NOTES](README_NOTES_DeMiSTify.md).
 Now can be loaded SO through serial at GPIO addon. See pinout at sys.tcl.  Only needs Rx/Tx signals.
 
 ```
-serdrive.exe -c <port> -d 115.2KB <image>
+serdrive.exe [-c <port>] -d 460.8Kb <image>
 ```
 
 Follow core discussion at https://misterfpga.org/viewtopic.php?t=4680
@@ -50,6 +50,21 @@ That's all that is needed, just launch the script and boot the core.
 In the SW folder there is also a file called "boot.rom" which contains Sergey Kiselev's open source 8088 BIOS, along with the XTIDE UniversalBIOS ready to boot from the serial port. However, Sergey Kiselev's BIOS has some problems with the keyboard and is a bit slow... while this issue is being solved, you can run the python script "make_boot_with_jukost.py" from inside the SW folder, which will generate a boot.rom file with the Juko ST BIOS in place, much more stable and with good performance.
 
 # ChangeLog
+
+### Beta 1.4
+
+* Rewiring with sn76489
+* Temporary removal of the signal from tandy_snd_rdy
+* Fix bug of the access to the CS signal in Tandy sound module
+* In tandy mode, the keyboard reset signal is not used
+* Added new IORQ signal
+* Restructuring of the OSD menu
+* Added DSS/Covox support
+* UART port speed increase to 921.6Kbps
+* CGA Mode Detection 320x200x4
+* Add video monochrome converter module
+* Integrate module into core + OSD menu tweaks
+* Fix COVOX OSD option
 
 ### Beta 1.3
 

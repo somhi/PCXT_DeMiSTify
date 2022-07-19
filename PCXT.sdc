@@ -1,6 +1,5 @@
 # core specific constraints
 # Clocks
-set CLOCK_CORE   ${topmodule}pll|altpll_component|auto_generated|pll1|clk[0]
 set CLOCK_14_318 ${topmodule}clk_14_318|q
 set CLOCK_4_77   ${topmodule}clk_normal|clk_out|q
 set PCLK         ${topmodule}peripheral_clock|q
@@ -8,11 +7,14 @@ set PCLK         ${topmodule}peripheral_clock|q
 
 
 if {[info exists cyclonev] && ($cyclonev==1)} {
-    set clk_28_636   ${topmodule}pllvideo|altpll_component|auto_generated|generic_pll1~PLL_OUTPUT_COUNTER|divclk
+	set CLOCK_CORE   ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[0].output_counter|divclk
+    set clk_28_636   ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[2].output_counter|divclk
 
-    create_generated_clock -name sdramclk -source ${topmodule}pll|altpll_component|auto_generated|generic_pll2~PLL_OUTPUT_COUNTER|divclk [get_ports $RAM_CLK]
+    create_generated_clock -name sdramclk -source { FPGA_CLK1_50 }  [get_ports { SDRAM_CLK }]
+#   create_generated_clock -name sdramclk -source ${topmodule}pll|altpll_component|auto_generated|generic_pll2~PLL_OUTPUT_COUNTER|divclk [get_ports $RAM_CLK]
 
 } else {
+	set CLOCK_CORE   ${topmodule}pll|altpll_component|auto_generated|pll1|clk[0]
     set clk_28_636   ${topmodule}pllvideo|altpll_component|auto_generated|pll1|clk[0]
 
     create_generated_clock -name sdramclk -source ${topmodule}pll|altpll_component|auto_generated|pll1|clk[1] [get_ports $RAM_CLK]
@@ -26,10 +28,13 @@ create_generated_clock -name peripheral_clock -source [get_pins $CLOCK_4_77] -di
 #create_generated_clock -name sdramclk -source {MAX10_CLK1_50}  [get_ports $RAM_CLK]
 
 # SDRAM
-set_input_delay -clock  { sdramclk } -max 6.4 [get_ports $RAM_IN]
-set_input_delay -clock  { sdramclk } -min 3.2 [get_ports $RAM_IN]
+set_input_delay -clock  { sdramclk } -max 6 [get_ports $RAM_IN]
+set_input_delay -clock  { sdramclk } -min 3 [get_ports $RAM_IN]
 set_output_delay -clock { sdramclk } -max 2   [get_ports $RAM_OUT]
 set_output_delay -clock { sdramclk } -min 1.5 [get_ports $RAM_OUT]
+
+
+
 
 # # Some relaxed constrain to the VGA pins. The signals should arrive together, the delay is not really important.
 # set_output_delay -clock [get_clocks clk_50] -max 0 [get_ports $VGA_OUT]
