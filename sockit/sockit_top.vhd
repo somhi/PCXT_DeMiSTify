@@ -167,8 +167,8 @@ architecture RTL of sockit_top is
 	end component;	
 
 
-	signal dac_l : signed(15 downto 0);
-	signal dac_r : signed(15 downto 0);
+	signal dac_l : std_logic_vector(15 downto 0);
+	signal dac_r : std_logic_vector(15 downto 0);
 	-- signal dac_l_s: std_logic_vector(15 downto 0);
 	-- signal dac_r_s: std_logic_vector(15 downto 0);
 
@@ -268,8 +268,8 @@ begin
 		dac_LRCK  => AUD_DACLRCK,
 		dac_SCLK  => AUD_BCLK,
 		dac_SDIN  => AUD_DACDAT,
-		L_data    => std_logic_vector(dac_l),
-		R_data    => std_logic_vector(dac_r)
+		L_data    => dac_l,
+		R_data    => dac_r
 	);		
 
 	-- dac_l_s <= ('0' & dac_l(14 downto 0));
@@ -306,7 +306,7 @@ begin
 		port map
 		(
 			CLOCK_27 => FPGA_CLK1_50,
-	        RESET_N => reset_n,
+	        RESET_N  => reset_n,
 			LED      => act_led,
 			--SDRAM
 			SDRAM_DQ   => SDRAM_DQ,
@@ -339,7 +339,7 @@ begin
 			VGA_G   => vga_green(7 downto 2),
 			VGA_B   => vga_blue(7 downto 2),
 			CLK_VIDEO   => vga_clk_x,
-			VGA_DE => vga_de,
+			VGA_DE  => vga_de,
 			--AUDIO
 			DAC_L   => dac_l,
 			DAC_R   => dac_r

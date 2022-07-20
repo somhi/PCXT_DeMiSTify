@@ -573,6 +573,9 @@ end
 	wire [15:0] rclamp;
 	wire speaker_out;
 
+	assign DAC_L = lclamp;	
+	assign DAC_R = rclamp;
+
 	sigma_delta_dac sigma_delta_dac (
 		.clk      ( CLOCK_27    ),      // bus clock
 		.ldatasum ( lclamp >> 1 ),      // left channel data
@@ -580,9 +583,6 @@ end
 		.left     ( AUDIO_L     ),      // left bitstream output
 		.right    ( AUDIO_R     )       // right bitsteam output
 	);
- 
-	assign DAC_R = rclamp;
-	assign DAC_L = lclamp;	
 
 	wire s6_3_mux;
 	wire [2:0] SEGMENT;
@@ -650,7 +650,7 @@ end
 		// .clk_sys ( clk_113_750 ),
 		.clk_sys ( clk_56_875 ),
 		.rotate  ( 2'b00   ),		// Rotate OSD [0] - rotate [1] - left or right
-		.ce      ( clk_28_636  ),	// clk_sys/4
+		.ce      ( clk_28_636 ),	// clk_sys/4
 		.SPI_DI  ( SPI_DI  ),
 		.SPI_SCK ( SPI_SCK ),
 		.SPI_SS3 ( SPI_SS3 ),

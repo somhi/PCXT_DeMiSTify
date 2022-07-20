@@ -10,7 +10,7 @@ if {[info exists cyclonev] && ($cyclonev==1)} {
 	set CLOCK_CORE   ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[0].output_counter|divclk
     set clk_28_636   ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[2].output_counter|divclk
 
-    create_generated_clock -name sdramclk -source { FPGA_CLK1_50 }  [get_ports { SDRAM_CLK }]
+    create_generated_clock -name sdramclk -source { FPGA_CLK1_50 }  [get_ports $RAM_CLK]
 #   create_generated_clock -name sdramclk -source ${topmodule}pll|altpll_component|auto_generated|generic_pll2~PLL_OUTPUT_COUNTER|divclk [get_ports $RAM_CLK]
 
 } else {

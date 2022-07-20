@@ -78,10 +78,10 @@ constant demistify_serialdebug : std_logic := '0';
 			VGA_DE			:	 OUT STD_LOGIC;
 			CLK_VIDEO		:	 OUT STD_LOGIC;
 
-			AUDIO_L  		: 	OUT std_logic;
-			AUDIO_R  		: 	OUT std_logic;
-			DAC_L			: 	OUT SIGNED(15 DOWNTO 0);
-			DAC_R			: 	OUT SIGNED(15 DOWNTO 0)
+			AUDIO_L  		: 	OUT STD_LOGIC;
+			AUDIO_R  		: 	OUT STD_LOGIC;
+			DAC_L			: 	OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			DAC_R			: 	OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
 
 			-- SD_SCK			:	 OUT STD_LOGIC;
 			-- SD_MOSI			:	 OUT STD_LOGIC;
