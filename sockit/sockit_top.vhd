@@ -169,8 +169,8 @@ architecture RTL of sockit_top is
 
 	signal dac_l : std_logic_vector(15 downto 0);
 	signal dac_r : std_logic_vector(15 downto 0);
-	-- signal dac_l_s: std_logic_vector(15 downto 0);
-	-- signal dac_r_s: std_logic_vector(15 downto 0);
+	signal dac_l_s: std_logic_vector(15 downto 0);
+	signal dac_r_s: std_logic_vector(15 downto 0);
 
 
 	-- ADC AUDIO     
@@ -268,12 +268,12 @@ begin
 		dac_LRCK  => AUD_DACLRCK,
 		dac_SCLK  => AUD_BCLK,
 		dac_SDIN  => AUD_DACDAT,
-		L_data    => dac_l,
-		R_data    => dac_r
+		L_data    => std_logic_vector(dac_l_s),
+		R_data    => std_logic_vector(dac_r_s)
 	);		
 
-	-- dac_l_s <= ('0' & dac_l(14 downto 0));
-	-- dac_r_s <= ('0' & dac_r(14 downto 0));
+	dac_l_s <= ('0' & dac_l(14 downto 0));
+	dac_r_s <= ('0' & dac_r(14 downto 0));
 
 	-- -- EAR
 	-- midi_module : i2s_decoder
