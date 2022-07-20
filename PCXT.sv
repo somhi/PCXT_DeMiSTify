@@ -646,26 +646,77 @@ end
 	assign vga_g = ~mda_mode ? g : gaux;
 	assign vga_b = ~mda_mode ? b : baux;
 
-	osd #(.OSD_COLOR(3'd4)) osd  (
-		// .clk_sys ( clk_113_750 ),
-		.clk_sys ( clk_56_875 ),
-		.rotate  ( 2'b00   ),		// Rotate OSD [0] - rotate [1] - left or right
-		.ce      ( clk_28_636 ),	// clk_sys/4
-		.SPI_DI  ( SPI_DI  ),
-		.SPI_SCK ( SPI_SCK ),
-		.SPI_SS3 ( SPI_SS3 ),
-		.R_in    ( vga_r ),
-		.G_in    ( vga_g ),
-		.B_in    ( vga_b ),
-		.HSync   ( ~vga_hs ),
-		.VSync   ( ~vga_vs ),
-		.R_out   ( VGA_R ),
-		.G_out   ( VGA_G ),
-		.B_out   ( VGA_B )
+	// osd #(.OSD_COLOR(3'd4)) osd  (
+	// 	// .clk_sys ( clk_113_750 ),
+	// 	.clk_sys ( clk_56_875 ),
+	// 	.rotate  ( 2'b00   ),		// Rotate OSD [0] - rotate [1] - left or right
+	// 	.ce      ( clk_28_636 ),	// clk_sys/4
+	// 	.SPI_DI  ( SPI_DI  ),
+	// 	.SPI_SCK ( SPI_SCK ),
+	// 	.SPI_SS3 ( SPI_SS3 ),
+	// 	.R_in    ( vga_r ),
+	// 	.G_in    ( vga_g ),
+	// 	.B_in    ( vga_b ),
+	// 	.HSync   ( ~vga_hs ),
+	// 	.VSync   ( ~vga_vs ),
+	// 	.R_out   ( VGA_R ),
+	// 	.G_out   ( VGA_G ),
+	// 	.B_out   ( VGA_B )
+	// );
+	
+	// assign VGA_HS = ~vga_hs;
+	// assign VGA_VS = ~vga_vs;
+
+
+	mist_video #(.OSD_COLOR(3'd5)) mist_video (
+		.clk_sys     ( clk_56_875    ),
+	
+		// OSD SPI interface
+		.SPI_SCK     ( SPI_SCK    ),
+		.SPI_SS3     ( SPI_SS3    ),
+		.SPI_DI      ( SPI_DI     ),
+	
+		// scanlines (00-none 01-25% 10-50% 11-75%)
+		.scanlines   ( 2'b00      ),
+	
+		// non-scandoubled pixel clock divider 0 - clk_sys/4, 1 - clk_sys/2
+		.ce_divider  ( 1'b1       ),
+	
+		// 0 = HVSync 31KHz, 1 = CSync 15KHz
+		.scandoubler_disable ( 1'b1  ),
+		// disable csync without scandoubler
+		.no_csync    ( 1'b1   ),
+		// YPbPr always uses composite sync
+		.ypbpr       ( 1'b0       ),
+		// Rotate OSD [0] - rotate [1] - left or right
+		.rotate      ( 2'b00      ),
+		// composite-like blending
+		.blend       ( 1'b0    ),
+	
+		// video in
+		.R           ( vga_r      ),
+		.G           ( vga_g      ),
+		.B           ( vga_b      ),
+		.HSync       ( ~vga_hs    ),
+		.VSync       ( ~vga_vs    ),
+
+		// MiST video output signals
+		.VGA_R       ( VGA_R      ),
+		.VGA_G       ( VGA_G      ),
+		.VGA_B       ( VGA_B      ),
+		.VGA_VS      ( VGA_VS     ),
+		.VGA_HS      ( VGA_HS     )
+	
+		// `ifdef DEMISTIFY_HDMI
+		// 							,
+		// .ce_x1_o	 ( ce_x1	  )
+		// `endif
 	);
 	
-	assign VGA_HS = ~vga_hs;
-	assign VGA_VS = ~vga_vs;
+
+
+
+
 
 
 /*
