@@ -101,7 +101,7 @@ parameter CONF_STR = {
 	"P1O7,DSS/Covox,Unplugged,Plugged;",
 	"P1-;",
 	//"P1O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
-	"P1O4,Video Output,MDA,CGA/Tandy;",
+	"P1O4,Video Output,CGA/Tandy,MDA;",
 	"P1OEG,Display Mode,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
 	//"PO78,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
 	"P1O56,MDA RGB,Green,Amber,B/W;",
@@ -441,7 +441,7 @@ end
 	 wire mda_mode = status[4];	 
 	 
 	 
-	 assign  sw = ~mda_mode ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
+	 assign  sw = mda_mode ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
 	 assign  port_c_in[3:0] = port_b_out[3] ? sw[7:4] : sw[3:0];
 
    CHIPSET u_CHIPSET (
@@ -460,7 +460,7 @@ end
 		  .processor_ready                    (processor_ready),
         .interrupt_to_cpu                   (interrupt_to_cpu),
         .splashscreen                       (splashscreen),
-		  .video_output                       (~mda_mode),
+		  .video_output                       (mda_mode),
         .clk_vga_cga                        (clk_28_636),
         .enable_cga                         (1'b1),
         .clk_vga_mda                        (clk_56_875),
@@ -633,9 +633,9 @@ end
 	wire vga_vs;
 
 	// 1 MDA, 0 CGA
-	assign vga_r = ~mda_mode ? r : raux;
-	assign vga_g = ~mda_mode ? g : gaux;
-	assign vga_b = ~mda_mode ? b : baux;
+	assign vga_r = mda_mode ? r : raux;
+	assign vga_g = mda_mode ? g : gaux;
+	assign vga_b = mda_mode ? b : baux;
 
 	// osd #(.OSD_COLOR(3'd4)) osd  (
 	// 	// .clk_sys ( clk_113_750 ),
