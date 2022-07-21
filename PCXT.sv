@@ -85,13 +85,13 @@ assign LED  =  ~ioctl_download;   //1'b1;
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
 //assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
-assign SDRAM_CLK = CLOCK_27;
 
 `include "build_id.v" 
 parameter CONF_STR = {
 	"PCXT;;",
 	"-;",
-	"O3,Model,IBM PCXT,Tandy 1000;",
+   "O3,Model,IBM PCXT,Tandy 1000;",
+	//"OHI,CPU Speed,4.77Mhz,7.16Mhz,14.318MHz;", // These bits are reserved until it can be used
 	"-;",
 	"O7,Splash Screen,Yes,No;",
 	"-;",
@@ -102,12 +102,10 @@ parameter CONF_STR = {
 	"P1-;",
 	//"P1O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
 	"P1O4,Video Output,CGA/Tandy,MDA;",
-	"P1OEG,Display Mode,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
+	"P1OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
 	//"PO78,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
-	"P1O56,MDA RGB,Green,Amber,B/W;",
 	"P2,Hardware;",
 	"P2-;",
-	//"O4,CPU Speed,4.77Mhz,7.16Mhz;",
 	"P2OB,Lo-tech 2MB EMS, Enabled, Disabled;",
 	"P2OCD,EMS Frame,A000,C000,D000;",
 	"P2-;",
@@ -221,6 +219,10 @@ wire clk_cpu;
 wire clk_opl2;
 wire peripheral_clock;
 
+`ifdef DEMISTIFY_sockit
+
+assign SDRAM_CLK = CLOCK_27;
+
 pll pll
 (
 	.refclk(CLOCK_27),
@@ -235,6 +237,37 @@ pll pll
 
 wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0) | splashscreen;
 
+`else  
+
+pll pll
+(
+	.inclk0(CLOCK_27),
+	.areset(1'b0),
+	.c0(clk_100),
+	.c1(SDRAM_CLK),	
+	.c2(clk_uart),
+	.c3(clk_opl2),
+	.locked(pll_locked)
+);
+
+wire pll_locked2;
+pllvideo pllvideo
+(
+	.inclk0(CLOCK_27),
+	.areset(1'b0),
+	.c0(clk_28_636),
+	.c1(clk_56_875),	
+//	.c2(clk_113_750),
+//	.c3(clk_14_318),
+//	.c4(clk_7_16),
+	.locked(pll_locked2)
+);
+
+wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0) | splashscreen;
+
+`endif
+
+
 //////////////////////////////////////////////////////////////////
 
 wire HBlank;
@@ -245,7 +278,9 @@ wire ce_pix;
 //wire [7:0] video;
 
 assign CLK_VIDEO = clk_56_875;
-assign ce_pix = 1'b1;
+
+wire CE_PIXEL;
+assign CE_PIXEL = 1'b1;
 
 reg         cen_44100;
 reg  [31:0] cen_44100_cnt;
@@ -261,12 +296,12 @@ end
 
 always @(posedge clk_28_636)
 	clk_14_318 <= ~clk_14_318; // 14.318Mhz
-	
 
-//always @(posedge clk_14_318)
+//always @(posedge clk_14_318) begin
 //	clk_7_16 <= ~clk_7_16; // 7.16Mhz
-	
-	
+//	CE_PIXEL <= mda_mode ? 1'b1 : clk_7_16;
+//end
+
 clk_div3 clk_normal // 4.77MHz
 (
 	.clk(clk_14_318),
@@ -437,8 +472,9 @@ end
     logic   [7:0]   port_c_in;	 
 	 reg     [7:0]   sw;
 	 
-	 wire tandy_mode = status[3];
-	 wire mda_mode = status[4];	 
+	wire tandy_mode = status[3];
+	wire mda_mode = status[4];	 
+	wire [2:0] screen_mode = status[16:14];
 	 
 	 
 	 assign  sw = mda_mode ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
@@ -465,7 +501,7 @@ end
         .enable_cga                         (1'b1),
         .clk_vga_mda                        (clk_56_875),
         .enable_mda                         (1'b1),
-		  .mda_rgb                            (status[6:5]),
+		.mda_rgb                            (2'b10), // always B&W - monochrome monitor tint handled down below
         .de_o                               (VGA_DE),
         .VGA_R                              (r),
         .VGA_G                              (g),
@@ -501,14 +537,12 @@ end
         .port_b_out                         (port_b_out),
 		  .port_c_in                          (port_c_in),
 	     .speaker_out                        (speaker_out),   
-//        .ps2_clock                          (ps2_kbd_clk_in),
-//	     .ps2_data                           (ps2_kbd_data_in),
-//         .ps2_clock                          (PS2K_CLK_IN),
-//	     .ps2_data                           (PS2K_DAT_IN),
         .ps2_clock                          (device_clock),
 	     .ps2_data                           (device_data),
 	     .ps2_clock_out                      (ps2_kbd_clk_out),
 	     .ps2_data_out                       (ps2_kbd_data_out),
+//         .ps2_clock                          (PS2K_CLK_IN),
+//	     .ps2_data                           (PS2K_DAT_IN),
 //	     .ps2_clock_out                      (PS2K_CLK_OUT),
 //	     .ps2_data_out                       (PS2K_DAT_OUT),
 		  .clk_en_44100                       (cen_44100),
@@ -613,13 +647,13 @@ end
 	video_monochrome_converter video_mono 
 	(
 		.clk_vid(CLK_VIDEO),
-		.ce_pix(ce_pix),
+		.ce_pix(CE_PIXEL),
 		
 		.R({r, 2'b0}),
 		.G({g, 2'b0}),
 		.B({b, 2'b0}),
 
-		.gfx_mode({status[16:14]}),
+		.gfx_mode(screen_mode),
 		
 		.R_OUT(raux),
 		.G_OUT(gaux),
@@ -636,28 +670,6 @@ end
 	assign vga_r = mda_mode ? r : raux;
 	assign vga_g = mda_mode ? g : gaux;
 	assign vga_b = mda_mode ? b : baux;
-
-	// osd #(.OSD_COLOR(3'd4)) osd  (
-	// 	// .clk_sys ( clk_113_750 ),
-	// 	.clk_sys ( clk_56_875 ),
-	// 	.rotate  ( 2'b00   ),		// Rotate OSD [0] - rotate [1] - left or right
-	// 	.ce      ( clk_28_636 ),	// clk_sys/4
-	// 	.SPI_DI  ( SPI_DI  ),
-	// 	.SPI_SCK ( SPI_SCK ),
-	// 	.SPI_SS3 ( SPI_SS3 ),
-	// 	.R_in    ( vga_r ),
-	// 	.G_in    ( vga_g ),
-	// 	.B_in    ( vga_b ),
-	// 	.HSync   ( ~vga_hs ),
-	// 	.VSync   ( ~vga_vs ),
-	// 	.R_out   ( VGA_R ),
-	// 	.G_out   ( VGA_G ),
-	// 	.B_out   ( VGA_B )
-	// );
-	
-	// assign VGA_HS = ~vga_hs;
-	// assign VGA_VS = ~vga_vs;
-
 
 	mist_video #(.OSD_COLOR(3'd5)) mist_video (
 		.clk_sys     ( clk_56_875    ),

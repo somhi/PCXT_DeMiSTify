@@ -268,8 +268,8 @@ begin
 		dac_LRCK  => AUD_DACLRCK,
 		dac_SCLK  => AUD_BCLK,
 		dac_SDIN  => AUD_DACDAT,
-		L_data    => std_logic_vector(dac_l_s),
-		R_data    => std_logic_vector(dac_r_s)
+		L_data    => dac_l_s,
+		R_data    => dac_r_s
 	);		
 
 	dac_l_s <= ('0' & dac_l(14 downto 0));
