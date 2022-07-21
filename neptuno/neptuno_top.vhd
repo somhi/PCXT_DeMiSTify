@@ -35,13 +35,13 @@ entity neptuno_top is
 		DRAM_WE_N  : out std_logic;
 		DRAM_CAS_N : out std_logic;
 		DRAM_RAS_N : out std_logic;
-        -- SRAM
-        SRAM_A      : out   std_logic_vector(20 downto 0)   := (others => '0');
-        SRAM_Q      : inout std_logic_vector(15 downto 0)    := (others => 'Z');
-		SRAM_WE     : out   std_logic                               := '1';
-        SRAM_OE  	: out   std_logic                               := '0';
-		SRAM_UB     : out   std_logic                               := '0';
-        SRAM_LB     : out   std_logic                               := '0';
+        -- -- SRAM
+        -- SRAM_A      : out   std_logic_vector(20 downto 0)   := (others => '0');
+        -- SRAM_Q      : inout std_logic_vector(15 downto 0)    := (others => 'Z');
+		-- SRAM_WE     : out   std_logic                               := '1';
+        -- SRAM_OE  	: out   std_logic                               := '0';
+		-- SRAM_UB     : out   std_logic                               := '0';
+        -- SRAM_LB     : out   std_logic                               := '0';
 		-- VGA
 		VGA_HS     : out std_logic;
 		VGA_VS     : out std_logic;
@@ -148,10 +148,10 @@ architecture RTL of neptuno_top is
 	end component;
 
 	-- DAC AUDIO     
-	signal dac_l : signed(15 downto 0);
-	signal dac_r : signed(15 downto 0);
-	--signal dac_l_s: std_logic_vector(15 downto 0);
-	--signal dac_r_s: std_logic_vector(15 downto 0);
+	signal dac_l : std_logic_vector(15 downto 0);
+	signal dac_r : std_logic_vector(15 downto 0);
+	signal dac_l_s: std_logic_vector(15 downto 0);
+	signal dac_r_s: std_logic_vector(15 downto 0);
 
 
 	component joydecoder is
@@ -202,12 +202,12 @@ architecture RTL of neptuno_top is
 
 begin
 
-	-- SRAM
-	SRAM_OE <= '0';
-	SRAM_WE <= sram_we_x;
-	--SRAM_OE <= not sram_we_x;
-	SRAM_UB <= '1';
-	SRAM_LB <= '0';
+	-- -- SRAM
+	-- SRAM_OE <= '0';
+	-- SRAM_WE <= sram_we_x;
+	-- --SRAM_OE <= not sram_we_x;
+	-- SRAM_UB <= '1';
+	-- SRAM_LB <= '0';
 
 	-- SPI
 	SD_CS_N_O <= sd_cs;
@@ -245,12 +245,12 @@ begin
 			dac_LRCK  => I2S_LRCLK,
 			dac_SCLK  => I2S_BCLK,
 			dac_SDIN  => I2S_DATA,
-			L_data    => std_logic_vector(dac_l),
-			R_data    => std_logic_vector(dac_r)
+			L_data    => std_logic_vector(dac_l_s),
+			R_data    => std_logic_vector(dac_r_s)
 		);
 
-	--dac_l_s <= ('0' & dac_l & "00000");
-	--dac_r_s <= ('0' & dac_r & "00000");
+	dac_l_s <= ('0' & dac_l(14 downto 0));
+	dac_r_s <= ('0' & dac_r(14 downto 0));
 
 
 	-- JOYSTICKS
@@ -292,10 +292,10 @@ begin
 			SDRAM_BA   => DRAM_BA,
 			SDRAM_CLK  => DRAM_CLK,
 			SDRAM_CKE  => DRAM_CKE,
-			--SRAM
-			SRAM_A		=> SRAM_A,
-			SRAM_Q		=> SRAM_Q,
-			SRAM_WE		=> sram_we_x,
+			-- --SRAM
+			-- SRAM_A		=> SRAM_A,
+			-- SRAM_Q		=> SRAM_Q,
+			-- SRAM_WE		=> sram_we_x,
 			--UART
 			UART_TX => UART_TXD,
 			UART_RX => UART_RXD,

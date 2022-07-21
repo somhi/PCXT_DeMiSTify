@@ -160,17 +160,8 @@ wire        clk_uart;
 wire        adlibhide = status[10];
 
 
-
-// without .PS2BIDIR(1) do not boot // with .PS2DIV(2000) better than without it
-//4000 beeps, keyb problems
-//2000 -17.9,  10m seed 1 ps2_kbd_clk_in directe,  beeps, keyb problems
-//2000 -17.6 beeps, keyb problems
-//1000 -18.6 beeps, keyb problems, msdos hungs
-//500  -18.6 diagnostic roms fails
-//100  -18.1 13m seed 8 ps2_kbd_clk_in directe
-//100 -20  8m  PS2BIDIR(0), no disk 
-//50  -19 no beeps, ibm+xtide starts ok,  hungs at loading msdos
-//10  -19 no beeps, ibm+xtide starts ok,  hungs at loading msdos
+// without .PS2BIDIR(1) do not boot 
+// .PS2DIV(2000) value is adequate
 
 user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	.conf_str      ( CONF_STR       ),
@@ -707,7 +698,7 @@ end
 		.VGA_VS      ( VGA_VS     ),
 		.VGA_HS      ( VGA_HS     )
 	
-		// `ifdef DEMISTIFY_HDMI
+		// `ifdef DEMISTIFY
 		// 							,
 		// .ce_x1_o	 ( ce_x1	  )
 		// `endif
@@ -715,35 +706,6 @@ end
 	
 
 
-
-
-
-
-/*
-// SRAM management
-wire sramOe = ~sramWe;
-wire sramWe;
-wire [20:0] sramA;
-wire [ 7:0] sramDQ;
-
-Mister_sRam sRam
-( // .*,
-  //SDram interface
-  .SDRAM_A		(SDRAM_A),
-  .SDRAM_DQ		(SDRAM_DQ),
-  .SDRAM_BA		(SDRAM_BA),
-  .SDRAM_nWE	(SDRAM_nWE),
-  .SDRAM_nCAS	(SDRAM_nCAS),
-  .SDRAM_nCS	(SDRAM_nCS),
-  .SDRAM_CKE	(SDRAM_CKE),
-  //Sram interface
-  .SRAM_A      (sramA),
-  .SRAM_DQ     (sramDQ),
-  .SRAM_nCE    (1'b0),
-  .SRAM_nOE    (sramOe), 
-  .SRAM_nWE    (sramWe) 
-);
-*/
 
 reg vsd = 0;
 always @(posedge CLOCK_27) if(usdImgMtd[0]) vsd <= |usdImgSz;
