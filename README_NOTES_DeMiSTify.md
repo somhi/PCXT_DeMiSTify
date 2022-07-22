@@ -1,18 +1,20 @@
-# Notes regarding DeMiSTified version
+# Notes regarding DeMiSTified versions
 
-* Neptuno Port uses 640 MB SDRAM and 64 kB BIOS in SRAM
-* Deca Port,  need to comment out CGA RAM in rtl/KFPC-XT/HDL/Peripherals.sv to fit in memory
+**Bugs**
 
+* With original IBM ROM does not work keyboard (beeps at every keystroke)
 
+* Tandy graphics are not well displayed
 
-* changes from RAM.sv from Beta 1.0 not implemented yet
-
-* rtl/KFPC-XT/HDL/Peripherals.sv
-  * BIOS loaded in BRAM with RAM 1 port Altera IP  --> **do not working well so it hungs in splash screen**
-  * ~~RAM is only defined at 32 kB to fit in NeptUNO/Deca BRAM  --> **Another reason because it  hungs in splash screen**~~
-  * ​    // jtopl2 jtopl2_inst         // sn76489_top sn76489   modules instantation disabled
   
-* PCXT.sv    
-  * All status[4] in PCXT.sv have been inverted to start in MDA mode instead of CGA
-  * keyboard output ports have been commented
+
+**Deca Port**
+
+Need to comment out CGA RAM in rtl/KFPC-XT/HDL/Peripherals.sv to fit in memory.
+
+
+
+
+
+
 

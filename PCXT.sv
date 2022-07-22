@@ -407,7 +407,7 @@ end
 //////////////////////////////////////////////////////////////////
 
 	wire [5:0] r, g, b;	
-	reg [5:0] raux, gaux, baux;	
+	reg [7:0] raux, gaux, baux;	
 	
 	wire de_o;
 	
@@ -678,14 +678,18 @@ end
 	wire [5:0] vga_b;
 	wire vga_hs;
 	wire vga_vs;
+	wire [5:0] vga_r_o;
+	wire [5:0] vga_g_o;
+	wire [5:0] vga_b_o;
+
 
 	// 1 MDA, 0 CGA
-	assign vga_r = mda_mode ? r : raux;
-	assign vga_g = mda_mode ? g : gaux;
-	assign vga_b = mda_mode ? b : baux;
+	assign vga_r = mda_mode ? r : raux[7:2];
+	assign vga_g = mda_mode ? g : gaux[7:2];
+	assign vga_b = mda_mode ? b : baux[7:2];
 
 	mist_video #(.OSD_COLOR(3'd5)) mist_video (
-		.clk_sys     ( clk_56_875    ),
+		.clk_sys     ( clk_56_875 ),
 	
 		// OSD SPI interface
 		.SPI_SCK     ( SPI_SCK    ),
@@ -694,42 +698,44 @@ end
 	
 		// scanlines (00-none 01-25% 10-50% 11-75%)
 		.scanlines   ( 2'b00      ),
-	
+
 		// non-scandoubled pixel clock divider 0 - clk_sys/4, 1 - clk_sys/2
 		.ce_divider  ( 1'b1       ),
 	
 		// 0 = HVSync 31KHz, 1 = CSync 15KHz
-		.scandoubler_disable ( 1'b1  ),
+		.scandoubler_disable (1'b1),
 		// disable csync without scandoubler
-		.no_csync    ( 1'b1   ),
+		.no_csync    ( 1'b1       ),
 		// YPbPr always uses composite sync
 		.ypbpr       ( 1'b0       ),
 		// Rotate OSD [0] - rotate [1] - left or right
 		.rotate      ( 2'b00      ),
 		// composite-like blending
-		.blend       ( 1'b0    ),
+		.blend       ( 1'b0       ),
 	
 		// video in
 		.R           ( vga_r      ),
 		.G           ( vga_g      ),
 		.B           ( vga_b      ),
-		.HSync       ( ~vga_hs    ),
-		.VSync       ( ~vga_vs    ),
+		.HSync       ( vga_hs    ),
+		.VSync       ( vga_vs    ),
 
 		// MiST video output signals
-		.VGA_R       ( VGA_R      ),
-		.VGA_G       ( VGA_G      ),
-		.VGA_B       ( VGA_B      ),
+		.VGA_R       ( vga_r_o      ),
+		.VGA_G       ( vga_g_o      ),
+		.VGA_B       ( vga_b_o      ),
 		.VGA_VS      ( VGA_VS     ),
 		.VGA_HS      ( VGA_HS     )
 	
 		// `ifdef DEMISTIFY
-		// 							,
+		// 						   ,
 		// .ce_x1_o	 ( ce_x1	  )
 		// `endif
 	);
 	
-
+	assign VGA_R = VGA_DE ? vga_r_o : 6'b000000;
+	assign VGA_G = VGA_DE ? vga_g_o : 6'b000000;
+	assign VGA_B = VGA_DE ? vga_b_o : 6'b000000;
 
 
 reg vsd = 0;

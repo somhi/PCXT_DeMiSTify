@@ -232,19 +232,6 @@ begin
 
 
 	--RESET DELAY ---
-	-- reg RESET_DELAY_n;
-	-- reg [31:0]  DELAY_CNT;   
-	-- always @(negedge reset_n or posedge FPGA_CLK1_50 ) begin 
-	-- 	if (!reset_n )  begin 
-	-- 		 RESET_DELAY_n <= 1'b0;
-	-- 		 DELAY_CNT     <= 1'b0;
-	-- 	end 
-	-- 	else  begin 
-	-- 	  if ( DELAY_CNT < 32'hfffff  )  DELAY_CNT <= DELAY_CNT + 1'b1; 
-	-- 	  else RESET_DELAY_n <= 1'b1;
-	-- 	end
-	-- end
-
 	COUNTER_PROC: process(reset_n, FPGA_CLK1_50)  
 		variable DELAY_CNT : integer := 0;
 	begin
