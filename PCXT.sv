@@ -68,6 +68,7 @@ module PCXT
 	output        SD_MOSI,
 	input         SD_MISO,
 	output        SD_CS,
+	//input         SD_CD,
 
 	input         UART_RX,
 	output        UART_TX
@@ -78,6 +79,9 @@ module PCXT
 //	output        PS2K_DAT_OUT
 );
 
+wire CLK_50M;
+assign CLK_50M = CLOCK_27;
+
 ///////// Default values for ports not used in this core /////////
 
 assign LED  =  ~ioctl_download;   //1'b1;
@@ -85,6 +89,15 @@ assign LED  =  ~ioctl_download;   //1'b1;
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
 //assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
+
+//////////////////////////////////////////////////////////////////
+
+// Status Bit Map:
+//             Upper                             Lower              
+// 0         1         2         3          4         5         6   
+// 01234567890123456789012345678901 23456789012345678901234567890123
+// 0123456789ABCDEFGHIJKLMNOPQRSTUV 0123456789ABCDEFGHIJKLMNOPQRSTUV
+//    XX  XXXXXXXXXX
 
 `include "build_id.v" 
 parameter CONF_STR = {
@@ -163,7 +176,7 @@ wire        adlibhide = status[10];
 
 user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	.conf_str      ( CONF_STR       ),
-	.clk_sys       ( CLOCK_27       ),
+	.clk_sys       ( CLK_50M        ),
 
 	// the spi interface
 	.SPI_CLK        ( SPI_SCK       ),
@@ -187,7 +200,7 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 
 
 data_io DATA_IO (
-	.clk_sys    ( CLOCK_27 ),
+	.clk_sys    ( CLK_50M ),
 	.SPI_SCK    ( SPI_SCK ),
 	.SPI_SS2    ( SPI_SS2 ),
 	.SPI_DI     ( SPI_DI  ),
@@ -221,11 +234,11 @@ wire peripheral_clock;
 
 `ifdef DEMISTIFY_sockit
 
-assign SDRAM_CLK = CLOCK_27;
+assign SDRAM_CLK = CLK_50M;
 
 pll pll
 (
-	.refclk(CLOCK_27),
+	.refclk(CLK_50M),
 	.rst(0),
 	.outclk_0(clk_100),
 	.outclk_1(clk_56_875),
@@ -241,7 +254,7 @@ wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | (status[14] 
 
 pll pll
 (
-	.inclk0(CLOCK_27),
+	.inclk0(CLK_50M),
 	.areset(1'b0),
 	.c0(clk_100),
 	.c1(SDRAM_CLK),	
@@ -253,7 +266,7 @@ pll pll
 wire pll_locked2;
 pllvideo pllvideo
 (
-	.inclk0(CLOCK_27),
+	.inclk0(CLK_50M),
 	.areset(1'b0),
 	.c0(clk_28_636),
 	.c1(clk_56_875),	
@@ -285,7 +298,7 @@ assign CE_PIXEL = 1'b1;
 reg         cen_44100;
 reg  [31:0] cen_44100_cnt;
 wire [31:0] cen_44100_cnt_next = cen_44100_cnt + 16'd44100;
-always @(posedge CLOCK_27) begin
+always @(posedge CLK_50M) begin
 	cen_44100 <= 0;
 	cen_44100_cnt <= cen_44100_cnt_next;
 	if (cen_44100_cnt_next >= (50000000)) begin
@@ -338,7 +351,7 @@ end
 logic reset = 1'b1;
 logic [15:0] reset_count = 16'h0000;
 
-always @(posedge CLOCK_27, posedge reset_wire) begin
+always @(posedge CLK_50M, posedge reset_wire) begin
 	if (reset_wire) begin
 		reset <= 1'b1;
 		reset_count <= 16'h0000;
@@ -483,7 +496,7 @@ end
    CHIPSET u_CHIPSET (
         .clock                              (clk_100),
         .cpu_clock                            (clk_cpu),
-		  .clk_sys                            (CLOCK_27),
+		  .clk_sys                            (CLK_50M),
 		  .peripheral_clock                   (peripheral_clock),
 		  
         .reset                              (reset_cpu),
@@ -569,7 +582,7 @@ end
 		//   .SRAM_DATA                         (SRAM_Q[7:0]),
 		//   .SRAM_WE_n                         (SRAM_WE),
 		  .enable_sdram                       (1'b1),
-		  .sdram_clock                        (CLOCK_27),
+		  .sdram_clock                        (CLK_50M),
 		  .sdram_address                      (SDRAM_A),
         .sdram_cke                          (SDRAM_CKE),
         .sdram_cs                           (SDRAM_nCS),
@@ -602,7 +615,7 @@ end
 	assign DAC_R = rclamp;
 
 	sigma_delta_dac sigma_delta_dac (
-		.clk      ( CLOCK_27    ),      // bus clock
+		.clk      ( CLK_50M     ),      // bus clock
 		.ldatasum ( lclamp >> 1 ),      // left channel data
 		.rdatasum ( rclamp >> 1 ),      // right channel data
 		.left     ( AUDIO_L     ),      // left bitstream output
@@ -720,7 +733,7 @@ end
 
 
 reg vsd = 0;
-always @(posedge CLOCK_27) if(usdImgMtd[0]) vsd <= |usdImgSz;
+always @(posedge CLK_50M) if(usdImgMtd[0]) vsd <= |usdImgSz;
 
 wire       vsdRd;
 wire       vsdWr;
@@ -750,7 +763,7 @@ assign SD_MOSI = usdDo & ~vsd;
 /*
 sd_card sd_card
 (
-	.clk_sys     (CLOCK_27  ),
+	.clk_sys     (CLK_50M  ),
 	.reset       (reset    ),
 	.sdhc        (status[4]),
 	.sd_rd       (vsdRd    ),
