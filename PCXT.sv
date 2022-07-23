@@ -717,8 +717,8 @@ end
 		.R           ( vga_r      ),
 		.G           ( vga_g      ),
 		.B           ( vga_b      ),
-		.HSync       ( vga_hs    ),
-		.VSync       ( vga_vs    ),
+		.HSync       ( ~vga_hs    ),
+		.VSync       ( ~vga_vs    ),
 
 		// MiST video output signals
 		.VGA_R       ( vga_r_o      ),
