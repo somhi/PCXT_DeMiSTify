@@ -81,10 +81,7 @@ module PERIPHERALS #(
 	 input   logic           uart_dcd_n,
 	 input   logic           uart_dsr_n,
 	 output  logic           uart_rts_n,
-	 output  logic           uart_dtr_n,
-//	 output          [20:0]  SRAM_ADDR,
-//	 inout           [7:0]   SRAM_DATA,
-//	 output                  SRAM_WE_n,     
+	 output  logic           uart_dtr_n, 
 	 // EMS
 	 input   logic           ems_enabled,
 	 input   logic   [1:0]   ems_address,
@@ -618,7 +615,7 @@ module PERIPHERALS #(
     //  vram cga_vram
 	//  (
     //     .clka                       (clock),
-    //     .ena                        (~address_enable_n && ~cga_chip_select_n),
+    //     .ena                        (~cga_chip_select_n),
     //     .wea                        (~memory_write_n),
     //     .addra                      (address[14:0]),
     //     .dina                       (internal_data_bus),
@@ -629,24 +626,26 @@ module PERIPHERALS #(
     //     .addrb                      (CGA_VRAM_ADDR[14:0]),
     //     .dinb                       (8'h0),
     //     .doutb                      (CGA_VRAM_DOUT)
-	// );     
-
+	// );
+	 
     vram mda_vram
-    (
-       .clka                       (clock),
-       .ena                        (~address_enable_n && ~mda_chip_select_n),
-       .wea                        (~memory_write_n),
-       .addra                      (address[14:0]),
-       .dina                       (internal_data_bus),
-       .douta                      (mda_vram_cpu_dout),
-       .clkb                       (clk_vga_mda),
-       .web                        (1'b0),
-       .enb                        (MDA_VRAM_ENABLE),
-       .addrb                      (MDA_VRAM_ADDR[14:0]),
-       .dinb                       (8'h0),
-       .doutb                      (MDA_VRAM_DOUT)
-   );
+	 (
+        .clka                       (clock),
+        .ena                        (~mda_chip_select_n),
+        .wea                        (~memory_write_n),
+        .addra                      (address[14:0]),
+        .dina                       (internal_data_bus),
+        .douta                      (mda_vram_cpu_dout),
+        .clkb                       (clk_vga_mda),
+        .web                        (1'b0),
+        .enb                        (MDA_VRAM_ENABLE),
+        .addrb                      (MDA_VRAM_ADDR[14:0]),
+        .dinb                       (8'h0),
+        .doutb                      (MDA_VRAM_DOUT)
+	);
+
      `else
+    
     vram cga_vram
 	 (
         .clka                       (clock),
@@ -685,43 +684,30 @@ module PERIPHERALS #(
    wire xtide_loader = ((ioctl_download && ioctl_index == 2) ||
                         (ioctl_download && ioctl_index == 0 && ioctl_addr[24:16] == 9'b000000001));
 	
-    `ifdef DEMISTIFY_sockit
-    // BIOS (BRAM)
-    bios bios
-	(
-        .clka(bios_loader ? clk_sys : clock),
-        .ena((~bios_select_n) || ioctl_download),
-        .wea(bios_loader && ioctl_wr),
-        .addra(bios_loader ? ioctl_addr[15:0] : address[15:0]),
-        .dina(ioctl_data),
-        .douta(bios_cpu_dout)
-	);
-	
-	xtide xtide
-	(
-        .clka(xtide_loader ? clk_sys : clock),
-        .ena((~xtide_select_n) || ioctl_download),
-        .wea(xtide_loader && ioctl_wr),
-        .addra(xtide_loader ? ioctl_addr[13:0] : address[13:0]),
-        .dina(ioctl_data),
-        .douta(xtide_cpu_dout)
-	);
-    
-    // `elsif DEMISTIFY_NEPTUNO
-    // //BIOS (SRAM)
-	// bios_sram bios     //CAL REFER
+    // `ifdef DEMISTIFY_sockit
+    // // BIOS (BRAM)
+    // bios bios
 	// (
-    //     .clka(ioctl_download ? clk_sys : clock),
-    //     .ena((~rom_select_n) || ioctl_download),
-    //     .wea(ioctl_download && ioctl_wr),
-    //     .addra(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
+    //     .clka(bios_loader ? clk_sys : clock),
+    //     .ena((~bios_select_n) || ioctl_download),
+    //     .wea(bios_loader && ioctl_wr),
+    //     .addra(bios_loader ? ioctl_addr[15:0] : address[15:0]),
     //     .dina(ioctl_data),
-    //     .douta(bios_cpu_dout),
-	//     .SRAM_ADDR(SRAM_ADDR),
-	//     .SRAM_DATA(SRAM_DATA),
-	//     .SRAM_WE_n(SRAM_WE_n)
+    //     .douta(bios_cpu_dout)
 	// );
-    `else
+	
+	// xtide xtide
+	// (
+    //     .clka(xtide_loader ? clk_sys : clock),
+    //     .ena((~xtide_select_n) || ioctl_download),
+    //     .wea(xtide_loader && ioctl_wr),
+    //     .addra(xtide_loader ? ioctl_addr[13:0] : address[13:0]),
+    //     .dina(ioctl_data),
+    //     .douta(xtide_cpu_dout)
+	// );
+
+    // `else
+
     //BIOS (simple RAM 2 Port )
 	bios_ip bios
 	(
@@ -744,34 +730,8 @@ module PERIPHERALS #(
         .data(ioctl_data),
         .q(xtide_cpu_dout)
 	);
-	`endif
-    
-    // //BIOS (simple RAM 2 Port )
-	// bios_ip bios
-	// (
-    //     .rdaddress(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-    //     .wraddress(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-    //     .clock(ioctl_download ? clk_sys : clock),
-    //     .data(ioctl_data),
-    //     .enable((~address_enable_n && ~rom_select_n) || ioctl_download),
-    //     .wren(ioctl_download && ioctl_wr),
-    //     .q(bios_cpu_dout),
-	// );
 
-    // //BIOS (true RAM 2 Port)
-	// bios_ip bios
-	// (
-    //     .address_a(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-    //     .address_b(ioctl_download ? ioctl_addr[15:0] : address[15:0]),
-    //     .clock(ioctl_download ? clk_sys : clock),
-    //     .data_a(ioctl_data),
-    //     .data_b(ioctl_data),
-    //     .enable((~address_enable_n && ~rom_select_n) || ioctl_download),
-    //     .wren_a(ioctl_download && ioctl_wr),
-    //     .wren_b(ioctl_download && ioctl_wr),
-    // //  .q_a(bios_cpu_dout),
-    //     .q_b(bios_cpu_dout)
-	// );
+	// `endif
 
 
     //
