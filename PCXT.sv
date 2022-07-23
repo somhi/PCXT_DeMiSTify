@@ -34,10 +34,6 @@ module PCXT
 	output        SDRAM_CLK,
 	output        SDRAM_CKE,
 
-//	output [20:0] SRAM_A,
-//	inout  [15:0] SRAM_Q,     	
-//	output        SRAM_WE,    
-
 	output        SPI_DO,
 	input         SPI_DI,
 	input         SPI_SCK,
@@ -578,9 +574,6 @@ end
 	    //  .uart_dsr_n                        (uart_dsr),
 	    //  .uart_rts_n                        (uart_rts),
 	    //  .uart_dtr_n                        (uart_dtr),
-		//   .SRAM_ADDR                         (SRAM_A),
-		//   .SRAM_DATA                         (SRAM_Q[7:0]),
-		//   .SRAM_WE_n                         (SRAM_WE),
 		  .enable_sdram                       (1'b1),
 		  .sdram_clock                        (CLK_50M),
 		  .sdram_address                      (SDRAM_A),
