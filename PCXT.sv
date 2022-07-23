@@ -678,9 +678,6 @@ end
 	wire [5:0] vga_b;
 	wire vga_hs;
 	wire vga_vs;
-	wire [5:0] vga_r_o;
-	wire [5:0] vga_g_o;
-	wire [5:0] vga_b_o;
 
 
 	// 1 MDA, 0 CGA
@@ -724,9 +721,6 @@ end
 		.VGA_R       ( VGA_R      ),
 		.VGA_G       ( VGA_G      ),
 		.VGA_B       ( VGA_B      ),
-		// .VGA_R       ( vga_r_o      ),
-		// .VGA_G       ( vga_g_o      ),
-		// .VGA_B       ( vga_b_o      ),		
 		.VGA_VS      ( VGA_VS     ),
 		.VGA_HS      ( VGA_HS     )
 	
@@ -736,10 +730,6 @@ end
 		// `endif
 	);
 	
-	// assign VGA_R = VGA_DE ? vga_r_o : 6'b000000;
-	// assign VGA_G = VGA_DE ? vga_g_o : 6'b000000;
-	// assign VGA_B = VGA_DE ? vga_b_o : 6'b000000;
-
 
 reg vsd = 0;
 always @(posedge CLK_50M) if(usdImgMtd[0]) vsd <= |usdImgSz;
