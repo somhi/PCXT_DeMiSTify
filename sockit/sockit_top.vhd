@@ -167,40 +167,23 @@ architecture RTL of sockit_top is
 	end component;	
 
 
-	signal dac_l : signed(15 downto 0);
-	signal dac_r : signed(15 downto 0);
-	-- signal dac_l_s: std_logic_vector(15 downto 0);
-	-- signal dac_r_s: std_logic_vector(15 downto 0);
-
-
-	-- ADC AUDIO     
-	component i2s_decoder is
-		port (
-			clk       : in std_logic;
-			sck       : in std_logic;
-			ws        : in std_logic;
-			sd        : in std_logic;
-			left_out  : out SIGNED(15 downto 0);
-			right_out : out SIGNED(15 downto 0)
-		);
-	end component;
-
-	signal adc_l : SIGNED(15 downto 0);
-	signal adc_r : SIGNED(15 downto 0);
-
-	-- EAR
-	signal ear : std_logic;
+	signal dac_l : std_logic_vector(15 downto 0);
+	signal dac_r : std_logic_vector(15 downto 0);
+	signal dac_l_s: std_logic_vector(15 downto 0);
+	signal dac_r_s: std_logic_vector(15 downto 0);
 
 	-- PLL2
-	component pll2
-		port (
-			inclk0 : in std_logic;
-			c0     : out std_logic;
-			locked : out std_logic
-		);
-	end component;
+	-- component pll2
+	-- 	port (
+	-- 		inclk0 : in std_logic;
+	-- 		c0     : out std_logic;
+	-- 		locked : out std_logic
+	-- 	);
+	-- end component;
 
 	signal act_led : std_logic;
+
+	signal RESET_DELAY_n : std_logic;
 
 begin
 
@@ -247,6 +230,26 @@ begin
 	VGA_CLK     <= vga_clk_x;	-- use clk_sys from top mist core. Could be used pll2 like UA reloaded
 								-- UA reloaded has the same Video DAC ADV7123 
 
+
+	--RESET DELAY ---
+	COUNTER_PROC: process(reset_n, FPGA_CLK1_50)  
+		variable DELAY_CNT : integer := 0;
+	begin
+		if reset_n = '0'  then 
+			RESET_DELAY_n <= '0';
+			DELAY_CNT     := 0;
+	    else  
+			if rising_edge(FPGA_CLK1_50) then
+				if  DELAY_CNT < 1000000  then
+					DELAY_CNT := DELAY_CNT + 1; 
+				else 
+					RESET_DELAY_n <= '1';
+				end if;	   
+		 	end if;
+		end if;
+	end process;
+
+
 	-- AUDIO CODEC
 	AUD_MUTE <= '1'; --SW(0);
 
@@ -256,7 +259,7 @@ begin
 	-- )
 	port map (
 	  iCLK 		=> FPGA_CLK1_50,
-	  iRST_N 	=> reset_n,
+	  iRST_N 	=> RESET_DELAY_n,
 	  oI2C_SCLK => AUD_I2C_SCLK,
 	  oI2C_SDAT => AUD_I2C_SDAT
 	);
@@ -268,45 +271,19 @@ begin
 		dac_LRCK  => AUD_DACLRCK,
 		dac_SCLK  => AUD_BCLK,
 		dac_SDIN  => AUD_DACDAT,
-		L_data    => std_logic_vector(dac_l),
-		R_data    => std_logic_vector(dac_r)
+		L_data    => dac_l_s,
+		R_data    => dac_r_s
 	);		
 
-	-- dac_l_s <= ('0' & dac_l(14 downto 0));
-	-- dac_r_s <= ('0' & dac_r(14 downto 0));
-
-	-- EAR
-	midi_module : i2s_decoder
-	port map(
-		clk       => FPGA_CLK1_50,
-		sck       => AUD_BCLK,
-		ws        => AUD_ADCLRCK,
-		sd        => AUD_ADCDAT,
-		left_out  => adc_l,
-		right_out => adc_r
-	);
-
-	--Convert adc_l  to  EAR signal 
-	--Ramon Martinez Palomares, [7/5/22 23:43]
-	--https://github.com/MiSTer-devel/Template_MiSTer/blob/master/sys/ltc2308.sv#L105
-	--Puedes hacerte un process buscando la histeresis superior e inferior sobre el sample.
-	--Por ejemplo > 20000 que te dé un 1 y < -20000 0
-
-	process (adc_l)
-	begin
-		if (adc_l > 20000) then
-			ear <= '1';
-		elsif (adc_l < -20000) then
-			ear <= '0';
-		end if;
-	end process;
+	dac_l_s <= ('0' & dac_l(14 downto 0));
+	dac_r_s <= ('0' & dac_r(14 downto 0));
 
 
 	guest : component PCXT
 		port map
 		(
 			CLOCK_27 => FPGA_CLK1_50,
-	        RESET_N => reset_n,
+	        RESET_N  => reset_n,
 			LED      => act_led,
 			--SDRAM
 			SDRAM_DQ   => SDRAM_DQ,
@@ -339,12 +316,12 @@ begin
 			VGA_G   => vga_green(7 downto 2),
 			VGA_B   => vga_blue(7 downto 2),
 			CLK_VIDEO   => vga_clk_x,
-			VGA_DE => vga_de,
+			VGA_DE  => vga_de,
 			--AUDIO
 			DAC_L   => dac_l,
 			DAC_R   => dac_r
-			-- PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
-			-- PS2K_DAT_IN => ps2_keyboard_dat_in,
+	--		PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
+	--		PS2K_DAT_IN => ps2_keyboard_dat_in,
 	--		PS2K_CLK_OUT => ps2_keyboard_clk_out,
 	--		PS2K_DAT_OUT => ps2_keyboard_dat_out
 		);
@@ -381,8 +358,8 @@ begin
 				-- PS/2 signals
 				ps2k_clk_in  => ps2_keyboard_clk_in,
 				ps2k_dat_in  => ps2_keyboard_dat_in,
-		--		ps2k_clk_out => ps2_keyboard_clk_out,
-		--		ps2k_dat_out => ps2_keyboard_dat_out,
+				ps2k_clk_out => ps2_keyboard_clk_out,
+				ps2k_dat_out => ps2_keyboard_dat_out,
 				ps2m_clk_in  => ps2_mouse_clk_in,
 				ps2m_dat_in  => ps2_mouse_dat_in,
 				ps2m_clk_out => ps2_mouse_clk_out,

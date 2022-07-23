@@ -34,9 +34,9 @@ module PCXT
 	output        SDRAM_CLK,
 	output        SDRAM_CKE,
 
-	output [20:0] SRAM_A,
-	inout  [15:0] SRAM_Q,     	
-	output        SRAM_WE,    
+//	output [20:0] SRAM_A,
+//	inout  [15:0] SRAM_Q,     	
+//	output        SRAM_WE,    
 
 	output        SPI_DO,
 	input         SPI_DI,
@@ -52,58 +52,83 @@ module PCXT
 	output  [5:0] VGA_G,
 	output  [5:0] VGA_B,
 	output        VGA_DE,    // = ~(VBlank | HBlank)
+
+	`ifdef DEMISTIFY
 	output        CLK_VIDEO,
+
+	output [15:0]  DAC_L, 
+	output [15:0]  DAC_R, 
+	`endif
 
 	output        AUDIO_L,
 	output        AUDIO_R, 
-	
-	output [15:0]  DAC_L, 
-	output [15:0]  DAC_R, 
-	
+
 	//SD-SPI
 	output        SD_SCK,
 	output        SD_MOSI,
 	input         SD_MISO,
 	output        SD_CS,
+	//input         SD_CD,
 
 	input         UART_RX,
-	output        UART_TX,
+	output        UART_TX
 
-	//input         PS2K_CLK_IN,
-	//input         PS2K_DAT_IN,
-	output        PS2K_CLK_OUT,
-	output        PS2K_DAT_OUT
+//	input         PS2K_CLK_IN,
+//	input         PS2K_DAT_IN  //,
+//	output        PS2K_CLK_OUT,
+//	output        PS2K_DAT_OUT
 );
+
+wire CLK_50M;
+assign CLK_50M = CLOCK_27;
 
 ///////// Default values for ports not used in this core /////////
 
-assign LED  =  1'b1;
+assign LED  =  ~ioctl_download;   //1'b1;
 
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
-assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
+//assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
-//assign SDRAM_CLK = CLOCK_27;
 
-//`include "build_id.v" 
+//////////////////////////////////////////////////////////////////
+
+// Status Bit Map:
+//             Upper                             Lower              
+// 0         1         2         3          4         5         6   
+// 01234567890123456789012345678901 23456789012345678901234567890123
+// 0123456789ABCDEFGHIJKLMNOPQRSTUV 0123456789ABCDEFGHIJKLMNOPQRSTUV
+//    XX  XXXXXXXXXX
+
+`include "build_id.v" 
 parameter CONF_STR = {
 	"PCXT;;",
 	"-;",
-	"O3,Splash Screen,Yes,No;",
-	//"O4,CPU Speed,4.77Mhz,7.16Mhz;",	
+   "O3,Model,IBM PCXT,Tandy 1000;",
+	//"OHI,CPU Speed,4.77Mhz,7.16Mhz,14.318MHz;", // These bits are reserved until it can be used
 	"-;",
-	"OA,Adlib,On,Invisible;",
+	"O7,Splash Screen,Yes,No;",
 	"-;",
-	"O4,Video Output,MDA,Tandy/CGA;",
-	"O12,CGA RGB,Color,Green,Amber,B/W;",
-	"O56,MDA RGB,Green,Amber,B/W;",
-	"O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
-	//"O78,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",	
+	"P1,Audio & Video;",
+	"P1-;",
+	"P1OA,Adlib,On,Invisible;",
+	"P1O7,DSS/Covox,Unplugged,Plugged;",
+	"P1-;",
+	//"P1O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
+	"P1O4,Video Output,CGA/Tandy,MDA;",
+	"P1OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
+	//"PO78,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
+	"P2,Hardware;",
+	"P2-;",
+	"P2OB,Lo-tech 2MB EMS, Enabled, Disabled;",
+	"P2OCD,EMS Frame,A000,C000,D000;",
+	"P2-;",
 	"-;",
-	"F1,ROM,Load ROM;",	
+	"F,ROM,Load BIOS  (F000);",	
+	"F,ROM,Load XTIDE (EC00);",	
 	"-;",
 	"T0,Reset;",
-	"R0,Reset and close OSD;"//,
-//	"V,v",`BUILD_DATE 
+	"R0,Reset and close OSD;",
+	"V,v",`BUILD_DATE 
 };
 
 //wire forced_scandoubler;
@@ -146,95 +171,114 @@ wire        clk_uart;
 wire        adlibhide = status[10];
 
 
-mist_io #(.STRLEN($size(CONF_STR)>>3),.PS2DIV(2000)) mist_io
-(
-	.SPI_SCK   (SPI_SCK),
-    .CONF_DATA0(CONF_DATA0),
-    .SPI_SS2   (SPI_SS2),
-    .SPI_DO    (SPI_DO),
-    .SPI_DI    (SPI_DI),
+// without .PS2BIDIR(1) do not boot 
+// .PS2DIV(2000) value is adequate
 
-    .clk_sys(CLOCK_27),
-    .conf_str(CONF_STR),
+user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
+	.conf_str      ( CONF_STR       ),
+	.clk_sys       ( CLK_50M        ),
 
-	//.scandoubler_disable(forced_scandoubler),
-
-	.buttons(buttons),
-	.status(status),
+	// the spi interface
+	.SPI_CLK        ( SPI_SCK       ),
+	.SPI_SS_IO      ( CONF_DATA0    ),
+	.SPI_MISO       ( SPI_DO        ),   // tristate handling inside user_io
+	.SPI_MOSI       ( SPI_DI        ),
 	
-	//VHD	
-	// .sd_rd         (usdRd),
-	// .sd_wr         (usdWr),
-	// .sd_ack        (usdAck),
-	// .sd_lba        (usdLba),
-	// .sd_buff_wr    (usdBuffWr),
-	// .sd_buff_addr  (usdBuffA),
-	// .sd_buff_din   (usdBuffD),
-	// .sd_buff_dout  (usdBuffQ),
-	// .img_mounted   (usdImgMtd),
-	// .img_size	   (usdImgSz),	
-	
-//	.ps2_kbd_clk_in		(ps2_kbd_clk_out),
-//	.ps2_kbd_data_in	(ps2_kbd_data_out),
+	.status         ( status        ),
+	.buttons        ( buttons       ),
+	// .scandoubler_disable ( forced_scandoubler ),
+
+	.ps2_kbd_clk_i		(ps2_kbd_clk_out),
+	.ps2_kbd_data_i		(ps2_kbd_data_out),
 	.ps2_kbd_clk		(ps2_kbd_clk_in),
-	.ps2_kbd_data		(ps2_kbd_data_in),
-//  .ps2_mouse_clk_in	(ps2_mouse_clk_out),
-//	.ps2_mouse_data_in	(ps2_mouse_data_out),
+	.ps2_kbd_data		(ps2_kbd_data_in)
+//  .ps2_mouse_clk_i	(ps2_mouse_clk_out),
+//	.ps2_mouse_data_i	(ps2_mouse_data_out),
 //	.ps2_mouse_clk		(ps2_mouse_clk_in),
 //	.ps2_mouse_data		(ps2_mouse_data_in),
+);
 
-	//.ps2_key(ps2_key),
 
-	//ioctl
-	.ioctl_ce(1),
-	.ioctl_download(ioctl_download),
-	.ioctl_index(ioctl_index),
-	.ioctl_wr(ioctl_wr),
-	.ioctl_addr(ioctl_addr),
-	.ioctl_dout(ioctl_data)	
+data_io DATA_IO (
+	.clk_sys    ( CLK_50M ),
+	.SPI_SCK    ( SPI_SCK ),
+	.SPI_SS2    ( SPI_SS2 ),
+	.SPI_DI     ( SPI_DI  ),
+	.SPI_DO     ( SPI_DO  ),
+
+	.ioctl_download ( ioctl_download ),
+	// .ioctl_upload   ( upload_active  ),
+	.ioctl_index( ioctl_index  ),
+
+    // ram interface
+	.ioctl_wr   ( ioctl_wr     ),
+	.ioctl_addr ( ioctl_addr   ),
+	.ioctl_dout ( ioctl_data   )
+	// .ioctl_din  ( ioctl_din    )
 );
 
 ///////////////////////   CLOCKS   ///////////////////////////////
 
 wire clk_sys;
 wire pll_locked;
-wire pll_locked2;
 
 wire clk_100;
 wire clk_28_636;
 wire clk_56_875;
-wire clk_14_318;
-wire clk_7_16;
+reg clk_14_318 = 1'b0;
+//reg clk_7_16 = 1'b0;
 wire clk_4_77;
 wire clk_cpu;
-wire cen_opl2;
+wire clk_opl2;
 wire peripheral_clock;
-wire clk_113_750;
+
+`ifdef DEMISTIFY_sockit
+
+assign SDRAM_CLK = CLK_50M;
 
 pll pll
 (
-	.inclk0(CLOCK_27),
+	.refclk(CLK_50M),
+	.rst(0),
+	.outclk_0(clk_100),
+	.outclk_1(clk_56_875),
+	.outclk_2(clk_28_636),
+	.outclk_3(clk_uart),
+	.outclk_4(clk_opl2),
+	.locked(pll_locked)
+);
+
+wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0) | splashscreen;
+
+`else  
+
+pll pll
+(
+	.inclk0(CLK_50M),
 	.areset(1'b0),
 	.c0(clk_100),
 	.c1(SDRAM_CLK),	
 	.c2(clk_uart),
-	.c3(cen_opl2),
+	.c3(clk_opl2),
 	.locked(pll_locked)
 );
 
+wire pll_locked2;
 pllvideo pllvideo
 (
-	.inclk0(CLOCK_27),
+	.inclk0(CLK_50M),
 	.areset(1'b0),
 	.c0(clk_28_636),
 	.c1(clk_56_875),	
-	.c2(clk_113_750),
-	.c3(clk_14_318),
-	.c4(clk_7_16),
+//	.c2(clk_113_750),
+//	.c3(clk_14_318),
+//	.c4(clk_7_16),
 	.locked(pll_locked2)
 );
 
-wire reset = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0);
+wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0) | splashscreen;
+
+`endif
 
 
 //////////////////////////////////////////////////////////////////
@@ -244,21 +288,33 @@ wire HSync;
 wire VBlank;
 wire VSync;
 wire ce_pix;
+//wire [7:0] video;
 
-//assign CLK_VIDEO = clk_28_636;
 assign CLK_VIDEO = clk_56_875;
 
-//assign clk_cpu = status[x] ? clk_7_16 : clk_4_77;
-assign clk_cpu = clk_4_77;
+wire CE_PIXEL;
+assign CE_PIXEL = 1'b1;
 
-//always @(posedge clk_28_636)
-//	clk_14_318 <= ~clk_14_318; // 14.318Mhz
-	
+reg         cen_44100;
+reg  [31:0] cen_44100_cnt;
+wire [31:0] cen_44100_cnt_next = cen_44100_cnt + 16'd44100;
+always @(posedge CLK_50M) begin
+	cen_44100 <= 0;
+	cen_44100_cnt <= cen_44100_cnt_next;
+	if (cen_44100_cnt_next >= (50000000)) begin
+		cen_44100 <= 1;
+		cen_44100_cnt <= cen_44100_cnt_next - (50000000);
+	end
+end
 
-//always @(posedge clk_14_318)
+always @(posedge clk_28_636)
+	clk_14_318 <= ~clk_14_318; // 14.318Mhz
+
+//always @(posedge clk_14_318) begin
 //	clk_7_16 <= ~clk_7_16; // 7.16Mhz
-	
-	
+//	CE_PIXEL <= mda_mode ? 1'b1 : clk_7_16;
+//end
+
 clk_div3 clk_normal // 4.77MHz
 (
 	.clk(clk_14_318),
@@ -268,36 +324,93 @@ clk_div3 clk_normal // 4.77MHz
 always @(posedge clk_4_77)
 	peripheral_clock <= ~peripheral_clock; // 2.385Mhz
 
+logic  clk_cpu_ff_1;
+logic  clk_cpu_ff_2;
+
+always @(posedge clk_100) begin
+    clk_cpu_ff_1 <= clk_4_77;
+    clk_cpu_ff_2 <= clk_cpu_ff_1;
+    clk_cpu      <= clk_cpu_ff_2;
+end
+
+logic   clk_opl2_ff_1;
+logic   clk_opl2_ff_2;
+logic   clk_opl2_ff_3;
+logic   cen_opl2;
+
+always @(posedge clk_100) begin
+    clk_opl2_ff_1 <= clk_opl2;
+    clk_opl2_ff_2 <= clk_opl2_ff_1;
+    clk_opl2_ff_3 <= clk_opl2_ff_2;
+    cen_opl2 <= clk_opl2_ff_2 & ~clk_opl2_ff_3;
+end
+
+
+//////////////////////////////////////////////////////////////////
+
+logic reset = 1'b1;
+logic [15:0] reset_count = 16'h0000;
+
+always @(posedge CLK_50M, posedge reset_wire) begin
+	if (reset_wire) begin
+		reset <= 1'b1;
+		reset_count <= 16'h0000;
+	end
+	else if (reset) begin
+		if (reset_count != 16'hffff) begin
+			reset <= 1'b1;
+			reset_count <= reset_count + 16'h0001;
+		end
+		else begin
+			reset <= 1'b0;
+			reset_count <= reset_count;
+		end
+	end 
+	else begin
+		reset <= 1'b0;
+		reset_count <= reset_count;
+	end
+end
+
+logic reset_cpu_ff = 1'b1;
+logic reset_cpu = 1'b1;
+logic [15:0] reset_cpu_count = 16'h0000;
+
+always @(negedge clk_100, posedge reset) begin
+	if (reset)
+		reset_cpu_ff <= 1'b1;
+	else
+		reset_cpu_ff <= reset;
+end
+
+always @(negedge clk_100, posedge reset) begin
+	if (reset) begin
+		reset_cpu <= 1'b1;
+		reset_cpu_count <= 16'h0000;
+	end
+	else if (reset_cpu) begin
+		reset_cpu <= reset_cpu_ff;
+		reset_cpu_count <= 16'h0000;
+	end
+	else begin
+		if (reset_cpu_count != 16'h002A) begin
+			reset_cpu <= reset_cpu_ff;
+			reset_cpu_count <= reset_cpu_count + 16'h0001;
+		end
+		else begin
+			reset_cpu <= 1'b0;
+			reset_cpu_count <= reset_cpu_count;
+		end
+	end
+end
 
 //////////////////////////////////////////////////////////////////
 
 	wire [5:0] r, g, b;	
-	reg [5:0] raux, gaux, baux;	
-		
-	reg [5:0]red_weight[0:63] = '{ // 0.2126*R
-	6'h00, 6'h01, 6'h01, 6'h01, 6'h01, 6'h02, 6'h02, 6'h02, 6'h02, 6'h02, 6'h03, 6'h03, 6'h03, 6'h03, 6'h03, 6'h04,
-	6'h04, 6'h04, 6'h04, 6'h05, 6'h05, 6'h05, 6'h05, 6'h05, 6'h06, 6'h06, 6'h06, 6'h06, 6'h06, 6'h07, 6'h07, 6'h07,
-	6'h07, 6'h08, 6'h08, 6'h08, 6'h08, 6'h08, 6'h09, 6'h09, 6'h09, 6'h09, 6'h09, 6'h0a, 6'h0a, 6'h0a, 6'h0a, 6'h0a,
-	6'h0b, 6'h0b, 6'h0b, 6'h0b, 6'h0c, 6'h0c, 6'h0c, 6'h0c, 6'h0c, 6'h0d, 6'h0d, 6'h0d, 6'h0d, 6'h0d, 6'h0e, 6'h0e
-	};
+	reg [7:0] raux, gaux, baux;	
 	
-	reg [5:0]green_weight[0:63] = '{ // 0.7152*G
-	6'h00, 6'h01, 6'h02, 6'h03, 6'h03, 6'h04, 6'h05, 6'h06, 6'h06, 6'h07, 6'h08, 6'h08, 6'h09, 6'h0a, 6'h0b, 6'h0b,
-	6'h0c, 6'h0d, 6'h0d, 6'h0e, 6'h0f, 6'h10, 6'h10, 6'h11, 6'h12, 6'h12, 6'h13, 6'h14, 6'h15, 6'h15, 6'h16, 6'h17,
-	6'h17, 6'h18, 6'h19, 6'h1a, 6'h1a, 6'h1b, 6'h1c, 6'h1c, 6'h1d, 6'h1e, 6'h1f, 6'h1f, 6'h20, 6'h21, 6'h21, 6'h22,
-	6'h23, 6'h24, 6'h24, 6'h25, 6'h26, 6'h26, 6'h27, 6'h28, 6'h29, 6'h29, 6'h2a, 6'h2a, 6'h2a, 6'h2b, 6'h2b, 6'h2b
-	};
-	
-	reg [5:0]blue_weight[0:63] = '{ // 0.0722*B
-	6'h00, 6'h01, 6'h01, 6'h01, 6'h01, 6'h01, 6'h01, 6'h01, 6'h01, 6'h01, 6'h01, 6'h01, 6'h01, 6'h01, 6'h02, 6'h02,
-	6'h02, 6'h02, 6'h02, 6'h02, 6'h02, 6'h02, 6'h02, 6'h02, 6'h02, 6'h02, 6'h02, 6'h02, 6'h03, 6'h03, 6'h03, 6'h03,
-	6'h03, 6'h03, 6'h03, 6'h03, 6'h03, 6'h03, 6'h03, 6'h03, 6'h03, 6'h03, 6'h04, 6'h04, 6'h04, 6'h04, 6'h04, 6'h04,
-	6'h04, 6'h04, 6'h04, 6'h04, 6'h04, 6'h04, 6'h04, 6'h04, 6'h05, 6'h05, 6'h05, 6'h05, 6'h05, 6'h05, 6'h05, 6'h05
-	};
-
 	wire de_o;
 	
-
 	reg [24:0] splash_cnt = 0;
 	reg [3:0] splash_cnt2 = 0;
 	reg splashscreen = 1;
@@ -305,7 +418,7 @@ always @(posedge clk_4_77)
 	always @ (posedge clk_14_318) begin
 	
 		if (splashscreen) begin
-			if (status[3])
+			if (status[7])
 				splashscreen <= 0;
 			else if(splash_cnt2 == 5) // 5 seconds delay
 				splashscreen <= 0;
@@ -372,15 +485,22 @@ always @(posedge clk_4_77)
     logic   [7:0]   port_c_in;	 
 	 reg     [7:0]   sw;
 	 
-	 assign  sw = ~status[4] ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
+	wire tandy_mode = status[3];
+	wire mda_mode = status[4];	 
+	wire [2:0] screen_mode = status[16:14];
+	 
+	 
+	 assign  sw = mda_mode ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
 	 assign  port_c_in[3:0] = port_b_out[3] ? sw[7:4] : sw[3:0];
 
    CHIPSET u_CHIPSET (
-        .clock                              (clk_cpu),
-		  .clk_sys                            (CLOCK_27),
+        .clock                              (clk_100),
+        .cpu_clock                            (clk_cpu),
+		  .clk_sys                            (CLK_50M),
 		  .peripheral_clock                   (peripheral_clock),
 		  
-        .reset                              (reset || splashscreen),
+        .reset                              (reset_cpu),
+        .sdram_reset                        (reset),
         .cpu_address                        (cpu_address),
         .cpu_data_bus                       (cpu_data_bus),
         .processor_status                   (processor_status),
@@ -389,12 +509,12 @@ always @(posedge clk_4_77)
 		  .processor_ready                    (processor_ready),
         .interrupt_to_cpu                   (interrupt_to_cpu),
         .splashscreen                       (splashscreen),
-		  .video_output                       (~status[4]),
+		  .video_output                       (mda_mode),
         .clk_vga_cga                        (clk_28_636),
         .enable_cga                         (1'b1),
         .clk_vga_mda                        (clk_56_875),
         .enable_mda                         (1'b1),
-		  .mda_rgb                            (status[6:5]),
+		.mda_rgb                            (2'b10), // always B&W - monochrome monitor tint handled down below
         .de_o                               (VGA_DE),
         .VGA_R                              (r),
         .VGA_G                              (g),
@@ -402,10 +522,10 @@ always @(posedge clk_4_77)
         .VGA_HSYNC                          (vga_hs),
         .VGA_VSYNC                          (vga_vs),
 //      .address                            (address),
-        .address_ext                        (0),
+        .address_ext                        (20'hFFFFF),
 //      .address_direction                  (address_direction),
         .data_bus                           (data_bus),
-//      .data_bus_ext                       (data_bus_ext),
+        .data_bus_ext                       (8'hFF),
 //      .data_bus_direction                 (data_bus_direction),
         .address_latch_enable               (address_latch_enable),
 //      .io_channel_check                   (),
@@ -430,22 +550,26 @@ always @(posedge clk_4_77)
         .port_b_out                         (port_b_out),
 		  .port_c_in                          (port_c_in),
 	     .speaker_out                        (speaker_out),   
-        .ps2_clock                          (ps2_kbd_clk_in),
-	     .ps2_data                           (ps2_kbd_data_in),
-//	     .ps2_clock_out                      (ps2_kbd_clk_out),
-//	     .ps2_data_out                       (ps2_kbd_data_out),
-	     .ps2_clock_out                      (PS2K_CLK_OUT),
-	     .ps2_data_out                       (PS2K_DAT_OUT),
-		//   .clk_en_opl2                        (cen_opl2), // clk_en_opl2
-		//   .jtopl2_snd_e                       (jtopl2_snd_e),
-		//   .adlibhide                          (adlibhide),
-		//   .tandy_snd_e                        (tandy_snd_e),
+        .ps2_clock                          (device_clock),
+	     .ps2_data                           (device_data),
+	     .ps2_clock_out                      (ps2_kbd_clk_out),
+	     .ps2_data_out                       (ps2_kbd_data_out),
+//         .ps2_clock                          (PS2K_CLK_IN),
+//	     .ps2_data                           (PS2K_DAT_IN),
+//	     .ps2_clock_out                      (PS2K_CLK_OUT),
+//	     .ps2_data_out                       (PS2K_DAT_OUT),
+		  .clk_en_44100                       (cen_44100),
+		  .dss_covox_en                       (status[7]),
+		  .lclamp                             (lclamp),
+		  .rclamp                             (rclamp),		  
+		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
+		  .adlibhide                          (adlibhide),
+		  .tandy_video                        (tandy_mode),
 		  .ioctl_download                     (ioctl_download),
 		  .ioctl_index                        (ioctl_index),
 		  .ioctl_wr                           (ioctl_wr),
 		  .ioctl_addr                         (ioctl_addr),
-		  .ioctl_data                         (ioctl_data),
-		  
+		  .ioctl_data                         (ioctl_data),		  
 		  .clk_uart                          (clk_uart),
 	     .uart_rx                           (UART_RX),
 	     .uart_tx                           (UART_TX),
@@ -454,14 +578,11 @@ always @(posedge clk_4_77)
 	    //  .uart_dsr_n                        (uart_dsr),
 	    //  .uart_rts_n                        (uart_rts),
 	    //  .uart_dtr_n                        (uart_dtr),
-		    .SRAM_ADDR                         (SRAM_A),
-		    .SRAM_DATA                         (SRAM_Q[7:0]),
-		    .SRAM_WE_n                         (SRAM_WE),
-		//  .SRAM_ADDR                         (sramA),
-		//  .SRAM_DATA                         (sramDQ),
-		//  .SRAM_WE_n                         (sramWe)
+		//   .SRAM_ADDR                         (SRAM_A),
+		//   .SRAM_DATA                         (SRAM_Q[7:0]),
+		//   .SRAM_WE_n                         (SRAM_WE),
 		  .enable_sdram                       (1'b1),
-		  .sdram_clock                        (CLOCK_27),
+		  .sdram_clock                        (CLK_50M),
 		  .sdram_address                      (SDRAM_A),
         .sdram_cke                          (SDRAM_CKE),
         .sdram_cs                           (SDRAM_nCS),
@@ -473,16 +594,12 @@ always @(posedge clk_4_77)
         .sdram_dq_out                       (SDRAM_DQ_OUT),
         .sdram_dq_io                        (SDRAM_DQ_IO),
         .sdram_ldqm                         (SDRAM_DQML),
-        .sdram_udqm                         (SDRAM_DQMH)   
-    
+        .sdram_udqm                         (SDRAM_DQMH),
+		  .ems_enabled                        (~status[11]),
+		  .ems_address                        (status[13:12]),
+        .tandy_mode                         (tandy_mode)
     );
-	
-	wire speaker_out;
-	wire  [7:0]   tandy_snd_e;
 
-	wire [15:0] jtopl2_snd_e;	
-	wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + {tandy_snd_e, 6'd0}; // signed mixer
-	
 	wire [15:0] SDRAM_DQ_IN;
 	wire [15:0] SDRAM_DQ_OUT;
 	wire        SDRAM_DQ_IO;
@@ -490,19 +607,20 @@ always @(posedge clk_4_77)
 	assign SDRAM_DQ_IN = SDRAM_DQ;
 	assign SDRAM_DQ = ~SDRAM_DQ_IO ? SDRAM_DQ_OUT : 16'hZZZZ;			
 	
-	wire [14:0] audio_mix_l, audio_mix_r;
+	wire [15:0] lclamp;
+	wire [15:0] rclamp;
+	wire speaker_out;
+
+	assign DAC_L = lclamp;	
+	assign DAC_R = rclamp;
 
 	sigma_delta_dac sigma_delta_dac (
-		.clk      ( CLOCK_27    ),      // bus clock
-		.ldatasum ( sndmix >> 2 ),      // left channel data
-		.rdatasum ( sndmix >> 2 ),      // right channel data
+		.clk      ( CLK_50M     ),      // bus clock
+		.ldatasum ( lclamp >> 1 ),      // left channel data
+		.rdatasum ( rclamp >> 1 ),      // right channel data
 		.left     ( AUDIO_L     ),      // left bitstream output
 		.right    ( AUDIO_R     )       // right bitsteam output
 	);
- 
-	assign DAC_R = sndmix >> 1;
-	assign DAC_L = DAC_R;	 
-
 
 	wire s6_3_mux;
 	wire [2:0] SEGMENT;
@@ -511,8 +629,8 @@ always @(posedge clk_4_77)
 	  .CORE_CLK(clk_100),
 	  .CLK(clk_cpu),
 
-	  .RESET(reset || splashscreen),
-	  .READY(processor_ready),	  
+	  .RESET(reset_cpu),
+	  .READY(processor_ready),
 	  .NMI(1'b0),
 	  .INTR(interrupt_to_cpu),
 
@@ -539,174 +657,89 @@ always @(posedge clk_4_77)
 	/// VIDEO
 
 
-	//CGA
-	always @ (status[2:1], r, g, b) begin		
-		case(status[2:1])
-			// Verde
-			2'b01	: begin
-				raux = 6'b0;
-				gaux = red_weight[r] + green_weight[g] + blue_weight[b];				
-				baux = 6'b0;
-			end
-			// Ambar
-			2'b10	: begin
-				raux = red_weight[r] + green_weight[g] + blue_weight[b];
-				gaux = (red_weight[r] + green_weight[g] + blue_weight[b]) >> 1;
-				baux = 6'b0;
-			end
-			// Blanco y negro
-			2'b11	: begin
-				raux = red_weight[r] + green_weight[g] + blue_weight[b];
-				gaux = red_weight[r] + green_weight[g] + blue_weight[b];
-				baux = red_weight[r] + green_weight[g] + blue_weight[b];
-			end
-			// Color
-			default: begin
-				raux = r;
-				gaux = g;
-				baux = b;
-			end
-		endcase
-	end
+	video_monochrome_converter video_mono 
+	(
+		.clk_vid(CLK_VIDEO),
+		.ce_pix(CE_PIXEL),
+		
+		.R({r, 2'b0}),
+		.G({g, 2'b0}),
+		.B({b, 2'b0}),
+
+		.gfx_mode(screen_mode),
+		
+		.R_OUT(raux),
+		.G_OUT(gaux),
+		.B_OUT(baux)	
+	);
 
 	wire [5:0] vga_r;
 	wire [5:0] vga_g;
 	wire [5:0] vga_b;
 	wire vga_hs;
 	wire vga_vs;
+	wire [5:0] vga_r_o;
+	wire [5:0] vga_g_o;
+	wire [5:0] vga_b_o;
+
 
 	// 1 MDA, 0 CGA
-	assign vga_r = ~status[4] ? r : raux;
-	assign vga_g = ~status[4] ? g : gaux;
-	assign vga_b = ~status[4] ? b : baux;
+	assign vga_r = mda_mode ? r : raux[7:2];
+	assign vga_g = mda_mode ? g : gaux[7:2];
+	assign vga_b = mda_mode ? b : baux[7:2];
 
-
-
-	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_mda
-	(
-		.clk_sys(clk_113_750),
-		.ce_pix(clk_28_636),
-	    .ce_pix_actual(clk_28_636),
-	   
-		.SPI_SCK(SPI_SCK),
-		.SPI_SS3(SPI_SS3),
-		.SPI_DI(SPI_DI),
-
-		.scanlines(2'b00),
-		.scandoubler_disable(1'b1),    //scandoubler disabled
-		.hq2x(1'b0),
-		.ypbpr(1'b0),
-	    .ypbpr_full(1'b0),
-		.mono(1'b0),
-	    .line_start(1'b0),
+	mist_video #(.OSD_COLOR(3'd5)) mist_video (
+		.clk_sys     ( clk_56_875 ),
 	
-		.R(vga_r),
-		.G(vga_g),
-		.B(vga_b),
+		// OSD SPI interface
+		.SPI_SCK     ( SPI_SCK    ),
+		.SPI_SS3     ( SPI_SS3    ),
+		.SPI_DI      ( SPI_DI     ),
 	
-		// Positive pulses.
-		.HSync(vga_hs),
-		.VSync(vga_vs),
-		.HBlank(1'b0),
-		.VBlank(1'b0),
+		// scanlines (00-none 01-25% 10-50% 11-75%)
+		.scanlines   ( 2'b00      ),
 
-		.VGA_R(vga_r_mda),
-		.VGA_G(vga_g_mda),
-		.VGA_B(vga_b_mda),
-		.VGA_VS(vga_vs_mda),
-		.VGA_HS(vga_hs_mda)
+		// non-scandoubled pixel clock divider 0 - clk_sys/4, 1 - clk_sys/2
+		.ce_divider  ( 1'b1       ),
+	
+		// 0 = HVSync 31KHz, 1 = CSync 15KHz
+		.scandoubler_disable (1'b1),
+		// disable csync without scandoubler
+		.no_csync    ( 1'b1       ),
+		// YPbPr always uses composite sync
+		.ypbpr       ( 1'b0       ),
+		// Rotate OSD [0] - rotate [1] - left or right
+		.rotate      ( 2'b00      ),
+		// composite-like blending
+		.blend       ( 1'b0       ),
+	
+		// video in
+		.R           ( vga_r      ),
+		.G           ( vga_g      ),
+		.B           ( vga_b      ),
+		.HSync       ( ~vga_hs    ),
+		.VSync       ( ~vga_vs    ),
+
+		// MiST video output signals
+		.VGA_R       ( vga_r_o      ),
+		.VGA_G       ( vga_g_o      ),
+		.VGA_B       ( vga_b_o      ),
+		.VGA_VS      ( VGA_VS     ),
+		.VGA_HS      ( VGA_HS     )
+	
+		// `ifdef DEMISTIFY
+		// 						   ,
+		// .ce_x1_o	 ( ce_x1	  )
+		// `endif
 	);
 	
+	assign VGA_R = VGA_DE ? vga_r_o : 6'b000000;
+	assign VGA_G = VGA_DE ? vga_g_o : 6'b000000;
+	assign VGA_B = VGA_DE ? vga_b_o : 6'b000000;
 
-	video_mixer_mda #(.LINE_LENGTH(640), .HALF_DEPTH(0)) video_mixer_cga
-	(
-		.clk_sys(clk_113_750),
-		.ce_pix(clk_28_636),
-	    .ce_pix_actual(clk_28_636),
-
-		.SPI_SCK(SPI_SCK),
-		.SPI_SS3(SPI_SS3),
-		.SPI_DI(SPI_DI),
-
-		.scanlines(2'b00),
-		.scandoubler_disable(1'b1),    //scandoubler disabled
-		.hq2x(1'b0),
-		.ypbpr(1'b0),
-	    .ypbpr_full(1'b0),
-		.mono(1'b0),
-	    .line_start(1'b0),
-	
-		.R(vga_r),
-		.G(vga_g),
-		.B(vga_b),
-	
-		// Positive pulses.
-		.HSync(vga_hs),
-		.VSync(vga_vs),
-		.HBlank(1'b0),
-		.VBlank(1'b0),
-
-		.VGA_R(vga_r_cga),
-		.VGA_G(vga_g_cga),
-		.VGA_B(vga_b_cga),
-		.VGA_VS(vga_vs_cga),
-		.VGA_HS(vga_hs_cga)
-	);
-
-
-	// assign vga_r_cga = vga_r;
-	// assign vga_g_cga = vga_g;
-	// assign vga_b_cga = vga_b;
-	// assign vga_hs_cga = vga_hs;
-	// assign vga_vs_cga = vga_vs;
-
-	wire [5:0] vga_r_mda;
-	wire [5:0] vga_g_mda;
-	wire [5:0] vga_b_mda;
-	wire vga_hs_mda;
-	wire vga_vs_mda;
-
-	wire [5:0] vga_r_cga;
-	wire [5:0] vga_g_cga;
-	wire [5:0] vga_b_cga;
-	wire vga_hs_cga;
-	wire vga_vs_cga;
-
-	// 1 MDA, 0 CGA
-	assign VGA_R  = ~status[4] ? vga_r_mda : vga_r_cga;
-	assign VGA_G  = ~status[4] ? vga_g_mda : vga_g_cga ;
-	assign VGA_B  = ~status[4] ? vga_b_mda : vga_b_cga;
-	assign VGA_HS = ~status[4] ? vga_hs_mda : vga_hs_cga;
-	assign VGA_VS = ~status[4] ? vga_vs_mda : vga_vs_cga;
-
-/*
-// SRAM management
-wire sramOe = ~sramWe;
-wire sramWe;
-wire [20:0] sramA;
-wire [ 7:0] sramDQ;
-
-Mister_sRam sRam
-( // .*,
-  //SDram interface
-  .SDRAM_A		(SDRAM_A),
-  .SDRAM_DQ		(SDRAM_DQ),
-  .SDRAM_BA		(SDRAM_BA),
-  .SDRAM_nWE	(SDRAM_nWE),
-  .SDRAM_nCAS	(SDRAM_nCAS),
-  .SDRAM_nCS	(SDRAM_nCS),
-  .SDRAM_CKE	(SDRAM_CKE),
-  //Sram interface
-  .SRAM_A      (sramA),
-  .SRAM_DQ     (sramDQ),
-  .SRAM_nCE    (1'b0),
-  .SRAM_nOE    (sramOe), 
-  .SRAM_nWE    (sramWe) 
-);
-*/
 
 reg vsd = 0;
-always @(posedge CLOCK_27) if(usdImgMtd[0]) vsd <= |usdImgSz;
+always @(posedge CLK_50M) if(usdImgMtd[0]) vsd <= |usdImgSz;
 
 wire       vsdRd;
 wire       vsdWr;
@@ -736,7 +769,7 @@ assign SD_MOSI = usdDo & ~vsd;
 /*
 sd_card sd_card
 (
-	.clk_sys     (CLOCK_27  ),
+	.clk_sys     (CLK_50M  ),
 	.reset       (reset    ),
 	.sdhc        (status[4]),
 	.sd_rd       (vsdRd    ),

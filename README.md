@@ -1,13 +1,13 @@
-# PCXT DeMiSTtified
+# PCXT DeMiSTified
 
 Port DeMiSTified by Somhic from original MiSTer port currently in development  https://github.com/spark2k06/PCXT_MiSTer
 
-Read DeMiSTifty [NOTES](README_NOTES_DeMiSTify.md).
+**[Read DeMiSTifty port bugs and NOTES](README_NOTES_DeMiSTify.md).**
 
 Now can be loaded SO through serial at GPIO addon. See pinout at sys.tcl.  Only needs Rx/Tx signals.
 
 ```
-serdrive.exe -c <port> -d 115.2KB <image>
+serdrive.exe [-c <port>] -d 460.8Kb <image>
 ```
 
 Follow core discussion at https://misterfpga.org/viewtopic.php?t=4680
@@ -38,10 +38,7 @@ https://github.com/spark2k06/PCXT_MiSTer/blob/main/demo/MiSTer_PCXT.gif
 * IDE module implementation
 * Floppy implementation
 * VHD support for easy integration with [XTIDE Universal BIOS](https://www.xtideuniversalbios.org/)
-* Addition of other modules:
-    * EMS    
-    * Others...
-
+* Addition of other modules
 * Turbo mode (7.16Mhz)
 
 # Mounting the disk image
@@ -53,6 +50,60 @@ That's all that is needed, just launch the script and boot the core.
 In the SW folder there is also a file called "boot.rom" which contains Sergey Kiselev's open source 8088 BIOS, along with the XTIDE UniversalBIOS ready to boot from the serial port. However, Sergey Kiselev's BIOS has some problems with the keyboard and is a bit slow... while this issue is being solved, you can run the python script "make_boot_with_jukost.py" from inside the SW folder, which will generate a boot.rom file with the Juko ST BIOS in place, much more stable and with good performance.
 
 # ChangeLog
+
+### Beta 1.4
+
+* Rewiring with sn76489
+* Temporary removal of the signal from tandy_snd_rdy
+* Fix bug of the access to the CS signal in Tandy sound module
+* In tandy mode, the keyboard reset signal is not used
+* Added new IORQ signal
+* Restructuring of the OSD menu
+* Added DSS/Covox support
+* UART port speed increase to 921.6Kbps
+* CGA Mode Detection 320x200x4
+* Add video monochrome converter module
+* Integrate module into core + OSD menu tweaks
+* Fix COVOX OSD option
+
+### Beta 1.3
+
+* Unified chipset clock at 100 MHz.
+* Changed read signal to uart module.
+* Changed cen_opl2 signal.
+* Improved access speed to SDRAM.
+* Control sdram refresh execution timing.
+* Fixed KF8237.
+* Wired between Timer 1 output and DMA0 request.
+* Fix VRAM CGA and loader for XTIDE.
+* IBM5160 BIOS downloader.
+* Fix indentations in make_boot_with_ibm5160.
+* Tandy graphics selectable from the OSD.
+* EMS pages frame update.
+* fix a comment on addressable memory.
+* boot.rom up to 64Kb + 16Kb for XTIDE.
+* Dummy LPT1.
+* Update of ROM download scripts.
+* Simple improvements to PCXT.sdc.
+* Correct use of address_enable_n signal in ports and memory accesses.
+* Initial improvements in Tandy sound implementation.
+* Improvements to the implementation of Tandy video
+
+### Beta 1.2
+
+* Fix input device_clock and data_clock to the chipset
+* Fixed KF8259 bugs.
+* Create reset signals for each clock domain.
+* Changed SDRAM reset signal and bus input logic.
+* Fix timmings in PCXT.sdc
+* cleaning up project files
+* Default value to FFh for unused I/O ports 
+
+### Beta 1.1
+
+* Lo-Tech 2Mb EMS
+* Fix in UART access
+* video vectors corrected, sdc constraints for sdram, minor tipos to clear warnings
 
 ### Beta 1.0
 

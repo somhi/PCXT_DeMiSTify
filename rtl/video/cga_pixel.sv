@@ -30,6 +30,9 @@ module cga_pixel(
     input vsync,
     input video_enabled,
     input[7:0] cga_color_reg,
+    input[3:0] tandy_palette_color,
+    input[3:0] tandy_newcolor,
+    input tandy_palette_set,
     output[3:0] video
     );
 
@@ -45,10 +48,15 @@ module cga_pixel(
     reg[1:0] pix_bits;
     reg[1:0] pix_bits_old;
     reg[3:0] tandy_bits;
+	 
+    reg[3:0] tandy_palette[0:15] = '{ 4'h0, 4'h1, 4'h2, 4'h3, 4'h4, 4'h5, 4'h6, 4'h7, 4'h8, 4'h9, 4'ha, 4'hb, 4'hc, 4'hd, 4'he, 4'hf };  
+	 
     wire pix_640;
     wire[10:0] rom_addr;
     wire load_shifter;
-	wire [2:0] charpix_sel;
+    wire [2:0] charpix_sel;
+    reg[3:0] video_out;
+    assign video = (tandy_16_mode && hres_mode) ? tandy_palette[video_out] : video_out;
 
     // Character ROM
     reg[7:0] char_rom[0:4095];
@@ -59,6 +67,9 @@ module cga_pixel(
     // at appropriate times
     always @ (posedge clk)
     begin
+	     if (tandy_palette_set)
+		     tandy_palette[tandy_palette_color] = tandy_newcolor;
+			  
         if (vram_read_char) begin
             char_byte <= vram_data;
             char_byte_old <= char_byte;
@@ -111,7 +122,7 @@ module cga_pixel(
     begin
         // Only load character bits at this point
         if (charrom_read) begin
-            charbits <= char_rom[{~thin_font, 11'b0} | rom_addr];
+            charbits <= ((row_addr > 5'd7) && tandy_16_mode) ? 8'b0 : char_rom[{~thin_font, 11'b0} | rom_addr];
         end
     end
 
@@ -177,7 +188,7 @@ module cga_pixel(
         .grph_mode(grph_mode),
         .bw_mode(bw_mode),
         .mode_640(mode_640),
-        .tandy_16_mode(tandy_16_mode),
+        .tandy_16_mode(tandy_16_mode && hres_mode),
         .display_enable(display_enable_del[0]),
         .blink_enabled(blink_enabled),
         .blink(blink),
@@ -189,7 +200,7 @@ module cga_pixel(
         .c1(pix_bits[1]),
         .pix_640(pix_640),
         .pix_tandy(tandy_bits),
-        .pix_out(video)
+        .pix_out(video_out)
     );
 
 endmodule

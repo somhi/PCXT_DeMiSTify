@@ -164,10 +164,10 @@ architecture RTL of deca_top is
 	signal joyd : std_logic_vector(7 downto 0);
 
 	-- DAC AUDIO     
-	signal dac_l : signed(15 downto 0);
-	signal dac_r : signed(15 downto 0);
-	--signal dac_l_s: signed(15 downto 0);
-	--signal dac_r_s: signed(15 downto 0);
+	signal dac_l : std_logic_vector(15 downto 0);
+	signal dac_r : std_logic_vector(15 downto 0);
+	signal dac_l_s: std_logic_vector(15 downto 0);
+	signal dac_r_s: std_logic_vector(15 downto 0);
 
 	component AUDIO_SPI_CTL_RD
 		port (
@@ -366,12 +366,12 @@ begin
 			dac_LRCK  => i2s_Lr_o,
 			dac_SCLK  => i2s_Sck_o,
 			dac_SDIN  => i2s_D_o,
-			L_data    => std_logic_vector(dac_l),
-			R_data    => std_logic_vector(dac_r)
-		);
+			L_data    => dac_l_s,
+			R_data    => dac_r_s
+		);		
 
-	--dac_l_s <= ('0' & dac_l & "00000");
-	--dac_r_s <= ('0' & dac_r & "00000");
+	dac_l_s <= ('0' & dac_l(14 downto 0));
+	dac_r_s <= ('0' & dac_r(14 downto 0));
 
 	I2S_MCK <= i2s_Mck_o;
 	I2S_SCK <= i2s_Sck_o;
@@ -463,10 +463,8 @@ begin
 			--AUDIO
 				DAC_L   => dac_l,
 				DAC_R   => dac_r
-			-- AUDIO_L => SIGMA_L,
-			-- AUDIO_R => SIGMA_R
-			-- PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
-			-- PS2K_DAT_IN => ps2_keyboard_dat_in,
+	--		PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
+	--		PS2K_DAT_IN => ps2_keyboard_dat_in,
 	--		PS2K_CLK_OUT => ps2_keyboard_clk_out,
 	--		PS2K_DAT_OUT => ps2_keyboard_dat_out
 		);

@@ -52,9 +52,9 @@ constant demistify_serialdebug : std_logic := '0';
 			SDRAM_CLK		:	 OUT STD_LOGIC;
 			SDRAM_CKE		:	 OUT STD_LOGIC;
 
-			SRAM_A      	: out   std_logic_vector(20 downto 0);
-			SRAM_Q      	: inout std_logic_vector(15 downto 0);
-			SRAM_WE     	: out   std_logic;                            
+	--		SRAM_A      	: out   std_logic_vector(20 downto 0);
+	--		SRAM_Q      	: inout std_logic_vector(15 downto 0);
+	--		SRAM_WE     	: out   std_logic;                            
 
 			UART_RX			:	IN STD_LOGIC := '1';
 			UART_TX			:	OUT STD_LOGIC;
@@ -78,20 +78,20 @@ constant demistify_serialdebug : std_logic := '0';
 			VGA_DE			:	 OUT STD_LOGIC;
 			CLK_VIDEO		:	 OUT STD_LOGIC;
 
-			AUDIO_L  		: 	OUT std_logic;
-			AUDIO_R  		: 	OUT std_logic;
-			DAC_L			: 	OUT SIGNED(15 DOWNTO 0);
-			DAC_R			: 	OUT SIGNED(15 DOWNTO 0);
+			AUDIO_L  		: 	OUT STD_LOGIC;
+			AUDIO_R  		: 	OUT STD_LOGIC;
+			DAC_L			: 	OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			DAC_R			: 	OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
 
 			-- SD_SCK			:	 OUT STD_LOGIC;
 			-- SD_MOSI			:	 OUT STD_LOGIC;
 			-- SD_MISO			:	 IN STD_LOGIC;
 			-- SD_CS			:	 OUT STD_LOGIC;
 
-			--PS2K_CLK_IN 	: IN STD_LOGIC;
-			--PS2K_DAT_IN	 	: IN STD_LOGIC;
-			PS2K_CLK_OUT 	: OUT STD_LOGIC;
-			PS2K_DAT_OUT 	: OUT STD_LOGIC
+		--	PS2K_CLK_IN 	: IN STD_LOGIC;
+		--	PS2K_DAT_IN	 	: IN STD_LOGIC
+		--	PS2K_CLK_OUT 	: OUT STD_LOGIC;
+		--	PS2K_DAT_OUT 	: OUT STD_LOGIC
 		);
 	END COMPONENT;
 	
