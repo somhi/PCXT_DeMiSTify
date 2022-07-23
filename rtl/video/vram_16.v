@@ -13,7 +13,6 @@ module vram_16(
   output reg [7:0] doutb
 );
 
-//reg [7:0] vram[32767:0];
 reg [7:0] vram[16383:0];
 
 initial $readmemh("splash.hex", vram);

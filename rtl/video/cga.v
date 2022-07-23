@@ -36,6 +36,7 @@ module cga(
     output[3:0] video,
     output[3:0] dbl_video,
     output[6:0] comp_video,
+    output grph_mode,
 
 	 input splashscreen,
     input thin_font,
@@ -63,8 +64,8 @@ module cga(
     wire[7:0] bus_out_crtc;
     wire[7:0] bus_out_mem;
     wire[7:0] cga_status_reg;
-    //reg[7:0] cga_control_reg = 8'b0010_1000;    // (TEXT)        // SOUND OK
-    reg[7:0] cga_control_reg = 8'b0010_1001; // (TEXT 80x25)  // SPLASH OK
+    //reg[7:0] cga_control_reg = 8'b0010_1000;    // (TEXT 40x25)  // NO SPLASH, SOUND OK
+    reg[7:0] cga_control_reg = 8'b0010_1001;      // (TEXT 80x25)  // SPLASH OK
 	 //reg[7:0] cga_control_reg = 8'b0010_1010; // (GFX 320 x 200)
     reg[7:0] cga_color_reg = 8'b0000_0000;
 	 reg[7:0] tandy_color_reg = 8'b0000_0000;
@@ -72,7 +73,7 @@ module cga(
 	 reg tandy_palette_set;
 	 
     wire hres_mode;
-    wire grph_mode;
+//    wire grph_mode;
     wire bw_mode;
     wire mode_640;
     wire tandy_16_mode;
