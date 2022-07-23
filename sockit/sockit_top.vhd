@@ -226,7 +226,7 @@ begin
 	VGA_VS <= vga_vsync;
 
 	VGA_SYNC_n  <= '0';			-- RGB/Composite sync
-	VGA_BLANK_n <= '1';     -- '1'; 		-- vga_de;  	-- NOT? (vga_hsync and vga_vsync); (blank signal usually gives darker blacks)
+	VGA_BLANK_n <= not (vga_hsync and vga_vsync);     -- '1'; 		-- vga_de;  	-- not (vga_hsync and vga_vsync); (blank signal usually gives darker blacks)
 	VGA_CLK     <= vga_clk_x;	-- use clk_sys from top mist core. Could be used pll2 like UA reloaded
 								-- UA reloaded has the same Video DAC ADV7123 
 

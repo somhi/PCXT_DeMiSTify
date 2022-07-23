@@ -678,9 +678,6 @@ end
 	wire [5:0] vga_b;
 	wire vga_hs;
 	wire vga_vs;
-	wire [5:0] vga_r_o;
-	wire [5:0] vga_g_o;
-	wire [5:0] vga_b_o;
 
 
 	// 1 MDA, 0 CGA
@@ -688,7 +685,7 @@ end
 	assign vga_g = mda_mode ? g : gaux[7:2];
 	assign vga_b = mda_mode ? b : baux[7:2];
 
-	mist_video #(.OSD_COLOR(3'd5)) mist_video (
+	mist_video #(.OSD_COLOR(3'd5), .SD_HCNT_WIDTH(10)) mist_video (
 		.clk_sys     ( clk_56_875 ),
 	
 		// OSD SPI interface
@@ -721,9 +718,9 @@ end
 		.VSync       ( ~vga_vs    ),
 
 		// MiST video output signals
-		.VGA_R       ( vga_r_o      ),
-		.VGA_G       ( vga_g_o      ),
-		.VGA_B       ( vga_b_o      ),
+		.VGA_R       ( VGA_R      ),
+		.VGA_G       ( VGA_G      ),
+		.VGA_B       ( VGA_B      ),
 		.VGA_VS      ( VGA_VS     ),
 		.VGA_HS      ( VGA_HS     )
 	
@@ -733,10 +730,6 @@ end
 		// `endif
 	);
 	
-	assign VGA_R = VGA_DE ? vga_r_o : 6'b000000;
-	assign VGA_G = VGA_DE ? vga_g_o : 6'b000000;
-	assign VGA_B = VGA_DE ? vga_b_o : 6'b000000;
-
 
 reg vsd = 0;
 always @(posedge CLK_50M) if(usdImgMtd[0]) vsd <= |usdImgSz;
