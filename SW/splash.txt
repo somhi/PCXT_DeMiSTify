@@ -8,11 +8,14 @@
       |___/\___||_|  |_||_|___/  |_|  |_||_|  \_, | |_|   \___/_/\_\  |_|  
                                          |__/
 
-                        Port by @spark2k06, @naeloob
+                             Port by @spark2k06
 
-                         Powered by KFPC-XT & MCL86
+           Powered by KFPC-XT (@kitune-san) & MCL86 (@MicroCoreLabs)
                                        
-                                Contributors
-                                ------------
+                       Contributors & Special Thanks
+                       -----------------------------
 
-                @JasonA, @gyurco, @kitune-san, @MicroCoreLabs
+               @naeloob, @JasonA, @gyurco, @somhi, @Newsdee
+                        @Adr1048, @pgimeno, @Mills
+
+
