@@ -24,6 +24,7 @@ module PERIPHERALS #(
 	 input   logic           clk_vga_mda,
     input   logic           enable_mda,
     input   logic   [1:0]   mda_rgb,	 
+    output  logic           grph_mode,
     output  logic           de_o,
     output  logic   [5:0]   VGA_R,
     output  logic   [5:0]   VGA_G,
@@ -599,6 +600,7 @@ module PERIPHERALS #(
 		  .de_o                       (de_o_cga),
     //    .video                      (video_cga),              // non scandoubled
         .dbl_video                  (video_cga),                // scandoubled
+        .grph_mode                     (grph_mode),
 		  .splashscreen               (splashscreen),
         .thin_font                  (thin_font),
 		  .tandy_video                (tandy_video)
@@ -610,6 +612,8 @@ module PERIPHERALS #(
 	 wire [7:0] xtide_cpu_dout;
 	 wire [7:0] cga_vram_cpu_dout;
 	 wire [7:0] mda_vram_cpu_dout;
+
+    //vram_16 fails with Tandy graphics
 
      `ifdef DEMISTIFY_DECA
     //  vram cga_vram

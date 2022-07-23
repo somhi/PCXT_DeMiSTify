@@ -511,7 +511,8 @@ end
         .clk_vga_mda                        (clk_56_875),
         .enable_mda                         (1'b1),
 		.mda_rgb                            (2'b10), // always B&W - monochrome monitor tint handled down below
-        .de_o                               (VGA_DE),
+		.grph_mode                     		(grph_mode),
+		.de_o                               (VGA_DE),
         .VGA_R                              (r),
         .VGA_G                              (g),
         .VGA_B                              (b),
@@ -711,9 +712,9 @@ end
 		.VSync       ( ~vga_vs    ),
 
 		// MiST video output signals
-		.VGA_R       ( VGA_R      ),
-		.VGA_G       ( VGA_G      ),
-		.VGA_B       ( VGA_B      ),
+		.VGA_R       ( vga_r_o    ),
+		.VGA_G       ( vga_g_o    ),
+		.VGA_B       ( vga_b_o    ),
 		.VGA_VS      ( VGA_VS     ),
 		.VGA_HS      ( VGA_HS     )
 	
@@ -723,6 +724,43 @@ end
 		// `endif
 	);
 	
+
+	///////////////  hack to remove phantom column in Tandy graphics
+
+	wire [5:0] vga_r_o;
+	wire [5:0] vga_g_o;
+	wire [5:0] vga_b_o;
+	reg [5:0] vga_r_d;
+	reg [5:0] vga_g_d;
+	reg [5:0] vga_b_d;
+
+	logic [7:0] pix_count = 8'd0;
+	wire grph_mode;
+
+	always @(posedge clk_28_636, posedge vga_hs) begin      
+		if  (vga_hs) begin
+			pix_count <= 8'd0;
+		end										
+		else if (pix_count < 8'd48) begin		// 48 text cut+, no ghost line 
+			pix_count <= pix_count + 8'h01;		// 47 text cut-, ghost line
+			vga_r_d <= 6'b0;
+			vga_g_d <= 6'b0;
+			vga_b_d <= 6'b0;
+		end
+		else begin		
+			vga_r_d <= vga_r_o;
+			vga_g_d <= vga_g_o;
+			vga_b_d <= vga_b_o;
+		end
+	end
+
+	assign VGA_R = (tandy_mode & grph_mode) ? vga_r_d : vga_r_o;
+	assign VGA_G = (tandy_mode & grph_mode) ? vga_g_d : vga_g_o;
+	assign VGA_B = (tandy_mode & grph_mode) ? vga_b_d : vga_b_o;
+
+
+	///////////////
+
 
 reg vsd = 0;
 always @(posedge CLK_50M) if(usdImgMtd[0]) vsd <= |usdImgSz;
