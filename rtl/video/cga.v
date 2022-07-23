@@ -361,11 +361,10 @@ endgenerate
 		end
     end
 
-	 
     cga_scandoubler scandoubler (
         .clk(clk),
         .line_reset(line_reset),
-        .video(video),		  
+        .video(display_enable ? video : 4'b0000 ),		  
         .dbl_hsync(dbl_hsync),
         .dbl_video(dbl_video)
     );
