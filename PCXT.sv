@@ -725,7 +725,7 @@ end
 	);
 	
 
-	///////////////
+	///////////////    hack to remove phantom column in Tandy graphics
 
 	wire [5:0] vga_r_o;
 	wire [5:0] vga_g_o;
