@@ -351,6 +351,14 @@ module PERIPHERALS #(
 	wire [7:0] opl32_data;
    assign opl32_data = adlibhide ? 8'hFF : jtopl2_dout;
 	 
+
+   `ifdef DEMISTIFY_DECA
+
+   wire [7:0] tandy_snd_e;
+   wire dss_full;
+
+   `else
+
 	jtopl2 jtopl2_inst
 	(
 		.rst(reset),
@@ -398,6 +406,8 @@ module PERIPHERALS #(
 		.lclamp(lclamp),
 		.rclamp(rclamp)
 	);
+
+    `endif
 
 	
 	    logic   keybord_interrupt_ff;
@@ -615,9 +625,10 @@ module PERIPHERALS #(
 
     //vram_16 fails with Tandy graphics
 
-    //  `ifdef DEMISTIFY_DECA
 
-     vram cga_vram
+    `ifdef DEMISTIFY_DECA
+
+     vram_16 cga_vram
 	 (
         .clka                       (clock),
         .ena                        (~cga_chip_select_n),
@@ -650,41 +661,42 @@ module PERIPHERALS #(
         .doutb                      (MDA_VRAM_DOUT)
 	);
 
-    //  `else
+    `else
     
-    // vram cga_vram
-	//  (
-    //     .clka                       (clock),
-    //     .ena                        (~cga_chip_select_n),
-    //     .wea                        (~memory_write_n),
-    //     .addra                      (address[14:0]),
-    //     .dina                       (internal_data_bus),
-    //     .douta                      (cga_vram_cpu_dout),
-    //     .clkb                       (clk_vga_cga),
-    //     .web                        (1'b0),
-    //     .enb                        (CGA_VRAM_ENABLE),
-    //     .addrb                      (CGA_VRAM_ADDR[14:0]),
-    //     .dinb                       (8'h0),
-    //     .doutb                      (CGA_VRAM_DOUT)
-	// );
+    vram cga_vram
+	 (
+        .clka                       (clock),
+        .ena                        (~cga_chip_select_n),
+        .wea                        (~memory_write_n),
+        .addra                      (address[14:0]),
+        .dina                       (internal_data_bus),
+        .douta                      (cga_vram_cpu_dout),
+        .clkb                       (clk_vga_cga),
+        .web                        (1'b0),
+        .enb                        (CGA_VRAM_ENABLE),
+        .addrb                      (CGA_VRAM_ADDR[14:0]),
+        .dinb                       (8'h0),
+        .doutb                      (CGA_VRAM_DOUT)
+	);
 	
 	 
-    // vram mda_vram
-	//  (
-    //     .clka                       (clock),
-    //     .ena                        (~mda_chip_select_n),
-    //     .wea                        (~memory_write_n),
-    //     .addra                      (address[14:0]),
-    //     .dina                       (internal_data_bus),
-    //     .douta                      (mda_vram_cpu_dout),
-    //     .clkb                       (clk_vga_mda),
-    //     .web                        (1'b0),
-    //     .enb                        (MDA_VRAM_ENABLE),
-    //     .addrb                      (MDA_VRAM_ADDR[14:0]),
-    //     .dinb                       (8'h0),
-    //     .doutb                      (MDA_VRAM_DOUT)
-	// );
-    //  `endif
+    vram mda_vram
+	 (
+        .clka                       (clock),
+        .ena                        (~mda_chip_select_n),
+        .wea                        (~memory_write_n),
+        .addra                      (address[14:0]),
+        .dina                       (internal_data_bus),
+        .douta                      (mda_vram_cpu_dout),
+        .clkb                       (clk_vga_mda),
+        .web                        (1'b0),
+        .enb                        (MDA_VRAM_ENABLE),
+        .addrb                      (MDA_VRAM_ADDR[14:0]),
+        .dinb                       (8'h0),
+        .doutb                      (MDA_VRAM_DOUT)
+	);
+
+    `endif
 
    wire bios_loader  = (ioctl_download && ioctl_index < 2 && ioctl_addr[24:16] == 9'b000000000);
    wire xtide_loader = ((ioctl_download && ioctl_index == 2) ||

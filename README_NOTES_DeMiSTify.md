@@ -12,7 +12,7 @@
 
 **Deca Port**
 
-Need to comment out CGA RAM in rtl/KFPC-XT/HDL/Peripherals.sv to fit in memory.
+Current version of PCXT requires around 235 kB of BRAM.  Deca has only 210 kB (with 182 M9k blocks).
 
 
 
