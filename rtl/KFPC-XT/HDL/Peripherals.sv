@@ -82,7 +82,7 @@ module PERIPHERALS #(
 	 input   logic           uart_dcd_n,
 	 input   logic           uart_dsr_n,
 	 output  logic           uart_rts_n,
-	 output  logic           uart_dtr_n, 
+	 output  logic           uart_dtr_n,
 	 // EMS
 	 input   logic           ems_enabled,
 	 input   logic   [1:0]   ems_address,
@@ -613,7 +613,6 @@ module PERIPHERALS #(
 	 wire [7:0] cga_vram_cpu_dout;
 	 wire [7:0] mda_vram_cpu_dout;
 
-
     //vram_16 fails with Tandy graphics
 
     //  `ifdef DEMISTIFY_DECA
@@ -633,6 +632,7 @@ module PERIPHERALS #(
         .dinb                       (8'h0),
         .doutb                      (CGA_VRAM_DOUT)
 	);
+	
 	 
     vram_4 mda_vram
 	 (
