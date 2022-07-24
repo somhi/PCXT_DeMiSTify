@@ -2,10 +2,6 @@
 
 07/07/22 Neptuno port DeMiSTified by Somhic from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
 
-commit fe95d75cab305928fb4628ff46f9aece5c0d92a2 (HEAD -> pre_beta_1_3)
-
-Merge pull request #23 from kitune-san/sdram_and_dma
-
 ### STATUS
 
 * Load OS using Serial Rx/Tx interface using the two ps2 mouse pins.  See pinout below.
@@ -15,7 +11,7 @@ Merge pull request #23 from kitune-san/sdram_and_dma
   ```sh
   git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
   
-  -- add following in Neptuno_pins.tcl in demistify/board/neptuno
+  -- add/modify the following in Neptuno_pins.tcl in demistify/board/neptuno
   -- #UART
   -- #set_location_assignment PIN_C21 -to PS2_MOUSE_CLK
   -- set_location_assignment PIN_C21 -to UART_RXD
@@ -32,8 +28,8 @@ Merge pull request #23 from kitune-san/sdram_and_dma
 ### Instructions to Full compile the project for a specific board:
 
 ```sh
-git clone https://github.com/DECAfpga/[core_name]
-cd [core_name]
+git clone https://github.com/somhi/PCXT_DeMiSTify
+cd PCXT_DeMiSTify
 #Do a first make (will finish in error) but it will download missing submodules 
 make
 cd DeMiSTify

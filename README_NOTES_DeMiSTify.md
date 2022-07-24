@@ -2,6 +2,8 @@
 
 **Bugs**
 
+* keyboard controller does not pass diagnostic tests
+
 * With original IBM ROM does not work keyboard (beeps at every keystroke)
 
 * Tandy graphics are not well displayed
