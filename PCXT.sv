@@ -667,16 +667,8 @@ end
 		.B_OUT(baux)	
 	);
 
-	// wire [5:0] vga_r;
-	// wire [5:0] vga_g;
-	// wire [5:0] vga_b;
 	wire vga_hs;
 	wire vga_vs;
-
-	// // 1 MDA, 0 CGA
-	// assign vga_r = mda_mode ? r : raux[7:2];
-	// assign vga_g = mda_mode ? g : gaux[7:2];
-	// assign vga_b = mda_mode ? b : baux[7:2];
 
 	mist_video #(.OSD_COLOR(3'd5), .SD_HCNT_WIDTH(10)) mist_video (
 		.clk_sys     ( clk_56_875 ),
