@@ -615,8 +615,10 @@ module PERIPHERALS #(
 
     //vram_16 fails with Tandy graphics
 
-     `ifdef DEMISTIFY_DECA
-    //  vram cga_vram
+
+    `ifdef DEMISTIFY_DECA
+
+    //  vram_16 cga_vram
 	//  (
     //     .clka                       (clock),
     //     .ena                        (~cga_chip_select_n),
@@ -631,8 +633,9 @@ module PERIPHERALS #(
     //     .dinb                       (8'h0),
     //     .doutb                      (CGA_VRAM_DOUT)
 	// );
+	
 	 
-    vram mda_vram
+    vram_4 mda_vram
 	 (
         .clka                       (clock),
         .ena                        (~mda_chip_select_n),
@@ -648,7 +651,7 @@ module PERIPHERALS #(
         .doutb                      (MDA_VRAM_DOUT)
 	);
 
-     `else
+    `else
     
     vram cga_vram
 	 (
@@ -682,7 +685,8 @@ module PERIPHERALS #(
         .dinb                       (8'h0),
         .doutb                      (MDA_VRAM_DOUT)
 	);
-     `endif
+
+    `endif
 
    wire bios_loader  = (ioctl_download && ioctl_index < 2 && ioctl_addr[24:16] == 9'b000000000);
    wire xtide_loader = ((ioctl_download && ioctl_index == 2) ||
