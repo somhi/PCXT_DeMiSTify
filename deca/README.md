@@ -4,7 +4,10 @@
 
 **Current version of PCXT requires around 235 kB of BRAM** .  Deca has only 210 kB (with 182 M9k blocks).
 
-* 
+* CGA VRAM has been disabled in rtl/KFPC-XT/HDL/Peripherals.sv
+  * On startup, open OSD and in Audio&Video, change video output to MDA
+* Serdrive works ok at 115.2 kB
+
 
 **UART port is required to be used to load the OS through the serdrive app.**
 

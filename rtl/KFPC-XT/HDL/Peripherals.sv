@@ -351,14 +351,6 @@ module PERIPHERALS #(
 	wire [7:0] opl32_data;
    assign opl32_data = adlibhide ? 8'hFF : jtopl2_dout;
 	 
-
-//    `ifdef DEMISTIFY_DECA
-
-//    wire [7:0] tandy_snd_e;
-//    wire dss_full;
-
-//    `else
-
 	jtopl2 jtopl2_inst
 	(
 		.rst(reset),
@@ -406,8 +398,6 @@ module PERIPHERALS #(
 		.lclamp(lclamp),
 		.rclamp(rclamp)
 	);
-
-    // `endif
 
 	
 	    logic   keybord_interrupt_ff;
