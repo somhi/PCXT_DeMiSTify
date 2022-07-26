@@ -1,65 +1,52 @@
-# xxxxxxxxxxx DeMiSTified - Deca port
+# PCXT DeMiSTified - Deca port
 
-22/09/21 DECA port DeMiSTified by Somhic from original MiST xxxxx core https://github.com/mist-devel/xxxxxxx.   
+07/07/22 Neptuno port DeMiSTified by Somhic from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
 
-27/11/21 DECA port by Somhic from original Demistified MiST core https://github.com/robinsonb5/xxxxx by Alastair M. Robinson.
+**Current version of PCXT requires around 235 kB of BRAM** .  Deca has only 210 kB (with 182 M9k blocks).
 
-[Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
+* CGA VRAM has been disabled in rtl/KFPC-XT/HDL/Peripherals.sv
+  * On startup, open OSD and in Audio&Video, change video output to MDA
+* Serdrive works ok at 115.2 kB
 
-**THIS PORT REQUIRES A SDRAM MODULE WITH SEPARATED DQMH/L SIGNALS** (3 pins old MiSTer memory modules should work)
+
+**UART port is required to be used to load the OS through the serdrive app.**
 
 **Now compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2)** (new location for 3 pins of old SDRAM modules). Otherwise see pinout below to connect everything through GPIOs.
 
 **Features for Deca board**
 
-* ~~HDMI video output (special resolution will not work on all LCD monitors)~~
 * VGA 444 video output is available through GPIO. 
-* Audio I2S Line out (3.5 jack green connector) and HDMI audio output
-* MIDI output and MIDI I2S mixing available though an external mt32-pi synthesizer ([MIDI2SBC](https://github.com/somhi/MIDI_I2S_SBC_Pmod_Edge_Interface))
-* ~~Sigma-Delta audio available through GPIO~~
-* Joystick available through GPIO. 
-  * **Joystick power pin must be 2.5 V. DANGER: Connecting power pin above 2.6 V may damage the FPGA**
-  * This core was tested with a Megadrive 6 button gamepad. A permanent high level is applied on pin 7 of DB9, so only works buttons B and C.
+* Audio I2S Line out (3.5 jack green connector) 
 
 **Additional hardware required**
 
 - SDRAM module
   - Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2 ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca))
-  - Tested with a dual memory module v1.3 with 3 pins ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca) + [3pins](https://github.com/DECAfpga/DECA_board/blob/main/Sdram_mister_deca/README_3pins.md))
 - PS/2 Keyboard connected to GPIO
 
-**Optional USB keyboard input**
 
-Experimental support for USB low speed keyboards  (old & cheap). A mini USB to USB A female adaptor is needed  to be connected into the USB connector next to HDMI. <u>If not working try disconnecting power and/or program again the board.</u> 
 
-To generate bitstream with USB support edit the  /deca/deca_top.vhd and change the defined variable DECA_KEYB to 2 at the top of the file.
+### Compile the project in Quartus:
 
-##### Versions
+Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
 
-* 22xxxx VGA version only
+```sh
+git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
+#Load project in Quartus from /deca/PCXT_DeMiSTify_deca.qpf
+```
 
-### STATUS
 
-* Working fine
-
-* ~~HDMI video outputs special resolution so will not work on all monitors.~~ 
-
-### Binaries
-
-Fins .sof and .svf binary bitstreams for this core at the corresponding category at https://github.com/DECAfpga/DECA_binaries
 
 ### Instructions to compile the project for a specific board:
 
 ```sh
-git clone https://github.com/DECAfpga/[core_name]
-cd [core_name]
+git clone https://github.com/somhi/PCXT_DeMiSTify
+cd PCXT_DeMiSTify
 #Do a first make (will finish in error) but it will download missing submodules 
 make
 cd DeMiSTify
 #Create file site.mk in DeMiSTify folder 
 cp site.template site.mk
-#Edit site.mk and add your own PATHs to Quartus (Q18)
-gedit site.mk
 #Go back to root folder and do a make with board target (deca, neptuno, uareloaded, atlas_cyc). If not specified it will compile for all targets.
 cd ..
 make BOARD=deca
@@ -75,7 +62,9 @@ After that you can:
 
 ![pinout_deca](pinout_deca.png)
 
-Mouse is not required to use this core
+Mouse, joystick, MIDI are not used in this core
+
+UART port is required to be used to load the OS through the serdrive app.
 
 For 444 video DAC use all VGA pins. For 333 video DAC connect MSB from addon to MSB of location assignment (e.g. connect pin VGAR2 from Waveshare addon to VGA_R[3] Deca pin).
 
