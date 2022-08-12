@@ -42,16 +42,17 @@ module PCXT
 	input         SPI_SS4,
 	input         CONF_DATA0,
 
-	output        VGA_HS,
-	output        VGA_VS,
+	//Base video clock. Usually equals to CLK_SYS.
+	output        CLK_VIDEO,
+
 	output  [5:0] VGA_R,
 	output  [5:0] VGA_G,
 	output  [5:0] VGA_B,
+	output        VGA_HS,
+	output        VGA_VS,
 	output        VGA_DE,    // = ~(VBlank | HBlank)
 
 	`ifdef DEMISTIFY
-	output        CLK_VIDEO,
-
 	output [15:0]  DAC_L, 
 	output [15:0]  DAC_R, 
 	`endif
@@ -70,7 +71,7 @@ module PCXT
 	output        UART_TX
 
 //	input         PS2K_CLK_IN,
-//	input         PS2K_DAT_IN  //,
+//	input         PS2K_DAT_IN,
 //	output        PS2K_CLK_OUT,
 //	output        PS2K_DAT_OUT
 );
@@ -93,7 +94,7 @@ assign LED  =  ~ioctl_download;   //1'b1;
 // 0         1         2         3          4         5         6   
 // 01234567890123456789012345678901 23456789012345678901234567890123
 // 0123456789ABCDEFGHIJKLMNOPQRSTUV 0123456789ABCDEFGHIJKLMNOPQRSTUV
-//    XX  XXXXXXXXXX
+//  XXXX  XXXXXXXXXX
 
 `include "build_id.v" 
 parameter CONF_STR = {
@@ -104,20 +105,27 @@ parameter CONF_STR = {
 	"-;",
 	"O7,Splash Screen,Yes,No;",
 	"-;",
-	"P1,Audio & Video;",
+	"P1,FDD & HDD;",
 	"P1-;",
-	"P1OA,Adlib,On,Invisible;",
-	"P1O7,DSS/Covox,Unplugged,Plugged;",
+	//"P1S1,IMG,FDD Image:;",
+	//"P1S0,IMG,HDD Image:;",
+	"-;",
+	//"P1OJK,Write Protect,None,A:,C:,A: & C:;",
 	"P1-;",
-	//"P1O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
-	"P1O4,Video Output,CGA/Tandy,MDA;",
-	"P1OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
-	//"PO78,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
-	"P2,Hardware;",
+	"P2,Audio & Video;",
 	"P2-;",
-	"P2OB,Lo-tech 2MB EMS, Enabled, Disabled;",
-	"P2OCD,EMS Frame,A000,C000,D000;",
+	"P2OA,Adlib,On,Invisible;",
+	"P2O7,DSS/Covox,Unplugged,Plugged;",
 	"P2-;",
+	//"P2O12,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
+	//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
+	"P2O4,Video Output,CGA/Tandy,MDA;",
+	"P2OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",	
+	"P3,Hardware;",
+	"P3-;",
+	"P3OB,Lo-tech 2MB EMS, Enabled, Disabled;",
+	"P3OCD,EMS Frame,A000,C000,D000;",
+	"P3-;",
 	"-;",
 	"F,ROM,Load BIOS  (F000);",	
 	"F,ROM,Load XTIDE (EC00);",	
@@ -225,12 +233,14 @@ reg clk_14_318 = 1'b0;
 //reg clk_7_16 = 1'b0;
 wire clk_4_77;
 wire clk_cpu;
+wire pclk;
 wire clk_opl2;
+wire clk_chipset;
 wire peripheral_clock;
 
 `ifdef DEMISTIFY_sockit
 
-assign SDRAM_CLK = CLK_50M;
+assign SDRAM_CLK = clk_chipset;
 
 pll pll
 (
@@ -241,6 +251,7 @@ pll pll
 	.outclk_2(clk_28_636),
 	.outclk_3(clk_uart),
 	.outclk_4(clk_opl2),
+	.outclk_5(clk_chipset),
 	.locked(pll_locked)
 );
 
@@ -253,9 +264,10 @@ pll pll
 	.inclk0(CLK_50M),
 	.areset(1'b0),
 	.c0(clk_100),
-	.c1(SDRAM_CLK),	
-	.c2(clk_uart),
-	.c3(clk_opl2),
+	.c1(clk_chipset),	
+	.c2(SDRAM_CLK),
+	.c3(clk_uart),
+	.c4(clk_opl2),
 	.locked(pll_locked)
 );
 
@@ -283,17 +295,14 @@ wire HBlank;
 wire HSync;
 wire VBlank;
 wire VSync;
-wire ce_pix;
+wire ce_pixel;
 //wire [7:0] video;
 
 assign CLK_VIDEO = clk_56_875;
 
-wire CE_PIXEL;
-assign CE_PIXEL = 1'b1;
-
 reg         cen_44100;
 reg  [31:0] cen_44100_cnt;
-wire [31:0] cen_44100_cnt_next = cen_44100_cnt + 16'd44100;
+wire [31:0] cen_44100_cnt_next = cen_44100_cnt + 32'd44100;
 always @(posedge CLK_50M) begin
 	cen_44100 <= 0;
 	cen_44100_cnt <= cen_44100_cnt_next;
@@ -303,12 +312,15 @@ always @(posedge CLK_50M) begin
 	end
 end
 
-always @(posedge clk_28_636)
+always @(posedge clk_28_636) begin
 	clk_14_318 <= ~clk_14_318; // 14.318Mhz
+//	ce_pixel <= mda_mode ? clk_14_318 : clk_14_318; // MDA needs rework, but displays at half res
+end
+
+assign ce_pixel = 1'b1;
 
 //always @(posedge clk_14_318) begin
 //	clk_7_16 <= ~clk_7_16; // 7.16Mhz
-//	CE_PIXEL <= mda_mode ? 1'b1 : clk_7_16;
 //end
 
 clk_div3 clk_normal // 4.77MHz
@@ -323,10 +335,16 @@ always @(posedge clk_4_77)
 logic  clk_cpu_ff_1;
 logic  clk_cpu_ff_2;
 
-always @(posedge clk_100) begin
+logic  pclk_ff_1;
+logic  pclk_ff_2;
+
+always @(posedge clk_chipset) begin
     clk_cpu_ff_1 <= clk_4_77;
     clk_cpu_ff_2 <= clk_cpu_ff_1;
     clk_cpu      <= clk_cpu_ff_2;
+    pclk_ff_1    <= peripheral_clock;
+    pclk_ff_2    <= pclk_ff_1;
+    pclk         <= pclk_ff_2;
 end
 
 logic   clk_opl2_ff_1;
@@ -334,7 +352,7 @@ logic   clk_opl2_ff_2;
 logic   clk_opl2_ff_3;
 logic   cen_opl2;
 
-always @(posedge clk_100) begin
+always @(posedge clk_chipset) begin
     clk_opl2_ff_1 <= clk_opl2;
     clk_opl2_ff_2 <= clk_opl2_ff_1;
     clk_opl2_ff_3 <= clk_opl2_ff_2;
@@ -372,14 +390,14 @@ logic reset_cpu_ff = 1'b1;
 logic reset_cpu = 1'b1;
 logic [15:0] reset_cpu_count = 16'h0000;
 
-always @(negedge clk_100, posedge reset) begin
+always @(negedge clk_chipset, posedge reset) begin
 	if (reset)
 		reset_cpu_ff <= 1'b1;
 	else
 		reset_cpu_ff <= reset;
 end
 
-always @(negedge clk_100, posedge reset) begin
+always @(negedge clk_chipset, posedge reset) begin
 	if (reset) begin
 		reset_cpu <= 1'b1;
 		reset_cpu_count <= 16'h0000;
@@ -434,7 +452,7 @@ end
     logic   device_clock_ff;
     logic   device_clock;
 
-    always_ff @(negedge clk_cpu, posedge reset)
+    always_ff @(negedge clk_chipset, posedge reset)
     begin
         if (reset) begin
             device_clock_ff <= 1'b0;
@@ -453,7 +471,7 @@ end
     logic   device_data_ff;
     logic   device_data;
 
-    always_ff @(negedge clk_cpu, posedge reset)
+    always_ff @(negedge clk_chipset, posedge reset)
     begin
         if (reset) begin
             device_data_ff <= 1'b0;
@@ -481,6 +499,7 @@ end
     logic   [7:0]   port_c_in;	 
 	 reg     [7:0]   sw;
 	 
+	//wire [1:0] scale = status[2:1];
 	wire tandy_mode = status[3];
 	wire mda_mode = status[4];	 
 	wire [2:0] screen_mode = status[16:14];
@@ -490,11 +509,11 @@ end
 	 assign  port_c_in[3:0] = port_b_out[3] ? sw[7:4] : sw[3:0];
 
    CHIPSET u_CHIPSET (
-        .clock                              (clk_100),
+        .clock                              (clk_chipset),
         .cpu_clock                            (clk_cpu),
-		  .clk_sys                            (CLK_50M),
-		  .peripheral_clock                   (peripheral_clock),
-		  
+		  .clk_sys                            (clk_chipset),
+		  .peripheral_clock                   (pclk),
+		  .color										  (screen_mode == 3'd0),
         .reset                              (reset_cpu),
         .sdram_reset                        (reset),
         .cpu_address                        (cpu_address),
@@ -511,13 +530,14 @@ end
         .clk_vga_mda                        (clk_56_875),
         .enable_mda                         (1'b1),
 		.mda_rgb                            (2'b10), // always B&W - monochrome monitor tint handled down below
-		.grph_mode                     		(grph_mode),
-		.de_o                               (VGA_DE),
+		//.de_o                               (VGA_DE),
         .VGA_R                              (r),
         .VGA_G                              (g),
         .VGA_B                              (b),
         .VGA_HSYNC                          (vga_hs),
         .VGA_VSYNC                          (vga_vs),
+		.VGA_HBlank	  				        (HBlank),
+		.VGA_VBlank							(VBlank),
 //      .address                            (address),
         .address_ext                        (20'hFFFFF),
 //      .address_direction                  (address_direction),
@@ -576,7 +596,7 @@ end
 	    //  .uart_rts_n                        (uart_rts),
 	    //  .uart_dtr_n                        (uart_dtr),
 		  .enable_sdram                       (1'b1),
-		  .sdram_clock                        (CLK_50M),
+		  .sdram_clock                        (clk_chipset),
 		  .sdram_address                      (SDRAM_A),
         .sdram_cke                          (SDRAM_CKE),
         .sdram_cs                           (SDRAM_nCS),
@@ -641,7 +661,7 @@ end
 
 	///
 
-	always @(posedge clk_cpu) begin
+	always @(posedge clk_100) begin
 		if (address_latch_enable)
 			cpu_address <= cpu_ad_out;
 		else
@@ -654,7 +674,7 @@ end
 	video_monochrome_converter video_mono 
 	(
 		.clk_vid(CLK_VIDEO),
-		.ce_pix(CE_PIXEL),
+		.ce_pix(ce_pixel),
 		
 		.R({r, 2'b0}),
 		.G({g, 2'b0}),
@@ -678,13 +698,13 @@ end
 		.SPI_SS3     ( SPI_SS3    ),
 		.SPI_DI      ( SPI_DI     ),
 	
-		// scanlines (00-none 01-25% 10-50% 11-75%)
+		// scanlines (00-none 01-25% 10-50% 11-75%)   	//only works if scandoubler enabled
 		.scanlines   ( 2'b00      ),
 
 		// non-scandoubled pixel clock divider 0 - clk_sys/4, 1 - clk_sys/2
 		.ce_divider  ( 1'b1       ),
 	
-		// 0 = HVSync 31KHz, 1 = CSync 15KHz
+		// 0 = HVSync 31KHz, 1 = CSync 15KHz			//using Graphics Gremlin scandoubler
 		.scandoubler_disable (1'b1),
 		// disable csync without scandoubler
 		.no_csync    ( 1'b1       ),
@@ -703,9 +723,9 @@ end
 		.VSync       ( ~vga_vs    ),
 
 		// MiST video output signals
-		.VGA_R       ( vga_r_o    ),
-		.VGA_G       ( vga_g_o    ),
-		.VGA_B       ( vga_b_o    ),
+		.VGA_R       ( VGA_R      ),
+		.VGA_G       ( VGA_G      ),
+		.VGA_B       ( VGA_B      ),
 		.VGA_VS      ( VGA_VS     ),
 		.VGA_HS      ( VGA_HS     )
 	
@@ -715,42 +735,8 @@ end
 		// `endif
 	);
 	
-
-	///////////////  hack to remove phantom column in Tandy graphics
-
-	wire [5:0] vga_r_o;
-	wire [5:0] vga_g_o;
-	wire [5:0] vga_b_o;
-	reg [5:0] vga_r_d;
-	reg [5:0] vga_g_d;
-	reg [5:0] vga_b_d;
-
-	logic [7:0] pix_count = 8'd0;
-	wire grph_mode;
-
-	always @(posedge clk_28_636, posedge vga_hs) begin      
-		if  (vga_hs) begin
-			pix_count <= 8'd0;
-		end										
-		else if (pix_count < 8'd48) begin		// 48 text cut+, no ghost line 
-			pix_count <= pix_count + 8'h01;		// 47 text cut-, ghost line
-			vga_r_d <= 6'b0;
-			vga_g_d <= 6'b0;
-			vga_b_d <= 6'b0;
-		end
-		else begin		
-			vga_r_d <= vga_r_o;
-			vga_g_d <= vga_g_o;
-			vga_b_d <= vga_b_o;
-		end
-	end
-
-	assign VGA_R = (tandy_mode & grph_mode) ? vga_r_d : vga_r_o;
-	assign VGA_G = (tandy_mode & grph_mode) ? vga_g_d : vga_g_o;
-	assign VGA_B = (tandy_mode & grph_mode) ? vga_b_d : vga_b_o;
-
-	///////////////
-
+	assign VGA_DE = ~(HBlank | VBlank);
+	
 
 reg vsd = 0;
 always @(posedge CLK_50M) if(usdImgMtd[0]) vsd <= |usdImgSz;

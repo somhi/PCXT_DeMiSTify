@@ -4,12 +4,9 @@
 
 **Current version of PCXT requires around 235 kB of BRAM** .  Deca has only 210 kB (with 182 M9k blocks).
 
-* CGA VRAM has been disabled in rtl/KFPC-XT/HDL/Peripherals.sv
-  * On startup, open OSD with F12, go to Audio&Video menu and change video output to MDA
-  * Load a BIOS like Juko + XTIDE
-  * Reset core from OSD
-* Serdrive works at 115.2 kB
-
+* MDA VRAM has been disabled (in rtl/KFPC-XT/HDL/Peripherals.sv)
+* CGA VRAM reduced from 32 to 16 kB. CGA works Ok, but not Tandy games.
+* With original IBM ROM does not work keyboard (beeps at every keystroke)
 
 **UART port is required to be used to load the OS through the serdrive app.**
 

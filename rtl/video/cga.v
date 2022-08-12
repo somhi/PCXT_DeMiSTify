@@ -30,17 +30,19 @@ module cga(
 	 
     // Video outputs
     output hsync,
+	output hblank,
     output dbl_hsync,
     output vsync,
+	output vblank,
 	 output de_o,
     output[3:0] video,
     output[3:0] dbl_video,
     output[6:0] comp_video,
-    output grph_mode,
 
 	 input splashscreen,
     input thin_font,
-	 input tandy_video
+	 input tandy_video,
+	 input color
     );
 
     parameter MDA_70HZ = 0;
@@ -73,7 +75,7 @@ module cga(
 	 reg tandy_palette_set;
 	 
     wire hres_mode;
-//    wire grph_mode;
+    wire grph_mode;
     wire bw_mode;
     wire mode_640;
     wire tandy_16_mode;
@@ -83,7 +85,6 @@ module cga(
     wire hsync_int;
     wire vsync_l;
     wire cursor;
-//    wire[3:0] video; //Mister
     wire display_enable;
 
     // Two different clocks from the sequencer
@@ -224,13 +225,7 @@ module cga(
     assign grph_mode = cga_control_reg[1]; // 1=graphics, 0=text
     assign bw_mode = cga_control_reg[2]; // 1=b&w, 0=color
 
-generate //Mister
-    if (NO_DISPLAY_DISABLE == 1) begin 
-        assign video_enabled = 1;
-    end else begin
-        assign video_enabled = cga_control_reg[3];
-    end
-endgenerate
+    assign video_enabled = NO_DISPLAY_DISABLE ? 1'b1 : cga_control_reg[3];
 	 
     assign mode_640 = cga_control_reg[4]; // 1=640x200 mode, 0=others
     assign blink_enabled = cga_control_reg[5];
@@ -272,11 +267,15 @@ endgenerate
         .lock(1'b0),
         .hsync(hsync_int),
         .vsync(vsync_l),
+		.hblank(hblank),
+		.vblank(vblank),
         .display_enable(display_enable),
         .cursor(cursor),
         .mem_addr(crtc_addr),
         .row_addr(row_addr),
-        .line_reset(line_reset)
+        .line_reset(line_reset),
+		  .tandy_16_gfx(tandy_16_mode & grph_mode & hres_mode),
+		  .color(color)
     );
 
     // CGA 80 column timings
@@ -316,7 +315,8 @@ endgenerate
         .disp_pipeline(disp_pipeline),
         .isa_op_enable(isa_op_enable),
         .hclk(hclk),
-        .lclk(lclk)
+        .lclk(lclk),
+		  .tandy_16_gfx(tandy_16_mode & grph_mode & hres_mode)
     );
 
     // Pixel pusher
@@ -365,10 +365,14 @@ endgenerate
     cga_scandoubler scandoubler (
         .clk(clk),
         .line_reset(line_reset),
-        .video(display_enable ? video : 4'b0000 ),		  
+    //  .video(display_enable ? video : 4'b0000 ),		  
+        .video(cga_de ? video : 4'b0000 ),		  
         .dbl_hsync(dbl_hsync),
         .dbl_video(dbl_video)
     );
 	
+    wire cga_de;
+    assign cga_de = ~(hblank | vblank);
+
 
 endmodule

@@ -6,9 +6,8 @@ Port DeMiSTified by Somhic from original MiSTer port currently in development  h
 
 Now can be loaded SO through serial at GPIO addon. See pinout at sys.tcl.  Only needs Rx/Tx signals.
 
-```sh 
-serdrive.exe [-c <port>] -d 115.2Kb <image>
-#serdrive.exe [-c <port>] -d 460.8Kb <image>    higher speed does not work in all boards
+```
+serdrive.exe [-c <port>] -d 460.8Kb <image>
 ```
 
 Follow core discussion at https://misterfpga.org/viewtopic.php?t=4680

@@ -9,14 +9,14 @@ use work.demistify_config_pkg.all;
 
 
 -- add following in Neptuno_pins.tcl in demistify/board/neptuno
--- #SRAM
--- set_location_assignment PIN_AB15 -to SRAM_A[20]
--- #UART
+-- #UART through PS2 Mouse port
 -- #set_location_assignment PIN_C21 -to PS2_MOUSE_CLK
 -- set_location_assignment PIN_C21 -to UART_RXD
 -- #set_location_assignment PIN_B21 -to PS2_MOUSE_DAT
 -- set_location_assignment PIN_B21 -to UART_TXD
-
+-- #UART External addon
+-- #set_location_assignment PIN_M19 -to UART_RXD
+-- #set_location_assignment PIN_U22 -to UART_TXD
 --------------------------------------------------
 
 entity neptuno_top is
