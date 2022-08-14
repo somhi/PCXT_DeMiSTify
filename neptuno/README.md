@@ -6,6 +6,8 @@
 
 * Load OS using Serial Rx/Tx interface using the two ps2 mouse pins.  See pinout below.
 
+* With original IBM ROM  keyboard does not work very well.
+
 * Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus
 
   ```sh

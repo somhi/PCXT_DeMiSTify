@@ -2,13 +2,13 @@ module vram_16(
   input clka,
   input ena,  
   input wea,
-  input [14:0] addra,
+  input [13:0] addra,
   input [7:0] dina,
   output reg [7:0] douta,
   input clkb,
   input enb,
   input web,
-  input [14:0] addrb,
+  input [13:0] addrb,
   input [7:0] dinb,
   output reg [7:0] doutb
 );

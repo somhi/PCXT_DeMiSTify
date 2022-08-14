@@ -6,7 +6,13 @@
 
 * MDA VRAM has been disabled (in rtl/KFPC-XT/HDL/Peripherals.sv)
 * CGA VRAM reduced from 32 to 16 kB. CGA works Ok, but not Tandy games.
+
+**Bugs**:
+
 * With original IBM ROM does not work keyboard (beeps at every keystroke)
+
+* Serdrive works at 460.8 K & 230.4K but not 115.2K
+* Prince of Persia gives disk error
 
 **UART port is required to be used to load the OS through the serdrive app.**
 

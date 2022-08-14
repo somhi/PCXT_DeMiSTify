@@ -2,7 +2,9 @@
 
 Port DeMiSTified by Somhic from original MiSTer port currently in development  https://github.com/spark2k06/PCXT_MiSTer
 
-**[Read DeMiSTifty port bugs and NOTES](README_NOTES_DeMiSTify.md).**
+Keyboard controller does not pass diagnostic tests
+
+**Check specific BOARD limitations on each board folder's readme.**
 
 Now can be loaded SO through serial at GPIO addon. See pinout at sys.tcl.  Only needs Rx/Tx signals.
 
