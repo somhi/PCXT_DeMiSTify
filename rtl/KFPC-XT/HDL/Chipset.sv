@@ -7,6 +7,7 @@ module CHIPSET (
     input   logic           cpu_clock,
 	 input   logic           clk_sys,
     input   logic           peripheral_clock,
+	 input   logic   [1:0]   turbo_mode,
 	 input   logic           color,
     input   logic           reset,
     input   logic           sdram_reset,
@@ -77,6 +78,12 @@ module CHIPSET (
     input   logic           ps2_data,
     output  logic           ps2_clock_out,
     output  logic           ps2_data_out,
+	 input   logic   [4:0]   joy_opts,
+	 input   logic   [31:0]  joy0,
+	 input   logic   [31:0]  joy1,
+	 input   logic   [15:0]  joya0,
+	 input   logic   [15:0]  joya1,
+	 
 	 // SOUND
 	 input   logic           clk_en_44100, // COVOX/DSS clock enable
 	 input   logic           dss_covox_en,
@@ -119,9 +126,7 @@ module CHIPSET (
     output  logic           sdram_udqm,
 	 // EMS
 	 input   logic           ems_enabled,
-	 input   logic   [1:0]   ems_address,
-    // Mode Switch
-    input   logic           tandy_mode
+	 input   logic   [1:0]   ems_address
 );
 
     logic           dma_ready;
@@ -141,14 +146,14 @@ module CHIPSET (
 
     logic           prev_timer_count_1;
     logic           DRQ0;
-	 
-	 logic   [6:0]   map_ems[0:3];
-	 logic           ena_ems[0:3];
-	 logic           ems_b1;
-	 logic           ems_b2;
-	 logic           ems_b3;
-	 logic           ems_b4;
-	 
+
+    logic   [6:0]   map_ems[0:3];
+    logic           ena_ems[0:3];
+    logic           ems_b1;
+    logic           ems_b2;
+    logic           ems_b3;
+    logic           ems_b4;
+    logic           tandy_snd_rdy;
 
    always_ff @(posedge clock) begin
        if (reset)
@@ -229,6 +234,7 @@ module CHIPSET (
 		  .clk_uart                           (clk_uart),
         .peripheral_clock                   (peripheral_clock),
 		  .color                              (color),
+		  .turbo_mode                         (turbo_mode),
         .reset                              (reset),
         .interrupt_to_cpu                   (interrupt_to_cpu),
         .interrupt_acknowledge_n            (interrupt_acknowledge_n),
@@ -247,7 +253,7 @@ module CHIPSET (
         .VGA_B                              (VGA_B),
         .VGA_HSYNC                          (VGA_HSYNC),
         .VGA_VSYNC                          (VGA_VSYNC),
-		.VGA_HBlank                         (VGA_HBlank),
+        .VGA_HBlank                         (VGA_HBlank),
         .VGA_VBlank                         (VGA_VBlank),
         .address                            (address),
         .internal_data_bus                  (internal_data_bus),
@@ -271,6 +277,11 @@ module CHIPSET (
         .port_c_io                          (port_c_io),
         .ps2_clock                          (ps2_clock),
         .ps2_data                           (ps2_data),
+        .joy_opts                           (joy_opts),
+        .joy0                               (joy0),
+        .joy1                               (joy1),
+        .joya0                              (joya0),
+        .joya1                              (joya1),
         .ps2_clock_out                      (ps2_clock_out),
         .ps2_data_out                       (ps2_data_out),
 		  .clk_en_44100                       (clk_en_44100),
@@ -288,11 +299,11 @@ module CHIPSET (
 		  .ioctl_data                         (ioctl_data),
 	     .uart_rx                           (uart_rx),
 	     .uart_tx                           (uart_tx),
-	     .uart_cts_n                        (uart_cts),
-	     .uart_dcd_n                        (uart_dcd),
-	     .uart_dsr_n                        (uart_dsr),
-	     .uart_rts_n                        (uart_rts),
-	     .uart_dtr_n                        (uart_dtr),
+	     .uart_cts_n                        (uart_cts_n),
+	     .uart_dcd_n                        (uart_dcd_n),
+	     .uart_dsr_n                        (uart_dsr_n),
+	     .uart_rts_n                        (uart_rts_n),
+	     .uart_dtr_n                        (uart_dtr_n),
 		  .ems_enabled                       (ems_enabled),
 		  .ems_address                       (ems_address),
 		  .map_ems                           (map_ems),
@@ -300,15 +311,12 @@ module CHIPSET (
 	     .ems_b1                            (ems_b1),
 	     .ems_b2                            (ems_b2),
 	     .ems_b3                            (ems_b3),
-	     .ems_b4                            (ems_b4),
-        .tandy_mode                         (tandy_mode)
+	     .ems_b4                            (ems_b4)
     );
 
     RAM u_RAM (
-        .clock                              (clock),
-        .sdram_clock                        (sdram_clock),
-        .reset                              (reset),
-        .sdram_reset                        (sdram_reset),
+        .clock                              (sdram_clock),
+        .reset                              (sdram_reset),
         .enable_sdram                       (enable_sdram),
         .address                            (address),
         .internal_data_bus                  (internal_data_bus),

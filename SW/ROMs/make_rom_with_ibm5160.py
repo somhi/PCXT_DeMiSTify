@@ -15,21 +15,22 @@ if __name__ == "__main__":
         os.remove("ibm5160.zip")
     except:
         print("Error while deleting file : ibm5160.zip")
+        
+    try:
+        os.remove("README.TXT")
+    except:
+        print("Error while deleting file : README.TXT")
 
-    rom_filename = "boot.rom"
-    xtidename = "ide_xtl.rom"
+    rom_filename = "pcxt.rom"
     ibm5160_basename = "BIOS_5160_08NOV82_"
 
-    with open(rom_filename, "wb") as romf, open(ibm5160_basename + "U19_5000027_27256.bin", "rb") as f:
+    with open(rom_filename, "wb") as romf, open(ibm5160_basename + "U19_5000027_27256.BIN", "rb") as f:
         romf.write(f.read())
 
-    with open(rom_filename, "ab") as romf, open(ibm5160_basename + "U18_1501512.bin", "rb") as f:
+    with open(rom_filename, "ab") as romf, open(ibm5160_basename + "U18_1501512.BIN", "rb") as f:
         romf.write(f.read())
-        
-    with open(rom_filename, "ab") as romf, open(xtidename, "rb") as f:
-     romf.write(f.read())
 
-    fileList = glob.glob(ibm5160_basename + "*.bin")
+    fileList = glob.glob(ibm5160_basename + "*.BIN")
 
     for filePath in fileList:
         try:

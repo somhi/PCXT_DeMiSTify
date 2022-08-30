@@ -8,6 +8,7 @@ module PERIPHERALS #(
     input   logic           clock,
 	 input   logic           clk_sys,
     input   logic           peripheral_clock,	 
+	 input   logic   [1:0]   turbo_mode,
 	 input   logic           color,
     input   logic           reset,
     // CPU
@@ -59,6 +60,11 @@ module PERIPHERALS #(
     input   logic           ps2_data,
     output  logic           ps2_clock_out,
     output  logic           ps2_data_out,
+	 input   logic   [4:0]   joy_opts,
+	 input   logic   [31:0]  joy0,
+	 input   logic   [31:0]  joy1,
+	 input   logic   [15:0]  joya0,
+	 input   logic   [15:0]  joya1,
 	 // SOUND
 	 input   logic           clk_en_44100, // COVOX/DSS clock enable
 	 input   logic           dss_covox_en,
@@ -93,9 +99,7 @@ module PERIPHERALS #(
 	 output  logic           ems_b1,
 	 output  logic           ems_b2,
 	 output  logic           ems_b3,
-	 output  logic           ems_b4,
-     // Mode Switch
-    input   logic           tandy_mode
+	 output  logic           ems_b4
 );
     
 	 wire grph_mode;
@@ -132,6 +136,8 @@ module PERIPHERALS #(
     wire    timer_chip_select_n     = iorq && chip_select_n[2];
     wire    ppi_chip_select_n       = iorq && chip_select_n[3];
     assign  dma_page_chip_select_n  = iorq && chip_select_n[4];
+
+	 wire    joystick_select        = (iorq && ~address_enable_n && address[15:3] == (16'h0200 >> 3)); // 0x200 .. 0x207
 	 
 	 wire    tandy_chip_select_n    = ~(iorq && ~address_enable_n && address[15:3] == (16'h00c0 >> 3)); // 0xc0 - 0xc7
 	 wire    opl_chip_select_n      = ~(iorq && ~address_enable_n && address[15:1] == (16'h0388 >> 1)); // 0x388 .. 0x389
@@ -313,10 +319,11 @@ module PERIPHERALS #(
     logic   [7:0]   keycode;
     logic   [7:0]   tandy_keycode;
     logic           prev_ps2_reset;
+    logic           prev_ps2_reset_n;
     logic           lock_recv_clock;
 
     wire    clear_keycode = port_b_out[7];
-    wire    ps2_reset_n   = ~tandy_mode ? port_b_out[6] : 1'b1;
+    wire    ps2_reset_n   = ~tandy_video ? port_b_out[6] : 1'b1;
 
     always_ff @(posedge clock, posedge reset) begin
         if (reset)
@@ -462,7 +469,7 @@ module PERIPHERALS #(
             port_a_in   <= 8'h00;
         end
         else begin
-            keycode_ff  <= ~tandy_mode ? keycode : tandy_keycode;
+            keycode_ff  <= ~tandy_video ? keycode : tandy_keycode;
             port_a_in   <= keycode_ff;
         end
     end
@@ -514,6 +521,11 @@ module PERIPHERALS #(
 	end
 
 
+     logic  [14:0]  video_ram_address;
+     logic  [7:0]   video_ram_data;
+     logic          video_memory_write_n;
+     logic          mda_chip_select_n_1;
+     logic          cga_chip_select_n_1;
      logic  [14:0]  video_io_address;
      logic  [7:0]   video_io_data;
      logic          video_io_write_n;
@@ -545,8 +557,23 @@ module PERIPHERALS #(
      logic          cga_address_enable_n_2;
 
     always_ff @(posedge clock) begin
-        video_io_address        <= address[14:0];
-        video_io_data           <= internal_data_bus;
+        if (~io_write_n | ~io_read_n) begin
+            video_io_address    <= address[14:0];
+            video_io_data       <= internal_data_bus;
+        end
+        else begin
+            video_io_address    <= video_io_address;
+            video_io_data       <= video_io_data;
+        end
+    end
+
+    always_ff @(posedge clock) begin
+        video_ram_address       <= address[14:0];
+        video_ram_data          <= internal_data_bus;
+        video_memory_write_n    <= memory_write_n;
+        mda_chip_select_n_1     <= mda_chip_select_n;
+        cga_chip_select_n_1     <= cga_chip_select_n;
+
         video_io_write_n        <= io_write_n;
         video_io_read_n         <= io_read_n;
         video_address_enable_n  <= address_enable_n;
@@ -620,11 +647,11 @@ module PERIPHERALS #(
 	 wire [18:0] MDA_VRAM_ADDR;
 	 wire [7:0] MDA_VRAM_DOUT;
 	 wire MDA_CRTC_OE;
-	 wire MDA_CRTC_OE_1;
-	 wire MDA_CRTC_OE_2;
+	 reg  MDA_CRTC_OE_1;
+	 reg  MDA_CRTC_OE_2;
 	 wire [7:0] MDA_CRTC_DOUT;
-	 wire [7:0] MDA_CRTC_DOUT_1;
-	 wire [7:0] MDA_CRTC_DOUT_2;
+	 reg  [7:0] MDA_CRTC_DOUT_1;
+	 reg  [7:0] MDA_CRTC_DOUT_2;
 	 
 	 wire intensity;
 	 
@@ -684,7 +711,7 @@ module PERIPHERALS #(
     // Sets up the card to generate a video signal
     // that will work with a standard VGA monitor
     // connected to the VGA port.
-    parameter MDA_70HZ = 0;
+    localparam MDA_70HZ = 0;
 	 
     // wire composite_on;
     wire thin_font;
@@ -757,31 +784,30 @@ module PERIPHERALS #(
 
     //vram_16 fails with Tandy graphics
 
-     //vram cga_vram
-     vram_16 cga_vram
+     //vram cga_vram    
+    vram_16 cga_vram
 	 (
         .clka                       (clock),
-        .ena                        (~cga_chip_select_n),
-        .wea                        (~memory_write_n),
-        .addra                      ((tandy_mode & grph_mode & hres_mode) ? address[14:0] : address[13:0]),
-        .dina                       (internal_data_bus),
+        .ena                        (~cga_chip_select_n_1),
+        .wea                        (~video_memory_write_n),
+	.addra                      ((tandy_video & grph_mode & hres_mode) ? video_ram_address : video_ram_address[13:0]),
+        .dina                       (video_ram_data),
         .douta                      (cga_vram_cpu_dout),
         .clkb                       (clk_vga_cga),
         .web                        (1'b0),
         .enb                        (CGA_VRAM_ENABLE),
-        .addrb                      ((tandy_mode & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
+        .addrb                      ((tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
         .dinb                       (8'h0),
         .doutb                      (CGA_VRAM_DOUT)
 	);
-	
-	 
+
     // vram_8 mda_vram
 	//  (
     //     .clka                       (clock),
-    //     .ena                        (~mda_chip_select_n),
-    //     .wea                        (~memory_write_n),
-    //     .addra                      (address[13:0]),
-    //     .dina                       (internal_data_bus),
+    //     .ena                        (~mda_chip_select_n_1),
+    //     .wea                        (~video_memory_write_n),
+    //     .addra                      (video_ram_address),
+    //     .dina                       (video_ram_data),
     //     .douta                      (mda_vram_cpu_dout),
     //     .clkb                       (clk_vga_mda),
     //     .web                        (1'b0),
@@ -796,27 +822,27 @@ module PERIPHERALS #(
     vram cga_vram
 	 (
         .clka                       (clock),
-        .ena                        (~cga_chip_select_n),
-        .wea                        (~memory_write_n),
-        .addra                      ((tandy_mode & grph_mode & hres_mode) ? address[14:0] : address[13:0]),
-        .dina                       (internal_data_bus),
+        .ena                        (~cga_chip_select_n_1),
+        .wea                        (~video_memory_write_n),
+	.addra                      ((tandy_video & grph_mode & hres_mode) ? video_ram_address : video_ram_address[13:0]),
+        .dina                       (video_ram_data),
         .douta                      (cga_vram_cpu_dout),
         .clkb                       (clk_vga_cga),
         .web                        (1'b0),
         .enb                        (CGA_VRAM_ENABLE),
-        .addrb                      ((tandy_mode & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
+        .addrb                      ((tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
         .dinb                       (8'h0),
         .doutb                      (CGA_VRAM_DOUT)
 	);
 	
 	 
-    vram_16 mda_vram
+    vram mda_vram
 	 (
         .clka                       (clock),
-        .ena                        (~mda_chip_select_n),
-        .wea                        (~memory_write_n),
-        .addra                      (address[13:0]),
-        .dina                       (internal_data_bus),
+        .ena                        (~mda_chip_select_n_1),
+        .wea                        (~video_memory_write_n),
+        .addra                      (video_ram_address),
+        .dina                       (video_ram_data),
         .douta                      (mda_vram_cpu_dout),
         .clkb                       (clk_vga_mda),
         .web                        (1'b0),
@@ -878,8 +904,8 @@ module PERIPHERALS #(
         .data(ioctl_data),
         .q(xtide_cpu_dout)
 	);
-
-
+	
+	 
     //
     // KFTVGA
     //
@@ -906,75 +932,95 @@ module PERIPHERALS #(
         .video_g                    (video_g),
         .video_b                    (video_b)
     );
+	 
 	 */
 
+    logic [7:0] joy_data;
+	 
+    tandy_pcjr_joy joysticks
+	 (
+        .clk                       (clock),
+        .reset                     (reset),
+        .en                        (joystick_select && ~io_write_n),
+        .turbo_mode                (turbo_mode),
+        .joy_opts                  (joy_opts),
+        .joy0                      (joy0),
+        .joy1                      (joy1),
+        .joya0                     (joya0),
+        .joya1                     (joya1),
+        .d_out                     (joy_data)
+    );
     //
     // data_bus_out
     //
-    always_comb begin
+    always_ff @(posedge clock) begin
         if (~interrupt_acknowledge_n) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = interrupt_data_bus_out;
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= interrupt_data_bus_out;
         end
         else if ((~interrupt_chip_select_n) && (~io_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = interrupt_data_bus_out;
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= interrupt_data_bus_out;
         end
         else if ((~timer_chip_select_n) && (~io_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = timer_data_bus_out;
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= timer_data_bus_out;
         end
         else if ((~ppi_chip_select_n) && (~io_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = ppi_data_bus_out;
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= ppi_data_bus_out;
         end
         else if ((~cga_chip_select_n) && (~memory_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = cga_vram_cpu_dout;
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= cga_vram_cpu_dout;
         end
         else if ((~mda_chip_select_n) && (~memory_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = mda_vram_cpu_dout;
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= mda_vram_cpu_dout;
         end
 		  else if ((~bios_select_n) && (~memory_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = bios_cpu_dout;
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= bios_cpu_dout;
         end
 		  else if ((~xtide_select_n) && (~memory_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = xtide_cpu_dout;
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= xtide_cpu_dout;
         end
 		  else if (CGA_CRTC_OE_2) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = CGA_CRTC_DOUT_2;			
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= CGA_CRTC_DOUT_2;			
         end
 		  else if (MDA_CRTC_OE_2) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = MDA_CRTC_DOUT_2;			
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= MDA_CRTC_DOUT_2;			
         end
 		  else if ((~opl_chip_select_n) && (~io_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = opl32_data;			
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= opl32_data;			
         end
 		  else if ((uart_cs) && (~io_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;
-            data_bus_out = uart_readdata;			
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= uart_readdata;			
         end
 		  else if ((ems_oe) && (~io_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;				
-				data_bus_out = ena_ems[address[1:0]] ? map_ems[address[1:0]] : 8'hFF;            
+            data_bus_out_from_chipset <= 1'b1;				
+				data_bus_out <= ena_ems[address[1:0]] ? map_ems[address[1:0]] : 8'hFF;            
         end
 		  else if ((lpt_cs) && (~io_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;				
-				data_bus_out = lpt_data;
+            data_bus_out_from_chipset <= 1'b1;				
+				data_bus_out <= lpt_data;
         end
 		  else if ((lpt_ctl_cs) && (~io_read_n)) begin
-            data_bus_out_from_chipset = 1'b1;				
-				data_bus_out = {1'bx, dss_full, 6'bxxxxxx};
+            data_bus_out_from_chipset <= 1'b1;				
+				data_bus_out <= {1'bx, dss_full, 6'bxxxxxx};
         end		  
+		  else if (joystick_select && ~io_read_n) begin
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= joy_data;
+        end
         else begin
-            data_bus_out_from_chipset = 1'b0;
-            data_bus_out = 8'b00000000;
+            data_bus_out_from_chipset <= 1'b0;
+            data_bus_out <= 8'b00000000;
         end
     end
 

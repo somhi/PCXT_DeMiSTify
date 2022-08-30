@@ -15,7 +15,7 @@
                        Contributors & Special Thanks
                        -----------------------------
 
-               @naeloob, @JasonA, @gyurco, @somhi, @Newsdee
-                        @Adr1048, @pgimeno, @Mills
+               @naeloob, @JasonA, @gyurco, @somhi, @Newsdee, 
+             @birdybro, @Flandango, @Adr1048, @pgimeno, @Mills
 
 

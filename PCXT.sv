@@ -65,7 +65,7 @@ module PCXT
 	output        SD_MOSI,
 	input         SD_MISO,
 	output        SD_CS,
-	//input         SD_CD,
+	input         SD_CD,
 
 	input         UART_RX,
 	output        UART_TX
@@ -90,18 +90,19 @@ assign LED  =  ~ioctl_download;   //1'b1;
 //////////////////////////////////////////////////////////////////
 
 // Status Bit Map:
-//             Upper                             Lower              
-// 0         1         2         3          4         5         6   
+//              Upper                          Lower
+// 0         1         2         3          4         5         6
 // 01234567890123456789012345678901 23456789012345678901234567890123
 // 0123456789ABCDEFGHIJKLMNOPQRSTUV 0123456789ABCDEFGHIJKLMNOPQRSTUV
-//  XXXX  XXXXXXXXXX
+// XXXXX XXXXXXXXXXXXXXXXXXXXXXX
+
 
 `include "build_id.v" 
 parameter CONF_STR = {
 	"PCXT;;",
 	"-;",
-   "O3,Model,IBM PCXT,Tandy 1000;",
-	//"OHI,CPU Speed,4.77Mhz,7.16Mhz,14.318MHz;", // These bits are reserved until it can be used
+	"O3,Model,IBM PCXT,Tandy 1000;",
+	"OHI,CPU Speed,4.77MHz,7.16MHz,14.318MHz;",
 	"-;",
 	"O7,Splash Screen,Yes,No;",
 	"-;",
@@ -115,7 +116,7 @@ parameter CONF_STR = {
 	"P2,Audio & Video;",
 	"P2-;",
 	"P2OA,Adlib,On,Invisible;",
-	"P2O7,DSS/Covox,Unplugged,Plugged;",
+	"P2O6,DSS/Covox,Unplugged,Plugged;",
 	"P2-;",
 	//"P2O12,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
 	//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
@@ -123,8 +124,13 @@ parameter CONF_STR = {
 	"P2OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",	
 	"P3,Hardware;",
 	"P3-;",
-	"P3OB,Lo-tech 2MB EMS, Enabled, Disabled;",
+	"P3OB,Lo-tech 2MB EMS,Enabled,Disabled;",
 	"P3OCD,EMS Frame,A000,C000,D000;",
+	"P3-;",
+	"P3ONO,Joystick 1, Analog, Digital, Disabled;",
+	"P3OPQ,Joystick 2, Analog, Digital, Disabled;",
+	"P3OR,Sync Joy to CPU Speed,No,Yes;",
+	"P3OS,Swap Joysticks,No,Yes;",
 	"P3-;",
 	"-;",
 	"F,ROM,Load BIOS  (F000);",	
@@ -174,13 +180,16 @@ wire        clk_uart;
 
 wire        adlibhide = status[10];
 
+wire [31:0] joy0, joy1;
+//wire [15:0] joya0, joya1;
+wire [4:0]  joy_opts = status[27:23];
 
 // without .PS2BIDIR(1) do not boot 
 // .PS2DIV(2000) value is adequate
 
 user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	.conf_str      ( CONF_STR       ),
-	.clk_sys       ( CLK_50M        ),
+	.clk_sys       ( clk_chipset    ),
 
 	// the spi interface
 	.SPI_CLK        ( SPI_SCK       ),
@@ -192,19 +201,36 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	.buttons        ( buttons       ),
 	// .scandoubler_disable ( forced_scandoubler ),
 
+// //VHD	
+// 	.sd_rd         (usdRd),
+// 	.sd_wr         (usdWr),
+// 	.sd_ack        (usdAck),
+// 	.sd_lba        (usdLba),
+// 	.sd_buff_wr    (usdBuffWr),
+// 	.sd_buff_addr  (usdBuffA),
+// 	.sd_buff_din   (usdBuffD),
+// 	.sd_buff_dout  (usdBuffQ),
+// 	.img_mounted   (usdImgMtd),
+// 	.img_size	   (usdImgSz),	
+
 	.ps2_kbd_clk_i		(ps2_kbd_clk_out),
 	.ps2_kbd_data_i		(ps2_kbd_data_out),
 	.ps2_kbd_clk		(ps2_kbd_clk_in),
-	.ps2_kbd_data		(ps2_kbd_data_in)
+	.ps2_kbd_data		(ps2_kbd_data_in),
 //  .ps2_mouse_clk_i	(ps2_mouse_clk_out),
 //	.ps2_mouse_data_i	(ps2_mouse_data_out),
 //	.ps2_mouse_clk		(ps2_mouse_clk_in),
 //	.ps2_mouse_data		(ps2_mouse_data_in),
+
+	.joystick_0(joy0),
+	.joystick_1(joy1)
+	// .joystick_l_analog_0(joya0),
+	// .joystick_l_analog_1(joya1)
 );
 
 
 data_io DATA_IO (
-	.clk_sys    ( CLK_50M ),
+	.clk_sys    ( clk_chipset ),
 	.SPI_SCK    ( SPI_SCK ),
 	.SPI_SS2    ( SPI_SS2 ),
 	.SPI_DI     ( SPI_DI  ),
@@ -229,8 +255,9 @@ wire pll_locked;
 wire clk_100;
 wire clk_28_636;
 wire clk_56_875;
+//wire clk_113_750;
 reg clk_14_318 = 1'b0;
-//reg clk_7_16 = 1'b0;
+reg clk_7_16 = 1'b0;
 wire clk_4_77;
 wire clk_cpu;
 wire pclk;
@@ -252,6 +279,7 @@ pll pll
 	.outclk_3(clk_uart),
 	.outclk_4(clk_opl2),
 	.outclk_5(clk_chipset),
+//	.outclk_6(clk_113_750),
 	.locked(pll_locked)
 );
 
@@ -295,10 +323,18 @@ wire HBlank;
 wire HSync;
 wire VBlank;
 wire VSync;
+//wire ce_pixel_cga;
+//wire ce_pixel_mda;
 wire ce_pixel;
 //wire [7:0] video;
 
 assign CLK_VIDEO = clk_56_875;
+
+//wire CLK_VIDEO_MDA;
+//wire CLK_VIDEO_CGA;
+//assign CLK_VIDEO_MDA = clk_113_750;
+//assign CLK_VIDEO_CGA = clk_56_875;
+//assign ce_pixel_mda = clk_28_636;
 
 reg         cen_44100;
 reg  [31:0] cen_44100_cnt;
@@ -314,14 +350,14 @@ end
 
 always @(posedge clk_28_636) begin
 	clk_14_318 <= ~clk_14_318; // 14.318Mhz
-//	ce_pixel <= mda_mode ? clk_14_318 : clk_14_318; // MDA needs rework, but displays at half res
+//	ce_pixel_cga <= clk_14_318;	//if outside always block appears an overscan column in CGA mode
 end
 
 assign ce_pixel = 1'b1;
 
-//always @(posedge clk_14_318) begin
-//	clk_7_16 <= ~clk_7_16; // 7.16Mhz
-//end
+always @(posedge clk_14_318) begin
+	clk_7_16 <= ~clk_7_16; // 7.16Mhz
+end
 
 clk_div3 clk_normal // 4.77MHz
 (
@@ -332,6 +368,16 @@ clk_div3 clk_normal // 4.77MHz
 always @(posedge clk_4_77)
 	peripheral_clock <= ~peripheral_clock; // 2.385Mhz
 
+logic  biu_done;
+logic  turbo_mode;
+
+always @(posedge clk_chipset) begin
+    if (biu_done)
+        turbo_mode  <= (status[18:17] == 2'b01 || status[18:17] == 2'b10);
+    else
+        turbo_mode  <= turbo_mode;
+end
+
 logic  clk_cpu_ff_1;
 logic  clk_cpu_ff_2;
 
@@ -339,7 +385,7 @@ logic  pclk_ff_1;
 logic  pclk_ff_2;
 
 always @(posedge clk_chipset) begin
-    clk_cpu_ff_1 <= clk_4_77;
+    clk_cpu_ff_1 <= (status[18:17] == 2'b10) ? clk_14_318 : (status[18:17] == 2'b01) ? clk_7_16 : clk_4_77;
     clk_cpu_ff_2 <= clk_cpu_ff_1;
     clk_cpu      <= clk_cpu_ff_2;
     pclk_ff_1    <= peripheral_clock;
@@ -397,8 +443,11 @@ always @(negedge clk_chipset, posedge reset) begin
 		reset_cpu_ff <= reset;
 end
 
+reg tandy_mode = 0;
+
 always @(negedge clk_chipset, posedge reset) begin
 	if (reset) begin
+		tandy_mode <= status[3];		
 		reset_cpu <= 1'b1;
 		reset_cpu_count <= 16'h0000;
 	end
@@ -500,7 +549,6 @@ end
 	 reg     [7:0]   sw;
 	 
 	//wire [1:0] scale = status[2:1];
-	wire tandy_mode = status[3];
 	wire mda_mode = status[4];	 
 	wire [2:0] screen_mode = status[16:14];
 	 
@@ -513,6 +561,7 @@ end
         .cpu_clock                            (clk_cpu),
 		  .clk_sys                            (clk_chipset),
 		  .peripheral_clock                   (pclk),
+		  .turbo_mode                         (status[18:17]),
 		  .color										  (screen_mode == 3'd0),
         .reset                              (reset_cpu),
         .sdram_reset                        (reset),
@@ -530,7 +579,7 @@ end
         .clk_vga_mda                        (clk_56_875),
         .enable_mda                         (1'b1),
 		.mda_rgb                            (2'b10), // always B&W - monochrome monitor tint handled down below
-		//.de_o                               (VGA_DE),
+        //.de_o                               (VGA_DE),
         .VGA_R                              (r),
         .VGA_G                              (g),
         .VGA_B                              (b),
@@ -575,8 +624,13 @@ end
 //	     .ps2_data                           (PS2K_DAT_IN),
 //	     .ps2_clock_out                      (PS2K_CLK_OUT),
 //	     .ps2_data_out                       (PS2K_DAT_OUT),
+		  .joy_opts                           (joy_opts),                          //Joy0-Disabled, Joy0-Type, Joy1-Disabled, Joy1-Type, turbo_sync
+        .joy0                               (status[28] ? joy1 : joy0),
+        .joy1                               (status[28] ? joy0 : joy1),
+//		  .joya0                              (status[28] ? joya1 : joya0),
+//		  .joya1                              (status[28] ? joya0 : joya1),
 		  .clk_en_44100                       (cen_44100),
-		  .dss_covox_en                       (status[7]),
+		  .dss_covox_en                       (status[6]),
 		  .lclamp                             (lclamp),
 		  .rclamp                             (rclamp),		  
 		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
@@ -610,8 +664,7 @@ end
         .sdram_ldqm                         (SDRAM_DQML),
         .sdram_udqm                         (SDRAM_DQMH),
 		  .ems_enabled                        (~status[11]),
-		  .ems_address                        (status[13:12]),
-        .tandy_mode                         (tandy_mode)
+		  .ems_address                        (status[13:12])
     );
 
 	wire [15:0] SDRAM_DQ_IN;
@@ -655,7 +708,10 @@ end
 	  .lock_n(lock_n),
 	  .s6_3_mux(s6_3_mux),
 	  .s2_s0_out(processor_status),
-	  .SEGMENT(SEGMENT)
+	  .SEGMENT(SEGMENT),
+
+      .biu_done(biu_done),
+      .turbo_mode(turbo_mode)
 	);
 	
 
@@ -676,9 +732,9 @@ end
 		.clk_vid(CLK_VIDEO),
 		.ce_pix(ce_pixel),
 		
-		.R({r, 2'b0}),
-		.G({g, 2'b0}),
-		.B({b, 2'b0}),
+		.R({r, 2'b00}),
+		.G({g, 2'b00}),
+		.B({b, 2'b00}),
 
 		.gfx_mode(screen_mode),
 		

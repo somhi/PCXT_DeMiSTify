@@ -16,7 +16,7 @@ except:
     print("Error while deleting file : jukost.zip")
 
 zeros_length = 45056
-rom_filename = "boot.rom"
+rom_filename = "pcxt.rom"
 xtidename = "ide_xtl.rom"
 jukostname = "000o001.bin"
 
