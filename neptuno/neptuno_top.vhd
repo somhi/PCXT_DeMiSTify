@@ -65,6 +65,8 @@ entity neptuno_top is
 		-- UART
 		UART_RXD : in std_logic;
 		UART_TXD : out std_logic;
+		UART2_RXD : in std_logic;
+		UART2_TXD : out std_logic;
 		-- JOYSTICK 
 		JOY_CLK  : out std_logic;
 		JOY_LOAD : out std_logic;
@@ -299,6 +301,8 @@ begin
 			--UART
 			UART_TX => UART_TXD,
 			UART_RX => UART_RXD,
+			UART2_TX => UART2_TXD,
+			UART2_RX => UART2_RXD,
 			--SPI
 --			SPI_SD_DI  => sd_miso,
 			SPI_DO     => spi_fromguest,

@@ -59,6 +59,9 @@ constant demistify_serialdebug : std_logic := '0';
 			UART_RX			:	IN STD_LOGIC := '1';
 			UART_TX			:	OUT STD_LOGIC;
 
+			UART2_RX			:	IN STD_LOGIC := '1';
+			UART2_TX			:	OUT STD_LOGIC;
+
 			SPI_DO			:	 OUT STD_LOGIC;
 	-- 		We can't do bi-directional signals here, so we need separate in and out signals.
 	--		If the guest core uses direct mode for ROM upload it will need to be adapted.

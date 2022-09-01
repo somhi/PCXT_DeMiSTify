@@ -68,7 +68,10 @@ module PCXT
 	input         SD_CD,
 
 	input         UART_RX,
-	output        UART_TX
+	output        UART_TX,
+
+	input         UART2_RX,
+	output        UART2_TX
 
 //	input         PS2K_CLK_IN,
 //	input         PS2K_DAT_IN,
@@ -649,6 +652,13 @@ end
 	    //  .uart_dsr_n                        (uart_dsr),
 	    //  .uart_rts_n                        (uart_rts),
 	    //  .uart_dtr_n                        (uart_dtr),
+	     .uart2_rx                           (UART2_RX),
+	     .uart2_tx                           (UART2_TX),
+	   //  .uart2_cts_n                        (uart2_cts),
+	   //  .uart2_dcd_n                        (uart2_dcd),
+	   //  .uart2_dsr_n                        (uart2_dsr),
+	   //  .uart2_rts_n                        (uart2_rts),
+	   //  .uart2_dtr_n                        (uart2_dtr),
 		  .enable_sdram                       (1'b1),
 		  .sdram_clock                        (clk_chipset),
 		  .sdram_address                      (SDRAM_A),
