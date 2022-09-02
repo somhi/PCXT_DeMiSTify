@@ -184,7 +184,7 @@ wire        clk_uart;
 wire        adlibhide = status[10];
 
 wire [31:0] joy0, joy1;
-//wire [15:0] joya0, joya1;
+wire [31:0] joya0, joya1;
 wire [4:0]  joy_opts = status[27:23];
 
 // without .PS2BIDIR(1) do not boot 
@@ -226,9 +226,9 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 //	.ps2_mouse_data		(ps2_mouse_data_in),
 
 	.joystick_0(joy0),
-	.joystick_1(joy1)
-	// .joystick_l_analog_0(joya0),
-	// .joystick_l_analog_1(joya1)
+	.joystick_1(joy1),
+	.joystick_analog_0(joya0),
+	.joystick_analog_1(joya1)
 );
 
 
@@ -630,8 +630,8 @@ end
 		  .joy_opts                           (joy_opts),                          //Joy0-Disabled, Joy0-Type, Joy1-Disabled, Joy1-Type, turbo_sync
         .joy0                               (status[28] ? joy1 : joy0),
         .joy1                               (status[28] ? joy0 : joy1),
-//		  .joya0                              (status[28] ? joya1 : joya0),
-//		  .joya1                              (status[28] ? joya0 : joya1),
+		  .joya0                              (status[28] ? joya1[15:0] : joya0[15:0]),
+		  .joya1                              (status[28] ? joya0[15:0] : joya1[15:0]),
 		  .clk_en_44100                       (cen_44100),
 		  .dss_covox_en                       (status[6]),
 		  .lclamp                             (lclamp),

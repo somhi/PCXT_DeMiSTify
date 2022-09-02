@@ -11,8 +11,8 @@
 #undef CONFIG_WITHOUT_FILESYSTEM
 
 /* PS/2 Mouse support */
-#undef PS2_MOUSE
-#undef PS2_WRITE /* Needed to initialise the mouse and put it in wheel mode */
+#define PS2_MOUSE
+#define PS2_WRITE /* Needed to initialise the mouse and put it in wheel mode */
 
 /* CDROM support - used by the TurboGrafx core */
 #undef CONFIG_CD
@@ -30,7 +30,7 @@ here, the number of units defaults to 4. */
 
 /* Keyboard-based Joystick emulation */
 #define CONFIG_JOYKEYS
-#undef CONFIG_JOYKEYS_TOGGLE
+#define CONFIG_JOYKEYS_TOGGLE
 
 /* Send key events via the mist_io block. If the core can support
    a PS/2 keyboard directly then that's probably a better option. */

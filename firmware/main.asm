@@ -10142,7 +10142,7 @@ l277:
 	.byte	46
 	.byte	0
 	//registers used:
-		//r1: no
+		//r1: yes
 		//r2: no
 		//r3: no
 		//r4: no
@@ -10155,6 +10155,26 @@ l277:
 _mainloop:
 	stdec	r6
 l285: # 
+						// allocreg r1
+
+						//../DeMiSTify/firmware/main.c, line 770
+						// (a/p assign)
+						// (prepobj r0)
+ 						// reg r1 - no need to prep
+						// (obj to tmp) flags 1 type 3
+						// const
+	.liconst	0
+						// (save temp)isreg
+	mr	r1
+						//save_temp done
+
+						//../DeMiSTify/firmware/main.c, line 770
+						//call
+						//pcreltotemp
+	.lipcrel	_HandlePS2Mouse
+	add	r7
+						// Flow control - popping 0 + 0 bytes
+						// freereg r1
 
 						//../DeMiSTify/firmware/main.c, line 776
 						//call
