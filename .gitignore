@@ -20,7 +20,6 @@ PLLJ_PLLSPE_INFO.txt
 *.done
 *.jdi
 *.pin
-*.sof
 *.qws
 *.ppf
 *.ddb
