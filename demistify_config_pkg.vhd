@@ -59,6 +59,9 @@ constant demistify_serialdebug : std_logic := '0';
 			UART_RX			:	IN STD_LOGIC := '1';
 			UART_TX			:	OUT STD_LOGIC;
 
+			UART_CTS  		:	IN STD_LOGIC := '1';
+			UART_RTS  		:	OUT STD_LOGIC;
+
 			UART2_RX			:	IN STD_LOGIC := '1';
 			UART2_TX			:	OUT STD_LOGIC;
 

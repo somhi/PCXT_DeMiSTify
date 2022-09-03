@@ -1,4 +1,4 @@
-To be solved
+**To be solved:**
 
 * Keyboard BIOS error (JUKO ST)
 * IBM BIOS keyboard not working
@@ -6,4 +6,6 @@ To be solved
   * `mda_mode ? HBlank_del[color ? 12 : 13] `
 
 * Overscan problem with the OSD
+
+
 

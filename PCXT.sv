@@ -69,6 +69,8 @@ module PCXT
 
 	input         UART_RX,
 	output        UART_TX,
+	input		  UART_CTS,
+	output 		  UART_RTS,
 
 	input         UART2_RX,
 	output        UART2_TX
@@ -647,10 +649,10 @@ end
 		  .clk_uart                          (clk_uart),
 	     .uart_rx                           (UART_RX),
 	     .uart_tx                           (UART_TX),
-	    //  .uart_cts_n                        (uart_cts),
+	      .uart_cts_n                        (UART_CTS),
 	    //  .uart_dcd_n                        (uart_dcd),
 	    //  .uart_dsr_n                        (uart_dsr),
-	    //  .uart_rts_n                        (uart_rts),
+	      .uart_rts_n                        (UART_RTS),
 	    //  .uart_dtr_n                        (uart_dtr),
 	     .uart2_rx                           (UART2_RX),
 	     .uart2_tx                           (UART2_TX),

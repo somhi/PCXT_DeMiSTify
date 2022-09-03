@@ -52,6 +52,10 @@ entity deca_top is
 		-- UART
 		UART_RXD : in std_logic;
 		UART_TXD : out std_logic;
+
+		DETO1_UART_CTS : in std_logic;
+		DETO2_UART_RTS : out std_logic;
+
 		-- JOYSTICK
 		JOY1_B2_P9 : in std_logic;
 		JOY1_B1_P6 : in std_logic;
@@ -438,6 +442,10 @@ begin
 			--UART
 			UART_TX => UART_TXD,
 			UART_RX => UART_RXD,
+
+			UART_CTS  => DETO1_UART_CTS,
+			UART_RTS  => DETO2_UART_RTS,
+
 			--SPI
 --			SPI_SD_DI  => sd_miso,
 			SPI_DO     => spi_fromguest,

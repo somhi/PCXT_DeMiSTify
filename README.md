@@ -8,9 +8,19 @@ Keyboard controller does not pass diagnostic tests
 
 Currently floppy and hdd images can only be loaded trough serial UART Rx/Tx with the XT IDE BIOS. Serdrive program should be used in the host computer serving the images.
 
+```sh
+#Windows example
+serdrive.exe -g 733:7:17 -v [-c <port>] -d 460.8Kb <image>
+#Linux example
+serdrive_x64 -g 733:7:17 -v -c /dev/ttyUSB0 -b 921.6K PCXT_CGA_Tandy.img 
 ```
-serdrive.exe [-c <port>] -d 460.8Kb <image>
-```
+
+Some notes about serdrive:
+
+* 921.6 Kb only works at 14.3 MHz
+* Core has enabled RTS/CTS signals which gives better stability and speed to the HDD
+* Windows does not care about RTS/CTS signals
+* In Linux those RTS/CTS lines need to be connected for XTIDE to detect the image. Take care that CTS goes to RTS and RTS to CTS.
 
 Follow core discussion at https://misterfpga.org/viewtopic.php?t=4680
 
