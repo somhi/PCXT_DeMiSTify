@@ -86,8 +86,8 @@ constant demistify_serialdebug : std_logic := '0';
 
 			AUDIO_L  		: 	OUT STD_LOGIC;
 			AUDIO_R  		: 	OUT STD_LOGIC;
-			DAC_L			: 	OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-			DAC_R			: 	OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+			DAC_L			: 	OUT SIGNED(15 DOWNTO 0);
+			DAC_R			: 	OUT SIGNED(15 DOWNTO 0)
 
 			-- SD_SCK			:	 OUT STD_LOGIC;
 			-- SD_MOSI			:	 OUT STD_LOGIC;

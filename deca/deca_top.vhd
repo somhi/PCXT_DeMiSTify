@@ -5,6 +5,14 @@ use ieee.numeric_std.all;
 library work;
 use work.demistify_config_pkg.all;
 
+
+-- -----------------------------------------------------------------------
+-- add following in deca_pins.tcl in demistify/board/deca
+-- # PMOD DETO pins 1&2 are shared with PMOD2
+-- set_location_assignment PIN_W9  -to DETO1_UART_CTS
+-- set_location_assignment PIN_W5  -to DETO2_UART_RTS
+--------------------------------------------------
+
 -- -----------------------------------------------------------------------
 
 entity deca_top is
@@ -168,10 +176,10 @@ architecture RTL of deca_top is
 	signal joyd : std_logic_vector(7 downto 0);
 
 	-- DAC AUDIO     
-	signal dac_l : std_logic_vector(15 downto 0);
-	signal dac_r : std_logic_vector(15 downto 0);
-	signal dac_l_s: std_logic_vector(15 downto 0);
-	signal dac_r_s: std_logic_vector(15 downto 0);
+	signal dac_l : signed(15 downto 0);
+	signal dac_r : signed(15 downto 0);
+	signal dac_l_s: signed(15 downto 0);
+	signal dac_r_s: signed(15 downto 0);
 
 	component AUDIO_SPI_CTL_RD
 		port (
@@ -370,8 +378,8 @@ begin
 			dac_LRCK  => i2s_Lr_o,
 			dac_SCLK  => i2s_Sck_o,
 			dac_SDIN  => i2s_D_o,
-			L_data    => dac_l_s,
-			R_data    => dac_r_s
+			L_data    => std_logic_vector(dac_l_s),
+			R_data    => std_logic_vector(dac_r_s)
 		);		
 
 	dac_l_s <= ('0' & dac_l(14 downto 0));

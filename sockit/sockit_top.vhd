@@ -167,10 +167,10 @@ architecture RTL of sockit_top is
 	end component;	
 
 
-	signal dac_l : std_logic_vector(15 downto 0);
-	signal dac_r : std_logic_vector(15 downto 0);
-	signal dac_l_s: std_logic_vector(15 downto 0);
-	signal dac_r_s: std_logic_vector(15 downto 0);
+	signal dac_l : signed(15 downto 0);
+	signal dac_r : signed(15 downto 0);
+	signal dac_l_s: signed(15 downto 0);
+	signal dac_r_s: signed(15 downto 0);
 
 	-- PLL2
 	-- component pll2
@@ -271,8 +271,8 @@ begin
 		dac_LRCK  => AUD_DACLRCK,
 		dac_SCLK  => AUD_BCLK,
 		dac_SDIN  => AUD_DACDAT,
-		L_data    => dac_l_s,
-		R_data    => dac_r_s
+		L_data    => std_logic_vector(dac_l_s),
+		R_data    => std_logic_vector(dac_r_s)
 	);		
 
 	dac_l_s <= ('0' & dac_l(14 downto 0));
