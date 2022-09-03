@@ -1,4 +1,4 @@
-# PCXT DeMiSTified - Deca port
+# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify) - Deca port
 
 07/07/22 Neptuno port DeMiSTified by Somhic from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
 
@@ -11,8 +11,11 @@
 
 * With original IBM ROM does not work keyboard (beeps at every keystroke)
 
-* Serdrive works at 460.8 K & 230.4K but not 115.2K
-* Prince of Persia gives disk error
+* Serdrive works at 460.8 K or 230.4K but not 115.2K
+
+* Audio: a continous beeper tone can be heard e.g. in area5150 demo
+
+  
 
 **UART port is required to be used to load the OS through the serdrive app.**
 
@@ -52,6 +55,8 @@ make
 cd DeMiSTify
 #Create file site.mk in DeMiSTify folder 
 cp site.template site.mk
+#Edit site.mk and add your own PATHs to Quartus (Q18)
+gedit site.mk
 #Go back to root folder and do a make with board target (deca, neptuno, uareloaded, atlas_cyc). If not specified it will compile for all targets.
 cd ..
 make BOARD=deca
@@ -61,7 +66,7 @@ make BOARD=deca
 After that you can:
 
 * Flash bitstream directly from [command line](https://github.com/DECAfpga/DECA_binaries#flash-bitstream-to-fgpa-with-quartus)
-* Load project in Quartus from /deca/[core_name]_deca.qpf
+* Load project in Quartus from /deca/PCXT_DeMiSTify_deca.qpf
 
 ### Pinout connections:
 

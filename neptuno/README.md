@@ -1,4 +1,4 @@
-# PCXT DeMiSTified - Neptuno port
+# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify)  - Neptuno port
 
 07/07/22 Neptuno port DeMiSTified by Somhic from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
 
@@ -6,24 +6,32 @@
 
 * Load OS using Serial Rx/Tx interface using the two ps2 mouse pins.  See pinout below.
 
+* **UART port is required to be used to load the OS through the serdrive app.**
+
+**Bugs**:
+
 * With original IBM ROM  keyboard does not work very well.
 
-* Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus
-
-  ```sh
-  git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
-  
-  -- add/modify the following in Neptuno_pins.tcl in demistify/board/neptuno
-  -- #UART
-  -- #set_location_assignment PIN_C21 -to PS2_MOUSE_CLK
-  -- set_location_assignment PIN_C21 -to UART_RXD
-  -- #set_location_assignment PIN_B21 -to PS2_MOUSE_DAT
-  -- set_location_assignment PIN_B21 -to UART_TXD
-  
-  #Load project in Quartus from /deca/[core_name]_deca.qpf
-  ```
+* Serdrive works at 460.8 K or 230.4K but not 115.2K
 
   
+
+### Compile the project in Quartus:
+
+Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
+
+```sh
+git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
+
+-- add/modify the following in Neptuno_pins.tcl in demistify/board/neptuno
+-- #UART
+-- #set_location_assignment PIN_C21 -to PS2_MOUSE_CLK
+-- set_location_assignment PIN_C21 -to UART_RXD
+-- #set_location_assignment PIN_B21 -to PS2_MOUSE_DAT
+-- set_location_assignment PIN_B21 -to UART_TXD
+
+#Load project in Quartus from /neptuno/PCXT_DeMiSTify_neptuno.qpf
+```
 
 
 
@@ -47,7 +55,7 @@ make BOARD=neptuno
 
 After that you can:
 
-* Load project in Quartus from /deca/[core_name]_deca.qpf
+* Load project in Quartus from /deca/PCXT_DeMiSTify_neptuno.qpf
 
 
 

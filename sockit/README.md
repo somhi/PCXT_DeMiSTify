@@ -1,8 +1,16 @@
-# xxxxxxxxxxx DeMiSTified - SoCkit port
+# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify) - SoCkit port
 
-xx/xx/22 SoCkit port DeMiSTified by Somhic from prior demistification for Deca. Original MiSTer core https://github.com/xxxxxx
+Port DeMiSTified by Somhic from original MiSTer port currently in development  https://github.com/MiSTer-devel/PCXT_MiSTer
 
-[Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
+**Bugs**:
+
+* With original IBM ROM does not work keyboard (beeps at every keystroke)
+* Serdrive works at 460.8 K or 230.4K but not 115.2K
+* Audio: a continous beeper tone can be heard e.g. in area5150 demo
+
+**UART port is required to be used to load the OS through the serdrive app.**
+
+
 
 **Features for Sockit board:**
 
@@ -19,26 +27,21 @@ xx/xx/22 SoCkit port DeMiSTified by Somhic from prior demistification for Deca. 
   - Tested with a dual memory module v1.3 with 3 pins ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca) + [3pins](https://github.com/DECAfpga/DECA_board/blob/main/Sdram_mister_deca/README_3pins.md))
 
 
-##### Versions:
 
-* 22xxxx vga only
+### Compile the project in Quartus:
 
-### STATUS
+Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
 
-* Working fine
-
-
-### Binaries
-
-Fins .sof and .svf binary bitstreams for this core at the corresponding category at https://github.com/xxx/sockit_binaries  
-
-(sof/svf files might be already included in /sockit/output_files/)
+```sh
+git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
+#Load project in Quartus from /sockit/PCXT_DeMiSTify_sockit.qpf
+```
 
 ### Instructions to compile the project for a specific board:
 
 ```sh
-git clone https://github.com/DECAfpga/[core_name]
-cd [core_name]
+git clone https://github.com/DECAfpga/PCXT_DeMiSTify
+cd PCXT_DeMiSTify
 #Do a first make (will finish in error) but it will download missing submodules 
 make
 cd DeMiSTify
@@ -55,7 +58,7 @@ make BOARD=sockit
 After that you can:
 
 * Flash bitstream directly from [command line](https://github.com/DECAfpga/DECA_binaries#flash-bitstream-to-fgpa-with-quartus)
-* Load project in Quartus from /sockit/[core_name]_deca.qpf
+* Load project in Quartus from /sockit/PCXT_DeMiSTify_sockit.qpf
 
 ### Pinout connections:
 
