@@ -121,7 +121,6 @@ parameter CONF_STR = {
 	"P2,Audio & Video;",
 	"P2-;",
 	"P2OA,Adlib,On,Invisible;",
-	"P2O6,DSS/Covox,Unplugged,Plugged;",
 	"P2-;",
 	//"P2O12,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
 	//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
@@ -341,17 +340,6 @@ assign CLK_VIDEO = clk_56_875;
 //assign CLK_VIDEO_CGA = clk_56_875;
 //assign ce_pixel_mda = clk_28_636;
 
-reg         cen_44100;
-reg  [31:0] cen_44100_cnt;
-wire [31:0] cen_44100_cnt_next = cen_44100_cnt + 32'd44100;
-always @(posedge CLK_50M) begin
-	cen_44100 <= 0;
-	cen_44100_cnt <= cen_44100_cnt_next;
-	if (cen_44100_cnt_next >= (50000000)) begin
-		cen_44100 <= 1;
-		cen_44100_cnt <= cen_44100_cnt_next - (50000000);
-	end
-end
 
 always @(posedge clk_28_636) begin
 	clk_14_318 <= ~clk_14_318; // 14.318Mhz
@@ -634,11 +622,9 @@ end
         .joy1                               (status[28] ? joy0 : joy1),
 		  .joya0                              (status[28] ? joya1[15:0] : joya0[15:0]),
 		  .joya1                              (status[28] ? joya0[15:0] : joya1[15:0]),
-		  .clk_en_44100                       (cen_44100),
-		  .dss_covox_en                       (status[6]),
-		  .lclamp                             (lclamp),
-		  .rclamp                             (rclamp),		  
 		  .clk_en_opl2                        (cen_opl2), // clk_en_opl2
+		  .jtopl2_snd_e                       (jtopl2_snd_e),
+		  .tandy_snd_e                        (tandy_snd_e),
 		  .adlibhide                          (adlibhide),
 		  .tandy_video                        (tandy_mode),
 		  .ioctl_download                     (ioctl_download),
@@ -679,24 +665,27 @@ end
 		  .ems_address                        (status[13:12])
     );
 
+	wire speaker_out;
+	wire  [7:0]   tandy_snd_e;
+	wire tandy_snd_rdy;
+
+	wire [15:0] jtopl2_snd_e;	
+	wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + {tandy_snd_e, 6'd0}; // signed mixer
+	 
 	wire [15:0] SDRAM_DQ_IN;
 	wire [15:0] SDRAM_DQ_OUT;
 	wire        SDRAM_DQ_IO;
 	
 	assign SDRAM_DQ_IN = SDRAM_DQ;
 	assign SDRAM_DQ = ~SDRAM_DQ_IO ? SDRAM_DQ_OUT : 16'hZZZZ;			
-	
-	wire [15:0] lclamp;
-	wire [15:0] rclamp;
-	wire speaker_out;
 
-	assign DAC_L = lclamp;	
-	assign DAC_R = rclamp;
+	assign DAC_L = sndmix >> 1;	
+	assign DAC_R = sndmix >> 1;
 
 	sigma_delta_dac sigma_delta_dac (
 		.clk      ( CLK_50M     ),      // bus clock
-		.ldatasum ( lclamp >> 1 ),      // left channel data
-		.rdatasum ( rclamp >> 1 ),      // right channel data
+		.ldatasum ( sndmix >> 1 ),      // left channel data
+		.rdatasum ( sndmix >> 1 ),      // right channel data
 		.left     ( AUDIO_L     ),      // left bitstream output
 		.right    ( AUDIO_R     )       // right bitsteam output
 	);
