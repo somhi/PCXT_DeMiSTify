@@ -153,6 +153,7 @@ module PERIPHERALS #(
 	 wire    uart_cs                =  (~address_enable_n && {address[15:3], 3'd0} == 16'h03F8);
 	 wire    uart2_cs               =  (~address_enable_n && {address[15:3], 3'd0} == 16'h02F8);
 	 wire    lpt_cs                 =  (iorq && ~address_enable_n && address[15:0] == 16'h0378);
+	 wire    tandy_page_cs          =  (iorq && ~address_enable_n && address[15:0] == 16'h03DF);
 	 
 	 wire    [3:0] ems_page_address = (ems_address == 2'b00) ? 4'b1010 : (ems_address == 2'b01) ? 4'b1100 : 4'b1101;
 	 wire    ems_oe                 = (iorq && ~address_enable_n && ems_enabled && ({address[15:2], 2'd0} == 16'h0260));          // 260h..263h	 
@@ -460,6 +461,7 @@ module PERIPHERALS #(
     end
 	
 	reg [7:0] lpt_data = 8'hFF;
+	reg [7:0] tandy_page_data = 8'h00;
 	always_ff @(posedge clock) begin
 		if (~io_write_n) begin
 			write_to_uart <= internal_data_bus;
@@ -471,7 +473,9 @@ module PERIPHERALS #(
 			
       if ((lpt_cs) && (~io_write_n))
             lpt_data <= internal_data_bus;				
-        
+				
+		if ((tandy_page_cs) && (~io_write_n))
+            tandy_page_data <= internal_data_bus;
 	end
 	
 	wire iorq_uart = (io_write_n & ~prev_io_write_n) || (~io_read_n  & prev_io_read_n);
@@ -809,11 +813,27 @@ module PERIPHERALS #(
 	 wire [7:0] cga_vram_cpu_dout;
 	 wire [7:0] mda_vram_cpu_dout;
 
+     `ifdef DEMISTIFY_sockit
 
+     vram #(.AW(17)) cga_vram   // 128 kB
+	 (
+        .clka                       (clock),
+        .ena                        (~cga_chip_select_n_1),
+        .wea                        (~video_memory_write_n),
+	.addra                      ((tandy_video & grph_mode & hres_mode) ? {tandy_page_data[5:4], video_ram_address} : video_ram_address[13:0]),
+        .dina                       (video_ram_data),
+        .douta                      (cga_vram_cpu_dout),
+        .clkb                       (clk_vga_cga),
+        .web                        (1'b0),
+        .enb                        (CGA_VRAM_ENABLE),
+        .addrb                      ((tandy_video & grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : CGA_VRAM_ADDR[13:0]),
+        .dinb                       (8'h0),
+        .doutb                      (CGA_VRAM_DOUT)
+	);
+	
+    `elsif DEMISTIFY_DECA
 
-    `ifdef DEMISTIFY_DECA
-
-    vram #(.AW(14)) cga_vram   	// 16 kB  (fails with Tandy graphics)
+    vram #(.AW(14)) cga_vram   	// 16 kB  (Tandy games don't work)
 	 (
         .clka                       (clock),
         .ena                        (~cga_chip_select_n_1),
@@ -831,7 +851,7 @@ module PERIPHERALS #(
 
     `else
     
-    vram #(.AW(15)) cga_vram   	// 32 kB
+    vram #(.AW(15)) cga_vram   	// 32 kB   (Some Tandy games don't work)
 	 (
         .clka                       (clock),
         .ena                        (~cga_chip_select_n_1),
