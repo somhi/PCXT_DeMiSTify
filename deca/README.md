@@ -4,7 +4,6 @@
 
 **Current version of PCXT requires around 235 kB of BRAM** .  Deca has only 210 kB (with 182 M9k blocks).
 
-* MDA VRAM has been disabled (in rtl/KFPC-XT/HDL/Peripherals.sv)
 * CGA VRAM reduced from 32 to 16 kB. CGA works Ok, but not Tandy games.
 
 **Bugs**:
@@ -13,7 +12,7 @@
 
 * Serdrive works at 460.8 K or 230.4K but not 115.2K
 
-* Audio: a continous beeper tone can be heard e.g. in area5150 demo
+* Audio: a continous beeper tone can be heard in area5150 demo
 
   
 

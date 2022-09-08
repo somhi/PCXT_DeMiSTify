@@ -109,15 +109,20 @@ parameter CONF_STR = {
 	"O3,Model,IBM PCXT,Tandy 1000;",
 	"OHI,CPU Speed,4.77MHz,7.16MHz,14.318MHz;",
 	"-;",
+	"F,ROM,Load BIOS  (F000);",	
+	"F,ROM,Load XTIDE (EC00);",	
+	"-;",
+	"T0,Reset;",
+	"-;",
 	"O7,Splash Screen,Yes,No;",
 	"-;",
-	"P1,FDD & HDD;",
-	"P1-;",
+	//"P1,FDD & HDD;",
+	//"P1-;",
 	//"P1S1,IMG,FDD Image:;",
 	//"P1S0,IMG,HDD Image:;",
-	"-;",
+	//"-;",
 	//"P1OJK,Write Protect,None,A:,C:,A: & C:;",
-	"P1-;",
+	//"P1-;",
 	"P2,Audio & Video;",
 	"P2-;",
 	"P2OA,Adlib,On,Invisible;",
@@ -136,12 +141,7 @@ parameter CONF_STR = {
 	"P3OR,Sync Joy to CPU Speed,No,Yes;",
 	"P3OS,Swap Joysticks,No,Yes;",
 	"P3-;",
-	"-;",
-	"F,ROM,Load BIOS  (F000);",	
-	"F,ROM,Load XTIDE (EC00);",	
-	"-;",
-	"T0,Reset;",
-	"R0,Reset and close OSD;",
+	//"R0,Reset and close OSD;",
 	"V,v",`BUILD_DATE 
 };
 
@@ -670,8 +670,9 @@ end
 	wire tandy_snd_rdy;
 
 	wire [15:0] jtopl2_snd_e;	
-	wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + {tandy_snd_e, 6'd0}; // signed mixer
-	 
+	//wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + {tandy_snd_e, 6'd0}; // signed mixer
+	wire [16:0]sndmix = (({1'b0, jtopl2_snd_e}) << 1) + (speaker_out << 14) + {tandy_snd_e, 8'd0};
+
 	wire [15:0] SDRAM_DQ_IN;
 	wire [15:0] SDRAM_DQ_OUT;
 	wire        SDRAM_DQ_IO;

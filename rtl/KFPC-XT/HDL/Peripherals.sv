@@ -813,10 +813,7 @@ module PERIPHERALS #(
 
     `ifdef DEMISTIFY_DECA
 
-    //vram_16 fails with Tandy graphics
-
-     //vram #(.AW(15)) cga_vram   	// 32 kB
-    vram #(.AW(14)) cga_vram   	// 16 kB
+    vram #(.AW(14)) cga_vram   	// 16 kB  (fails with Tandy graphics)
 	 (
         .clka                       (clock),
         .ena                        (~cga_chip_select_n_1),
@@ -831,22 +828,6 @@ module PERIPHERALS #(
         .dinb                       (8'h0),
         .doutb                      (CGA_VRAM_DOUT)
 	);
-
-    // vram #(.AW(12)) mda_vram   //4 kB
-	//  (
-    //     .clka                       (clock),
-    //     .ena                        (~mda_chip_select_n_1),
-    //     .wea                        (~video_memory_write_n),
-    //     .addra                      (video_ram_address),
-    //     .dina                       (video_ram_data),
-    //     .douta                      (mda_vram_cpu_dout),
-    //     .clkb                       (clk_vga_mda),
-    //     .web                        (1'b0),
-    //     .enb                        (MDA_VRAM_ENABLE),
-    //     .addrb                      (MDA_VRAM_ADDR[11:0]),
-    //     .dinb                       (8'h0),
-    //     .doutb                      (MDA_VRAM_DOUT)
-	// );
 
     `else
     
@@ -865,25 +846,26 @@ module PERIPHERALS #(
         .dinb                       (8'h0),
         .doutb                      (CGA_VRAM_DOUT)
 	);
-	
-	 
-    vram #(.AW(12)) mda_vram   //4 kB
-	 (
-        .clka                       (clock),
-        .ena                        (~mda_chip_select_n_1),
-        .wea                        (~video_memory_write_n),
-        .addra                      (video_ram_address),
-        .dina                       (video_ram_data),
-        .douta                      (mda_vram_cpu_dout),
-        .clkb                       (clk_vga_mda),
-        .web                        (1'b0),
-        .enb                        (MDA_VRAM_ENABLE),
-        .addrb                      (MDA_VRAM_ADDR[11:0]),
-        .dinb                       (8'h0),
-        .doutb                      (MDA_VRAM_DOUT)
-	);
 
     `endif
+
+
+    vram #(.AW(12)) mda_vram   //4 kB
+    (
+       .clka                       (clock),
+       .ena                        (~mda_chip_select_n_1),
+       .wea                        (~video_memory_write_n),
+       .addra                      (video_ram_address),
+       .dina                       (video_ram_data),
+       .douta                      (mda_vram_cpu_dout),
+       .clkb                       (clk_vga_mda),
+       .web                        (1'b0),
+       .enb                        (MDA_VRAM_ENABLE),
+       .addrb                      (MDA_VRAM_ADDR[11:0]),
+       .dinb                       (8'h0),
+       .doutb                      (MDA_VRAM_DOUT)
+   );
+
 
    wire bios_loader  = (ioctl_download && ioctl_index < 2 && ioctl_addr[24:16] == 9'b000000000);
    wire xtide_loader = ((ioctl_download && ioctl_index == 2) ||
@@ -1033,6 +1015,10 @@ module PERIPHERALS #(
             data_bus_out_from_chipset <= 1'b1;
             data_bus_out <= uart_readdata;			
         end
+        else if ((uart2_cs) && (~io_read_n)) begin
+          data_bus_out_from_chipset <= 1'b1;
+          data_bus_out <= uart2_readdata;			
+        end
 		  else if ((ems_oe) && (~io_read_n)) begin
             data_bus_out_from_chipset <= 1'b1;				
 				data_bus_out <= ena_ems[address[1:0]] ? map_ems[address[1:0]] : 8'hFF;            
@@ -1041,10 +1027,6 @@ module PERIPHERALS #(
             data_bus_out_from_chipset <= 1'b1;				
 				data_bus_out <= lpt_data;
         end
-		  else if ((lpt_ctl_cs) && (~io_read_n)) begin
-            data_bus_out_from_chipset <= 1'b1;				
-				data_bus_out <= {1'bx, dss_full, 6'bxxxxxx};
-        end		  
 		  else if (joystick_select && ~io_read_n) begin
             data_bus_out_from_chipset <= 1'b1;
             data_bus_out <= joy_data;

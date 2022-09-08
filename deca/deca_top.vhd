@@ -378,12 +378,12 @@ begin
 			dac_LRCK  => i2s_Lr_o,
 			dac_SCLK  => i2s_Sck_o,
 			dac_SDIN  => i2s_D_o,
-			L_data    => std_logic_vector(dac_l_s),
-			R_data    => std_logic_vector(dac_r_s)
+			L_data    => std_logic_vector(dac_l),
+			R_data    => std_logic_vector(dac_r)
 		);		
 
-	dac_l_s <= ('0' & dac_l(14 downto 0));
-	dac_r_s <= ('0' & dac_r(14 downto 0));
+	--dac_l_s <= ('0' & dac_l(14 downto 0));
+	--dac_r_s <= ('0' & dac_r(14 downto 0));
 
 	I2S_MCK <= i2s_Mck_o;
 	I2S_SCK <= i2s_Sck_o;
