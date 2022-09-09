@@ -365,18 +365,17 @@ module cga(
 		end
     end
 
+    wire cga_de;
+    assign cga_de = ~(hblank | vblank);
+    
     cga_scandoubler scandoubler (
         .clk(clk),
         .line_reset(line_reset),
     //    .video(video),		  
-    // // .video(display_enable ? video : 4'b0000 ),		  
         .video(cga_de ? video : 4'b0000 ),		  
         .dbl_hsync(dbl_hsync),
         .dbl_video(dbl_video)
     );
-	
-    wire cga_de;
-    assign cga_de = ~(hblank | vblank);
 
 
 endmodule

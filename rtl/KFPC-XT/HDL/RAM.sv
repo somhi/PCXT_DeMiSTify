@@ -15,8 +15,6 @@ module RAM (
     input   logic           no_command_state,
     output  logic           memory_access_ready,
     output  logic           ram_address_select_n,
-    // VRAM FIFO
-    // TODO:
     // SDRAM
     output  logic   [12:0]  sdram_address,
     output  logic           sdram_cke,
