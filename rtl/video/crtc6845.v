@@ -153,7 +153,6 @@ module crtc6845(
     assign vsync = vs;
     assign hsync = hs;
     assign display_enable = hdisp & vdisp;
-    //assign hblank = tandy_16_gfx ? ~hdisp_del[color ? 9 : 11] : ~hdisp_del[color ? 5 : 7];
     assign hblank = tandy_16_gfx ? ~hdisp_del[color ? 7 : 9] : ~hdisp_del[color ? 3 : 5];
     assign vblank = ~vdisp;
 
