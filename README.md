@@ -69,7 +69,7 @@ Initially, and until an 8-bit IDE module compatible with XTIDE is available, flo
 * 115200 Kbps
 * 230400 Kbps
 * 460800 Kbps
-* 921600 Kbps (Only works with CPU speed at 14.318MHz)
+* 921600 Kbps  (Only works with CPU speed at 14.318MHz)
 
 By default it is set to 115200, but the most suitable speed is 460800. It is also possible to use 921600, but only with the CPU speed at 14.318MHz.
 
