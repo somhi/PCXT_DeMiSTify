@@ -122,27 +122,30 @@ parameter CONF_STR = {
 	//"P1-;",
 	//"P1S1,IMG,FDD Image:;",
 	//"P1S0,IMG,HDD Image:;",
-	//"-;",
-	//"P1OJK,Write Protect,None,A:,C:,A: & C:;",
+	//"P1-;",
+	//"P1OJK,Write Protect,None,FDD,HDD,FDD & HDD;",
+	//"P1-;",
+	//"P1OLM,Speed,115200,230400,460800,921600;",
 	//"P1-;",
 	"P2,Audio & Video;",
 	"P2-;",
 	"P2OA,Adlib,On,Invisible;",
 	"P2-;",
 	//"P2O12,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
-	//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",	
+	//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
+	//"P2OT,Border,No,Yes;",
 	"P2O4,Video Output,CGA/Tandy,MDA;",
 	"P2OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",	
 	"P3,Hardware;",
 	"P3-;",
 	"P3OB,Lo-tech 2MB EMS,Enabled,Disabled;",
 	"P3OCD,EMS Frame,A000,C000,D000;",
+	"P3-;",
 	"P3ONO,Joystick 1, Analog, Digital, Disabled;",
 	"P3OPQ,Joystick 2, Analog, Digital, Disabled;",
 	"P3OR,Sync Joy to CPU Speed,No,Yes;",
 	"P3OS,Swap Joysticks,No,Yes;",
 	"P3-;",
-	//"R0,Reset and close OSD;",
 	"V,v",`BUILD_DATE 
 };
 
@@ -613,7 +616,7 @@ end
 	     .ps2_data                           (device_data),
 	     .ps2_clock_out                      (ps2_kbd_clk_out),
 	     .ps2_data_out                       (ps2_kbd_data_out),
-//         .ps2_clock                          (PS2K_CLK_IN),
+//       .ps2_clock                          (PS2K_CLK_IN),
 //	     .ps2_data                           (PS2K_DAT_IN),
 //	     .ps2_clock_out                      (PS2K_CLK_OUT),
 //	     .ps2_data_out                       (PS2K_DAT_OUT),
@@ -678,10 +681,11 @@ end
 	wire        SDRAM_DQ_IO;
 	
 	assign SDRAM_DQ_IN = SDRAM_DQ;
-	assign SDRAM_DQ = ~SDRAM_DQ_IO ? SDRAM_DQ_OUT : 16'hZZZZ;			
+	assign SDRAM_DQ = ~SDRAM_DQ_IO ? SDRAM_DQ_OUT : 16'hZZZZ;	
 
-	assign DAC_L = sndmix >> 1;	
 	assign DAC_R = sndmix >> 1;
+	assign DAC_L = sndmix >> 1;	
+
 
 	sigma_delta_dac sigma_delta_dac (
 		.clk      ( CLK_50M     ),      // bus clock
