@@ -109,6 +109,8 @@ parameter CONF_STR = {
 	"O3,Model,IBM PCXT,Tandy 1000;",
 	"OHI,CPU Speed,4.77MHz,7.16MHz,14.318MHz;",
 	"-;",
+	"OLM,UART Speed,115200,230400,460800,921600;",
+	"-;",
 	"F,ROM,Load BIOS  (F000);",	
 	"F,ROM,Load XTIDE (EC00);",	
 	"-;",
@@ -135,7 +137,6 @@ parameter CONF_STR = {
 	"P3-;",
 	"P3OB,Lo-tech 2MB EMS,Enabled,Disabled;",
 	"P3OCD,EMS Frame,A000,C000,D000;",
-	"P3-;",
 	"P3ONO,Joystick 1, Analog, Digital, Disabled;",
 	"P3OPQ,Joystick 2, Analog, Digital, Disabled;",
 	"P3OR,Sync Joy to CPU Speed,No,Yes;",
@@ -348,9 +349,8 @@ end
 
 assign ce_pixel = 1'b1;
 
-always @(posedge clk_14_318) begin
+always @(posedge clk_14_318)
 	clk_7_16 <= ~clk_7_16; // 7.16Mhz
-end
 
 clk_div3 clk_normal // 4.77MHz
 (
@@ -632,7 +632,7 @@ end
 		  .ioctl_wr                           (ioctl_wr),
 		  .ioctl_addr                         (ioctl_addr),
 		  .ioctl_data                         (ioctl_data),		  
-		  .clk_uart                          (clk_uart_en),
+		  .clk_uart                          ((status[22:21] == 2'b00) ? clk_uart : clk_uart_en),
 	     .uart_rx                           (UART_RX),
 	     .uart_tx                           (UART_TX),
 	      .uart_cts_n                        (UART_CTS),

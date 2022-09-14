@@ -131,9 +131,9 @@ module pll (
 		altpll_component.clk2_duty_cycle = 50,
 		altpll_component.clk2_multiply_by = 1,
 		altpll_component.clk2_phase_shift = "-2000",
-		altpll_component.clk3_divide_by = 100000,
+		altpll_component.clk3_divide_by = 25000000,
 		altpll_component.clk3_duty_cycle = 50,
-		altpll_component.clk3_multiply_by = 29493,
+		altpll_component.clk3_multiply_by = 7407407,
 		altpll_component.clk3_phase_shift = "0",
 		altpll_component.clk4_divide_by = 2000,
 		altpll_component.clk4_duty_cycle = 50,
@@ -225,7 +225,7 @@ endmodule
 // Retrieval info: PRIVATE: EFF_OUTPUT_FREQ_VALUE0 STRING "100.000000"
 // Retrieval info: PRIVATE: EFF_OUTPUT_FREQ_VALUE1 STRING "50.000000"
 // Retrieval info: PRIVATE: EFF_OUTPUT_FREQ_VALUE2 STRING "50.000000"
-// Retrieval info: PRIVATE: EFF_OUTPUT_FREQ_VALUE3 STRING "14.746500"
+// Retrieval info: PRIVATE: EFF_OUTPUT_FREQ_VALUE3 STRING "14.814814"
 // Retrieval info: PRIVATE: EFF_OUTPUT_FREQ_VALUE4 STRING "3.575000"
 // Retrieval info: PRIVATE: EXPLICIT_SWITCHOVER_COUNTER STRING "0"
 // Retrieval info: PRIVATE: EXT_FEEDBACK_RADIO STRING "0"
@@ -266,7 +266,7 @@ endmodule
 // Retrieval info: PRIVATE: OUTPUT_FREQ0 STRING "100.00000000"
 // Retrieval info: PRIVATE: OUTPUT_FREQ1 STRING "50.00000000"
 // Retrieval info: PRIVATE: OUTPUT_FREQ2 STRING "50.00000000"
-// Retrieval info: PRIVATE: OUTPUT_FREQ3 STRING "14.74650000"
+// Retrieval info: PRIVATE: OUTPUT_FREQ3 STRING "14.81481400"
 // Retrieval info: PRIVATE: OUTPUT_FREQ4 STRING "3.57500000"
 // Retrieval info: PRIVATE: OUTPUT_FREQ_MODE0 STRING "1"
 // Retrieval info: PRIVATE: OUTPUT_FREQ_MODE1 STRING "1"
@@ -346,9 +346,9 @@ endmodule
 // Retrieval info: CONSTANT: CLK2_DUTY_CYCLE NUMERIC "50"
 // Retrieval info: CONSTANT: CLK2_MULTIPLY_BY NUMERIC "1"
 // Retrieval info: CONSTANT: CLK2_PHASE_SHIFT STRING "-2000"
-// Retrieval info: CONSTANT: CLK3_DIVIDE_BY NUMERIC "100000"
+// Retrieval info: CONSTANT: CLK3_DIVIDE_BY NUMERIC "25000000"
 // Retrieval info: CONSTANT: CLK3_DUTY_CYCLE NUMERIC "50"
-// Retrieval info: CONSTANT: CLK3_MULTIPLY_BY NUMERIC "29493"
+// Retrieval info: CONSTANT: CLK3_MULTIPLY_BY NUMERIC "7407407"
 // Retrieval info: CONSTANT: CLK3_PHASE_SHIFT STRING "0"
 // Retrieval info: CONSTANT: CLK4_DIVIDE_BY NUMERIC "2000"
 // Retrieval info: CONSTANT: CLK4_DUTY_CYCLE NUMERIC "50"
