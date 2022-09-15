@@ -512,21 +512,6 @@ module PERIPHERALS #(
 	);	
 	
 
-//    wire clk_uart2;
-//    reg [3:0] counter;
-//
-//    always @ (posedge clk_uart or posedge reset) begin
-//        if(reset) begin
-//          counter <= 'd0;
-//        end
-//        else begin
-//          counter <= counter + 1'd1;
-//        end
-//    end
-//
-//    assign clk_uart2  = counter[2];
-
-
 	uart uart2
 	(
 		.clk               (clock),

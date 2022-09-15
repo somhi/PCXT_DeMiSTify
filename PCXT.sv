@@ -109,7 +109,7 @@ parameter CONF_STR = {
 	"O3,Model,IBM PCXT,Tandy 1000;",
 	"OHI,CPU Speed,4.77MHz,7.16MHz,14.318MHz;",
 	"-;",
-	"OLM,UART Speed,115200,230400,460800,921600;",
+	"OLM,UART Speed,1200..115200,115200..921600;",
 	"-;",
 	"F,ROM,Load BIOS  (F000);",	
 	"F,ROM,Load XTIDE (EC00);",	
@@ -183,8 +183,6 @@ wire  [7:0] ioctl_index;
 wire        ioctl_wr;
 wire [24:0] ioctl_addr;
 wire  [7:0] ioctl_data;
-
-wire        clk_uart;
 
 wire        adlibhide = status[10];
 
@@ -272,6 +270,9 @@ wire pclk;
 wire clk_opl2;
 wire clk_chipset;
 wire peripheral_clock;
+wire clk_uart;
+wire clk_uart2;
+
 
 `ifdef DEMISTIFY_sockit
 
@@ -281,13 +282,13 @@ pll pll
 (
 	.refclk(CLK_50M),
 	.rst(0),
-	.outclk_0(clk_100),
-	.outclk_1(clk_56_875),
-	.outclk_2(clk_28_636),
-	.outclk_3(clk_uart),
-	.outclk_4(clk_opl2),
-	.outclk_5(clk_chipset),
-//	.outclk_6(clk_113_750),
+	.outclk_0(clk_100),			//100
+	.outclk_1(clk_56_875),		//56.875
+	.outclk_2(clk_28_636),		//28.636
+	.outclk_3(clk_uart),		//14.7456
+	.outclk_4(clk_opl2),		//3.58
+	.outclk_5(clk_chipset),		//50
+//	.outclk_6(clk_113_750),		//113.75
 	.locked(pll_locked)
 );
 
@@ -299,11 +300,11 @@ pll pll
 (
 	.inclk0(CLK_50M),
 	.areset(1'b0),
-	.c0(clk_100),
-	.c1(clk_chipset),	
-	.c2(SDRAM_CLK),
-	.c3(clk_uart),
-	.c4(clk_opl2),
+	.c0(clk_100),			//100
+	.c1(clk_chipset),		//50
+	.c2(SDRAM_CLK),			//50 -2ns
+	.c3(clk_uart),			//14.7456
+	.c4(clk_opl2),			//3.575
 	.locked(pll_locked)
 );
 
@@ -312,11 +313,11 @@ pllvideo pllvideo
 (
 	.inclk0(CLK_50M),
 	.areset(1'b0),
-	.c0(clk_28_636),
-	.c1(clk_56_875),	
-//	.c2(clk_113_750),
-//	.c3(clk_14_318),
-//	.c4(clk_7_16),
+	.c0(clk_28_636),		//28.4375
+	.c1(clk_56_875),		//56.875
+	.c2(clk_uart2),			//1.844262
+//	.c3(),			
+//	.c4(),
 	.locked(pll_locked2)
 );
 
@@ -635,7 +636,7 @@ end
 		  .ioctl_wr                           (ioctl_wr),
 		  .ioctl_addr                         (ioctl_addr),
 		  .ioctl_data                         (ioctl_data),		  
-		  .clk_uart                          ((status[22:21] == 2'b00) ? clk_uart : clk_uart_en),
+		  .clk_uart                          ((status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en),
 	     .uart_rx                           (UART_RX),
 	     .uart_tx                           (UART_TX),
 	      .uart_cts_n                        (UART_CTS),
@@ -733,6 +734,7 @@ end
 		clk_uart_ff_3 <= clk_uart_ff_2;
 		clk_uart_en   <= ~clk_uart_ff_3 & clk_uart_ff_2;
     end
+
 
 	///
 
