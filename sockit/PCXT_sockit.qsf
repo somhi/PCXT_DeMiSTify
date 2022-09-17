@@ -18,7 +18,7 @@
 #
 # Quartus Prime
 # Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
-# Date created = 19:22:13  July 19, 2022
+# Date created = 14:54:42  September 17, 2022
 #
 # -------------------------------------------------------------------------- #
 #
@@ -40,7 +40,7 @@ set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CSXFC6D6F31C6
 set_global_assignment -name TOP_LEVEL_ENTITY sockit_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 17.1.0
-set_global_assignment -name PROJECT_CREATION_TIME_DATE "19:22:13  JULY 19, 2022"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "14:54:42  SEPTEMBER 17, 2022"
 set_global_assignment -name LAST_QUARTUS_VERSION "17.1.0 Lite Edition"
 set_global_assignment -name AUTO_MERGE_PLLS OFF
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
@@ -65,11 +65,12 @@ set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -
 set_global_assignment -name ACTIVE_SERIAL_CLOCK FREQ_100MHZ
 set_global_assignment -name GENERATE_RBF_FILE ON
 set_global_assignment -name ON_CHIP_BITSTREAM_DECOMPRESSION OFF
-set_global_assignment -name OPTIMIZATION_MODE BALANCED
-set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE BALANCED
+set_global_assignment -name OPTIMIZATION_MODE "AGGRESSIVE PERFORMANCE"
+set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE SPEED
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_location_assignment PIN_K14 -to FPGA_CLK1_50
 set_location_assignment PIN_Y26 -to FPGA_CLK2_50
 set_location_assignment PIN_AA16 -to FPGA_CLK3_50
@@ -153,8 +154,12 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to UART_RXD
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to UART_TXD
 set_location_assignment PIN_D7 -to DETO1_UART_CTS
 set_location_assignment PIN_A8 -to DETO2_UART_RTS
+set_location_assignment PIN_E8 -to DETO3_UART2_RXD
+set_location_assignment PIN_A9 -to DETO4_UART2_TXD
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DETO1_UART_CTS
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DETO2_UART_RTS
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DETO3_UART2_RXD
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DETO4_UART2_TXD
 set_location_assignment PIN_C3 -to JOY1_B2_P9
 set_location_assignment PIN_H8 -to JOY1_B1_P6
 set_location_assignment PIN_D4 -to JOY1_UP
@@ -257,4 +262,3 @@ set_global_assignment -name VHDL_FILE ../demistify_config_pkg.vhd
 set_global_assignment -name VHDL_FILE ../firmware/controller_rom1_byte.vhd
 set_global_assignment -name VHDL_FILE ../firmware/controller_rom2_byte.vhd
 set_global_assignment -name PRE_FLOW_SCRIPT_FILE "quartus_sh:../build_id.tcl"
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

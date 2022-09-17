@@ -398,14 +398,14 @@ module cga(
     cga_scandoubler scandoubler_inst (
         .clk(clk),
         .line_reset(line_reset),
-    //    .video(video),		  
+    //  .video(video),		  
         .video(cga_de ? video : 4'b0000 ),		  
         .dbl_hsync(dbl_hsync),
         .dbl_video(dbl_video)
     );
 
 
-    assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //hsync, csync_out      
+    assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //not ok: hsync, csync_out      
     assign vsync_sd = scandoubler ? vsync     : 1'b1;
     assign video_sd = scandoubler ? dbl_video : video;
 
