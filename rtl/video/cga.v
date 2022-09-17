@@ -370,6 +370,28 @@ module cga(
 		end
     end
 
+
+    // Composite video generation
+
+    wire hsync_out;
+    wire vsync_out;
+    wire csync_out;
+
+    cga_composite comp (
+        .clk(clk),
+        .lclk(lclk),
+        .hclk(hclk),
+        .video(video),
+        .hsync(hsync_int),
+        .vsync_l(vsync_l),
+        .bw_mode(bw_mode),
+        .hsync_out(hsync_out),
+        .vsync_out(vsync_out),
+        .csync_out(csync_out),
+        .comp_video(comp_video)
+    );
+
+
     wire cga_de;
     assign cga_de = ~(hblank | vblank);
     
@@ -383,7 +405,7 @@ module cga(
     );
 
 
-    assign hsync_sd = scandoubler ? dbl_hsync : hsync;
+    assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //hsync, csync_out      
     assign vsync_sd = scandoubler ? vsync     : 1'b1;
     assign video_sd = scandoubler ? dbl_video : video;
 

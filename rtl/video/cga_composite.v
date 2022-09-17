@@ -21,6 +21,7 @@ module cga_composite(
 
     output hsync_out,
     output vsync_out,
+    output csync_out,
     output [6:0] comp_video
     );
 
@@ -118,6 +119,8 @@ module cga_composite(
     assign vsync_out = vsync_counter[0] & ~vsync_counter[3];
 
     assign csync = ~(vsync_out ^ hsync_out);
+
+    assign csync_out = csync;
 
     // Generate 3.58MHz from the 28MHz clock coming in
     always @ (posedge clk)
