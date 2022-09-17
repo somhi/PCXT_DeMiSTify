@@ -404,10 +404,12 @@ module cga(
         .dbl_video(dbl_video)
     );
 
-
     assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //not ok: hsync, csync_out      
     assign vsync_sd = scandoubler ? vsync     : 1'b1;
     assign video_sd = scandoubler ? dbl_video : video;
 
+    // assign hsync_sd = scandoubler ? dbl_hsync : hsync;          
+    // assign vsync_sd = scandoubler ? vsync     : vsync;
+    // assign video_sd = scandoubler ? dbl_video : video;
 
 endmodule

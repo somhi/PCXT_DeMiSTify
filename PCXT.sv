@@ -107,7 +107,7 @@ assign LED  =  ~ioctl_download;   //1'b1;
 // 0         1         2         3          4         5         6
 // 01234567890123456789012345678901 23456789012345678901234567890123
 // 0123456789ABCDEFGHIJKLMNOPQRSTUV 0123456789ABCDEFGHIJKLMNOPQRSTUV
-// XXXXX XXXXXXXXXXXXXXXXXXXXXXX
+// XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
 `include "build_id.v" 
@@ -143,7 +143,9 @@ parameter CONF_STR = {
 	//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
 	//"P2OT,Border,No,Yes;",
 	"P2O4,Video Output,CGA/Tandy,MDA;",
-	"P2OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",	
+	"P2OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
+	"P2OU,YPbPr,No,Yes;",
+	"P2OV,Composite Blending,No,Yes;",
 	"P3,Hardware;",
 	"P3-;",
 	"P3OB,Lo-tech 2MB EMS,Enabled,Disabled;",
@@ -784,53 +786,72 @@ end
 	wire vga_hs;
 	wire vga_vs;
 
-	mist_video #(.OSD_COLOR(3'd5), .SD_HCNT_WIDTH(10)) mist_video (
-		.clk_sys     ( clk_56_875 ),
+	// mist_video #(.OSD_COLOR(3'd5), .SD_HCNT_WIDTH(10) ) mist_video (
+	// 	.clk_sys     ( clk_56_875 ),
 	
-		// OSD SPI interface
-		.SPI_SCK     ( SPI_SCK    ),
-		.SPI_SS3     ( SPI_SS3    ),
-		.SPI_DI      ( SPI_DI     ),
+	// 	// OSD SPI interface
+	// 	.SPI_SCK     ( SPI_SCK    ),
+	// 	.SPI_SS3     ( SPI_SS3    ),
+	// 	.SPI_DI      ( SPI_DI     ),
 	
-		// scanlines (00-none 01-25% 10-50% 11-75%)   	//only works if scandoubler enabled
-		.scanlines   ( 2'b00      ),
+	// 	// scanlines (00-none 01-25% 10-50% 11-75%)   	//only works if scandoubler enabled
+	// 	.scanlines   ( 2'b00      ),
 
-		// non-scandoubled pixel clock divider 0 - clk_sys/4, 1 - clk_sys/2
-		.ce_divider  ( 1'b1       ),
+	// 	// non-scandoubled pixel clock divider 0 - clk_sys/4, 1 - clk_sys/2
+	// 	.ce_divider  ( 1'b1       ),
 	
-		// 0 = HVSync 31KHz, 1 = CSync 15KHz			//using Graphics Gremlin scandoubler
-		.scandoubler_disable (1'b1),
-		// disable csync without scandoubler
-		.no_csync    ( 1'b1       ),
-		// YPbPr always uses composite sync
-		.ypbpr       ( 1'b0       ),
-		// Rotate OSD [0] - rotate [1] - left or right
-		.rotate      ( 2'b00      ),
-		// composite-like blending
-		.blend       ( 1'b0       ),
+	// 	// 0 = HVSync 31KHz, 1 = CSync 15KHz			//using Graphics Gremlin scandoubler
+	// 	.scandoubler_disable (1'b1),
+	// 	// disable csync without scandoubler
+	// 	.no_csync    ( ~forced_scandoubler ),			// 1'b1
+	// 	// YPbPr always uses composite sync
+	// 	.ypbpr       ( status[30] ),					// 1'b0
+	// 	// Rotate OSD [0] - rotate [1] - left or right
+	// 	.rotate      ( 2'b00      ),
+	// 	// composite-like blending
+	// 	.blend       ( status[31] ),					// 1'b0
 	
-		// video in
-		.R           ( raux[7:2]  ),
-		.G           ( gaux[7:2]  ),
-		.B           ( baux[7:2]  ),
-		.HSync       ( ~vga_hs    ),
-		.VSync       ( ~vga_vs    ),
+	// 	// video in
+	// 	.R           ( raux[7:2]  ),
+	// 	.G           ( gaux[7:2]  ),
+	// 	.B           ( baux[7:2]  ),
+	// 	.HSync       ( ~vga_hs    ),
+	// 	.VSync       ( ~vga_vs    ),
 
-		// MiST video output signals
-		.VGA_R       ( VGA_R      ),
-		.VGA_G       ( VGA_G      ),
-		.VGA_B       ( VGA_B      ),
-		.VGA_VS      ( VGA_VS     ),
-		.VGA_HS      ( VGA_HS     )
-	
-		// `ifdef DEMISTIFY
-		// 						   ,
-		// .ce_x1_o	 ( ce_x1	  )
-		// `endif
-	);
+	// 	// MiST video output signals
+	// 	.VGA_R       ( VGA_R      ),
+	// 	.VGA_G       ( VGA_G      ),
+	// 	.VGA_B       ( VGA_B      ),
+	// 	.VGA_VS      ( VGA_VS     ),
+	// 	.VGA_HS      ( VGA_HS     )
+	// );
 	
 	assign VGA_DE = ~(HBlank | VBlank);
 	
+
+
+	osd #(.OSD_COLOR(3'd5)) osd
+	(
+		.clk_sys ( clk_56_875 ),
+		.rotate  ( 2'b00      ),
+		.ce      ( clk_28_636 ),
+		.SPI_DI  ( SPI_DI     ),
+		.SPI_SCK ( SPI_SCK    ),
+		.SPI_SS3 ( SPI_SS3    ),
+		.R_in    ( raux[7:2]  ),
+		.G_in    ( gaux[7:2]  ),
+		.B_in    ( baux[7:2]  ),
+		.HSync   ( ~vga_hs     ),
+		.VSync   ( ~vga_vs     ),
+		.R_out   ( VGA_R      ),
+		.G_out   ( VGA_G      ),
+		.B_out   ( VGA_B      )
+	);
+
+	assign VGA_VS = ~vga_vs;
+	assign VGA_HS = ~vga_hs;
+
+
 
 reg vsd = 0;
 always @(posedge CLK_50M) if(usdImgMtd[0]) vsd <= |usdImgSz;
