@@ -72,8 +72,8 @@ module PCXT
 	input		  UART_CTS,
 	output 		  UART_RTS,
 
-//	input         UART2_RX,
-//	output        UART2_TX
+	input         UART2_RX,
+	output        UART2_TX,
 
 //	input         PS2K_CLK_IN,
 //	input         PS2K_DAT_IN,
@@ -699,7 +699,7 @@ end
 		.right    ( AUDIO_R     )       // right bitsteam output
 	);
 
-	
+
 	wire [15:0] SDRAM_DQ_IN;
 	wire [15:0] SDRAM_DQ_OUT;
 	wire        SDRAM_DQ_IO;

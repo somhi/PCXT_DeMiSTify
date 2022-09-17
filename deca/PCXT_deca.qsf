@@ -18,7 +18,7 @@
 #
 # Quartus Prime
 # Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
-# Date created = 18:17:22  September 03, 2022
+# Date created = 11:29:12  September 17, 2022
 #
 # -------------------------------------------------------------------------- #
 #
@@ -41,7 +41,7 @@ set_global_assignment -name DEVICE 10M50DAF484C6GES
 set_global_assignment -name TOP_LEVEL_ENTITY deca_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 17.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "21:03:07  MAY 26, 2021"
-set_global_assignment -name LAST_QUARTUS_VERSION "17.1.0 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "19.1.0 Lite Edition"
 set_global_assignment -name AUTO_MERGE_PLLS OFF
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name DEVICE_FILTER_PACKAGE FBGA
@@ -62,11 +62,12 @@ set_global_assignment -name GENERATE_SVF_FILE ON
 set_global_assignment -name AUTO_RESTART_CONFIGURATION OFF
 set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
 set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
-#set_global_assignment -name OPTIMIZATION_MODE "AGGRESSIVE PERFORMANCE"
-#set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE SPEED
+set_global_assignment -name OPTIMIZATION_MODE BALANCED
+set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE BALANCED
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_location_assignment PIN_M9 -to ADC_CLK_10
 set_instance_assignment -name IO_STANDARD "2.5 V" -to ADC_CLK_10
 set_location_assignment PIN_M8 -to MAX10_CLK1_50
@@ -125,8 +126,8 @@ set_location_assignment PIN_W4 -to SPI_MOSI
 set_location_assignment PIN_R9 -to SPI_MISO_WSBD
 set_location_assignment PIN_P9 -to SPI_SCLK_DABD
 set_location_assignment PIN_Y19 -to SPI_CS0_CLKBD
-set_location_assignment PIN_AA17 -to SPI_CS1
-set_location_assignment PIN_W3 -to SPI_CS2
+set_location_assignment PIN_AA17 -to UART2_RXD
+set_location_assignment PIN_W3 -to UART2_TXD
 set_location_assignment PIN_Y18 -to UART_RXD
 set_location_assignment PIN_W18 -to UART_TXD
 set_location_assignment PIN_J4 -to JOY1_B2_P9
@@ -468,4 +469,3 @@ set_global_assignment -name VHDL_FILE ../demistify_config_pkg.vhd
 set_global_assignment -name VHDL_FILE ../firmware/controller_rom1_byte.vhd
 set_global_assignment -name VHDL_FILE ../firmware/controller_rom2_byte.vhd
 set_global_assignment -name PRE_FLOW_SCRIPT_FILE "quartus_sh:../build_id.tcl"
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
