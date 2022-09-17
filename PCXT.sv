@@ -157,7 +157,7 @@ parameter CONF_STR = {
 	"V,v",`BUILD_DATE 
 };
 
-//wire forced_scandoubler;
+wire forced_scandoubler;
 wire  [1:0] buttons;
 wire [31:0] status;
 //wire [10:0] ps2_key;
@@ -213,7 +213,7 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	
 	.status         ( status        ),
 	.buttons        ( buttons       ),
-	// .scandoubler_disable ( forced_scandoubler ),
+	.scandoubler_disable ( forced_scandoubler ),
 
 // //VHD	
 // 	.sd_rd         (usdRd),
@@ -592,6 +592,7 @@ end
         .VGA_VSYNC                          (vga_vs),
 		.VGA_HBlank	  				        (HBlank),
 		.VGA_VBlank							(VBlank),
+		.scandoubler						(~forced_scandoubler),
 //      .address                            (address),
         .address_ext                        (20'hFFFFF),
 //      .address_direction                  (address_direction),
@@ -652,12 +653,13 @@ end
 	    //  .uart_dsr_n                        (uart_dsr),
 	      .uart_rts_n                        (UART_RTS),
 	    //  .uart_dtr_n                        (uart_dtr),
+		  .clk_uart2                          ((status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en),
 	     .uart2_rx                           (UART2_RX),
 	     .uart2_tx                           (UART2_TX),
-	   //  .uart2_cts_n                        (uart2_cts),
+	     .uart2_cts_n                        (uart2_cts),
 	   //  .uart2_dcd_n                        (uart2_dcd),
 	   //  .uart2_dsr_n                        (uart2_dsr),
-	   //  .uart2_rts_n                        (uart2_rts),
+	     .uart2_rts_n                        (uart2_rts),
 	   //  .uart2_dtr_n                        (uart2_dtr),
 		  .enable_sdram                       (1'b1),
 		  .sdram_clock                        (clk_chipset),
@@ -756,8 +758,12 @@ end
 			cpu_address <= cpu_address;
 	end	
 	
-	/// VIDEO
+	/// UART
+	wire uart2_rts;
+	wire uart2_cts;
 
+
+	/// VIDEO
 
 	video_monochrome_converter video_mono 
 	(

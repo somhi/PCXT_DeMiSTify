@@ -34,6 +34,7 @@ module PERIPHERALS #(
     output  logic           VGA_VSYNC,
 	 output  logic           VGA_HBlank,
 	 output  logic           VGA_VBlank,	 
+     input   logic           scandoubler,
     // I/O Ports
     input   logic   [19:0]  address,
     input   logic   [7:0]   internal_data_bus,
@@ -89,6 +90,7 @@ module PERIPHERALS #(
 	 output  logic           uart_rts_n,
 	 output  logic           uart_dtr_n,
 	 // UART 2
+	 input   logic           clk_uart2,     
 	 input   logic           uart2_rx,
 	 output  logic           uart2_tx,
 	 input   logic           uart2_cts_n,
@@ -515,7 +517,7 @@ module PERIPHERALS #(
 	uart uart2
 	(
 		.clk               (clock),
-		.br_clk            (clk_uart),
+		.br_clk            (clk_uart2),
 		.reset             (reset),
 
 		.address           (address[2:0]),
@@ -778,19 +780,24 @@ module PERIPHERALS #(
         .ram_a                      (CGA_VRAM_ADDR),
         .ram_d                      (CGA_VRAM_DOUT),
 	//	  .hsync                      (HSYNC_CGA),              // non scandoubled
-          .dbl_hsync                  (HSYNC_CGA),              // scandoubled
+    //      .dbl_hsync                  (HSYNC_CGA),              // scandoubled
 		  .hblank                     (HBLANK_CGA),
-        .vsync                      (VSYNC_CGA),
+    //    .vsync                      (VSYNC_CGA),
 		  .vblank                     (VBLANK_CGA),
 		  .de_o                       (de_o_cga),
     //    .video                      (video_cga),              // non scandoubled
-        .dbl_video                  (video_cga),                // scandoubled
+    //    .dbl_video                  (video_cga),                // scandoubled
 		  .splashscreen               (splashscreen),
         .thin_font                  (thin_font),
 		  .tandy_video                (tandy_video),
 		  .color                      (color),
 		  .grph_mode                  (grph_mode),
-		  .hres_mode                  (hres_mode)
+		  .hres_mode                  (hres_mode),
+
+          .scandoubler				  (scandoubler),
+     	  .hsync_sd                   (HSYNC_CGA),              
+          .vsync_sd                   (VSYNC_CGA),
+          .video_sd                   (video_cga),              
     );
 
     always_ff @(posedge clock) begin

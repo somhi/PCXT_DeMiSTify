@@ -44,7 +44,12 @@ module cga(
 	 input tandy_video,
 	 input color,
 	 output grph_mode,
-	 output hres_mode
+	 output hres_mode,
+
+     input  scandoubler,
+     output hsync_sd,
+     output vsync_sd,
+     output [3:0] video_sd
     );
 
     parameter MDA_70HZ = 0;
@@ -368,7 +373,7 @@ module cga(
     wire cga_de;
     assign cga_de = ~(hblank | vblank);
     
-    cga_scandoubler scandoubler (
+    cga_scandoubler scandoubler_inst (
         .clk(clk),
         .line_reset(line_reset),
     //    .video(video),		  
@@ -376,6 +381,11 @@ module cga(
         .dbl_hsync(dbl_hsync),
         .dbl_video(dbl_video)
     );
+
+
+    assign hsync_sd = scandoubler ? dbl_hsync : hsync;
+    assign vsync_sd = scandoubler ? vsync     : 1'b1;
+    assign video_sd = scandoubler ? dbl_video : video;
 
 
 endmodule

@@ -36,6 +36,7 @@ module CHIPSET (
     output  logic           VGA_VSYNC,
     output  logic           VGA_HBlank,
 	output  logic           VGA_VBlank,
+    input   logic           scandoubler,
     // I/O Ports
     output  logic   [19:0]  address,
     input   logic   [19:0]  address_ext,
@@ -98,6 +99,7 @@ module CHIPSET (
     input   logic   [7:0]   ioctl_data,
 	 // UART
 	 input   logic           clk_uart,
+     input   logic           clk_uart2,
 	 input   logic           uart_rx,
 	 output  logic           uart_tx,
 	 input   logic           uart_cts_n,
@@ -235,6 +237,7 @@ module CHIPSET (
         .clock                              (clock),
 		  .clk_sys                            (clk_sys),
 		  .clk_uart                           (clk_uart),
+		  .clk_uart2                          (clk_uart2),          
         .peripheral_clock                   (peripheral_clock),
 		  .color                              (color),
 		  .turbo_mode                         (turbo_mode),
@@ -258,6 +261,7 @@ module CHIPSET (
         .VGA_VSYNC                          (VGA_VSYNC),
         .VGA_HBlank                         (VGA_HBlank),
         .VGA_VBlank                         (VGA_VBlank),
+        .scandoubler						(scandoubler),
         .address                            (address),
         .internal_data_bus                  (internal_data_bus),
         .data_bus_out                       (internal_data_bus_chipset),
