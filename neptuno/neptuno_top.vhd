@@ -7,16 +7,17 @@ use work.demistify_config_pkg.all;
 
 -- -----------------------------------------------------------------------
 
-
 -- add following in Neptuno_pins.tcl in demistify/board/neptuno
--- #UART through PS2 Mouse port
--- #set_location_assignment PIN_C21 -to PS2_MOUSE_CLK
--- set_location_assignment PIN_C21 -to UART_RXD
--- #set_location_assignment PIN_B21 -to PS2_MOUSE_DAT
--- set_location_assignment PIN_B21 -to UART_TXD
--- #UART External addon
--- #set_location_assignment PIN_M19 -to UART_RXD
--- #set_location_assignment PIN_U22 -to UART_TXD
+-- #PCXT CORE ADDED SIGNALS ON MIDI2SBC ADDON
+-- #PIN_C22,  SPI CE1,  PMOD4_D6 -> UART_CTS
+-- #PIN_AB13, SPI CE2,  PMOD4_D7 -> UART_RTS
+-- #PIN_P22,  SPI CE0,  PMOD4_D0 -> UART2_RXD
+-- #PIN_B22,  SPI MOSI, PMOD4_D1 -> UART2_TXD
+-- set_location_assignment PIN_C22 -to UART_CTS
+-- set_location_assignment PIN_AB13 -to UART_RTS
+-- set_location_assignment PIN_P22 -to UART2_RXD
+-- set_location_assignment PIN_B22 -to UART2_TXD
+
 --------------------------------------------------
 
 entity neptuno_top is
@@ -60,13 +61,14 @@ entity neptuno_top is
 		-- PS2
 		PS2_KEYBOARD_CLK : inout std_logic;
 		PS2_KEYBOARD_DAT : inout std_logic;
-		-- PS2_MOUSE_CLK    : inout std_logic;
-		-- PS2_MOUSE_DAT    : inout std_logic;
+		PS2_MOUSE_CLK    : inout std_logic;
+		PS2_MOUSE_DAT    : inout std_logic;
 		-- UART
 		UART_RXD : in std_logic;
 		UART_TXD : out std_logic;
-		UART2_RXD : in std_logic;
-		UART2_TXD : out std_logic;
+
+		UART_CTS : in std_logic;
+		UART_RTS : out std_logic;
 		-- JOYSTICK 
 		JOY_CLK  : out std_logic;
 		JOY_LOAD : out std_logic;
@@ -198,9 +200,6 @@ architecture RTL of neptuno_top is
 	signal act_led : std_logic;
 	
 	signal sram_we_x : std_logic;
-	
-	signal PS2_MOUSE_CLK : std_logic;
-	signal PS2_MOUSE_DAT : std_logic;
 
 begin
 
@@ -218,10 +217,10 @@ begin
 	SD_SCLK_O <= sd_clk;
 
 	-- External devices tied to GPIOs
-	ps2_mouse_dat_in <= PS2_MOUSE_DAT;
-	PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
-	ps2_mouse_clk_in <= PS2_MOUSE_CLK;
-	PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
+	-- ps2_mouse_dat_in <= PS2_MOUSE_DAT;
+	-- PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
+	-- ps2_mouse_clk_in <= PS2_MOUSE_CLK;
+	-- PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
 
 	ps2_keyboard_dat_in <= PS2_KEYBOARD_DAT;
 	PS2_KEYBOARD_DAT    <= '0' when ps2_keyboard_dat_out = '0' else 'Z';
@@ -301,8 +300,10 @@ begin
 			--UART
 			UART_TX => UART_TXD,
 			UART_RX => UART_RXD,
-			UART2_TX => UART2_TXD,
-			UART2_RX => UART2_RXD,
+
+			UART_CTS  => UART_CTS,
+			UART_RTS  => UART_RTS,
+
 			--SPI
 --			SPI_SD_DI  => sd_miso,
 			SPI_DO     => spi_fromguest,
@@ -322,11 +323,19 @@ begin
 				DAC_L   => dac_l,
 				DAC_R   => dac_r,
 			AUDIO_L => SIGMA_L,
-			AUDIO_R => SIGMA_R
+			AUDIO_R => SIGMA_R,
 		--	PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 		--	PS2K_DAT_IN => ps2_keyboard_dat_in
 		--	PS2K_CLK_OUT => ps2_keyboard_clk_out,
 		--	PS2K_DAT_OUT => ps2_keyboard_dat_out
+
+			-- PS2K_MOUSE_CLK_IN => ps2_mouse_clk_in,
+			-- PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
+			-- PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
+			-- PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
+
+			PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
+			PS2_MOUSE_DAT => PS2_MOUSE_DAT   
 		);
 
 
@@ -363,10 +372,10 @@ begin
 				ps2k_dat_in  => ps2_keyboard_dat_in,
 				ps2k_clk_out => ps2_keyboard_clk_out,
 				ps2k_dat_out => ps2_keyboard_dat_out,
-				ps2m_clk_in  => ps2_mouse_clk_in,
-				ps2m_dat_in  => ps2_mouse_dat_in,
-				ps2m_clk_out => ps2_mouse_clk_out,
-				ps2m_dat_out => ps2_mouse_dat_out,
+				-- ps2m_clk_in  => ps2_mouse_clk_in,
+				-- ps2m_dat_in  => ps2_mouse_dat_in,
+				-- ps2m_clk_out => ps2_mouse_clk_out,
+				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
 				buttons => (others => '1'),

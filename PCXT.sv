@@ -72,13 +72,21 @@ module PCXT
 	input		  UART_CTS,
 	output 		  UART_RTS,
 
-	input         UART2_RX,
-	output        UART2_TX
+//	input         UART2_RX,
+//	output        UART2_TX
 
 //	input         PS2K_CLK_IN,
 //	input         PS2K_DAT_IN,
 //	output        PS2K_CLK_OUT,
 //	output        PS2K_DAT_OUT
+
+	// input         PS2K_MOUSE_CLK_IN,
+	// input         PS2K_MOUSE_DAT_IN,
+	// output        PS2K_MOUSE_CLK_OUT,
+	// output        PS2K_MOUSE_DAT_OUT
+
+	inout		  PS2_MOUSE_CLK,
+	inout		  PS2_MOUSE_DAT
 );
 
 wire CLK_50M;
@@ -303,7 +311,7 @@ pll pll
 	.c0(clk_100),			//100
 	.c1(clk_chipset),		//50
 	.c2(SDRAM_CLK),			//50 -2ns
-	.c3(clk_uart),			//14.7456
+	.c3(clk_uart),			//14.7456 MHz
 	.c4(clk_opl2),			//3.575
 	.locked(pll_locked)
 );
@@ -315,7 +323,7 @@ pllvideo pllvideo
 	.areset(1'b0),
 	.c0(clk_28_636),		//28.4375
 	.c1(clk_56_875),		//56.875
-	.c2(clk_uart2),			//1.844262
+	.c2(clk_uart2),			//1.8432 MHz
 //	.c3(),			
 //	.c4(),
 	.locked(pll_locked2)
@@ -675,26 +683,29 @@ end
 
 	wire [15:0] jtopl2_snd_e;	
 	//wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + {tandy_snd_e, 6'd0}; // signed mixer
-	wire [16:0]sndmix = (({1'b0, jtopl2_snd_e}) << 1) + (speaker_out << 14) + {tandy_snd_e, 8'd0};
+	//wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 1) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 1
+	//wire [16:0]sndmix = (({1'b0, jtopl2_snd_e}) ) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // bad
+	//wire [16:0]sndmix_pcm = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (~speaker_out << 15) + {tandy_snd_e, 9'd0}; // not bad
+	wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 2
 
+	assign DAC_R = sndmix >> 1;
+	assign DAC_L = sndmix >> 1;	
+
+	sigma_delta_dac sigma_delta_dac (
+		.clk      ( CLK_50M     ),      // bus clock
+		.ldatasum ( sndmix >> 2 ),      // left channel data		(ok1) sndmix >> 1 bad, (ok2) sndmix >> 2 ok
+		.rdatasum ( sndmix >> 2 ),      // right channel data		sndmix_pcm >> 1 bad, sndmix_pcm >> 2 bad
+		.left     ( AUDIO_L     ),      // left bitstream output
+		.right    ( AUDIO_R     )       // right bitsteam output
+	);
+
+	
 	wire [15:0] SDRAM_DQ_IN;
 	wire [15:0] SDRAM_DQ_OUT;
 	wire        SDRAM_DQ_IO;
 	
 	assign SDRAM_DQ_IN = SDRAM_DQ;
 	assign SDRAM_DQ = ~SDRAM_DQ_IO ? SDRAM_DQ_OUT : 16'hZZZZ;	
-
-	assign DAC_R = sndmix >> 1;
-	assign DAC_L = sndmix >> 1;	
-
-
-	sigma_delta_dac sigma_delta_dac (
-		.clk      ( CLK_50M     ),      // bus clock
-		.ldatasum ( sndmix >> 1 ),      // left channel data
-		.rdatasum ( sndmix >> 1 ),      // right channel data
-		.left     ( AUDIO_L     ),      // left bitstream output
-		.right    ( AUDIO_R     )       // right bitsteam output
-	);
 
 	wire s6_3_mux;
 	wire [2:0] SEGMENT;

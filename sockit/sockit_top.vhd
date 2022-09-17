@@ -7,6 +7,18 @@ use work.demistify_config_pkg.all;
 
 -- -----------------------------------------------------------------------
 
+-- Add the following in sockit_pins.tcl at demistify/board/sockit
+--
+-- #============================================================
+-- # UART   ADDED FOR PCXT CORE
+-- #============================================================
+-- set_location_assignment PIN_D7 -to DETO1_UART_CTS
+-- set_location_assignment PIN_A8 -to DETO2_UART_RTS
+-- set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DETO1_UART_CTS
+-- set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DETO2_UART_RTS
+
+-- -----------------------------------------------------------------------
+
 entity sockit_top is
 	port (
 		FPGA_CLK1_50 : in std_logic;
@@ -47,6 +59,9 @@ entity sockit_top is
 		-- UART
 		UART_RXD : in std_logic;
 		UART_TXD : out std_logic;
+
+		DETO1_UART_CTS : in std_logic;
+		DETO2_UART_RTS : out std_logic;
 		-- JOYSTICK
 		JOY1_B2_P9 : in std_logic;
 		JOY1_B1_P6 : in std_logic;
@@ -300,6 +315,10 @@ begin
 			--UART
 			UART_TX => UART_TXD,
 			UART_RX => UART_RXD,
+
+			UART_CTS  => DETO1_UART_CTS,
+			UART_RTS  => DETO2_UART_RTS,
+
 			--SPI
 --			SPI_SD_DI  => sd_miso,
 			SPI_DO  => spi_fromguest,
@@ -319,11 +338,20 @@ begin
 			VGA_DE  => vga_de,
 			--AUDIO
 			DAC_L   => dac_l,
-			DAC_R   => dac_r
+			DAC_R   => dac_r,
 	--		PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 	--		PS2K_DAT_IN => ps2_keyboard_dat_in,
 	--		PS2K_CLK_OUT => ps2_keyboard_clk_out,
 	--		PS2K_DAT_OUT => ps2_keyboard_dat_out
+
+	--		PS2K_MOUSE_CLK_IN => ps2_mouse_clk_in,
+	--		PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
+	--		PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
+	--		PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
+
+
+			PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
+			PS2_MOUSE_DAT => PS2_MOUSE_DAT   
 		);
 
 
@@ -360,10 +388,10 @@ begin
 				ps2k_dat_in  => ps2_keyboard_dat_in,
 				ps2k_clk_out => ps2_keyboard_clk_out,
 				ps2k_dat_out => ps2_keyboard_dat_out,
-				ps2m_clk_in  => ps2_mouse_clk_in,
-				ps2m_dat_in  => ps2_mouse_dat_in,
-				ps2m_clk_out => ps2_mouse_clk_out,
-				ps2m_dat_out => ps2_mouse_dat_out,
+				-- ps2m_clk_in  => ps2_mouse_clk_in,
+				-- ps2m_dat_in  => ps2_mouse_dat_in,
+				-- ps2m_clk_out => ps2_mouse_clk_out,
+				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
 				buttons => (0 => KEY(0), 1 => KEY(1), others => '1'),

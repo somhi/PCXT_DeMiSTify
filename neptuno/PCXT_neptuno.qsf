@@ -41,7 +41,7 @@ set_global_assignment -name DEVICE EP4CE55F23C8
 set_global_assignment -name TOP_LEVEL_ENTITY neptuno_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 16.1.2
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "01:53:30  APRIL 20, 2017"
-set_global_assignment -name LAST_QUARTUS_VERSION 13.1
+set_global_assignment -name LAST_QUARTUS_VERSION "17.1.0 Lite Edition"
 set_global_assignment -name AUTO_MERGE_PLLS OFF
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
@@ -126,10 +126,16 @@ set_location_assignment PIN_N19 -to PS2_KEYBOARD_CLK
 set_location_assignment PIN_N20 -to PS2_KEYBOARD_DAT
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PS2_KEYBOARD_CLK
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PS2_KEYBOARD_DAT
-set_location_assignment PIN_C21 -to UART_RXD
-set_location_assignment PIN_B21 -to UART_TXD
-set_location_assignment PIN_M19 -to UART2_RXD
-set_location_assignment PIN_U22 -to UART2_TXD
+set_location_assignment PIN_C21 -to PS2_MOUSE_CLK
+set_location_assignment PIN_B21 -to PS2_MOUSE_DAT
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PS2_MOUSE_CLK
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PS2_MOUSE_DAT
+set_location_assignment PIN_M19 -to UART_RXD
+set_location_assignment PIN_U22 -to UART_TXD
+set_location_assignment PIN_C22 -to UART_CTS
+set_location_assignment PIN_AB13 -to UART_RTS
+set_location_assignment PIN_P22 -to UART2_RXD
+set_location_assignment PIN_B22 -to UART2_TXD
 set_location_assignment PIN_AA18 -to JOYP7_O
 set_location_assignment PIN_A20 -to JOY_CLK
 set_location_assignment PIN_B19 -to JOY_DATA

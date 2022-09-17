@@ -285,10 +285,10 @@ begin
 	SD_SCLK_O <= sd_clk;
 
 	-- External devices tied to GPIOs
-	ps2_mouse_dat_in <= PS2_MOUSE_DAT;
-	PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
-	ps2_mouse_clk_in <= PS2_MOUSE_CLK;
-	PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
+	-- ps2_mouse_dat_in <= PS2_MOUSE_DAT;
+	-- PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
+	-- ps2_mouse_clk_in <= PS2_MOUSE_CLK;
+	-- PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
 
 	-- DECA_KEYB:  1=PS2 INOUT, 2= PS2 & USB LOW SPEED
 	KEYBOARD_1 : if DECA_KEYB = 1 generate -- KEYB PS2 INOUT
@@ -478,11 +478,19 @@ begin
 				-- vga_x_vs  => vga_x_vs,
 			--AUDIO
 				DAC_L   => dac_l,
-				DAC_R   => dac_r
+				DAC_R   => dac_r,
 	--		PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 	--		PS2K_DAT_IN => ps2_keyboard_dat_in,
 	--		PS2K_CLK_OUT => ps2_keyboard_clk_out,
 	--		PS2K_DAT_OUT => ps2_keyboard_dat_out
+
+			-- PS2K_MOUSE_CLK_IN => ps2_mouse_clk_in,
+			-- PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
+			-- PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
+			-- PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
+
+			PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
+			PS2_MOUSE_DAT => PS2_MOUSE_DAT   
 		);
 
 
@@ -517,12 +525,12 @@ begin
 				-- PS/2 signals
 				ps2k_clk_in  => ps2_keyboard_clk_in,
 				ps2k_dat_in  => ps2_keyboard_dat_in,
-		--		ps2k_clk_out => ps2_keyboard_clk_out,
-		--		ps2k_dat_out => ps2_keyboard_dat_out,
-				ps2m_clk_in  => ps2_mouse_clk_in,
-				ps2m_dat_in  => ps2_mouse_dat_in,
-				ps2m_clk_out => ps2_mouse_clk_out,
-				ps2m_dat_out => ps2_mouse_dat_out,
+				ps2k_clk_out => ps2_keyboard_clk_out,
+				ps2k_dat_out => ps2_keyboard_dat_out,
+				-- ps2m_clk_in  => ps2_mouse_clk_in,
+				-- ps2m_dat_in  => ps2_mouse_dat_in,
+				-- ps2m_clk_out => ps2_mouse_clk_out,
+				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
 				buttons => (0 => KEY(0), 1 => KEY(1), others => '1'),

@@ -151,6 +151,10 @@ set_location_assignment PIN_B3 -to UART_RXD
 set_location_assignment PIN_G8 -to UART_TXD
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to UART_RXD
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to UART_TXD
+set_location_assignment PIN_D7 -to DETO1_UART_CTS
+set_location_assignment PIN_A8 -to DETO2_UART_RTS
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DETO1_UART_CTS
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DETO2_UART_RTS
 set_location_assignment PIN_C3 -to JOY1_B2_P9
 set_location_assignment PIN_H8 -to JOY1_B1_P6
 set_location_assignment PIN_D4 -to JOY1_UP
