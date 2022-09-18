@@ -1,7 +1,11 @@
-**To be solved:**
+**TODO list:**
 
-* Keyboard BIOS error (JUKO ST)
-* IBM BIOS keyboard not working
+* Keyboard controller does not pass diagnostic tests
+  * Juko ST BIOS: keyboard error
+
+* IBM BIOS: keyboard not working
+* No overscan with scandoubler enabled
+  
 * MDA output most right column is cutted
   * `mda_mode ? HBlank_del[color ? 12 : 13] `
 

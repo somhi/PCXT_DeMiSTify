@@ -2,9 +2,15 @@
 
 Port DeMiSTified by Somhic from original MiSTer port currently in development  https://github.com/MiSTer-devel/PCXT_MiSTer
 
-Keyboard controller does not pass diagnostic tests
+Follow core discussion at https://misterfpga.org/viewtopic.php?t=4680
 
-**Check specific BOARD limitations on each board folder's readme.**
+**Status**: 
+
+* Work in progress
+* Check [TODO list](TODO.md)
+* Check specific BOARD limitations on each board folder's readme
+
+**Loading OS**:
 
 Currently floppy and hdd images can only be loaded trough serial UART Rx/Tx with the XT IDE BIOS. Serdrive program should be used in the host computer serving the images.
 
@@ -19,12 +25,11 @@ Some notes about serdrive:
 
 * 921.6 Kb only works at 14.3 MHz
 * Core has enabled RTS/CTS signals which gives better stability and speed to the HDD
-* Windows does not care about RTS/CTS signals
-* In Linux those RTS/CTS lines need to be connected for XTIDE to detect the image. Take care that CTS goes to RTS and RTS to CTS.
+  * Windows does not care about RTS/CTS signals
+  * In Linux those RTS/CTS lines need to be connected for XTIDE to detect the image. Take care that CTS goes to RTS and RTS to CTS.
 
-Follow core discussion at https://misterfpga.org/viewtopic.php?t=4680
 
-Follows original readme (with some crossed out text where does not apply).
+Follows original Readme (with some crossed out text where does not apply).
 
 
 
