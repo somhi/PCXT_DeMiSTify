@@ -785,72 +785,76 @@ end
 
 	wire vga_hs;
 	wire vga_vs;
+	wire vga_hs_o;
+	wire vga_vs_o;
 
-	// mist_video #(.OSD_COLOR(3'd5), .SD_HCNT_WIDTH(10) ) mist_video (
-	// 	.clk_sys     ( clk_56_875 ),
+	mist_video #(.OSD_COLOR(3'd5), .SD_HCNT_WIDTH(10) ) mist_video (
+		.clk_sys     ( clk_56_875 ),
 	
-	// 	// OSD SPI interface
-	// 	.SPI_SCK     ( SPI_SCK    ),
-	// 	.SPI_SS3     ( SPI_SS3    ),
-	// 	.SPI_DI      ( SPI_DI     ),
+		// OSD SPI interface
+		.SPI_SCK     ( SPI_SCK    ),
+		.SPI_SS3     ( SPI_SS3    ),
+		.SPI_DI      ( SPI_DI     ),
 	
-	// 	// scanlines (00-none 01-25% 10-50% 11-75%)   	//only works if scandoubler enabled
-	// 	.scanlines   ( 2'b00      ),
+		// scanlines (00-none 01-25% 10-50% 11-75%)   	//only works if scandoubler enabled
+		.scanlines   ( 2'b00      ),
 
-	// 	// non-scandoubled pixel clock divider 0 - clk_sys/4, 1 - clk_sys/2
-	// 	.ce_divider  ( 1'b1       ),
+		// non-scandoubled pixel clock divider 0 - clk_sys/4, 1 - clk_sys/2
+		.ce_divider  ( 1'b1       ),
 	
-	// 	// 0 = HVSync 31KHz, 1 = CSync 15KHz			//using Graphics Gremlin scandoubler
-	// 	.scandoubler_disable (1'b1),
-	// 	// disable csync without scandoubler
-	// 	.no_csync    ( ~forced_scandoubler ),			// 1'b1
-	// 	// YPbPr always uses composite sync
-	// 	.ypbpr       ( status[30] ),					// 1'b0
-	// 	// Rotate OSD [0] - rotate [1] - left or right
-	// 	.rotate      ( 2'b00      ),
-	// 	// composite-like blending
-	// 	.blend       ( status[31] ),					// 1'b0
+		// 0 = HVSync 31KHz, 1 = CSync 15KHz			//using Graphics Gremlin scandoubler
+		.scandoubler_disable (1'b1),
+		// disable csync without scandoubler
+		.no_csync    ( ~forced_scandoubler ),			// 1'b1
+		// YPbPr always uses composite sync
+		.ypbpr       ( status[30] ),					// 1'b0
+		// Rotate OSD [0] - rotate [1] - left or right
+		.rotate      ( 2'b00      ),
+		// composite-like blending
+		.blend       ( status[31] ),					// 1'b0
 	
-	// 	// video in
-	// 	.R           ( raux[7:2]  ),
-	// 	.G           ( gaux[7:2]  ),
-	// 	.B           ( baux[7:2]  ),
-	// 	.HSync       ( ~vga_hs    ),
-	// 	.VSync       ( ~vga_vs    ),
+		// video in
+		.R           ( raux[7:2]  ),
+		.G           ( gaux[7:2]  ),
+		.B           ( baux[7:2]  ),
+		.HSync       ( ~vga_hs    ),
+		.VSync       ( ~vga_vs    ),
 
-	// 	// MiST video output signals
-	// 	.VGA_R       ( VGA_R      ),
-	// 	.VGA_G       ( VGA_G      ),
-	// 	.VGA_B       ( VGA_B      ),
-	// 	.VGA_VS      ( VGA_VS     ),
-	// 	.VGA_HS      ( VGA_HS     )
-	// );
+		// MiST video output signals
+		.VGA_R       ( VGA_R      ),
+		.VGA_G       ( VGA_G      ),
+		.VGA_B       ( VGA_B      ),
+		.VGA_VS      ( vga_vs_o   ),
+		.VGA_HS      ( vga_hs_o   )
+	);
 	
+	assign VGA_VS = ~vga_vs_o;		
+	assign VGA_HS = ~vga_hs_o;		
+
 	assign VGA_DE = ~(HBlank | VBlank);
 	
 
+	// wire [5:0] osd_r_o;
+	// wire [5:0] osd_g_o;
+	// wire [5:0] osd_b_o;
 
-	osd #(.OSD_COLOR(3'd5)) osd
-	(
-		.clk_sys ( clk_56_875 ),
-		.rotate  ( 2'b00      ),
-		.ce      ( clk_28_636 ),
-		.SPI_DI  ( SPI_DI     ),
-		.SPI_SCK ( SPI_SCK    ),
-		.SPI_SS3 ( SPI_SS3    ),
-		.R_in    ( raux[7:2]  ),
-		.G_in    ( gaux[7:2]  ),
-		.B_in    ( baux[7:2]  ),
-		.HSync   ( ~vga_hs     ),
-		.VSync   ( ~vga_vs     ),
-		.R_out   ( VGA_R      ),
-		.G_out   ( VGA_G      ),
-		.B_out   ( VGA_B      )
-	);
-
-	assign VGA_VS = ~vga_vs;
-	assign VGA_HS = ~vga_hs;
-
+	// osd #(.OSD_COLOR(3'd5), .OSD_AUTO_CE(1'b0) ) osd
+	// (
+	// 	.clk_sys ( clk_56_875 ),	// clk_56_875, clk_28_636, clk_56_875 /auto 0/clk_28_636/clk_56_875/clk_56_875
+	// 	.rotate  ( 2'b00      ),
+	// 	.ce      ( clk_14_318 ),	// clk_28_636, 1'b0      , clk_14_318 /auto 0/clk_14_318/clk_28_636/clk_14_318
+	// 	.SPI_DI  ( SPI_DI     ),
+	// 	.SPI_SCK ( SPI_SCK    ),
+	// 	.SPI_SS3 ( SPI_SS3    ),
+	// 	.R_in    ( raux[7:2]  ),
+	// 	.G_in    ( gaux[7:2]  ),
+	// 	.B_in    ( baux[7:2]  ),
+	// 	.HSync   ( ~vga_hs    ),  //with or without ~
+	// 	.VSync   ( ~vga_vs    ),	
+	// 	.R_out   ( osd_r_o    ),
+	// 	.G_out   ( osd_g_o    ),
+	// 	.B_out   ( osd_b_o    )
+	// );
 
 
 reg vsd = 0;

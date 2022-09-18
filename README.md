@@ -24,7 +24,7 @@ Some notes about serdrive:
 
 Follow core discussion at https://misterfpga.org/viewtopic.php?t=4680
 
-Follows original readme (with some crossed out where does not apply).
+Follows original readme (with some crossed out text where does not apply).
 
 
 
