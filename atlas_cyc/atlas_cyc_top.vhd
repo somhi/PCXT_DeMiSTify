@@ -9,9 +9,9 @@ use work.demistify_config_pkg.all;
 
 entity atlas_top is
 	generic (
-		ATLAS_CYC_EAR : natural := 2; -- 0 = JOY SEL pin,	1 = EAR pin,  2 = MIDI_WSBD
+		ATLAS_CYC_EAR : natural := 0; -- 0 = JOY SEL pin,	1 = EAR pin,  2 = MIDI_WSBD
 		ATLAS_CYC_VGA : natural := 1; -- 0 = HDMI,  		1 = VGA
-		ATLAS_CYC_KEYB: natural := 3  -- 0=PS2 NO AT1, 1=PS2 AT1, 2=USB NO AT1, 3=USB AT1, 
+		ATLAS_CYC_KEYB: natural := 1  -- 0=PS2 NO AT1, 1=PS2 AT1, 2=USB NO AT1, 3=USB AT1, 
 	);
 	port (
 		CLK12M : in std_logic;
@@ -43,13 +43,15 @@ entity atlas_top is
 		SIGMA_R : out std_logic;
 		SIGMA_L : out std_logic;
 		-- -- I2S audio		
-		PI_MISO_I2S_BCLK		: 	 out std_logic	:= '0';
-		PI_MOSI_I2S_LRCLK		: 	 out std_logic	:= '0';
-		PI_CLK_I2S_DATA			: 	 out std_logic	:= '0';	
+
 		-- UART / MIDI
 		UART_TXD_MIDI_OUT 		: 	out std_logic;
 		UART_RXD_MIDI_WSBD 		: 	in std_logic;
-		PI_CS_MIDI_CLKBD		: 	in std_logic;
+		--PI_CS_MIDI_CLKBD		: 	in std_logic;		
+
+		PI_MISO_I2S_BCLK		: 	 in  std_logic;   			-- UART_CTS
+		PI_MOSI_I2S_LRCLK		: 	 out std_logic	:= '0';	  	-- UART_RTS
+
 		-- SHARED PIN_P11: JOY SELECT Output / EAR Input / MIDI
 		JOYX_SEL_EAR_MIDI_DABD  : 	inout std_logic := '0';
 		-- JOYSTICK 
@@ -220,10 +222,10 @@ begin
 	SD_SCLK_O <= sd_clk;
 
 	-- External devices tied to GPIOs
-	ps2_mouse_dat_in <= ps2_mouse_dat;
-	ps2_mouse_dat    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
-	ps2_mouse_clk_in <= ps2_mouse_clk;
-	ps2_mouse_clk    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
+	-- ps2_mouse_dat_in <= PS2_MOUSE_DAT;
+	-- PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
+	-- ps2_mouse_clk_in <= PS2_MOUSE_CLK;
+	-- PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
 
 -- ATLAS_CYC_KEYB -- 0 = PS2 NON AT1, 1 = PS2 AT1,  2 = USB NON AT1, 3 = USB AT1, 
 
@@ -357,11 +359,12 @@ begin
 		clock_dvi_s <= hdmi_clk;
 
 		-- HDMI AUDIO
-		sound_hdmi_l_s <= dac_l;
-		sound_hdmi_r_s <= dac_r;
+		--sound_hdmi_l_s <= dac_l;
+		--sound_hdmi_r_s <= dac_r;
 		-- sound_hdmi_l_s <= '0' & std_logic_vector(dac_l(15 downto 1));
 		-- sound_hdmi_r_s <= '0' & std_logic_vector(dac_r(15 downto 1));
-
+		sound_hdmi_l_s <= std_logic_vector(dac_l);
+		sound_hdmi_r_s <= std_logic_vector(dac_r);
 
 		------------------------------------------------------------------------------------------------------
 		-- JUST LEAVE ONE HDMI WRAPPER (1/2/3) UNCOMMENTED                                                  --
@@ -482,11 +485,10 @@ begin
 	-- END HDMI ATLAS -------------------
 
 
-	guest : component guest_mist
+	guest : component PCXT
 		port map(
---			CLOCK_27 => CLK12M,
-			CLOCK_27 => CLK12M & CLK12M,
---			RESET_N => reset_n,
+			CLOCK_27 => CLK12M,
+	        RESET_N => reset_n,
 			LED => LED(0),
 			--SDRAM
 			SDRAM_DQ   => DRAM_DQ,
@@ -503,8 +505,10 @@ begin
 			--UART
 			UART_TX  => UART_TXD_MIDI_OUT,
 			UART_RX  => UART_RXD_MIDI_WSBD,
---			UART_TX  => open,
---			UART_RX  => EAR,   
+
+			UART_CTS  => PI_MISO_I2S_BCLK,
+			UART_RTS  => PI_MOSI_I2S_LRCLK,
+
 			--SPI
 --			SPI_SD_DI => sd_miso,
 			SPI_DO     => spi_fromguest,
@@ -512,7 +516,7 @@ begin
 			SPI_SCK    => spi_clk_int,
 			SPI_SS2    => spi_ss2,
 			SPI_SS3    => spi_ss3,
---			SPI_SS4    => spi_ss4,
+			SPI_SS4    => spi_ss4,
 			CONF_DATA0 => conf_data0,
 			--VGA
 			VGA_HS    => vga_hsync,
@@ -520,19 +524,22 @@ begin
 			VGA_R     => vga_red(7 downto 2),
 			VGA_G     => vga_green(7 downto 2),
 			VGA_B     => vga_blue(7 downto 2),
-				VGA_BLANK => vga_blank,
-				VGA_CLK   => vga_clk,
-				HDMI_CLK  => hdmi_clk,
-				vga_x_r   => vga_x_r,
-				vga_x_g   => vga_x_g,
-				vga_x_b   => vga_x_b,
-				vga_x_hs  => vga_x_hs,
-				vga_x_vs  => vga_x_vs,
+				-- VGA_BLANK => vga_blank,
+				-- VGA_CLK   => vga_clk,
+				-- HDMI_CLK  => hdmi_clk,
+				-- vga_x_r   => vga_x_r,
+				-- vga_x_g   => vga_x_g,
+				-- vga_x_b   => vga_x_b,
+				-- vga_x_hs  => vga_x_hs,
+				-- vga_x_vs  => vga_x_vs,
 			--AUDIO
 				DAC_L   => dac_l,
 				DAC_R   => dac_r,
 			AUDIO_L => SIGMA_L,
-			AUDIO_R => SIGMA_R
+			AUDIO_R => SIGMA_R,
+
+			PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
+			PS2_MOUSE_DAT => PS2_MOUSE_DAT  
 		);
 
 
@@ -569,10 +576,10 @@ begin
 				ps2k_dat_in  => ps2_keyboard_dat_in,
 				ps2k_clk_out => ps2_keyboard_clk_out,
 				ps2k_dat_out => ps2_keyboard_dat_out,
-				ps2m_clk_in  => ps2_mouse_clk_in,
-				ps2m_dat_in  => ps2_mouse_dat_in,
-				ps2m_clk_out => ps2_mouse_clk_out,
-				ps2m_dat_out => ps2_mouse_dat_out,
+				-- ps2m_clk_in  => ps2_mouse_clk_in,
+				-- ps2m_dat_in  => ps2_mouse_dat_in,
+				-- ps2m_clk_out => ps2_mouse_clk_out,
+				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
 				buttons => (0 => KEY0, others => '1'),

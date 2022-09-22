@@ -844,6 +844,12 @@ module PERIPHERALS #(
         .doutb                      (CGA_VRAM_DOUT)
 	);
 
+
+    `elsif DEMISTIFY_ATLAS_CYC
+
+    // NO CGA IN ATLAS CYC1000  (only 66 M9K)
+    // 32 Kb CGA represent 64 M9K alone
+
     `else
     
     vram #(.AW(15)) cga_vram   	// 32 kB   (Some Tandy games don't work)
