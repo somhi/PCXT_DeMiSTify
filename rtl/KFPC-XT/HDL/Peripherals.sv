@@ -74,12 +74,6 @@ module PERIPHERALS #(
 	 input   logic           tandy_video,
 	 output  logic   [7:0]   tandy_snd_e,	 
 	 output  logic           tandy_snd_rdy,	 
-	 // IOCTL
-    input   logic           ioctl_download,
-    input   logic   [7:0]   ioctl_index,
-    input   logic           ioctl_wr,
-    input   logic   [24:0]  ioctl_addr,
-    input   logic   [7:0]   ioctl_data,
 	 // UART
 	 input   logic           clk_uart,
 	 input   logic           uart_rx,
@@ -106,7 +100,8 @@ module PERIPHERALS #(
 	 output  logic           ems_b1,
 	 output  logic           ems_b2,
 	 output  logic           ems_b3,
-	 output  logic           ems_b4
+	 output  logic           ems_b4,
+	 input   logic   [2:0]   bios_writable
 );
     
 	 wire grph_mode;
@@ -152,8 +147,6 @@ module PERIPHERALS #(
 	 wire    video_chip_select_n    = ~((tandy_video & grph_mode & hres_mode) && ~iorq && ~address_enable_n & (address[19:17] == nmi_mask_register_data[3:1])); // 128KB
     wire    cga_chip_select_n      = ~(~iorq && ~address_enable_n && enable_cga & (address[19:15] == 5'b10111)); // B8000 - BFFFF (16 KB / 32 KB)
 	 wire    mda_chip_select_n      = ~(~iorq && ~address_enable_n && enable_mda & (address[19:15] == 6'b10110)); // B0000 - B7FFF (8 repeated blocks of 4Kb)
-	 wire    bios_select_n          = ~(~iorq && ~address_enable_n && address[19:16] == 4'b1111); // F0000 - FFFFF (64 KB)
-	 wire    xtide_select_n         = ~(~iorq && ~address_enable_n && address[19:14] == 6'b111011); // EC000 - EFFFF (16 KB)
 	 wire    uart_cs                =  (~address_enable_n && {address[15:3], 3'd0} == 16'h03F8);
 	 wire    uart2_cs               =  (~address_enable_n && {address[15:3], 3'd0} == 16'h02F8);
 	 wire    lpt_cs                 =  (iorq && ~address_enable_n && address[15:0] == 16'h0378);
@@ -889,58 +882,6 @@ module PERIPHERALS #(
    );
 
 
-   wire bios_loader  = (ioctl_download && ioctl_index < 2 && ioctl_addr[24:16] == 9'b000000000);
-   wire xtide_loader = ((ioctl_download && ioctl_index == 2) ||
-                        (ioctl_download && ioctl_index == 0 && ioctl_addr[24:16] == 9'b000000001));
-	
-    // `ifdef DEMISTIFY_sockit
-    // // BIOS (BRAM)
-    // bios bios
-	// (
-    //     .clka(bios_loader ? clk_sys : clock),
-    //     .ena((~bios_select_n) || ioctl_download),
-    //     .wea(bios_loader && ioctl_wr),
-    //     .addra(bios_loader ? ioctl_addr[15:0] : address[15:0]),
-    //     .dina(ioctl_data),
-    //     .douta(bios_cpu_dout)
-	// );
-	//
-	// xtide xtide
-	// (
-    //     .clka(xtide_loader ? clk_sys : clock),
-    //     .ena((~xtide_select_n) || ioctl_download),
-    //     .wea(xtide_loader && ioctl_wr),
-    //     .addra(xtide_loader ? ioctl_addr[13:0] : address[13:0]),
-    //     .dina(ioctl_data),
-    //     .douta(xtide_cpu_dout)
-	// );
-    // `else
-    // `endif
-
-    //BIOS (simple RAM 2 Port )
-	bios_ip bios
-	(
-        .clock(bios_loader ? clk_sys : clock),
-        .enable((~bios_select_n) || ioctl_download),
-        .wren(bios_loader && ioctl_wr),
-        .rdaddress(bios_loader ? ioctl_addr[15:0] : address[15:0]),
-        .wraddress(bios_loader ? ioctl_addr[15:0] : address[15:0]),
-        .data(ioctl_data),
-        .q(bios_cpu_dout)
-	);
-    
-    bios_ip_16 xtide
-	(
-        .clock(xtide_loader ? clk_sys : clock),
-        .enable((~xtide_select_n) || ioctl_download),
-        .wren(xtide_loader && ioctl_wr),
-        .rdaddress(xtide_loader ? ioctl_addr[13:0] : address[13:0]),
-        .wraddress(xtide_loader ? ioctl_addr[13:0] : address[13:0]),      
-        .data(ioctl_data),
-        .q(xtide_cpu_dout)
-	);
-	
-	 
     //
     // KFTVGA
     //
@@ -1012,14 +953,6 @@ module PERIPHERALS #(
         else if ((~mda_chip_select_n) && (~memory_read_n)) begin
             data_bus_out_from_chipset <= 1'b1;
             data_bus_out <= mda_vram_cpu_dout;
-        end
-		  else if ((~bios_select_n) && (~memory_read_n)) begin
-            data_bus_out_from_chipset <= 1'b1;
-            data_bus_out <= bios_cpu_dout;
-        end
-		  else if ((~xtide_select_n) && (~memory_read_n)) begin
-            data_bus_out_from_chipset <= 1'b1;
-            data_bus_out <= xtide_cpu_dout;
         end
 		  else if (CGA_CRTC_OE_2) begin
             data_bus_out_from_chipset <= 1'b1;

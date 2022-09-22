@@ -60,6 +60,7 @@ module CHIPSET (
     output  logic           memory_write_n,
     input   logic           memory_write_n_ext,
     output  logic           memory_write_n_direction,
+    input   logic           ext_access_request,
     input   logic   [3:0]   dma_request,
     output  logic   [3:0]   dma_acknowledge_n,
     output  logic           address_enable_n,
@@ -91,15 +92,8 @@ module CHIPSET (
 	 // TANDY
 	 input   logic           tandy_video,
 	 output  logic   [7:0]   tandy_snd_e,
-	 // IOCTL
-    input   logic           ioctl_download,
-    input   logic   [7:0]   ioctl_index,
-    input   logic           ioctl_wr,
-    input   logic   [24:0]  ioctl_addr,
-    input   logic   [7:0]   ioctl_data,
 	 // UART
 	 input   logic           clk_uart,
-     input   logic           clk_uart2,
 	 input   logic           uart_rx,
 	 output  logic           uart_tx,
 	 input   logic           uart_cts_n,
@@ -107,6 +101,7 @@ module CHIPSET (
 	 input   logic           uart_dsr_n,
 	 output  logic           uart_rts_n,
 	 output  logic           uart_dtr_n,
+     input   logic           clk_uart2,
 	 input   logic           uart2_rx,
 	 output  logic           uart2_tx,
 	 input   logic           uart2_cts_n,
@@ -131,7 +126,9 @@ module CHIPSET (
     output  logic           sdram_udqm,
 	 // EMS
 	 input   logic           ems_enabled,
-	 input   logic   [1:0]   ems_address
+	 input   logic   [1:0]   ems_address,
+	 // BIOS
+	 input   logic   [2:0]   bios_writable
 );
 
     logic           dma_ready;
@@ -227,6 +224,7 @@ module CHIPSET (
         .memory_write_n_ext                 (memory_write_n_ext),
         .memory_write_n_direction           (memory_write_n_direction),
         .no_command_state                   (no_command_state),
+        .ext_access_request                 (ext_access_request),
         .dma_request                        ({dma_request[3:1], DRQ0}),
         .dma_acknowledge_n                  (dma_acknowledge_n),
         .address_enable_n                   (address_enable_n),
@@ -297,11 +295,6 @@ module CHIPSET (
 		  .tandy_video                        (tandy_video),
 		  .tandy_snd_e                        (tandy_snd_e),
 		  .tandy_snd_rdy                      (tandy_snd_rdy),
-		  .ioctl_download                     (ioctl_download),
-		  .ioctl_index                        (ioctl_index),
-		  .ioctl_wr                           (ioctl_wr),
-		  .ioctl_addr                         (ioctl_addr),
-		  .ioctl_data                         (ioctl_data),
 	     .uart_rx                           (uart_rx),
 	     .uart_tx                           (uart_tx),
 	     .uart_cts_n                        (uart_cts_n),
@@ -323,7 +316,8 @@ module CHIPSET (
 	     .ems_b1                            (ems_b1),
 	     .ems_b2                            (ems_b2),
 	     .ems_b3                            (ems_b3),
-	     .ems_b4                            (ems_b4)
+	     .ems_b4                            (ems_b4),
+	     .bios_writable                       (bios_writable)
     );
 
     RAM u_RAM (
