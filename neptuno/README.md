@@ -2,6 +2,8 @@
 
 07/07/22 Neptuno port DeMiSTified by Somhic from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
 
+[Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
+
 ### STATUS
 
 * Load OS using Serial Rx/Tx interface using the two ps2 mouse pins.  See pinout below.

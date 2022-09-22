@@ -2,6 +2,8 @@
 
 Port DeMiSTified by Somhic from original MiSTer port currently in development  https://github.com/MiSTer-devel/PCXT_MiSTer
 
+[Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
+
 **Bugs**:
 
 * With original IBM ROM does not work keyboard (beeps at every keystroke)

@@ -2,7 +2,9 @@
 
 Port DeMiSTified by Somhic from original MiSTer port currently in development  https://github.com/MiSTer-devel/PCXT_MiSTer
 
-Follow core discussion at https://misterfpga.org/viewtopic.php?t=4680
+[Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
+
+Follow PCXT core discussion at https://misterfpga.org/viewtopic.php?t=4680
 
 **Status**: 
 
