@@ -175,7 +175,7 @@ module PERIPHERALS #(
         else begin
             ems_access_address  <= address[1:0];
             ems_write_enable    <= ems_oe && ~io_write_n;
-            write_map_ems_data  <= (internal_data_bus == 8'hFF) ? 7'hFF : (internal_data_bus < 8'h80) ? internal_data_bus[6:0] : map_ems[address[1:0]];
+            write_map_ems_data  <= (internal_data_bus == 8'hFF) ? 8'hFF : (internal_data_bus < 8'h80) ? internal_data_bus[6:0] : map_ems[address[1:0]];
             write_map_ena_data  <= (internal_data_bus == 8'hFF) ? 1'b0  : (internal_data_bus < 8'h80) ? 1'b1 : ena_ems[address[1:0]];
         end
     end
@@ -790,7 +790,7 @@ module PERIPHERALS #(
           .scandoubler				  (scandoubler),
      	  .hsync_sd                   (HSYNC_CGA),              
           .vsync_sd                   (VSYNC_CGA),
-          .video_sd                   (video_cga),              
+          .video_sd                   (video_cga)              
     );
 
     always_ff @(posedge clock) begin

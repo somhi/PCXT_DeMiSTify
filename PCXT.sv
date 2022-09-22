@@ -506,7 +506,7 @@ end
 		casez (bios_load_state)
 			4'h00: begin
 				bios_access_address <= 20'hFFFFF;
-				bios_write_data     <= 8'hFFFF;
+				bios_write_data     <= 8'hFF;
 				bios_write_n        <= 1'b1;
 				bios_write_wait_cnt <= 'h0;
 
@@ -528,7 +528,7 @@ end
 				bios_access_request <= 1'b1;
 				if (~ioctl_download) begin
 					bios_access_address <= 20'hFFFFF;
-					bios_write_data     <= 8'hFFFF;
+					bios_write_data     <= 8'hFF;
 					bios_write_n        <= 1'b1;
 					bios_write_wait_cnt <= 'h0;
 					// ioctl_wait          <= 1'b0;
@@ -536,7 +536,7 @@ end
 				end
 				else if (~ioctl_wr) begin
 					bios_access_address <= 20'hFFFFF;
-					bios_write_data     <= 8'hFFFF;
+					bios_write_data     <= 8'hFF;
 					bios_write_n        <= 1'b1;
 					bios_write_wait_cnt <= 'h0;
 					// ioctl_wait          <= 1'b0;
@@ -575,7 +575,7 @@ end
 			default: begin
 				bios_access_request <= 1'b0;
 				bios_access_address <= 20'hFFFFF;
-				bios_write_data     <= 8'hFFFF;
+				bios_write_data     <= 8'hFF;
 				bios_write_n        <= 1'b1;
 				bios_write_wait_cnt <= 'h0;
 				// ioctl_wait          <= 1'b0;
