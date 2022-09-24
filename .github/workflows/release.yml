@@ -21,8 +21,9 @@ jobs:
     steps:
       # 1 - Checkout repository
       - name: Checkout repository
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive # Required to fetch the mist-modules
       # 2 - RTL synthesis
       - name: Run compilation flow
         run: quartus_sh --flow compile mist/PCXT_mist.qpf
