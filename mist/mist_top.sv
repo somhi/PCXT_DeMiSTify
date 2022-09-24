@@ -1,5 +1,4 @@
 //
-// c16_mist.sv - C16 for the MiST
 //
 // https://github.com/mist-devel
 // 
@@ -63,6 +62,7 @@ module mist_top (
 PCXT guest
 (
    .CLOCK_27 	(CLOCK_27),
+   .RESET_N    (1'b1),        //very important to pass this reset signal
    .LED      	(LED),
 
    .SDRAM_DQ	(SDRAM_DQ),	
