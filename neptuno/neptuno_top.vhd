@@ -9,14 +9,15 @@ use work.demistify_config_pkg.all;
 
 -- add following in Neptuno_pins.tcl in demistify/board/neptuno
 -- #PCXT CORE ADDED SIGNALS ON MIDI2SBC ADDON
--- #PIN_C22,  SPI CE1,  PMOD4_D6 -> UART_CTS
--- #PIN_AB13, SPI CE2,  PMOD4_D7 -> UART_RTS
--- #PIN_P22,  SPI CE0,  PMOD4_D0 -> UART2_RXD
--- #PIN_B22,  SPI MOSI, PMOD4_D1 -> UART2_TXD
--- set_location_assignment PIN_C22 -to UART_CTS
--- set_location_assignment PIN_AB13 -to UART_RTS
--- set_location_assignment PIN_P22 -to UART2_RXD
--- set_location_assignment PIN_B22 -to UART2_TXD
+--
+-- set_location_assignment PIN_P22  -to PMOD4_D0	 #UART2_RXD
+-- set_location_assignment PIN_B22  -to PMOD4_D1     #UART2_TXD
+-- set_location_assignment PIN_AA14 -to PMOD4_D2
+-- set_location_assignment PIN_N22  -to PMOD4_D3
+-- set_location_assignment PIN_M19  -to PMOD4_D4
+-- set_location_assignment PIN_U22  -to PMOD4_D5
+-- set_location_assignment PIN_C22  -to PMOD4_D6
+-- set_location_assignment PIN_AB13 -to PMOD4_D7
 
 --------------------------------------------------
 
@@ -56,7 +57,7 @@ entity neptuno_top is
 		I2S_BCLK  : out std_logic := '0';
 		I2S_LRCLK : out std_logic := '0';
 		I2S_DATA  : out std_logic := '0';
-		-- UART
+		-- 
 		AUDIO_INPUT : in std_logic;
 		-- PS2
 		PS2_KEYBOARD_CLK : inout std_logic;
@@ -64,11 +65,10 @@ entity neptuno_top is
 		PS2_MOUSE_CLK    : inout std_logic;
 		PS2_MOUSE_DAT    : inout std_logic;
 		-- UART
-		UART_RXD : in std_logic;
-		UART_TXD : out std_logic;
-
-		UART_CTS : in std_logic;
-		UART_RTS : out std_logic;
+		PMOD4_D4 : in std_logic;		--UART_RXD
+		PMOD4_D5 : out std_logic;		--UART_TXD
+		PMOD4_D6 : in std_logic;		--UART_CTS
+		PMOD4_D7 : out std_logic;		--UART_RTS
 		-- JOYSTICK 
 		JOY_CLK  : out std_logic;
 		JOY_LOAD : out std_logic;
@@ -298,12 +298,10 @@ begin
 			-- SRAM_Q		=> SRAM_Q,
 			-- SRAM_WE		=> sram_we_x,
 			--UART
-			UART_TX => UART_TXD,
-			UART_RX => UART_RXD,
-
-			UART_CTS  => UART_CTS,
-			UART_RTS  => UART_RTS,
-
+			UART_TX    => PMOD4_D5,
+			UART_RX    => PMOD4_D4,
+			UART_CTS   => PMOD4_D6,
+			UART_RTS   => PMOD4_D7,
 			--SPI
 --			SPI_SD_DI  => sd_miso,
 			SPI_DO     => spi_fromguest,

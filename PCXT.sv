@@ -42,30 +42,30 @@ module PCXT
 	input         SPI_SS4,
 	input         CONF_DATA0,
 
-	//Base video clock. Usually equals to CLK_SYS.
-	output        CLK_VIDEO,
-
 	output  [5:0] VGA_R,
 	output  [5:0] VGA_G,
 	output  [5:0] VGA_B,
 	output        VGA_HS,
 	output        VGA_VS,
-	output        VGA_DE,    // = ~(VBlank | HBlank)
+
+	output        CLK_VIDEO,	//Base video clock. Usually equals to CLK_SYS.
+	output        VGA_DE,    	// = ~(VBlank | HBlank)
+
+
+	output        AUDIO_L,
+	output        AUDIO_R, 
 
 	`ifdef DEMISTIFY
 	output [15:0]  DAC_L, 
 	output [15:0]  DAC_R, 
 	`endif
 
-	output        AUDIO_L,
-	output        AUDIO_R, 
-
 	//SD-SPI
-	output        SD_SCK,
-	output        SD_MOSI,
-	input         SD_MISO,
-	output        SD_CS,
-	input         SD_CD,
+	// output        SD_SCK,
+	// output        SD_MOSI,
+	// input         SD_MISO,
+	// output        SD_CS,
+	// input         SD_CD,
 
 	input         UART_RX,
 	output        UART_TX,
@@ -80,10 +80,10 @@ module PCXT
 //	output        PS2K_CLK_OUT,
 //	output        PS2K_DAT_OUT
 
-	// input         PS2K_MOUSE_CLK_IN,
-	// input         PS2K_MOUSE_DAT_IN,
-	// output        PS2K_MOUSE_CLK_OUT,
-	// output        PS2K_MOUSE_DAT_OUT
+//  input         PS2K_MOUSE_CLK_IN,
+//  input         PS2K_MOUSE_DAT_IN,
+//  output        PS2K_MOUSE_CLK_OUT,
+//  output        PS2K_MOUSE_DAT_OUT
 
 	inout		  PS2_MOUSE_CLK,
 	inout		  PS2_MOUSE_DAT
@@ -165,16 +165,16 @@ wire [31:0] status;
 //wire [10:0] ps2_key;
 
 //VHD	
-wire[ 0:0] usdRd = { vsdRd };
-wire[ 0:0] usdWr = { vsdWr };
-wire       usdAck;
-wire[31:0] usdLba[1] = '{ vsdLba };
-wire       usdBuffWr;
-wire[ 8:0] usdBuffA;
-wire[ 7:0] usdBuffD[1] = '{ vsdBuffD };
-wire[ 7:0] usdBuffQ;
-wire[63:0] usdImgSz;
-wire[ 0:0] usdImgMtd;
+// wire[ 0:0] usdRd = { vsdRd };
+// wire[ 0:0] usdWr = { vsdWr };
+// wire       usdAck;
+// wire[31:0] usdLba[1] = '{ vsdLba };
+// wire       usdBuffWr;
+// wire[ 8:0] usdBuffA;
+// wire[ 7:0] usdBuffD[1] = '{ vsdBuffD };
+// wire[ 7:0] usdBuffQ;
+// wire[63:0] usdImgSz;
+// wire[ 0:0] usdImgMtd;
 
 //Keyboard Ps2
 wire        ps2_kbd_clk_out;
@@ -284,7 +284,7 @@ wire clk_uart;
 wire clk_uart2;
 
 
-`ifdef DEMISTIFY_sockit
+`ifdef DEMISTIFY_SOCKIT
 
 assign SDRAM_CLK = clk_chipset;
 
@@ -302,7 +302,7 @@ pll pll
 	.locked(pll_locked)
 );
 
-wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0) | splashscreen;
+wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | (ioctl_download && ioctl_index == 0) | splashscreen;
 
 `else  
 
@@ -331,7 +331,7 @@ pllvideo pllvideo
 	.locked(pll_locked2)
 );
 
-wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (status[14] && usdImgMtd) | (ioctl_download && ioctl_index == 0) | splashscreen;
+wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (ioctl_download && ioctl_index == 0) | splashscreen;
 
 `endif
 
@@ -802,8 +802,10 @@ end
 	//wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 2   old sn76489
 	wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 2'd0}); // new sn76489
 
+	`ifdef DEMISTIFY
 	assign DAC_R = sndmix >> 1;
 	assign DAC_L = sndmix >> 1;	
+	`endif
 
 	sigma_delta_dac sigma_delta_dac (
 		.clk      ( CLK_50M     ),      // bus clock
@@ -967,76 +969,58 @@ end
 	// );
 
 
-reg vsd = 0;
-always @(posedge CLK_50M) if(usdImgMtd[0]) vsd <= |usdImgSz;
+	/// SD CARD 
 
-wire       vsdRd;
-wire       vsdWr;
-wire       vsdAck = usdAck;
-wire[31:0] vsdLba;
-wire       vsdBuffWr = usdBuffWr;
-wire[ 8:0] vsdBuffA = usdBuffA;
-wire[ 7:0] vsdBuffD;
-wire[ 7:0] vsdBuffQ = usdBuffQ;
-wire[63:0] vsdImgSz = usdImgSz;
-wire       vsdImgMtd = usdImgMtd[0];
+	// reg vsd = 0;
+	// always @(posedge CLK_50M) if(usdImgMtd[0]) vsd <= |usdImgSz;
 
-wire vsdCs = usdCs | ~vsd;
-wire vsdCk = usdCk;
-wire vsdMosi = usdDo;
-wire vsdMiso;
+	// wire       vsdRd;
+	// wire       vsdWr;
+	// wire       vsdAck = usdAck;
+	// wire[31:0] vsdLba;
+	// wire       vsdBuffWr = usdBuffWr;
+	// wire[ 8:0] vsdBuffA = usdBuffA;
+	// wire[ 7:0] vsdBuffD;
+	// wire[ 7:0] vsdBuffQ = usdBuffQ;
+	// wire[63:0] vsdImgSz = usdImgSz;
+	// wire       vsdImgMtd = usdImgMtd[0];
 
-wire usdCs;
-wire usdCk;
-wire usdDo;
-wire usdDi = vsd ? vsdMiso : SD_MISO;
+	// wire vsdCs = usdCs | ~vsd;
+	// wire vsdCk = usdCk;
+	// wire vsdMosi = usdDo;
+	// wire vsdMiso;
 
-assign SD_CS   = usdCs | vsd;
-assign SD_SCK  = usdCk & ~vsd;
-assign SD_MOSI = usdDo & ~vsd;
+	// wire usdCs;
+	// wire usdCk;
+	// wire usdDo;
+	// wire usdDi = vsd ? vsdMiso : SD_MISO;
 
-/*
-sd_card sd_card
-(
-	.clk_sys     (CLK_50M  ),
-	.reset       (reset    ),
-	.sdhc        (status[4]),
-	.sd_rd       (vsdRd    ),
-	.sd_wr       (vsdWr    ),
-	.sd_ack      (vsdAck   ),
-	.sd_lba      (vsdLba   ),
-	.sd_buff_wr  (vsdBuffWr),
-	.sd_buff_addr(vsdBuffA ),
-	.sd_buff_dout(vsdBuffQ ),
-	.sd_buff_din (vsdBuffD ),
-	.img_size    (vsdImgSz ),
-	.img_mounted (vsdImgMtd),
-	.clk_spi     (clk_25   ),
-	.ss          (vsdCs    ),
-	.sck         (vsdCk    ),
-	.mosi        (vsdMosi  ),
-	.miso        (vsdMiso  )
-);
-*/
+	// assign SD_CS   = usdCs | vsd;
+	// assign SD_SCK  = usdCk & ~vsd;
+	// assign SD_MOSI = usdDo & ~vsd;
 
-endmodule
 
-module led
-(
-	input      clk,
-	input      in,
-	output reg out
-);
+	// sd_card sd_card
+	// (
+	// 	.clk_sys     (CLK_50M  ),
+	// 	.reset       (reset    ),
+	// 	.sdhc        (status[4]),
+	// 	.sd_rd       (vsdRd    ),
+	// 	.sd_wr       (vsdWr    ),
+	// 	.sd_ack      (vsdAck   ),
+	// 	.sd_lba      (vsdLba   ),
+	// 	.sd_buff_wr  (vsdBuffWr),
+	// 	.sd_buff_addr(vsdBuffA ),
+	// 	.sd_buff_dout(vsdBuffQ ),
+	// 	.sd_buff_din (vsdBuffD ),
+	// 	.img_size    (vsdImgSz ),
+	// 	.img_mounted (vsdImgMtd),
+	// 	.clk_spi     (clk_25   ),
+	// 	.ss          (vsdCs    ),
+	// 	.sck         (vsdCk    ),
+	// 	.mosi        (vsdMosi  ),
+	// 	.miso        (vsdMiso  )
+	// );
 
-integer counter = 0;
-always @(posedge clk) begin
-	if(!counter) out <= 0;
-	else begin
-		counter <= counter - 1'b1;
-		out <= 1;
-	end
-	
-	if(in) counter <= 4500000;
-end
 
 endmodule
