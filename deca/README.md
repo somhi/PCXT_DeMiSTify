@@ -41,7 +41,10 @@ Project already has the Demistify firmware already generated so if you have clon
 
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
-#Load project in Quartus from /deca/PCXT_DeMiSTify_deca.qpf
+
+#check comments on top of /deca/deca_top.vhd in case additional actions are needed
+
+#Load project in Quartus from /deca/PCXT_deca.qpf
 ```
 
 
@@ -67,7 +70,7 @@ make BOARD=deca
 After that you can:
 
 * Flash bitstream directly from [command line](https://github.com/DECAfpga/DECA_binaries#flash-bitstream-to-fgpa-with-quartus)
-* Load project in Quartus from /deca/PCXT_DeMiSTify_deca.qpf
+* Load project in Quartus from /deca/PCXT_deca.qpf
 
 ### Pinout connections:
 

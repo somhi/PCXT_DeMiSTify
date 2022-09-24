@@ -8,7 +8,7 @@
 
 * VGA addon required
 
-* Open OSD with F12 key. Go to Video and change to MDA ouput and Reset. Then Load ROMs and reset.
+* Open OSD with F12 key. Go to Video and change to MDA ouput and Reset. Then Load ROMs and Reset.
 
 * CGA not implemented due to lack of BRAM in this board.
 * **UART port is required to be used to load the OS through the serdrive app.**
@@ -45,7 +45,7 @@ Project already has the Demistify firmware already generated so if you have clon
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
 
-#Load project in Quartus from /atlas_cyc/PCXT_DeMiSTify_atlas_cyc.qpf
+#Load project in Quartus from /atlas_cyc/PCXT_atlas_cyc.qpf
 ```
 
 
@@ -70,7 +70,7 @@ make BOARD=atlas_cyc
 
 After that you can:
 
-* Load project in Quartus from /deca/PCXT_DeMiSTify_atlas_cyc.qpf
+* Load project in Quartus from /atlas_cyc/PCXT_atlas_cyc.qpf
 
 
 

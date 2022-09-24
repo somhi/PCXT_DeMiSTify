@@ -36,7 +36,10 @@ Project already has the Demistify firmware already generated so if you have clon
 
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
-#Load project in Quartus from /sockit/PCXT_DeMiSTify_sockit.qpf
+
+#check comments on top of /sockit/sockit_top.vhd in case additional actions are needed
+
+#Load project in Quartus from /sockit/PCXT_sockit.qpf
 ```
 
 ### Instructions to compile the project for a specific board:
@@ -60,7 +63,7 @@ make BOARD=sockit
 After that you can:
 
 * Flash bitstream directly from [command line](https://github.com/DECAfpga/DECA_binaries#flash-bitstream-to-fgpa-with-quartus)
-* Load project in Quartus from /sockit/PCXT_DeMiSTify_sockit.qpf
+* Load project in Quartus from /sockit/PCXT_sockit.qpf
 
 ### Pinout connections:
 
