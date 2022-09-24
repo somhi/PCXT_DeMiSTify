@@ -866,8 +866,11 @@ module PERIPHERALS #(
 
     `elsif DEMISTIFY_SIDI
 
-    // NO CGA IN ATLAS CYC1000  (only 66 M9K)
-    // 32 Kb CGA represent 64 M9K alone
+    // NO CGA IN SIDI
+
+    `elsif DEMISTIFY_MIST
+
+    // NO CGA IN MIST  (only 66 M9K)
 
     `else
     

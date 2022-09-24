@@ -286,6 +286,7 @@ set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to LED
 
 #=====================================================================
 
+set_global_assignment -name VERILOG_MACRO "DEMISTIFY_MIST=1"
 
 set_global_assignment -name SDC_FILE constraints.sdc
 set_global_assignment -name QIP_FILE top.qip
