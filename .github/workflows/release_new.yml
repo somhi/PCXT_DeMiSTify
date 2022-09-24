@@ -37,7 +37,7 @@ jobs:
       # 4 - Create a copy and tag with date
       - name: Create a copy and tag with date
         run: |
-          cp mist/output_files/PCXT.rbf mist/output_files/PCXT_${{ steps.date.outputs.date }}.rbf
+          cp mist/output_files/PCXT_mist.rbf mist/output_files/PCXT_mist_${{ steps.date.outputs.date }}.rbf
 
       # 5 - Upload artifacts
       - name: Upload artifacts
@@ -52,7 +52,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            mist/output_files/PCXT_${{ steps.date.outputs.date }}.rbf
+            mist/output_files/PCXT_mist_${{ steps.date.outputs.date }}.rbf
     
           
       # LAST - Create a tag to launch the workflow (tag needs to start with v)            
