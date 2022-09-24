@@ -8,10 +8,9 @@
 
 * VGA addon required
 
-* Open OSD with F12 key. Go to Video and change to MDA ouput. Then Load ROMS and reset.
+* Open OSD with F12 key. Go to Video and change to MDA ouput and Reset. Then Load ROMs and reset.
 
 * CGA not implemented due to lack of BRAM in this board.
-
 * **UART port is required to be used to load the OS through the serdrive app.**
 
 
