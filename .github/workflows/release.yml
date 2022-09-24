@@ -25,7 +25,7 @@ jobs:
 
       # 2 - RTL synthesis
       - name: Run compilation flow
-        run: quartus_sh --flow compile mist/PCXT_sidi.qpf
+        run: quartus_sh --flow compile mist/PCXT_mist.qpf
 
       # 3 - Set current date for tagging binary
       - name: Set current date
