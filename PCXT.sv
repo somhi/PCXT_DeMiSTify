@@ -245,7 +245,7 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 );
 
 
-data_io DATA_IO (
+data_io data_io (
 	.clk_sys    ( clk_chipset ),
 	.SPI_SCK    ( SPI_SCK ),
 	.SPI_SS2    ( SPI_SS2 ),
