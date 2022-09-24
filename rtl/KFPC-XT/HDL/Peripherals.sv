@@ -169,7 +169,7 @@ module PERIPHERALS #(
         if (reset) begin
             ems_access_address  <= 2'b11;
             ems_write_enable    <= 1'b0;
-            write_map_ems_data  <= 1'b0;
+            write_map_ems_data  <= 8'd0;
             write_map_ena_data  <= 1'b0;
         end
         else begin
@@ -198,6 +198,7 @@ module PERIPHERALS #(
     logic           timer_interrupt;
     logic           keybord_interrupt;
 	 logic           uart_interrupt;
+     logic           uart2_interrupt;
     logic   [7:0]   interrupt_data_bus_out;
 
     KF8259 u_KF8259 (
