@@ -1,0 +1,63 @@
+################################################################################
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileType: OTHER
+# SPDX-FileCopyrightText: (c) 2021-2022, The Raetro authors and contributors
+################################################################################
+
+name: Create New Core Release
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v21.02.01
+
+jobs:
+  synthesis:
+    runs-on: ubuntu-latest
+    container: raetro/quartus:13.1
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      # 1 - Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # 2 - RTL synthesis
+      - name: Run compilation flow
+        run: quartus_sh --flow compile PCXT.qpf
+
+      # 3 - Set current date for tagging binary
+      - name: Set current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+
+      # 4 - Create a copy and tag with date
+      - name: Create a copy and tag with date
+        run: |
+          cp output_files/PCXT.rbf output_files/PCXT_${{ steps.date.outputs.date }}.rbf
+
+      # 5 - Upload artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: OutputFiles
+          path: output_files/
+
+      # 6 - Create a new GitHub release and upload the distribution artifacts
+      - name: Create a new GitHub release
+        uses: softprops/action-gh-release@v0.1.14
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            output_files/PCXT_${{ steps.date.outputs.date }}.rbf
+    
+          
+      # LAST - Create a tag to launch the workflow (tag needs to start with v)            
+      # git tag v20220720 
+      # git push origin --tags
+      
+
+
+
+          
