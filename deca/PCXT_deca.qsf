@@ -18,7 +18,7 @@
 #
 # Quartus Prime
 # Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
-# Date created = 14:54:31  September 17, 2022
+# Date created = 18:37:27  September 24, 2022
 #
 # -------------------------------------------------------------------------- #
 #
@@ -40,8 +40,8 @@ set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name DEVICE 10M50DAF484C6GES
 set_global_assignment -name TOP_LEVEL_ENTITY deca_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 17.1.0
-set_global_assignment -name PROJECT_CREATION_TIME_DATE "21:03:07  MAY 26, 2021"
-set_global_assignment -name LAST_QUARTUS_VERSION "19.1.0 Lite Edition"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "18:37:27  SEPTEMBER 24, 2022"
+set_global_assignment -name LAST_QUARTUS_VERSION "17.1.0 Lite Edition"
 set_global_assignment -name AUTO_MERGE_PLLS OFF
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name DEVICE_FILTER_PACKAGE FBGA
@@ -112,8 +112,6 @@ set_location_assignment PIN_W6 -to VGA_VS
 set_location_assignment PIN_V8 -to VGA_R[0]
 set_location_assignment PIN_AB8 -to VGA_G[0]
 set_location_assignment PIN_W8 -to VGA_B[0]
-set_location_assignment PIN_W9 -to DETO1_UART_CTS
-set_location_assignment PIN_W5 -to DETO2_UART_RTS
 set_location_assignment PIN_Y5 -to PS2_KEYBOARD_CLK
 set_location_assignment PIN_Y6 -to PS2_KEYBOARD_DAT
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PS2_KEYBOARD_CLK
@@ -126,8 +124,8 @@ set_location_assignment PIN_W4 -to SPI_MOSI
 set_location_assignment PIN_R9 -to SPI_MISO_WSBD
 set_location_assignment PIN_P9 -to SPI_SCLK_DABD
 set_location_assignment PIN_Y19 -to SPI_CS0_CLKBD
-set_location_assignment PIN_AA17 -to UART2_RXD
-set_location_assignment PIN_W3 -to UART2_TXD
+set_location_assignment PIN_AA17 -to SPI_CS1
+set_location_assignment PIN_W3 -to SPI_CS2
 set_location_assignment PIN_Y18 -to UART_RXD
 set_location_assignment PIN_W18 -to UART_TXD
 set_location_assignment PIN_J4 -to JOY1_B2_P9
@@ -158,6 +156,9 @@ set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to JOY1_B1_P6
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to JOY1_B2_P9
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to JOY1_RIGHT
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to JOYX_SEL_O
+set_location_assignment PIN_W9 -to DETO1_PMOD2_6
+set_location_assignment PIN_W5 -to DETO2_PMOD2_7
+set_location_assignment PIN_Y11 -to DETO4
 set_location_assignment PIN_R14 -to I2S_SCK
 set_instance_assignment -name IO_STANDARD "1.5 V" -to I2S_SCK
 set_location_assignment PIN_P15 -to I2S_D

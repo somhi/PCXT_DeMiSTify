@@ -25,14 +25,9 @@ Project already has the Demistify firmware already generated so if you have clon
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
 
--- add/modify the following in Neptuno_pins.tcl in demistify/board/neptuno
--- #UART
--- #set_location_assignment PIN_C21 -to PS2_MOUSE_CLK
--- set_location_assignment PIN_C21 -to UART_RXD
--- #set_location_assignment PIN_B21 -to PS2_MOUSE_DAT
--- set_location_assignment PIN_B21 -to UART_TXD
+#check comments on top of /neptuno/neptuno_top.vhd in case additional actions are needed
 
-#Load project in Quartus from /neptuno/PCXT_DeMiSTify_neptuno.qpf
+#Load project in Quartus from /neptuno/PCXT_neptuno.qpf
 ```
 
 
@@ -57,7 +52,7 @@ make BOARD=neptuno
 
 After that you can:
 
-* Load project in Quartus from /deca/PCXT_DeMiSTify_neptuno.qpf
+* Load project in Quartus from /neptuno/PCXT_neptuno.qpf
 
 
 

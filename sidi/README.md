@@ -6,8 +6,9 @@
 
 ### STATUS
 
+* Open OSD with F12 key. Go to Video and change to MDA ouput and Reset. Then Load ROMs and Reset.
+* CGA not implemented due to lack of BRAM in this board.
 * **UART port is required to be used to load the OS through the serdrive app.**
-
 
 **Bugs**:
 
@@ -24,7 +25,7 @@ Project already has the Demistify firmware already generated so if you have clon
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
 
-#Load project in Quartus from /neptuno/PCXT_DeMiSTify_sidi.qpf
+#Load project in Quartus from /sidi/PCXT_sidi.qpf
 ```
 
 
@@ -49,7 +50,7 @@ make BOARD=sidi
 
 After that you can:
 
-* Load project in Quartus from /deca/PCXT_DeMiSTify_neptuno.qpf
+* Load project in Quartus from /sidi/PCXT_sidi.qpf
 
 
 
