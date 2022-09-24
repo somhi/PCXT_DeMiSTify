@@ -141,6 +141,7 @@ parameter CONF_STR = {
 	"P3,Hardware;",
 	"P3OB,Lo-tech 2MB EMS,Enabled,Disabled;",
 	"P3OCD,EMS Frame,A000,C000,D000;",
+	"P3OUV,BIOS Writable,None,EC00,PCXT/Tandy,All;",
 	"P3ONO,Joystick 1, Analog, Digital, Disabled;",
 	"P3OPQ,Joystick 2, Analog, Digital, Disabled;",
 	"P3OR,Sync Joy to CPU Speed,No,Yes;",
@@ -150,7 +151,7 @@ parameter CONF_STR = {
 
 wire forced_scandoubler;
 wire  [1:0] buttons;
-wire [31:0] status;
+wire [63:0] status;
 //wire [10:0] ps2_key;
 
 //VHD	
@@ -292,6 +293,7 @@ pll pll
 );
 
 wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | (ioctl_download && ioctl_index == 0) | splashscreen;
+wire reset_sdram_wire = !RESET_N | !pll_locked;
 
 `else  
 
@@ -321,6 +323,7 @@ pllvideo pllvideo
 );
 
 wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (ioctl_download && ioctl_index == 0) | splashscreen;
+wire reset_sdram_wire = !RESET_N | !pll_locked | !pll_locked2 ;
 
 `endif
 
@@ -366,12 +369,21 @@ always @(posedge clk_4_77)
 
 logic  biu_done;
 logic  turbo_mode;
+logic  [1:0] clk_select;
 
-always @(posedge clk_chipset) begin
-    if (biu_done)
+always @(posedge clk_chipset, posedge reset) begin
+    if (reset) begin
+        turbo_mode  <= 1'b0;
+        clk_select  <= 2'b00;
+    end
+    else if (biu_done) begin
         turbo_mode  <= (status[18:17] == 2'b01 || status[18:17] == 2'b10);
-    else
+        clk_select  <= status[18:17];
+    end
+    else begin
         turbo_mode  <= turbo_mode;
+        clk_select  <= clk_select;
+    end
 end
 
 logic  clk_cpu_ff_1;
@@ -380,13 +392,23 @@ logic  clk_cpu_ff_2;
 logic  pclk_ff_1;
 logic  pclk_ff_2;
 
-always @(posedge clk_chipset) begin
-    clk_cpu_ff_1 <= (status[18:17] == 2'b10) ? clk_14_318 : (status[18:17] == 2'b01) ? clk_7_16 : clk_4_77;
-    clk_cpu_ff_2 <= clk_cpu_ff_1;
-    clk_cpu      <= clk_cpu_ff_2;
-    pclk_ff_1    <= peripheral_clock;
-    pclk_ff_2    <= pclk_ff_1;
-    pclk         <= pclk_ff_2;
+always @(posedge clk_chipset, posedge reset) begin
+    if (reset) begin
+        clk_cpu_ff_1 <= 1'b0;
+        clk_cpu_ff_2 <= 1'b0;
+        clk_cpu      <= 1'b0;
+        pclk_ff_1    <= 1'b0;
+        pclk_ff_2    <= 1'b0;
+        pclk         <= 1'b0;
+    end
+    else begin
+        clk_cpu_ff_1 <= (clk_select == 2'b10) ? clk_14_318 : (clk_select == 2'b01) ? clk_7_16 : clk_4_77;
+        clk_cpu_ff_2 <= clk_cpu_ff_1;
+        clk_cpu      <= clk_cpu_ff_2;
+        pclk_ff_1    <= peripheral_clock;
+        pclk_ff_2    <= pclk_ff_1;
+        pclk         <= pclk_ff_2;
+    end
 end
 
 logic   clk_opl2_ff_1;

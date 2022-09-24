@@ -106,7 +106,7 @@ module BUS_ARBITER (
     //
     always_ff @(posedge clock, posedge reset) begin
         if (reset)
-            address_enable_n <= 1'b0;
+            address_enable_n <= 1'b1;
         else if (cpu_clock_posedge)
             address_enable_n <= hold_acknowledge;
         else
