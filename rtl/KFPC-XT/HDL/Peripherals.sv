@@ -821,7 +821,8 @@ module PERIPHERALS #(
 	 wire [7:0] cga_vram_cpu_dout;
 	 wire [7:0] mda_vram_cpu_dout;
 
-     `ifdef DEMISTIFY_sockit
+
+    `ifdef DEMISTIFY_SOCKIT
 
     vram #(.AW(17)) cga_vram	//128 kB
 	 (
@@ -859,6 +860,11 @@ module PERIPHERALS #(
 
 
     `elsif DEMISTIFY_ATLAS_CYC
+
+    // NO CGA IN ATLAS CYC1000  (only 66 M9K)
+    // 32 Kb CGA represent 64 M9K alone
+
+    `elsif DEMISTIFY_SIDI
 
     // NO CGA IN ATLAS CYC1000  (only 66 M9K)
     // 32 Kb CGA represent 64 M9K alone

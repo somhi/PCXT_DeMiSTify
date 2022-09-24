@@ -9,9 +9,13 @@ use work.demistify_config_pkg.all;
 -- -----------------------------------------------------------------------
 -- add following in deca_pins.tcl in demistify/board/deca
 -- # PMOD DETO pins 1&2 are shared with PMOD2
--- set_location_assignment PIN_W9  -to DETO1_UART_CTS
--- set_location_assignment PIN_W5  -to DETO2_UART_RTS
+-- set_location_assignment PIN_W9  -to DETO1_PMOD2_6    #CTS
+-- set_location_assignment PIN_W5  -to DETO2_PMOD2_7    #RTS
 --------------------------------------------------
+-- DETO3_JOY_MUX		#UART2_RXD
+-- DETO4        		#UART2_TXD
+-- -----------------------------------------------------------------------
+
 
 -- -----------------------------------------------------------------------
 
@@ -61,8 +65,8 @@ entity deca_top is
 		UART_RXD : in std_logic;
 		UART_TXD : out std_logic;
 
-		DETO1_UART_CTS : in std_logic;
-		DETO2_UART_RTS : out std_logic;
+		DETO1_PMOD2_6 : in std_logic;		--CTS
+		DETO2_PMOD2_7 : out std_logic;		--RTS
 
 		-- JOYSTICK
 		JOY1_B2_P9 : in std_logic;
@@ -451,8 +455,8 @@ begin
 			UART_TX => UART_TXD,
 			UART_RX => UART_RXD,
 
-			UART_CTS  => DETO1_UART_CTS,
-			UART_RTS  => DETO2_UART_RTS,
+			UART_CTS  => DETO1_PMOD2_6,
+			UART_RTS  => DETO2_PMOD2_7,
 
 			--SPI
 --			SPI_SD_DI  => sd_miso,
