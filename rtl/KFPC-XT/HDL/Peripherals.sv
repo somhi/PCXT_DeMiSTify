@@ -804,8 +804,6 @@ module PERIPHERALS #(
 
     defparam cga1.BLINK_MAX = 24'd4772727;
 	 defparam mda1.BLINK_MAX = 24'd9100000;
-	 wire [7:0] bios_cpu_dout;
-	 wire [7:0] xtide_cpu_dout;
 	 wire [7:0] cga_vram_cpu_dout;
 	 wire [7:0] mda_vram_cpu_dout;
 

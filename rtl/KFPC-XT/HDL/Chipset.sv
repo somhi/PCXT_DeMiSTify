@@ -91,6 +91,7 @@ module CHIPSET (
 	 input   logic           adlibhide,
 	 // TANDY
 	 input   logic           tandy_video,
+	 input   logic           tandy_bios_flag,
 	 output  logic   [7:0]   tandy_snd_e,
 	 // UART
 	 input   logic           clk_uart,
@@ -111,6 +112,7 @@ module CHIPSET (
 	 output  logic           uart2_dtr_n,
     // SDRAM
     input   logic           enable_sdram,
+    output  logic           initilized_sdram,
     input   logic           sdram_clock,    // 50MHz
     output  logic   [12:0]  sdram_address,
     output  logic           sdram_cke,
@@ -128,6 +130,7 @@ module CHIPSET (
 	 input   logic           ems_enabled,
 	 input   logic   [1:0]   ems_address,
 	 // BIOS
+	 input  logic            bios_protect_flag,
 	 input   logic   [2:0]   bios_writable
 );
 
@@ -324,6 +327,7 @@ module CHIPSET (
         .clock                              (sdram_clock),
         .reset                              (sdram_reset),
         .enable_sdram                       (enable_sdram),
+        .initilized_sdram                   (initilized_sdram),
         .address                            (address),
         .internal_data_bus                  (internal_data_bus),
         .data_bus_out                       (internal_data_bus_ram),
@@ -348,7 +352,9 @@ module CHIPSET (
 	     .ems_b1                             (ems_b1),
 	     .ems_b2                             (ems_b2),
 	     .ems_b3                             (ems_b3),
-	     .ems_b4                             (ems_b4)
+	     .ems_b4                             (ems_b4),
+        .tandy_bios_flag                    (tandy_bios_flag),
+        .bios_protect_flag                  (bios_protect_flag)
     );
 
     assign  data_bus = internal_data_bus;
