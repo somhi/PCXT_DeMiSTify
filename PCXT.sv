@@ -802,7 +802,7 @@ end
     );
 
 	wire speaker_out;
-	wire  [13:0]  tandy_snd_e;
+	wire  [7:0]   tandy_snd_e;
 	wire tandy_snd_rdy;
 
 	wire [15:0] jtopl2_snd_e;	
@@ -810,8 +810,7 @@ end
 	//wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 1) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 1
 	//wire [16:0]sndmix = (({1'b0, jtopl2_snd_e}) ) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // bad
 	//wire [16:0]sndmix_pcm = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (~speaker_out << 15) + {tandy_snd_e, 9'd0}; // not bad
-	//wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 2   old sn76489
-	wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 2'd0}); // new sn76489
+	wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 2
 
 	`ifdef DEMISTIFY
 	assign DAC_R = sndmix >> 1;
