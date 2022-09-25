@@ -91,7 +91,7 @@ module CHIPSET (
 	 input   logic           adlibhide,
 	 // TANDY
 	 input   logic           tandy_video,
-	 output  logic   [13:0]  tandy_snd_e,
+	 output  logic   [7:0]   tandy_snd_e,
 	 // UART
 	 input   logic           clk_uart,
 	 input   logic           uart_rx,
