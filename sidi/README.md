@@ -6,8 +6,13 @@
 
 ### STATUS
 
-* Open OSD with F12 key. Go to Video and change to MDA ouput. Then Load ROMs and Reset.
 * CGA not implemented due to lack of BRAM in this board.
+* Open OSD with F12 key. Go to Video and change CGA to MDA output. The Splash screen should appear. Then Load XT BIOS ROM (and XTIDE 16 kB if not included in the main BIOS) and Reset from OSD.
+
+* Notes about ROMs:
+  - Not all ROMs work with MDA video: (YUKO ST and PCXT31 works), (TANDY, micro8088, IBM5160, full XTIDE BIOS do not work).
+  - If you load a BIOS that does not work with MDA you need to power cycle the board.
+  - Sometimes a double Reset is needed (that might be outdated with the latest BIOS Loader by kitune-san)
 * **UART port is required to be used to load the OS through the serdrive app.**
 
 **Bugs**:
