@@ -1,12 +1,12 @@
-# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify)  - Neptuno port
+# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify)  - UNAMIGA Reloaded port
 
-07/07/22 Neptuno port DeMiSTified by Somhic from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
+07/07/22 UAReloaded port DeMiSTified by Somhic from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
 
 [Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
 
 ### STATUS
 
-* Load OS using Serial Rx/Tx interface.
+* Load OS using Serial Rx/Tx.
 
 * **UART port is required to be used to load the OS through the serdrive app.**
 
@@ -25,9 +25,9 @@ Project already has the Demistify firmware already generated so if you have clon
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
 
-#check comments on top of /neptuno/neptuno_top.vhd in case additional actions are needed
+#check comments on top of /uareloaded/uareloaded_top.vhd in case additional actions are needed
 
-#Load project in Quartus from /neptuno/PCXT_neptuno.qpf
+#Load project in Quartus from /uareloaded/PCXT_uareloaded.qpf
 ```
 
 
@@ -46,13 +46,13 @@ cp site.template site.mk
 gedit site.mk
 #Go back to root folder and do a make with board target (deca, neptuno, uareloaded, atlas_cyc). If not specified it will compile for all targets.
 cd ..
-make BOARD=neptuno
+make BOARD=uareloaded
 #when asked just accept default settings with Enter key
 ```
 
 After that you can:
 
-* Load project in Quartus from /neptuno/PCXT_neptuno.qpf
+* Load project in Quartus from /uareloaded/PCXT_uareloaded.qpf
 
 
 
