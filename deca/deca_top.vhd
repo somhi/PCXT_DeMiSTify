@@ -7,17 +7,6 @@ use work.demistify_config_pkg.all;
 
 
 -- -----------------------------------------------------------------------
--- add following in deca_pins.tcl in demistify/board/deca
--- # PMOD DETO pins 1&2 are shared with PMOD2
--- set_location_assignment PIN_W9  -to DETO1_PMOD2_6    #CTS
--- set_location_assignment PIN_W5  -to DETO2_PMOD2_7    #RTS
---------------------------------------------------
--- DETO3_JOY_MUX		#UART2_RXD
--- DETO4        		#UART2_TXD
--- -----------------------------------------------------------------------
-
-
--- -----------------------------------------------------------------------
 
 entity deca_top is
 	generic (

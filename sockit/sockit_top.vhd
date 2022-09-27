@@ -7,18 +7,6 @@ use work.demistify_config_pkg.all;
 
 -- -----------------------------------------------------------------------
 
--- Add the following in sockit_pins.tcl at demistify/board/sockit
---
--- #============================================================
--- # UART   ADDED FOR PCXT CORE
--- #============================================================
--- set_location_assignment PIN_D7 -to DETO1
--- set_location_assignment PIN_A8 -to DETO2
--- set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DETO1
--- set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to DETO2
-
--- -----------------------------------------------------------------------
-
 entity sockit_top is
 	port (
 		FPGA_CLK1_50 : in std_logic;

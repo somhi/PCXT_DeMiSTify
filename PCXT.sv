@@ -72,8 +72,8 @@ module PCXT
 	input		  UART_CTS,
 	output 		  UART_RTS,
 
-	input         UART2_RX,
-	output        UART2_TX,
+	// input         UART2_RX,
+	// output        UART2_TX,
 
 //	input         PS2K_CLK_IN,
 //	input         PS2K_DAT_IN,
@@ -172,10 +172,10 @@ wire        ps2_kbd_clk_in;
 wire        ps2_kbd_data_in;
 
 //Mouse PS2
-wire        ps2_mouse_clk_out;
-wire        ps2_mouse_data_out;
-wire        ps2_mouse_clk_in;
-wire        ps2_mouse_data_in;
+// wire        ps2_mouse_clk_out;
+// wire        ps2_mouse_data_out;
+// wire        ps2_mouse_clk_in;
+// wire        ps2_mouse_data_in;
 
 wire        ioctl_download;
 wire  [7:0] ioctl_index;
@@ -516,16 +516,6 @@ end
 	reg        bios_write_n;
 	reg [7:0]  bios_write_wait_cnt;
 	reg        tandy_bios_write;
-
-
-	// wire bios_loader  = (ioctl_download && ioctl_index < 2 && ioctl_addr[24:16] == 9'b000000000);
-	// wire xtide_loader = ((ioctl_download && ioctl_index == 2) ||
-	// 					 (ioctl_download && ioctl_index == 0 && ioctl_addr[24:16] == 9'b000000001));
-
-
-	// wire [19:0] bios_access_address_wire =  bios_loader  ? { 4'b1111, ioctl_addr[15:0]} :
-	// 										xtide_loader ? { 6'b111011, ioctl_addr[13:0]} :
-	//                                                       20'hFFFFF;
 
 	wire select_pcxt  = (ioctl_index[5:0] == 1) && (ioctl_addr[24:16] == 9'b000000000);
 	wire select_tandy = (ioctl_index[5:0] == 2) && (ioctl_addr[24:16] == 9'b000000000);
@@ -950,10 +940,33 @@ end
 		clk_uart_en   <= ~clk_uart_ff_3 & clk_uart_ff_2;
     end
 
+	/// SERIAL MICROSOFT MOUSE
+	wire UART2_RX;
+	wire UART2_TX;
 	wire uart2_rts;
 	wire uart2_cts;
+	wire rts;
 
-	///
+	// 	.ps2dta_in(PS2K_MOUSE_DAT_IN),
+	// 	.ps2clk_in(PS2K_MOUSE_CLK_IN),
+	// 	.ps2dta_out(PS2K_MOUSE_DAT_OUT),
+	// 	.ps2clk_out(PS2K_MOUSE_CLK_OUT),
+
+	MSMouseWrapper MSMouseWrapper_inst (
+		.clk(clk_chipset),
+		.ps2dta(PS2_MOUSE_DAT),
+		.ps2clk(PS2_MOUSE_CLK),
+		.rts(rts),
+		.rd(UART2_RX)
+	);
+
+	assign rts = ~uart2_rts;
+
+	// assign xxxx = UART2_RX;		//debug output
+	// assign xxxx = rts;			//debug output
+
+
+	//////////////////
 
 	always @(posedge clk_100) begin
 		if (address_latch_enable)
