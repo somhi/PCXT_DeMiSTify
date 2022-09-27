@@ -5,20 +5,6 @@ use ieee.numeric_std.all;
 library work;
 use work.demistify_config_pkg.all;
 
--- -----------------------------------------------------------------------
-
--- add following in Neptuno_pins.tcl in demistify/board/neptuno
--- #PCXT CORE ADDED SIGNALS ON MIDI2SBC ADDON
---
--- set_location_assignment PIN_P22  -to PMOD4_D0	 #UART2_RXD
--- set_location_assignment PIN_B22  -to PMOD4_D1     #UART2_TXD
--- set_location_assignment PIN_AA14 -to PMOD4_D2
--- set_location_assignment PIN_N22  -to PMOD4_D3
--- set_location_assignment PIN_M19  -to PMOD4_D4
--- set_location_assignment PIN_U22  -to PMOD4_D5
--- set_location_assignment PIN_C22  -to PMOD4_D6
--- set_location_assignment PIN_AB13 -to PMOD4_D7
-
 --------------------------------------------------
 
 entity neptuno_top is
@@ -57,7 +43,7 @@ entity neptuno_top is
 		I2S_BCLK  : out std_logic := '0';
 		I2S_LRCLK : out std_logic := '0';
 		I2S_DATA  : out std_logic := '0';
-		-- 
+		-- EAR 
 		AUDIO_INPUT : in std_logic;
 		-- PS2
 		PS2_KEYBOARD_CLK : inout std_logic;
