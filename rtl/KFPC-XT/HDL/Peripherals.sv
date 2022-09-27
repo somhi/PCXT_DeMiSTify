@@ -808,7 +808,7 @@ module PERIPHERALS #(
 	 wire [7:0] mda_vram_cpu_dout;
 
 
-    `ifdef DEMISTIFY_SOCKIT
+    `ifdef CGA_128
 
     vram #(.AW(17)) cga_vram	//128 kB
 	 (
@@ -825,8 +825,26 @@ module PERIPHERALS #(
         .dinb                       (8'h0),
         .doutb                      (CGA_VRAM_DOUT)
 	);
-	
-    `elsif DEMISTIFY_DECA
+
+    `elsif CGA_32
+
+    vram #(.AW(15)) cga_vram   	// 32 kB   (Some Tandy games don't work)
+    (
+       .clka                       (clock),
+       .ena                        (~cga_chip_select_n_1),
+       .wea                        (~video_memory_write_n),
+   .addra                      ((tandy_video & grph_mode & hres_mode) ? video_ram_address : video_ram_address[13:0]),
+       .dina                       (video_ram_data),
+       .douta                      (cga_vram_cpu_dout),
+       .clkb                       (clk_vga_cga),
+       .web                        (1'b0),
+       .enb                        (CGA_VRAM_ENABLE),
+       .addrb                      ((tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
+       .dinb                       (8'h0),
+       .doutb                      (CGA_VRAM_DOUT)
+   );
+    
+    `elsif CGA_16
 
     vram #(.AW(14)) cga_vram   	// 16 kB  (Tandy games don't work)
 	 (
@@ -845,36 +863,14 @@ module PERIPHERALS #(
 	);
 
 
-    `elsif DEMISTIFY_ATLAS_CYC
+    `elsif NO_CGA
 
     // NO CGA IN ATLAS CYC1000  (only 66 M9K)
     // 32 Kb CGA represent 64 M9K alone
-
-    `elsif DEMISTIFY_SIDI
-
     // NO CGA IN SIDI
-
-    `elsif DEMISTIFY_MIST
-
     // NO CGA IN MIST  (only 66 M9K)
 
     `else
-    
-    vram #(.AW(15)) cga_vram   	// 32 kB   (Some Tandy games don't work)
-	 (
-        .clka                       (clock),
-        .ena                        (~cga_chip_select_n_1),
-        .wea                        (~video_memory_write_n),
-	.addra                      ((tandy_video & grph_mode & hres_mode) ? video_ram_address : video_ram_address[13:0]),
-        .dina                       (video_ram_data),
-        .douta                      (cga_vram_cpu_dout),
-        .clkb                       (clk_vga_cga),
-        .web                        (1'b0),
-        .enb                        (CGA_VRAM_ENABLE),
-        .addrb                      ((tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
-        .dinb                       (8'h0),
-        .doutb                      (CGA_VRAM_DOUT)
-	);
 
     `endif
 
