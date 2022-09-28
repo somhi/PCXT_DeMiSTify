@@ -810,7 +810,7 @@ module PERIPHERALS #(
 
     `ifdef CGA_128
 
-    vram #(.AW(17)) cga_vram	//128 kB
+    vram #(.AW(17)) cga_vram	// 128 kB
 	 (
         .clka                       (clock),
         .ena                        (~cga_chip_select_n_1 || ~video_chip_select_n_1),
@@ -825,6 +825,28 @@ module PERIPHERALS #(
         .dinb                       (8'h0),
         .doutb                      (CGA_VRAM_DOUT)
 	);
+
+    `elsif CGA_64
+
+    vram #(.AW(16)) cga_vram	// 64 kB     Improves arkanoid and Gods video output, but then Prince does not display well
+	 (
+        .clka                       (clock),
+        .ena                        (~cga_chip_select_n_1 || ~video_chip_select_n_1),
+        .wea                        (~video_memory_write_n),
+        .addra                      ((tandy_video & grph_mode & hres_mode) ? ~video_chip_select_n_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
+    //  .addra                      ((tandy_video & grph_mode & hres_mode) ? ~video_chip_select_n_1 ? video_ram_address : tandy_page_data[3] ? {1'b0, tandy_page_data[4:3], video_ram_address[13:0]} : {1'b0,tandy_page_data[5], video_ram_address[14:0]} : video_ram_address[13:0]),
+        .dina                       (video_ram_data),
+        .douta                      (cga_vram_cpu_dout),
+        .clkb                       (clk_vga_cga),
+        .web                        (1'b0),
+        .enb                        (CGA_VRAM_ENABLE),
+        .addrb                      ((tandy_video & grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : CGA_VRAM_ADDR[13:0]),
+    //  .addrb                      ((tandy_video & grph_mode & hres_mode) ? {1'b0, tandy_page_data[1], CGA_VRAM_ADDR[14:0]} : CGA_VRAM_ADDR[13:0]),
+        .dinb                       (8'h0),
+        .doutb                      (CGA_VRAM_DOUT)
+	);
+                                //  {tandy_page_data[5:3], video_ram_address[13:0]} => {1'b0, tandy_page_data[4:3], video_ram_address[13:0]}
+                                //  {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]}     => {1'b0, tandy_page_data[1], CGA_VRAM_ADDR[14:0]}
 
     `elsif CGA_32
 
