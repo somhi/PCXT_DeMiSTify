@@ -3,7 +3,7 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) mda_seq
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) mda_pixel.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) mda_attrib.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) mda.v ]
-set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram.v ]
+#set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) crtc6845.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) cga_vram.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) cga_vgaport.v ]
@@ -14,3 +14,9 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) cga_com
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) cga_attrib.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) cga.v ]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) video_monochrome_converter.sv ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip_4.v ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip_16.v ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip_32.v ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip_64.v ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip_128.v ]
+
