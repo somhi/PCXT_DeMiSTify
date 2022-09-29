@@ -810,80 +810,78 @@ module PERIPHERALS #(
 
     `ifdef CGA_128
 
-    vram #(.AW(17)) cga_vram	// 128 kB
+     vram_ip_128  cga_vram	// 128 kB
 	 (
-        .clka                       (clock),
-        .ena                        (~cga_chip_select_n_1 || ~video_chip_select_n_1),
-        .wea                        (~video_memory_write_n),
-        .addra                      ((tandy_video & grph_mode & hres_mode) ? ~video_chip_select_n_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
-        .dina                       (video_ram_data),
-        .douta                      (cga_vram_cpu_dout),
-        .clkb                       (clk_vga_cga),
-        .web                        (1'b0),
-        .enb                        (CGA_VRAM_ENABLE),
-        .addrb                      ((tandy_video & grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : CGA_VRAM_ADDR[13:0]),
-        .dinb                       (8'h0),
-        .doutb                      (CGA_VRAM_DOUT)
+        .clock_a                  (clock),
+        .enable_a                 (~cga_chip_select_n_1 || ~video_chip_select_n_1),
+        .wren_a                   (~video_memory_write_n),
+        .address_a                ((tandy_video & grph_mode & hres_mode) ? ~video_chip_select_n_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
+        .data_a                   (video_ram_data),
+        .q_a                      (cga_vram_cpu_dout),
+        .clock_b                  (clk_vga_cga),
+        .enable_b                 (CGA_VRAM_ENABLE),
+        .wren_b                   (1'b0),
+        .address_b                ((tandy_video & grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : CGA_VRAM_ADDR[13:0]),
+        .data_b                   (8'h0),
+        .q_b                      (CGA_VRAM_DOUT)
 	);
 
     `elsif CGA_64
 
-    vram #(.AW(16)) cga_vram	// 64 kB     Improves arkanoid and Gods video output, but then Prince does not display well
+    vram_ip_64  cga_vram	// 64 kB     Improves arkanoid and Gods video output, but then Prince does not display well
 	 (
-        .clka                       (clock),
-        .ena                        (~cga_chip_select_n_1 || ~video_chip_select_n_1),
-        .wea                        (~video_memory_write_n),
-        .addra                      ((tandy_video & grph_mode & hres_mode) ? ~video_chip_select_n_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
-    //  .addra                      ((tandy_video & grph_mode & hres_mode) ? ~video_chip_select_n_1 ? video_ram_address : tandy_page_data[3] ? {1'b0, tandy_page_data[4:3], video_ram_address[13:0]} : {1'b0,tandy_page_data[5], video_ram_address[14:0]} : video_ram_address[13:0]),
-        .dina                       (video_ram_data),
-        .douta                      (cga_vram_cpu_dout),
-        .clkb                       (clk_vga_cga),
-        .web                        (1'b0),
-        .enb                        (CGA_VRAM_ENABLE),
-        .addrb                      ((tandy_video & grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : CGA_VRAM_ADDR[13:0]),
-    //  .addrb                      ((tandy_video & grph_mode & hres_mode) ? {1'b0, tandy_page_data[1], CGA_VRAM_ADDR[14:0]} : CGA_VRAM_ADDR[13:0]),
-        .dinb                       (8'h0),
-        .doutb                      (CGA_VRAM_DOUT)
+        .clock_a                     (clock),
+        .enable_a                 (~cga_chip_select_n_1 || ~video_chip_select_n_1),
+        .wren_a                   (~video_memory_write_n),
+        .address_a                ((tandy_video & grph_mode & hres_mode) ? ~video_chip_select_n_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
+    //  .address_a                ((tandy_video & grph_mode & hres_mode) ? ~video_chip_select_n_1 ? video_ram_address : tandy_page_data[3] ? {1'b0, tandy_page_data[4:3], video_ram_address[13:0]} : {1'b0,tandy_page_data[5], video_ram_address[14:0]} : video_ram_address[13:0]),
+        .data_a                   (video_ram_data),
+        .q_a                      (cga_vram_cpu_dout),
+        .clock_b                  (clk_vga_cga),
+        .enable_b                 (CGA_VRAM_ENABLE),
+        .wren_b                   (1'b0),
+        .address_b                ((tandy_video & grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : CGA_VRAM_ADDR[13:0]),
+    //  .address_b                ((tandy_video & grph_mode & hres_mode) ? {1'b0, tandy_page_data[1], CGA_VRAM_ADDR[14:0]} : CGA_VRAM_ADDR[13:0]),
+        .data_b                   (8'h0),
+        .q_b                      (CGA_VRAM_DOUT)
 	);
                                 //  {tandy_page_data[5:3], video_ram_address[13:0]} => {1'b0, tandy_page_data[4:3], video_ram_address[13:0]}
                                 //  {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]}     => {1'b0, tandy_page_data[1], CGA_VRAM_ADDR[14:0]}
 
     `elsif CGA_32
 
-    vram #(.AW(15)) cga_vram   	// 32 kB   (Some Tandy games don't work)
-    (
-       .clka                       (clock),
-       .ena                        (~cga_chip_select_n_1),
-       .wea                        (~video_memory_write_n),
-   .addra                      ((tandy_video & grph_mode & hres_mode) ? video_ram_address : video_ram_address[13:0]),
-       .dina                       (video_ram_data),
-       .douta                      (cga_vram_cpu_dout),
-       .clkb                       (clk_vga_cga),
-       .web                        (1'b0),
-       .enb                        (CGA_VRAM_ENABLE),
-       .addrb                      ((tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
-       .dinb                       (8'h0),
-       .doutb                      (CGA_VRAM_DOUT)
-   );
-    
+   vram_ip_32	cga_vram (
+        .clock_a                  ( clock ),
+        .enable_a                 (~cga_chip_select_n_1),
+        .wren_a                   (~video_memory_write_n),
+        .address_a                ((tandy_video & grph_mode & hres_mode) ? video_ram_address : video_ram_address[13:0]),
+        .data_a                   (video_ram_data),
+        .q_a                      (cga_vram_cpu_dout),
+        .clock_b                  (clk_vga_cga),
+        .enable_b                 (CGA_VRAM_ENABLE),
+        .wren_b                   (1'b0),
+        .address_b                ((tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
+        .data_b                   (8'h0),
+        .q_b                      (CGA_VRAM_DOUT)
+    );
+
     `elsif CGA_16
 
-    vram #(.AW(14)) cga_vram   	// 16 kB  (Tandy games don't work)
+    vram_ip_16  cga_vram   	// 16 kB  (Tandy games don't work)
 	 (
-        .clka                       (clock),
-        .ena                        (~cga_chip_select_n_1),
-        .wea                        (~video_memory_write_n),
-	.addra                      ((tandy_video & grph_mode & hres_mode) ? video_ram_address : video_ram_address[13:0]),
-        .dina                       (video_ram_data),
-        .douta                      (cga_vram_cpu_dout),
-        .clkb                       (clk_vga_cga),
-        .web                        (1'b0),
-        .enb                        (CGA_VRAM_ENABLE),
-        .addrb                      ((tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
-        .dinb                       (8'h0),
-        .doutb                      (CGA_VRAM_DOUT)
+        .clock_a                  (clock),
+        .enable_a                 (~cga_chip_select_n_1),
+        .wren_a                   (~video_memory_write_n),
+	    .address_a                ((tandy_video & grph_mode & hres_mode) ? video_ram_address : video_ram_address[13:0]),
+        .data_a                   (video_ram_data),
+        .q_a                      (cga_vram_cpu_dout),
+        .clock_b                  (clk_vga_cga),
+        .enable_b                 (CGA_VRAM_ENABLE),
+        .wren_b                   (1'b0),
+        .address_b                ((tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
+        .data_b                   (8'h0),
+        .q_b                      (CGA_VRAM_DOUT)
 	);
-
 
     `elsif NO_CGA
 
@@ -897,21 +895,30 @@ module PERIPHERALS #(
     `endif
 
 
-    vram #(.AW(12)) mda_vram   //4 kB
+    `ifdef NO_MDA
+
+        // NO MDA 
+
+    `else
+
+    vram_ip_4 mda_vram   //4 kB
     (
-       .clka                       (clock),
-       .ena                        (~mda_chip_select_n_1),
-       .wea                        (~video_memory_write_n),
-       .addra                      (video_ram_address[11:0]),
-       .dina                       (video_ram_data),
-       .douta                      (mda_vram_cpu_dout),
-       .clkb                       (clk_vga_mda),
-       .web                        (1'b0),
-       .enb                        (MDA_VRAM_ENABLE),
-       .addrb                      (MDA_VRAM_ADDR[11:0]),
-       .dinb                       (8'h0),
-       .doutb                      (MDA_VRAM_DOUT)
+       .clock_a                  (clock),
+       .enable_a                 (~mda_chip_select_n_1),
+       .wren_a                   (~video_memory_write_n),
+       .address_a                (video_ram_address[11:0]),
+       .data_a                   (video_ram_data),
+       .q_a                      (mda_vram_cpu_dout),
+       .clock_b                  (clk_vga_mda),
+       .enable_b                 (MDA_VRAM_ENABLE),
+       .wren_b                   (1'b0),
+       .address_b                (MDA_VRAM_ADDR[11:0]),
+       .data_b                   (8'h0),
+       .q_b                      (MDA_VRAM_DOUT)
    );
+
+    `endif
+
 
 
     //
