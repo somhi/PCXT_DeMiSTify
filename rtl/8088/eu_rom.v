@@ -4,7 +4,11 @@ module eu_rom(
   output reg [31:0] douta
 );
 
+`ifdef EMBED_8088_ROM
+(* ramstyle = "logic" *) reg [31:0] memory[3961:0];
+`else
 reg [31:0] memory[3961:0];
+`endif    
 
 initial $readmemb("microcode.mem", memory);
 

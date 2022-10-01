@@ -144,7 +144,6 @@ parameter CONF_STR = {
 	"P3OR,Sync Joy to CPU Speed,No,Yes;",
 	"P3OS,Swap Joysticks,No,Yes;",
 	"O7,Splash Screen,Yes,No;",
-	"J,Fire 1, Fire 2;",
 	"V,v",`BUILD_DATE 
 };
 

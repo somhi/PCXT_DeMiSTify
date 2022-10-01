@@ -391,21 +391,30 @@ module PERIPHERALS #(
 	wire [7:0] opl32_data;
    assign opl32_data = adlibhide ? 8'hFF : jtopl2_dout;
 	 
-	jtopl2 jtopl2_inst
-	(
-		.rst(reset),
-		.clk(clock),
-		.cen(clk_en_opl2),
-		.din(internal_data_bus),
-		.dout(jtopl2_dout),
-		.addr(address[0]),
-		.cs_n(opl_chip_select_n),
-		.wr_n(io_write_n),
-		.irq_n(),
-		.snd(jtopl2_snd_e),
-		.sample()
-	);	
-	
+
+    `ifdef NO_ADLIB
+
+    // NO ADLIB SOUND
+
+    `else
+    
+    jtopl2 jtopl2_inst
+    (
+        .rst(reset),
+        .clk(clock),
+        .cen(clk_en_opl2),
+        .din(internal_data_bus),
+        .dout(jtopl2_dout),
+        .addr(address[0]),
+        .cs_n(opl_chip_select_n),
+        .wr_n(io_write_n),
+        .irq_n(),
+        .snd(jtopl2_snd_e),
+        .sample()
+    );	
+
+    `endif
+
 
 	// Tandy sound
 	sn76489_top sn76489
@@ -447,7 +456,7 @@ module PERIPHERALS #(
 	end
 
     logic   [7:0]   keycode_ff;
-    always_ff @(posedge clock, posedge reset) begin
+    always_ff @(posedge clock, posedge reset) begin  
         if (reset) begin
             keycode_ff  <= 8'h00;
             port_a_in   <= 8'h00;
