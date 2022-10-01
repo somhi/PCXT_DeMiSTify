@@ -296,7 +296,6 @@ set_global_assignment -name QIP_FILE top.qip
 set_global_assignment -name QIP_FILE ../files.qip
 set_global_assignment -name QIP_FILE ../mist-modules/mist_core.qip
 set_global_assignment -name VERILOG_FILE ../mist-modules/data_io.v
-set_global_assignment -name VERILOG_FILE ../rtl/sigma_delta_dac.v
 set_global_assignment -name PRE_FLOW_SCRIPT_FILE "quartus_sh:../build_id.tcl"
 
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
