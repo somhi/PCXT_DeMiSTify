@@ -4,17 +4,15 @@ Port DeMiSTified by Somhic from original MiSTer port currently in development  h
 
 [Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
 
-**Bugs**:
+### STATUS
 
-* With original IBM ROM does not work keyboard (beeps at every keystroke)
-* Serdrive works at 460.8 K or 230.4K but not 115.2K
-* Audio: a continous beeper tone can be heard e.g. in area5150 demo
+* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
 
-**UART port is required to be used to load the OS through the serdrive app.**
+* CGA VRAM with 128 kB for all Tandy games now available.
 
+  
 
-
-**Features for Sockit board:**
+## **Features:**
 
 * VGA video output (using only 666 but capable of 888)
 * Audio I2S Line out (3.5 jack green connector) 
@@ -45,7 +43,7 @@ git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
 ### Instructions to compile the project for a specific board:
 
 ```sh
-git clone https://github.com/DECAfpga/PCXT_DeMiSTify
+git clone https://github.com/somhi/PCXT_DeMiSTify
 cd PCXT_DeMiSTify
 #Do a first make (will finish in error) but it will download missing submodules 
 make

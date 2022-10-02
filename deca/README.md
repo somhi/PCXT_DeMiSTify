@@ -4,33 +4,24 @@
 
 [Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
 
-**Current version of PCXT requires around 235 kB of BRAM** .  Deca has only 210 kB (with 182 M9k blocks).
+### STATUS
 
-* CGA VRAM reduced from 32 to 16 kB. CGA works Ok, but not Tandy games.
+* CGA VRAM with 128 kB for all Tandy games now available.
 
-**Bugs**:
-
-* With original IBM ROM does not work keyboard (beeps at every keystroke)
-
-* Serdrive works at 460.8 K or 230.4K but not 115.2K
-
-* Audio: a continous beeper tone can be heard in area5150 demo
-
-  
-
-**UART port is required to be used to load the OS through the serdrive app.**
+* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
 
 **Now compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2)** (new location for 3 pins of old SDRAM modules). Otherwise see pinout below to connect everything through GPIOs.
 
-**Features for Deca board**
+## **Features:**
 
 * VGA 444 video output is available through GPIO. 
 * Audio I2S Line out (3.5 jack green connector) 
 
-**Additional hardware required**
+**Additional hardware required**:
 
 - SDRAM module
   - Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2 ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca))
+  - Tested with a dual memory module v1.3 with 3 pins ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca) + [3pins](https://github.com/DECAfpga/DECA_board/blob/main/Sdram_mister_deca/README_3pins.md))
 - PS/2 Keyboard connected to GPIO
 
 
