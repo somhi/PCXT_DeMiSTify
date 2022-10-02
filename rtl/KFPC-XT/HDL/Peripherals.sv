@@ -516,6 +516,13 @@ module PERIPHERALS #(
 		.irq               (uart_interrupt)
 	);	
 	
+    `ifdef NO_COM2
+
+    assign uart2_interrupt = 1'b0;
+
+    // NO COM2 UART PORT
+
+    `else
 
 	uart uart2
 	(
@@ -541,6 +548,8 @@ module PERIPHERALS #(
 
 		.irq               (uart2_interrupt)
 	);
+
+    `endif
 
 	// Timing of the readings may need to be reviewed.
 	always_ff @(posedge clock) begin
@@ -1018,10 +1027,16 @@ module PERIPHERALS #(
             data_bus_out_from_chipset <= 1'b1;
             data_bus_out <= uart_readdata;			
         end
+
+        `ifdef NO_COM2
+		// NO COM2 UART PORT
+		`else
         else if ((uart2_cs) && (~io_read_n)) begin
           data_bus_out_from_chipset <= 1'b1;
           data_bus_out <= uart2_readdata;			
         end
+		`endif
+
 		  else if ((ems_oe) && (~io_read_n)) begin
             data_bus_out_from_chipset <= 1'b1;				
 				data_bus_out <= ena_ems[address[1:0]] ? map_ems[address[1:0]] : 8'hFF;            
