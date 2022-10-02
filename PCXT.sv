@@ -91,11 +91,9 @@ module PCXT
 
 wire CLK_50M;
 assign CLK_50M = CLOCK_27;
-
-///////// Default values for ports not used in this core /////////
-
 assign LED  =  ~ioctl_download;   //1'b1;
 
+///////// Default values for ports not used in this core /////////
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
 //assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
@@ -111,7 +109,7 @@ assign LED  =  ~ioctl_download;   //1'b1;
 
 
 `include "build_id.v" 
-parameter CONF_STR = {
+parameter CONF_STR = {		// options order: 0,1,2,...
 	"PCXT;;",
 	"O3,Model,IBM PCXT,Tandy 1000;",
 	"OHI,CPU Speed,4.77MHz,7.16MHz,14.318MHz;",
@@ -188,8 +186,7 @@ wire [31:0] joy0, joy1;
 wire [31:0] joya0, joya1;
 wire [4:0]  joy_opts = status[27:23];
 
-// without .PS2BIDIR(1) do not boot 
-// .PS2DIV(2000) value is adequate
+// .PS2DIV(2000) value is adequate		// without .PS2BIDIR(1) do not boot 
 
 user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	.conf_str      ( CONF_STR       ),
@@ -241,14 +238,14 @@ data_io data_io (
 	.SPI_DO     ( SPI_DO  ),
 
 	.ioctl_download ( ioctl_download ),
-	// .ioctl_upload   ( upload_active  ),
-	.ioctl_index( ioctl_index  ),
+//  .ioctl_upload   ( upload_active  ),
+	.ioctl_index    ( ioctl_index    ),
 
     // ram interface
 	.ioctl_wr   ( ioctl_wr     ),
 	.ioctl_addr ( ioctl_addr   ),
 	.ioctl_dout ( ioctl_data   )
-	// .ioctl_din  ( ioctl_din    )
+//  .ioctl_din  ( ioctl_din    )
 );
 
 ///////////////////////   CLOCKS   ///////////////////////////////
@@ -290,7 +287,7 @@ pll pll
 	.locked(pll_locked)
 );
 
-wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | splashscreen;
+wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | (ioctl_download && ioctl_index == 0) | splashscreen;
 wire reset_sdram_wire = !RESET_N | !pll_locked;
 
 `else  
@@ -320,7 +317,7 @@ pllvideo pllvideo
 	.locked(pll_locked2)
 );
 
-wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | splashscreen;
+wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (ioctl_download && ioctl_index == 0) | splashscreen;
 wire reset_sdram_wire = !RESET_N | !pll_locked | !pll_locked2 ;
 
 `endif
@@ -516,7 +513,11 @@ end
 	reg [7:0]  bios_write_wait_cnt;
 	reg        tandy_bios_write;
 
-	wire select_pcxt  = (ioctl_index[5:0] == 1) && (ioctl_addr[24:16] == 9'b000000000);
+	// wire bios_loader  = (ioctl_download && ioctl_index < 2 && ioctl_addr[24:16] == 9'b000000000);
+	// wire xtide_loader = ((ioctl_download && ioctl_index == 2) ||
+	// 					 (ioctl_download && ioctl_index == 0 && ioctl_addr[24:16] == 9'b000000001));
+
+	wire select_pcxt  = (ioctl_index[5:0] <  2) && (ioctl_addr[24:16] == 9'b000000000);
 	wire select_tandy = (ioctl_index[5:0] == 2) && (ioctl_addr[24:16] == 9'b000000000);
 	wire select_xtide = ioctl_index == 3;
 
@@ -806,7 +807,7 @@ end
         .port_b_out                         (port_b_out),
 		  .port_c_in                          (port_c_in),
 	     .speaker_out                        (speaker_out),   
-        .ps2_clock                          (device_clock),
+         .ps2_clock                          (device_clock),
 	     .ps2_data                           (device_data),
 	     .ps2_clock_out                      (ps2_kbd_clk_out),
 	     .ps2_data_out                       (ps2_kbd_data_out),
