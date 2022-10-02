@@ -1,4 +1,5 @@
 `define EMBED_8088_ROM
+//`define NO_COM2
 `define NO_ADLIB
 `define NO_MDA
 //`define NO_CGA

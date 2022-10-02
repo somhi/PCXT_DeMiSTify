@@ -825,22 +825,39 @@ end
 		  .adlibhide                          (adlibhide),
 		  .tandy_video                        (tandy_mode),
 		  .tandy_bios_flag                    (tandy_bios_flag),
-		  .clk_uart                          ((status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en),
-	     .uart_rx                           (UART_RX),
-	     .uart_tx                           (UART_TX),
-	      .uart_cts_n                        (UART_CTS),
-	    //  .uart_dcd_n                        (uart_dcd),
-	    //  .uart_dsr_n                        (uart_dsr),
-	      .uart_rts_n                        (UART_RTS),
-	    //  .uart_dtr_n                        (uart_dtr),
+
+
+		`ifdef NO_COM2
+		  .clk_uart                          (clk_uart_en),
+		  .uart_rx                           (UART_RX),
+		  .uart_tx                           (UART_TX),
+		  .uart_cts_n                        (UART_CTS),
+		//.uart_dcd_n                        (uart_dcd),
+		//.uart_dsr_n                        (uart_dsr),
+		  .uart_rts_n                        (UART_RTS),
+		//.uart_dtr_n                        (uart_dtr),
+
+		// NO COM2 UART PORT
+
+		`else
+		  .clk_uart                           ((status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en),
+	      .uart_rx                            (UART_RX),
+	      .uart_tx                            (UART_TX),
+	      .uart_cts_n                         (UART_CTS),
+	    //.uart_dcd_n                         (uart_dcd),
+	    //.uart_dsr_n                         (uart_dsr),
+	      .uart_rts_n                         (UART_RTS),
+	    //.uart_dtr_n                         (uart_dtr),
 		  .clk_uart2                          ((status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en),
-	     .uart2_rx                           (UART2_RX),
-	     .uart2_tx                           (UART2_TX),
-	     .uart2_cts_n                        (uart2_cts),
-	   //  .uart2_dcd_n                        (uart2_dcd),
-	   //  .uart2_dsr_n                        (uart2_dsr),
-	     .uart2_rts_n                        (uart2_rts),
-	   //  .uart2_dtr_n                        (uart2_dtr),
+	      .uart2_rx                           (UART2_RX),
+	      .uart2_tx                           (UART2_TX),
+	      .uart2_cts_n                        (uart2_cts),
+	    //.uart2_dcd_n                        (uart2_dcd),
+	    //.uart2_dsr_n                        (uart2_dsr),
+	      .uart2_rts_n                        (uart2_rts),
+	    //.uart2_dtr_n                        (uart2_dtr),
+		`endif
+		
 		  .enable_sdram                       (1'b1),
 		 .initilized_sdram                   (initilized_sdram),
 		  .sdram_clock                        (clk_chipset),
@@ -939,6 +956,12 @@ end
 		clk_uart_en   <= ~clk_uart_ff_3 & clk_uart_ff_2;
     end
 
+	`ifdef NO_COM2
+
+	// NO COM2 UART PORT
+
+	`else
+
 	/// SERIAL MICROSOFT MOUSE
 	wire UART2_RX;
 	wire UART2_TX;
@@ -964,8 +987,10 @@ end
 	// assign xxxx = UART2_RX;		//debug output
 	// assign xxxx = rts;			//debug output
 
+	`endif
 
-	//////////////////
+
+	////////////////////////////////
 
 	always @(posedge clk_100) begin
 		if (address_latch_enable)
@@ -973,8 +998,6 @@ end
 		else
 			cpu_address <= cpu_address;
 	end	
-
-
 
 	/// VIDEO
 
