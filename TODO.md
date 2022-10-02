@@ -1,27 +1,24 @@
-**TODO list:**
+**Bugs and TODO list:**
 
-* Keyboard controller does not pass diagnostic tests
-  * JUKO ST BIOS: keyboard error
+* Keyboard
+  * Keyboard controller does not pass diagnostic tests. Juko ST BIOS gives keyboard error
 
-* IBM BIOS: keyboard not working right
-* No overscan with scandoubler enabled
+  * IBM5160 BIOS: keyboard not working right (kind of working at 14.3 Mhz CPU speed)
   
-* MDA output most right column is cutted
-  * `mda_mode ? HBlank_del[color ? 12 : 13] `
+* Video
+  * No overscan with Graphic Gremlins scandoubler (//.video(video))
+  * RGB 15 kHz video output 
+    * Not displaying OSD correctly
+    * CGA video (not TGA) deformed at top part of screen in some resolutions
 
-* Overscan problem with the OSD (left column)
-
-* RGB 15 kHz video output does not display OSD correctly
-
-* RGB 15 kHz video outputs CGA video (not TGA) deformed at top part of screen in some resolutions
-
-* YPbPr video output did not work on my setup.
+  * YPbPr video output did not work on my setup.
 
 
 
-### Parts from MiSTer original core not ported to Demistify ports
 
-* Overscan control with scandoubler in PCXT.sv
+### Parts from MiSTer original core not ported to DeMiSTify ports
+
+* Overscan control with scandoubler done in PCXT.sv. Border on/off from OSD option.
   * signals: color, tandy_16_gfx
-* audio config settings from ao486
-* uart 16750 not updated
+* Audio configuration settings from ao486
+* UART 16750 not updated

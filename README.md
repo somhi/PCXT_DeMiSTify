@@ -30,6 +30,9 @@ Some notes about serdrive:
   * Windows does not care about RTS/CTS signals
   * In Linux those RTS/CTS lines need to be connected for XTIDE to detect the image. Take care that CTS goes to RTS and RTS to CTS.
 
+**Mouse support**:
+
+* Core includes a wrapper that converts PS2 mouse protocol to Microsoft Mouse mode. Mouse support is experimental and seems to stop working most of the times when the other COM port is being used for serdrive. UART speed should be selected at 1200..115kbps in OSD and therefore serdrive should serve images at 115 kpbs.  Cutemouse drivers has been tested and works `ctmouse /s2`
 
 Follows original Readme (with some crossed out text where does not apply).
 
@@ -55,7 +58,7 @@ An SN76489AN Compatible Implementation (Tandy Sound) written in VHDL was also in
 
 ## ROM Instructions
 
-ROMs should be provided initially from the BIOS section of the OSD menu, ~~then it is only necessary to indicate the computer model and reset, on subsequent boot of the core, it is no longer necessary to provide them, unless we want to use others.~~ Original and copyrighted ROMs can be generated on the fly using the python scripts available in the SW folder of this repository:
+ROMs should be provided initially from the BIOS section of the OSD menu, then it is only necessary to indicate the computer model and reset, on subsequent boot of the core, it is no longer necessary to provide them, unless we want to use others. Original and copyrighted ROMs can be generated on the fly using the python scripts available in the SW folder of this repository:
 
 * `make_rom_with_ibm5160.py`: A valid ROM is created for the PCXT model (pcxt.rom) based on the original IBM 5160 ROM, requires the XTIDE BIOS at address EC00h to work with HD images.
 * `make_rom_with_jukost.py`: A valid ROM is created for the PCXT model (pcxt.rom) based on the original Juko ST ROM, and with the XTIDE BIOS embedded at address F000h.
@@ -71,7 +74,7 @@ Other Open Source ROMs are available in the same folder:
 
 ## Mounting the disk image
 
-Initially, and until an 8-bit IDE module compatible with XTIDE is available, floppy and hdd mounting will be done through the serial port ~~available in the core via the OSD menu~~. The available transfer speeds are as follows:
+Initially, and until an 8-bit IDE module compatible with XTIDE is available, floppy and hdd mounting will be done through the serial port available in the core via the OSD menu. The available transfer speeds are as follows:
 
 * 115200 Kbps
 * 230400 Kbps

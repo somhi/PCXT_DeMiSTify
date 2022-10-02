@@ -115,13 +115,12 @@ parameter CONF_STR = {
 	"PCXT;;",
 	"O3,Model,IBM PCXT,Tandy 1000;",
 	"OHI,CPU Speed,4.77MHz,7.16MHz,14.318MHz;",
-	"OLM,UART Speed,1200..115200,115200..921600;",
+	"OLM,UART Speed,1200..115200bps,115200..921600bps;",
 	"P1,BIOS;",
 	"P1F,ROM,PCXT BIOS:;",
 	"P1F,ROM,Tandy BIOS:;",
 	"P1F,ROM,EC00 BIOS:;",
 	"P1OUV,BIOS Writable,None,EC00,PCXT/Tandy,All;",
-	"T0,Reset;",
 	//"P1,FDD & HDD;",
 	//"P1S1,IMGIMA,FDD Image:;",
 	//"P1S0,IMG,HDD Image:;",
@@ -136,6 +135,7 @@ parameter CONF_STR = {
 	"P2OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
 	"P2OU,YPbPr,No,Yes;",
 	"P2OV,Composite Blending,No,Yes;",
+	"P2O7,Splash Screen,Yes,No;",
 	"P3,Hardware;",
 	"P3OB,Lo-tech 2MB EMS,Enabled,Disabled;",
 	"P3OCD,EMS Frame,A000,C000,D000;",
@@ -143,7 +143,7 @@ parameter CONF_STR = {
 	"P3OPQ,Joystick 2, Analog, Digital, Disabled;",
 	"P3OR,Sync Joy to CPU Speed,No,Yes;",
 	"P3OS,Swap Joysticks,No,Yes;",
-	"O7,Splash Screen,Yes,No;",
+	"T0,Reset;",
 	"V,v",`BUILD_DATE 
 };
 
