@@ -6,17 +6,13 @@
 
 ### STATUS
 
-* Load OS using Serial Rx/Tx interface.
+* CGA VRAM with 128 kB for all Tandy games now available.
 
-* **UART port is required to be used to load the OS through the serdrive app.**
 
-**Bugs**:
+* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
+  * **Current binary file uses Rx/Tx from the Edge connector, so either and Edge addon is required or the core must me resintesized to expose the Rx/Tx pins in the PS2 mouse port.**
 
-* With original IBM ROM  keyboard does not work very well.
 
-* Serdrive works at 460.8 K or 230.4K but not 115.2K
-
-  
 
 ### Compile the project in Quartus:
 

@@ -6,17 +6,11 @@
 
 ### STATUS
 
-* Load OS using Serial Rx/Tx.
+* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
 
-* **UART port is required to be used to load the OS through the serdrive app.**
 
-**Bugs**:
+* CGA VRAM with 128 kB for all Tandy games now available.
 
-* With original IBM ROM  keyboard does not work very well.
-
-* Serdrive works at 460.8 K or 230.4K but not 115.2K
-
-  
 
 ### Compile the project in Quartus:
 
