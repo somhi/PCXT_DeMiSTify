@@ -287,9 +287,6 @@ pll pll
 	.locked(pll_locked)
 );
 
-wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | (ioctl_download && ioctl_index == 0) | splashscreen;
-wire reset_sdram_wire = !RESET_N | !pll_locked;
-
 `else  
 
 pll pll
@@ -304,7 +301,6 @@ pll pll
 	.locked(pll_locked)
 );
 
-wire pll_locked2;
 pllvideo pllvideo
 (
 	.inclk0(CLK_50M),
@@ -314,14 +310,13 @@ pllvideo pllvideo
 	.c2(clk_uart2),			//1.8432 MHz
 //	.c3(),			
 //	.c4(),
-	.locked(pll_locked2)
+	.locked()
 );
-
-wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | !pll_locked2 | (ioctl_download && ioctl_index == 0) | splashscreen;
-wire reset_sdram_wire = !RESET_N | !pll_locked | !pll_locked2 ;
 
 `endif
 
+wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | splashscreen;
+wire reset_sdram_wire = !RESET_N | !pll_locked;
 
 //////////////////////////////////////////////////////////////////
 
