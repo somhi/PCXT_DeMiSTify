@@ -21,4 +21,6 @@
 * Overscan control with scandoubler done in PCXT.sv. Border on/off from OSD option.
   * signals: color, tandy_16_gfx
 * Audio configuration settings from ao486
-* UART 16750 not updated
+* UART 16750 not updated because of serdrive disc errors
+* OSD save configuration
+  *  the BBC core can load and save configs.  (The config file has to be pre-existing on the SD Card, though - the filesystem code can't create files.)  You can save whatever you want in the config file, there are configtocore() and coretoconfig() functions in overrides.c.  The loading / saving is done from an extra menu page, accessed with the right cursor key while the menu is shown.
