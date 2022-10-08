@@ -28,13 +28,14 @@ module PERIPHERALS #(
     input   logic   [1:0]   mda_rgb,	 
     output  logic           de_o,
     output  logic   [5:0]   VGA_R,
-    output  logic   [5:0]   VGA_G,
+    output  logic   [6:0]   VGA_G,
     output  logic   [5:0]   VGA_B,
     output  logic           VGA_HSYNC,
     output  logic           VGA_VSYNC,
-	 output  logic           VGA_HBlank,
-	 output  logic           VGA_VBlank,	 
-     input   logic           scandoubler,
+	output  logic           VGA_HBlank,
+	output  logic           VGA_VBlank,	 
+    input   logic           scandoubler,
+    input   logic           composite_on,   
     // I/O Ports
     input   logic   [19:0]  address,
     input   logic   [7:0]   internal_data_bus,
@@ -655,15 +656,16 @@ module PERIPHERALS #(
 
 	 
     reg   [5:0]   R_CGA;
-    reg   [5:0]   G_CGA;
+    reg   [6:0]   G_CGA;
     reg   [5:0]   B_CGA;
+    reg   [6:0] comp_video;
     reg           HSYNC_CGA;
     reg           VSYNC_CGA;
 	 reg           HBLANK_CGA;
 	 reg           VBLANK_CGA;
 	 	 
     reg   [5:0]   R_MDA;
-    reg   [5:0]   G_MDA;
+    reg   [6:0]   G_MDA;
     reg   [5:0]   B_MDA;
     reg           HSYNC_MDA;
     reg           VSYNC_MDA;
@@ -676,9 +678,10 @@ module PERIPHERALS #(
 	 wire[3:0] video_cga;
 	 wire video_mda;
 	 
-	 assign VGA_R = video_output ? R_MDA : R_CGA;
-	 assign VGA_G = video_output ? G_MDA : G_CGA;
-	 assign VGA_B = video_output ? B_MDA : B_CGA;	 
+	 assign VGA_R = video_output ? R_MDA : composite_on ?       6'd0 : R_CGA;
+	 assign VGA_G = video_output ? G_MDA : composite_on ? comp_video : G_CGA;
+	 assign VGA_B = video_output ? B_MDA : composite_on ?       6'd0 : B_CGA;	 
+
 	 assign VGA_HSYNC = video_output ? HSYNC_MDA : HSYNC_CGA;
 	 assign VGA_VSYNC = video_output ? VSYNC_MDA : VSYNC_CGA;
 	 
@@ -757,11 +760,7 @@ module PERIPHERALS #(
     // connected to the VGA port.
     localparam MDA_70HZ = 0;
 	 
-    // wire composite_on;
     wire thin_font;
-
-	// Composite mode switch
-    //assign composite_on = switch3; (TODO: Test in next version, from the original Graphics Gremlin sources)
 
     // Thin font switch (TODO: switchable with Keyboard shortcut)
 	 assign thin_font = 1'b0; // Default: No thin font
@@ -799,6 +798,7 @@ module PERIPHERALS #(
 		  .de_o                       (de_o_cga),
     //    .video                      (video_cga),              // non scandoubled
     //    .dbl_video                  (video_cga),                // scandoubled
+          .comp_video                 (comp_video),
 		  .splashscreen               (splashscreen),
         .thin_font                  (thin_font),
 		  .tandy_video                (tandy_video),

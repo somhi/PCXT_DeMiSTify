@@ -42,9 +42,9 @@ module PCXT
 	input         SPI_SS4,
 	input         CONF_DATA0,
 
-	output  [5:0] VGA_R,
-	output  [5:0] VGA_G,
-	output  [5:0] VGA_B,
+	output  [7:0] VGA_R,
+	output  [7:0] VGA_G,
+	output  [7:0] VGA_B,
 	output        VGA_HS,
 	output        VGA_VS,
 
@@ -105,7 +105,7 @@ assign LED  =  ~ioctl_download;   //1'b1;
 // 0         1         2         3          4         5         6
 // 01234567890123456789012345678901 23456789012345678901234567890123
 // 0123456789ABCDEFGHIJKLMNOPQRSTUV 0123456789ABCDEFGHIJKLMNOPQRSTUV
-// XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX
+// XDDXX XDDDXXXXXXXXXXXXXXXXXXXXXX      
 
 
 `include "build_id.v" 
@@ -114,6 +114,7 @@ parameter CONF_STR = {		// options order: 0,1,2,...
 	"O3,Model,IBM PCXT,Tandy 1000;",
 	"OHI,CPU Speed,4.77MHz,7.16MHz,14.318MHz;",
 	"OLM,UART Speed,1200..115200bps,115200..921600bps;",
+	// 
 	"P1,BIOS;",
 	"P1F,ROM,PCXT BIOS:;",
 	"P1F,ROM,Tandy BIOS:;",
@@ -124,16 +125,21 @@ parameter CONF_STR = {		// options order: 0,1,2,...
 	//"P1S0,IMG,HDD Image:;",
 	//"P1OJK,Write Protect,None,FDD,HDD,FDD & HDD;",
 	//"P1OLM,Speed,115200,230400,460800,921600;",
+	//
 	"P2,Audio & Video;",
 	"P2OA,Adlib,On,Invisible;",
-	//"P2O12,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
-	//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
+	//REUSED//"P2O12,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
+	//REUSED//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
 	//"P2OT,Border,No,Yes;",
 	"P2O4,Video Output,CGA/Tandy,MDA;",
 	"P2OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
-	"P2OU,YPbPr,No,Yes;",
-	"P2OV,Composite Blending,No,Yes;",
-	"P2O7,Splash Screen,Yes,No;",
+	"P2O1,YPbPr,No,Yes;",
+	"P2O2,Composite Blending,No,Yes;",
+	"P2O7,Composite,No,Yes;",
+	"P2O8,Display mode disable,No,Yes;",
+	"P2O9,OSD disable,No,Yes;",
+	//REUSED//"P2O7,Splash Screen,Yes,No;",
+	//
 	"P3,Hardware;",
 	"P3OB,Lo-tech 2MB EMS,Enabled,Disabled;",
 	"P3OCD,EMS Frame,A000,C000,D000;",
@@ -141,6 +147,7 @@ parameter CONF_STR = {		// options order: 0,1,2,...
 	"P3OPQ,Joystick 2, Analog, Digital, Disabled;",
 	"P3OR,Sync Joy to CPU Speed,No,Yes;",
 	"P3OS,Swap Joysticks,No,Yes;",
+	//
 	"T0,Reset;",
 	"V,v",`BUILD_DATE 
 };
@@ -148,19 +155,6 @@ parameter CONF_STR = {		// options order: 0,1,2,...
 wire forced_scandoubler;
 wire  [1:0] buttons;
 wire [63:0] status;
-//wire [10:0] ps2_key;
-
-//VHD	
-// wire[ 0:0] usdRd = { vsdRd };
-// wire[ 0:0] usdWr = { vsdWr };
-// wire       usdAck;
-// wire[31:0] usdLba[1] = '{ vsdLba };
-// wire       usdBuffWr;
-// wire[ 8:0] usdBuffA;
-// wire[ 7:0] usdBuffD[1] = '{ vsdBuffD };
-// wire[ 7:0] usdBuffQ;
-// wire[63:0] usdImgSz;
-// wire[ 0:0] usdImgMtd;
 
 //Keyboard Ps2
 wire        ps2_kbd_clk_out;
@@ -201,18 +195,6 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	.status         ( status        ),
 	.buttons        ( buttons       ),
 	.scandoubler_disable ( forced_scandoubler ),
-
-// //VHD	
-// 	.sd_rd         (usdRd),
-// 	.sd_wr         (usdWr),
-// 	.sd_ack        (usdAck),
-// 	.sd_lba        (usdLba),
-// 	.sd_buff_wr    (usdBuffWr),
-// 	.sd_buff_addr  (usdBuffA),
-// 	.sd_buff_din   (usdBuffD),
-// 	.sd_buff_dout  (usdBuffQ),
-// 	.img_mounted   (usdImgMtd),
-// 	.img_size	   (usdImgSz),	
 
 	.ps2_kbd_clk_i		(ps2_kbd_clk_out),
 	.ps2_kbd_data_i		(ps2_kbd_data_out),
@@ -324,24 +306,12 @@ wire HBlank;
 wire HSync;
 wire VBlank;
 wire VSync;
-//wire ce_pixel_cga;
-//wire ce_pixel_mda;
 wire ce_pixel;
-//wire [7:0] video;
 
 assign CLK_VIDEO = clk_56_875;
 
-//wire CLK_VIDEO_MDA;
-//wire CLK_VIDEO_CGA;
-//assign CLK_VIDEO_MDA = clk_113_750;
-//assign CLK_VIDEO_CGA = clk_56_875;
-//assign ce_pixel_mda = clk_28_636;
-
-
-always @(posedge clk_28_636) begin
+always @(posedge clk_28_636) 
 	clk_14_318 <= ~clk_14_318; // 14.318Mhz
-//	ce_pixel_cga <= clk_14_318;	//if outside always block appears an overscan column in CGA mode
-end
 
 assign ce_pixel = 1'b1;
 
@@ -508,10 +478,6 @@ end
 	reg [7:0]  bios_write_wait_cnt;
 	reg        tandy_bios_write;
 
-	// wire bios_loader  = (ioctl_download && ioctl_index < 2 && ioctl_addr[24:16] == 9'b000000000);
-	// wire xtide_loader = ((ioctl_download && ioctl_index == 2) ||
-	// 					 (ioctl_download && ioctl_index == 0 && ioctl_addr[24:16] == 9'b000000001));
-
 	wire select_pcxt  = (ioctl_index[5:0] <  2) && (ioctl_addr[24:16] == 9'b000000000);
 	wire select_tandy = (ioctl_index[5:0] == 2) && (ioctl_addr[24:16] == 9'b000000000);
 	wire select_xtide = ioctl_index == 3;
@@ -528,7 +494,7 @@ end
 			bios_protect_flag   <= 1'b1;
 			bios_access_request <= 1'b0;
 			bios_access_address <= 20'hFFFFF;
-			bios_write_data     <= 8'hFFFF;
+			bios_write_data     <= 8'hFF;
 			bios_write_n        <= 1'b1;
 			bios_write_wait_cnt <= 'h0;
 			tandy_bios_write    <= 1'b0;
@@ -539,7 +505,7 @@ end
 			bios_protect_flag   <= 1'b1;
 			bios_access_request <= 1'b0;
 			bios_access_address <= 20'hFFFFF;
-			bios_write_data     <= 8'hFFFF;
+			bios_write_data     <= 8'hFF;
 			bios_write_n        <= 1'b1;
 			bios_write_wait_cnt <= 'h0;
 		//	ioctl_wait          <= 1'b1;
@@ -550,7 +516,7 @@ end
 				4'h00: begin
 					bios_protect_flag   <= 1'b1;
 					bios_access_address <= 20'hFFFFF;
-					bios_write_data     <= 8'hFFFF;
+					bios_write_data     <= 8'hFF;
 					bios_write_n        <= 1'b1;
 					bios_write_wait_cnt <= 'h0;
 					tandy_bios_write    <= 1'b0;
@@ -575,7 +541,7 @@ end
 					tandy_bios_write    <= select_tandy;
 					if (~ioctl_download) begin
 						bios_access_address <= 20'hFFFFF;
-						bios_write_data     <= 8'hFFFF;
+						bios_write_data     <= 8'hFF;
 						bios_write_n        <= 1'b1;
 						bios_write_wait_cnt <= 'h0;
 		//				ioctl_wait          <= 1'b0;
@@ -583,7 +549,7 @@ end
 					end
 					else if ((~ioctl_wr) || (bios_load_n)) begin
 						bios_access_address <= 20'hFFFFF;
-						bios_write_data     <= 8'hFFFF;
+						bios_write_data     <= 8'hFF;
 						bios_write_n        <= 1'b1;
 						bios_write_wait_cnt <= 'h0;
 		//				ioctl_wait          <= 1'b0;
@@ -620,7 +586,7 @@ end
 					bios_protect_flag   <= 1'b0;
 					bios_access_request <= 1'b1;
 					bios_access_address <= 20'hFFFFF;
-					bios_write_data     <= 8'hFFFF;
+					bios_write_data     <= 8'hFF;
 					bios_write_n        <= 1'b1;
 					tandy_bios_write    <= 1'b0;
 		//			ioctl_wait          <= 1'b1;
@@ -635,7 +601,7 @@ end
 					bios_protect_flag   <= 1'b1;
 					bios_access_request <= 1'b0;
 					bios_access_address <= 20'hFFFFF;
-					bios_write_data     <= 8'hFFFF;
+					bios_write_data     <= 8'hFF;
 					bios_write_n        <= 1'b1;
 					bios_write_wait_cnt <= 'h0;
 					tandy_bios_write    <= 1'b0;
@@ -648,11 +614,6 @@ end
 
 //////////////////////////////////////////////////////////////////
 
-	wire [5:0] r, g, b;	
-	reg [7:0] raux, gaux, baux;	
-	
-	wire de_o;
-	
 	reg [24:0] splash_cnt = 0;
 	reg [3:0] splash_cnt2 = 0;
 	reg splashscreen = 1;
@@ -660,7 +621,7 @@ end
 	always @ (posedge clk_14_318) begin
 	
 		if (splashscreen) begin
-			if (status[7])
+			if (1'b0)  				  //status[7]
 				splashscreen <= 0;
 			else if(splash_cnt2 == 5) // 5 seconds delay
 				splashscreen <= 0;
@@ -711,6 +672,15 @@ end
         end
     end
 	
+
+	 always @(posedge clk_100) begin
+		if (address_latch_enable)
+			cpu_address <= cpu_ad_out;
+		else
+			cpu_address <= cpu_address;
+	end	
+
+
     wire [7:0] data_bus;
     wire INTA_n;	
     wire [19:0] cpu_ad_out;
@@ -730,11 +700,6 @@ end
     logic   [7:0]   port_c_in;	 
 	 reg     [7:0]   sw;
 	 
-	//wire [1:0] scale = status[2:1];
-	wire mda_mode = status[4];	 
-	wire [2:0] screen_mode = status[16:14];
-	 
-	 
 	 assign  sw = mda_mode ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
 	 assign  port_c_in[3:0] = port_b_out[3] ? sw[7:4] : sw[3:0];
 
@@ -746,7 +711,7 @@ end
 		  .clk_sys                            (clk_chipset),
 		  .peripheral_clock                   (pclk),
 		  .turbo_mode                         (status[18:17]),
-		  .color										  (screen_mode == 3'd0),
+		  .color							(screen_mode == 3'd0),
         .reset                              (reset_cpu),
         .sdram_reset                        (reset_sdram),
         .cpu_address                        (cpu_address),
@@ -764,14 +729,15 @@ end
         .enable_mda                         (1'b1),
 		.mda_rgb                            (2'b10), // always B&W - monochrome monitor tint handled down below
         //.de_o                               (VGA_DE),
-        .VGA_R                              (r),
-        .VGA_G                              (g),
-        .VGA_B                              (b),
+        .VGA_R                              (r_in),
+        .VGA_G                              (g_in),
+        .VGA_B                              (b_in),
         .VGA_HSYNC                          (vga_hs),
         .VGA_VSYNC                          (vga_vs),
 		.VGA_HBlank	  				        (HBlank),
 		.VGA_VBlank							(VBlank),
 		.scandoubler						(~forced_scandoubler),
+		.composite_on						(composite_on),
 //      .address                            (address),
         .address_ext                        (bios_access_address),
         .ext_access_request                 (bios_access_request),
@@ -938,7 +904,7 @@ end
       .turbo_mode(turbo_mode)
 	);
 	
-	/// UART
+	/////////////////   UART
 
 	logic clk_uart_ff_1;
 	logic clk_uart_ff_2;
@@ -986,25 +952,43 @@ end
 	`endif
 
 
-	////////////////////////////////
 
-	always @(posedge clk_100) begin
-		if (address_latch_enable)
-			cpu_address <= cpu_ad_out;
-		else
-			cpu_address <= cpu_address;
-	end	
+	////////////////// VIDEO
 
-	/// VIDEO
+	wire [5:0] r_in, b_in;	
+	wire [6:0] g_in;	
+	reg  [7:0] raux, gaux, baux;	
+	wire [5:0] raux2, baux2;	
+	wire [6:0] gaux2;	
+	wire [5:0] raux3, gaux3, baux3;	
+
+	wire vga_hs;
+	wire vga_vs;
+	wire vga_hs_o;
+	wire vga_vs_o;
+	wire de_o;
+
+	//wire [1:0] scale = status[2:1];
+	wire mda_mode = status[4];	 
+	wire [2:0] screen_mode = status[16:14];
+
+	wire   composite_on;
+    assign composite_on = status[7];
+
+	wire   display_mode_disable;
+    assign display_mode_disable = status[8];
+	wire   osd_disable;
+    assign osd_disable = status[9];
+
 
 	video_monochrome_converter video_mono 
 	(
 		.clk_vid(CLK_VIDEO),
 		.ce_pix(ce_pixel),
 		
-		.R({r, 2'b00}),
-		.G({g, 2'b00}),
-		.B({b, 2'b00}),
+		.R({r_in, 2'b00}),
+		.G({g_in, 1'b0}),
+		.B({b_in, 2'b00}),
 
 		.gfx_mode(screen_mode),
 		
@@ -1013,10 +997,10 @@ end
 		.B_OUT(baux)	
 	);
 
-	wire vga_hs;
-	wire vga_vs;
-	wire vga_hs_o;
-	wire vga_vs_o;
+	assign raux2 = display_mode_disable ? r_in : raux[7:2];
+	assign gaux2 = display_mode_disable ? g_in : gaux[7:1];
+	assign baux2 = display_mode_disable ? b_in : baux[7:2];
+
 
 	mist_video #(.OSD_COLOR(3'd5), .SD_HCNT_WIDTH(10) ) mist_video (
 		.clk_sys     ( clk_56_875 ),
@@ -1037,32 +1021,37 @@ end
 		// disable csync without scandoubler
 		.no_csync    ( ~forced_scandoubler ),			// 1'b1
 		// YPbPr always uses composite sync
-		.ypbpr       ( status[30] ),					// 1'b0
+		.ypbpr       ( status[1] ),					// 1'b0
 		// Rotate OSD [0] - rotate [1] - left or right
 		.rotate      ( 2'b00      ),
 		// composite-like blending
-		.blend       ( status[31] ),					// 1'b0
+		.blend       ( status[2] ),					// 1'b0
 	
 		// video in
-		.R           ( raux[7:2]  ),
-		.G           ( gaux[7:2]  ),
-		.B           ( baux[7:2]  ),
+		.R           ( raux2      ),
+		.G           ( gaux2[6:1] ),
+		.B           ( baux2      ),
 		.HSync       ( ~vga_hs    ),
 		.VSync       ( ~vga_vs    ),
 
 		// MiST video output signals
-		.VGA_R       ( VGA_R      ),
-		.VGA_G       ( VGA_G      ),
-		.VGA_B       ( VGA_B      ),
+		.VGA_R       ( raux3      ),
+		.VGA_G       ( gaux3      ),
+		.VGA_B       ( baux3      ),
 		.VGA_VS      ( vga_vs_o   ),
 		.VGA_HS      ( vga_hs_o   )
 	);
 	
-	assign VGA_VS = ~vga_vs_o;		
-	assign VGA_HS = ~vga_hs_o;		
+	assign VGA_R  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
+	assign VGA_G  = osd_disable ? {gaux2,gaux2[0]  } : {gaux3,gaux3[1:0]};
+	assign VGA_B  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
+
+	assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;		
+	assign VGA_HS = osd_disable ? ~vga_hs : ~vga_hs_o;		
 
 	assign VGA_DE = ~(HBlank | VBlank);
-	
+
+
 
 	// wire [5:0] osd_r_o;
 	// wire [5:0] osd_g_o;
@@ -1086,59 +1075,5 @@ end
 	// 	.B_out   ( osd_b_o    )
 	// );
 
-
-	/// SD CARD 
-
-	// reg vsd = 0;
-	// always @(posedge CLK_50M) if(usdImgMtd[0]) vsd <= |usdImgSz;
-
-	// wire       vsdRd;
-	// wire       vsdWr;
-	// wire       vsdAck = usdAck;
-	// wire[31:0] vsdLba;
-	// wire       vsdBuffWr = usdBuffWr;
-	// wire[ 8:0] vsdBuffA = usdBuffA;
-	// wire[ 7:0] vsdBuffD;
-	// wire[ 7:0] vsdBuffQ = usdBuffQ;
-	// wire[63:0] vsdImgSz = usdImgSz;
-	// wire       vsdImgMtd = usdImgMtd[0];
-
-	// wire vsdCs = usdCs | ~vsd;
-	// wire vsdCk = usdCk;
-	// wire vsdMosi = usdDo;
-	// wire vsdMiso;
-
-	// wire usdCs;
-	// wire usdCk;
-	// wire usdDo;
-	// wire usdDi = vsd ? vsdMiso : SD_MISO;
-
-	// assign SD_CS   = usdCs | vsd;
-	// assign SD_SCK  = usdCk & ~vsd;
-	// assign SD_MOSI = usdDo & ~vsd;
-
-
-	// sd_card sd_card
-	// (
-	// 	.clk_sys     (CLK_50M  ),
-	// 	.reset       (reset    ),
-	// 	.sdhc        (status[4]),
-	// 	.sd_rd       (vsdRd    ),
-	// 	.sd_wr       (vsdWr    ),
-	// 	.sd_ack      (vsdAck   ),
-	// 	.sd_lba      (vsdLba   ),
-	// 	.sd_buff_wr  (vsdBuffWr),
-	// 	.sd_buff_addr(vsdBuffA ),
-	// 	.sd_buff_dout(vsdBuffQ ),
-	// 	.sd_buff_din (vsdBuffD ),
-	// 	.img_size    (vsdImgSz ),
-	// 	.img_mounted (vsdImgMtd),
-	// 	.clk_spi     (clk_25   ),
-	// 	.ss          (vsdCs    ),
-	// 	.sck         (vsdCk    ),
-	// 	.mosi        (vsdMosi  ),
-	// 	.miso        (vsdMiso  )
-	// );
-
-
+	
 endmodule
