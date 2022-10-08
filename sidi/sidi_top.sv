@@ -58,6 +58,7 @@ module sidi_top (
    output    UART_TXD
 );
 
+wire  [7:0] r_aux, g_aux, b_aux;	
 
 PCXT guest
 (
@@ -90,13 +91,17 @@ PCXT guest
 
    .VGA_HS		(VGA_HS),
    .VGA_VS		(VGA_VS),
-   .VGA_R		(VGA_R),
-   .VGA_G		(VGA_G),
-   .VGA_B		(VGA_B),
+   .VGA_R		(r_aux),
+   .VGA_G		(g_aux),
+   .VGA_B		(b_aux),
 
    .UART_RX		(UART_RXD),	
    .UART_TX		(UART_TXD)	
 
 );
+
+assign VGA_R = r_aux[7:2];
+assign VGA_G = g_aux[7:2];
+assign VGA_B = b_aux[7:2];
 
 endmodule

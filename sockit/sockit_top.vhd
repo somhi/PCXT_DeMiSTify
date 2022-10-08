@@ -319,9 +319,9 @@ begin
 			--VGA
 			VGA_HS  => vga_hsync,
 			VGA_VS  => vga_vsync,
-			VGA_R   => vga_red(7 downto 2),
-			VGA_G   => vga_green(7 downto 2),
-			VGA_B   => vga_blue(7 downto 2),
+			VGA_R   => vga_red,
+			VGA_G   => vga_green,
+			VGA_B   => vga_blue,
 			CLK_VIDEO   => vga_clk_x,
 			VGA_DE  => vga_de,
 			--AUDIO

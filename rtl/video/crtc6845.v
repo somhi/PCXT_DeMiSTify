@@ -149,11 +149,12 @@ module crtc6845(
 
     wire h_end;
     wire v_end;
-
+    
     assign vsync = vs;
     assign hsync = hs;
     assign display_enable = hdisp & vdisp;
-    assign hblank = tandy_16_gfx ? ~hdisp_del[color ? 7 : 9] : ~hdisp_del[color ? 3 : 5];
+    //assign hblank = tandy_16_gfx ? ~hdisp_del[color ? 7 : 9] : ~hdisp_del[color ? 3 : 5];
+    assign hblank = tandy_16_gfx ? (color? ~hdisp_del[7] : ~hdisp_del[9]) : (color? ~hdisp_del[3] : ~hdisp_del[5]);
     assign vblank = ~vdisp;
 
     assign row_addr = v_scancount;

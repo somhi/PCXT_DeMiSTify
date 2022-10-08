@@ -59,10 +59,13 @@ module mist_top (
    output    UART_TX
 );
 
+wire  [7:0] r_aux, g_aux, b_aux;	
+
+
 PCXT guest
 (
    .CLOCK_27 	(CLOCK_27),
-   .RESET_N    (1'b1),        //very important to pass this reset signal
+   .RESET_N     (1'b1),        //very important to pass this reset signal
    .LED      	(LED),
 
    .SDRAM_DQ	(SDRAM_DQ),	
@@ -90,12 +93,16 @@ PCXT guest
 
    .VGA_HS		(VGA_HS),
    .VGA_VS		(VGA_VS),
-   .VGA_R		(VGA_R),
-   .VGA_G		(VGA_G),
-   .VGA_B		(VGA_B),
+   .VGA_R		(r_aux),
+   .VGA_G		(g_aux),
+   .VGA_B		(b_aux),
 
    .UART_RX		(UART_RX),	
    .UART_TX		(UART_TX)
 );
+
+assign VGA_R = r_aux[7:2];
+assign VGA_G = g_aux[7:2];
+assign VGA_B = b_aux[7:2];
 
 endmodule
