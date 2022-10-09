@@ -51,7 +51,6 @@ module PCXT
 	output        CLK_VIDEO,	//Base video clock. Usually equals to CLK_SYS.
 	output        VGA_DE,    	// = ~(VBlank | HBlank)
 
-
 	output        AUDIO_L,
 	output        AUDIO_R, 
 
@@ -59,13 +58,6 @@ module PCXT
 	output [15:0]  DAC_L, 
 	output [15:0]  DAC_R, 
 	`endif
-
-	//SD-SPI
-	// output        SD_SCK,
-	// output        SD_MOSI,
-	// input         SD_MISO,
-	// output        SD_CS,
-	// input         SD_CD,
 
 	input         UART_RX,
 	output        UART_TX,
@@ -79,7 +71,6 @@ module PCXT
 //	input         PS2K_DAT_IN,
 //	output        PS2K_CLK_OUT,
 //	output        PS2K_DAT_OUT
-
 //  input         PS2K_MOUSE_CLK_IN,
 //  input         PS2K_MOUSE_DAT_IN,
 //  output        PS2K_MOUSE_CLK_OUT,
@@ -91,21 +82,22 @@ module PCXT
 
 wire CLK_50M;
 assign CLK_50M = CLOCK_27;
-assign LED  =  ~ioctl_download;   //1'b1;
+assign LED =  ~ioctl_download;   //1'b1;
 
 ///////// Default values for ports not used in this core /////////
 //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
 //assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
 //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 
-//////////////////////////////////////////////////////////////////
-
-// Status Bit Map:
-//              Upper                          Lower
+//
+///////////////////////   MiST FRAMEWORK   ///////////////////////
+//
+// Bitmap for MiST config string options
+//                                        
 // 0         1         2         3          4         5         6
-// 01234567890123456789012345678901 23456789012345678901234567890123
-// 0123456789ABCDEFGHIJKLMNOPQRSTUV 0123456789ABCDEFGHIJKLMNOPQRSTUV
-// XDDXX XDDDXXXXXXXXXXXXXXXXXXXXXX      
+// 01234567890123456789012345678901 234567890123456789012345678901
+// 0123456789ABCDEFGHIJKLMNOPQRSTUV WXYZabcdefghijklmnopqrstuvwxyz
+// XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX ----------DDDDD      
 
 
 `include "build_id.v" 
@@ -128,17 +120,17 @@ parameter CONF_STR = {		// options order: 0,1,2,...
 	//
 	"P2,Audio & Video;",
 	"P2OA,Adlib,On,Invisible;",
-	//REUSED//"P2O12,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
-	//REUSED//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
+	//"P2O12,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
+	//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
 	//"P2OT,Border,No,Yes;",
 	"P2O4,Video Output,CGA/Tandy,MDA;",
 	"P2OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
-	"P2O1,YPbPr,No,Yes;",
-	"P2O2,Composite Blending,No,Yes;",
-	"P2O7,Composite,No,Yes;",
-	"P2O8,Display mode disable,No,Yes;",
-	"P2O9,OSD disable,No,Yes;",
-	//REUSED//"P2O7,Splash Screen,Yes,No;",
+	"P2Og,YPbPr,No,Yes;",
+	"P2Oh,Composite Blending,No,Yes;",
+	"P2Oi,Composite,No,Yes;",
+	"P2Oj,Display mode disable,No,Yes;",
+	"P2Ok,OSD disable,No,Yes;",
+	"P2O7,Splash Screen,Yes,No;",
 	//
 	"P3,Hardware;",
 	"P3OB,Lo-tech 2MB EMS,Enabled,Disabled;",
@@ -230,7 +222,9 @@ data_io data_io (
 //  .ioctl_din  ( ioctl_din    )
 );
 
-///////////////////////   CLOCKS   ///////////////////////////////
+//
+///////////////////////   CLOCKS   ///////////////////////
+//
 
 wire clk_sys;
 wire pll_locked;
@@ -317,18 +311,8 @@ wire reset_sdram_wire = !RESET_N | !pll_locked;
 
 //////////////////////////////////////////////////////////////////
 
-wire HBlank;
-wire HSync;
-wire VBlank;
-wire VSync;
-wire ce_pixel;
-
-assign CLK_VIDEO = clk_56_875;
-
 always @(posedge clk_28_636) 
 	clk_14_318 <= ~clk_14_318; // 14.318Mhz
-
-assign ce_pixel = 1'b1;
 
 always @(posedge clk_14_318)
 	clk_7_16 <= ~clk_7_16; // 7.16Mhz
@@ -341,6 +325,8 @@ clk_div3 clk_normal // 4.77MHz
 
 always @(posedge clk_4_77)
 	peripheral_clock <= ~peripheral_clock; // 2.385Mhz
+
+//////////////////////////////////////////////////////////////////
 
 logic  biu_done;
 logic  turbo_mode;
@@ -397,7 +383,6 @@ always @(posedge clk_chipset) begin
     clk_opl2_ff_3 <= clk_opl2_ff_2;
     cen_opl2 <= clk_opl2_ff_2 & ~clk_opl2_ff_3;
 end
-
 
 //////////////////////////////////////////////////////////////////
 
@@ -483,7 +468,10 @@ always @(posedge CLK_50M, posedge reset_sdram_wire) begin
 	end
 end
 
-/////////////////////   BIOS LOADER   ////////////////////////////
+//
+///////////////////////   BIOS LOADER   ///////////////////////
+//
+
 	reg [4:0]  bios_load_state = 4'h0;
 	reg        bios_protect_flag;
     reg        bios_access_request;
@@ -629,14 +617,16 @@ end
 
 //////////////////////////////////////////////////////////////////
 
+	//
+    // Splash screen
+    //
 	reg [24:0] splash_cnt = 0;
 	reg [3:0] splash_cnt2 = 0;
 	reg splashscreen = 1;
 	
 	always @ (posedge clk_14_318) begin
-	
 		if (splashscreen) begin
-			if (1'b0)  				  //status[7]
+			if (status[7])  				  
 				splashscreen <= 0;
 			else if(splash_cnt2 == 5) // 5 seconds delay
 				splashscreen <= 0;
@@ -647,7 +637,6 @@ end
 			else
 				splash_cnt <= splash_cnt + 1;			
 		end
-	
 	end
 	
     //
@@ -803,7 +792,6 @@ end
 		  .tandy_video                        (tandy_mode),
 		  .tandy_bios_flag                    (tandy_bios_flag),
 
-
 		`ifdef NO_COM2
 		  .clk_uart                          (clk_uart_en),
 		  .uart_rx                           (UART_RX),
@@ -861,36 +849,6 @@ end
 	wire [15:0] SDRAM_DQ_OUT;
 	wire        SDRAM_DQ_IO;
 	wire        initilized_sdram;
-	
-
-////////////////////////////  AUDIO  /////////////////////////////////// 
-
-	wire speaker_out;
-	wire  [7:0]   tandy_snd_e;
-	wire tandy_snd_rdy;
-
-	wire [15:0] jtopl2_snd_e;	
-	//wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + {tandy_snd_e, 6'd0}; // signed mixer
-	//wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 1) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 1
-	//wire [16:0]sndmix = (({1'b0, jtopl2_snd_e}) ) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // bad
-	//wire [16:0]sndmix_pcm = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (~speaker_out << 15) + {tandy_snd_e, 9'd0}; // not bad
-	wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 2
-
-	`ifdef DEMISTIFY
-	assign DAC_R = sndmix >> 1;
-	assign DAC_L = sndmix >> 1;	
-	`endif
-
-	sigma_delta_dac sigma_delta_dac (
-		.clk      ( CLK_50M     ),      // bus clock
-		.ldatasum ( sndmix >> 2 ),      // left channel data		(ok1) sndmix >> 1 bad, (ok2) sndmix >> 2 ok
-		.rdatasum ( sndmix >> 2 ),      // right channel data		sndmix_pcm >> 1 bad, sndmix_pcm >> 2 bad
-		.left     ( AUDIO_L     ),      // left bitstream output
-		.right    ( AUDIO_R     )       // right bitsteam output
-	);
-
-	//////////////////////////////////////////////////////////////////////// 
-
 
 	assign SDRAM_DQ_IN = SDRAM_DQ;
 	assign SDRAM_DQ = ~SDRAM_DQ_IO ? SDRAM_DQ_OUT : 16'hZZZZ;
@@ -920,7 +878,37 @@ end
       .turbo_mode(turbo_mode)
 	);
 	
-	/////////////////   UART
+//
+///////////////////////   AUDIO   ///////////////////////
+//
+
+	wire speaker_out;
+	wire  [7:0]   tandy_snd_e;
+	wire tandy_snd_rdy;
+
+	wire [15:0] jtopl2_snd_e;	
+	//wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + {tandy_snd_e, 6'd0}; // signed mixer
+	//wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 1) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 1
+	//wire [16:0]sndmix = (({1'b0, jtopl2_snd_e}) ) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // bad
+	//wire [16:0]sndmix_pcm = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (~speaker_out << 15) + {tandy_snd_e, 9'd0}; // not bad
+	wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 2
+
+	`ifdef DEMISTIFY
+	assign DAC_R = sndmix >> 1;
+	assign DAC_L = sndmix >> 1;	
+	`endif
+
+	sigma_delta_dac sigma_delta_dac (
+		.clk      ( CLK_50M     ),      // bus clock
+		.ldatasum ( sndmix >> 2 ),      // left channel data		(ok1) sndmix >> 1 bad, (ok2) sndmix >> 2 ok
+		.rdatasum ( sndmix >> 2 ),      // right channel data		sndmix_pcm >> 1 bad, sndmix_pcm >> 2 bad
+		.left     ( AUDIO_L     ),      // left bitstream output
+		.right    ( AUDIO_R     )       // right bitsteam output
+	);
+
+//
+///////////////////////   UART   ///////////////////////
+//
 
 	logic clk_uart_ff_1;
 	logic clk_uart_ff_2;
@@ -968,15 +956,15 @@ end
 	`endif
 
 
+//
+///////////////////////   VIDEO   ///////////////////////
+//
 
-	////////////////// VIDEO
-
-	wire [5:0] r_in, b_in;	
-	wire [6:0] g_in;	
-	reg  [7:0] raux, gaux, baux;	
-	wire [5:0] raux2, baux2;	
-	wire [6:0] gaux2;	
-	wire [5:0] raux3, gaux3, baux3;	
+	wire HBlank;
+	wire HSync;
+	wire VBlank;
+	wire VSync;
+	wire ce_pixel;
 
 	wire vga_hs;
 	wire vga_vs;
@@ -984,18 +972,27 @@ end
 	wire vga_vs_o;
 	wire de_o;
 
+	assign CLK_VIDEO = clk_56_875;
+	assign ce_pixel = 1'b1;
+
 	//wire [1:0] scale = status[2:1];
 	wire mda_mode = status[4];	 
 	wire [2:0] screen_mode = status[16:14];
 
 	wire   composite_on;
-    assign composite_on = status[7];
+    assign composite_on = status[44];
 
 	wire   display_mode_disable;
-    assign display_mode_disable = status[8];
+    assign display_mode_disable = status[45];
 	wire   osd_disable;
-    assign osd_disable = status[9];
+    assign osd_disable = status[46];
 
+	wire [5:0] r_in, b_in;	
+	wire [6:0] g_in;	
+	reg  [7:0] raux, gaux, baux;	
+	wire [5:0] raux2, baux2;	
+	wire [6:0] gaux2;	
+	wire [5:0] raux3, gaux3, baux3;	
 
 	video_monochrome_converter video_mono 
 	(
@@ -1041,11 +1038,11 @@ end
 		// disable csync without scandoubler
 		.no_csync    ( ~forced_scandoubler ),			// 1'b1
 		// YPbPr always uses composite sync
-		.ypbpr       ( status[1] ),					// 1'b0
+		.ypbpr       ( status[42] ),					// 1'b0
 		// Rotate OSD [0] - rotate [1] - left or right
 		.rotate      ( 2'b00      ),
 		// composite-like blending
-		.blend       ( status[2] ),					// 1'b0
+		.blend       ( status[43] ),					// 1'b0
 	
 		// video in
 		.R           ( raux2      ),
@@ -1062,9 +1059,13 @@ end
 		.VGA_HS      ( vga_hs_o   )
 	);
 	
-	assign VGA_R  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
-	assign VGA_G  = osd_disable ? {gaux2,gaux2[0]  } : {gaux3,gaux3[1:0]};
-	assign VGA_B  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
+	// assign VGA_R  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
+	// assign VGA_G  = osd_disable ? {gaux2,gaux2[0]  } : {gaux3,gaux3[1:0]};
+	// assign VGA_B  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
+	
+	assign VGA_R  = osd_disable ? {raux2,2'b00} : {raux3,2'b00};
+	assign VGA_G  = osd_disable ? {gaux2,1'b0 } : {gaux3,2'b00};
+	assign VGA_B  = osd_disable ? {baux2,2'b00} : {baux3,2'b00};
 
 	assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;		
 	assign VGA_HS = osd_disable ? ~vga_hs : ~vga_hs_o;		
