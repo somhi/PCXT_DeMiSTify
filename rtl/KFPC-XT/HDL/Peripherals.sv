@@ -711,7 +711,7 @@ module PERIPHERALS #(
         .red(R_MDA),
         .green(G_MDA),
         .blue(B_MDA),
-		  .mda_rgb(mda_rgb)
+	//	  .mda_rgb(mda_rgb)
     );
 	 
     mda mda1 (
