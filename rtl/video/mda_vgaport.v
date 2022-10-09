@@ -7,40 +7,42 @@
 // Commons, PO Box 1866, Mountain View, CA 94042, USA.
 //
 module mda_vgaport(
-    input wire clk,
+    input clk,
 
-    input wire video,
-    input wire intensity,
+    input video,
+    input intensity,
 
     // Analog outputs
-    output reg [5:0] red,
-    output reg [5:0] green,
-    output reg [5:0] blue,
-	input wire [1:0] mda_rgb
-);
+    output[5:0] red,
+    output[6:0] green,
+    output[5:0] blue
+    );
+
+    reg[5:0] r;
+    reg[5:0] g;
+
+    assign red = r;
+    assign green = {g, 1'b0};
+    assign blue = 6'd0;
 
     always @(posedge clk)
     begin
-        case({video, intensity}) // 1 = green, 2 = amber, 3 = b&w
+        case({video, intensity})
             2'd0: begin
-                red   <= 6'd0;
-                green <= 6'd0;
-			    blue  <= 6'd0;
+                r <= 6'd0;
+                g <= 6'd0;
             end
-            2'd1: begin				    
-                red   <= mda_rgb == 0 ? 6'd0  : 6'd16;
-                green <= mda_rgb == 1 ? 6'd12 : 6'd16;
-				blue  <= mda_rgb == 2 ? 6'd16 : 6'd0;
+            2'd1: begin
+                r <= 6'd16;
+                g <= 6'd12;
             end
             2'd2: begin
-                red   <= mda_rgb == 0 ? 6'd0  : 6'd48;
-                green <= mda_rgb == 1 ? 6'd21 : 6'd48;
-				blue  <= mda_rgb == 2 ? 6'd48 : 6'd0;
+                r <= 6'd48;
+                g <= 6'd21;
             end
             2'd3: begin
-                red   <= mda_rgb == 0 ? 6'd0  : 6'd63;
-                green <= mda_rgb == 1 ? 6'd27 : 6'd63;
-				blue  <= mda_rgb == 2 ? 6'd63 : 6'd0;
+                r <= 6'd63;
+                g <= 6'd27;
             end
             default: ;
         endcase

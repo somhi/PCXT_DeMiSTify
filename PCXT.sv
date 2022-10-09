@@ -245,7 +245,7 @@ wire clk_uart;
 wire clk_uart2;
 
 
-`ifdef DEMISTIFY_SOCKIT		/////  SOCKIT BOARD with Cyclone V
+`ifdef DEMISTIFY_SOCKIT		/////  SOCKIT BOARD with Cyclone V   /////
 
 assign SDRAM_CLK = clk_chipset;
 
@@ -278,7 +278,7 @@ pllvideo pllvideo
 	.locked()
 );
 
-`else  						/////  REST OF BOARDS
+`else  						/////  REST OF BOARDS    /////
 
 pll pll
 (
@@ -288,7 +288,7 @@ pll pll
 	.c1(clk_chipset),		//50
 	.c2(SDRAM_CLK),			//50 -2ns
 	.c3(clk_uart),			//14.7456 MHz
-	.c4(clk_opl2),			//3.575
+	.c4(clk_opl2),			//3.575  (3.58 not possible)
 	.locked(pll_locked)
 );
 
@@ -296,9 +296,9 @@ pllvideo pllvideo
 (
 	.inclk0(CLK_50M),
 	.areset(1'b0),
-	.c0(clk_28_636),		//28.636  -> 28.4375
-	.c1(clk_56_875),		//56.875
-	.c2(clk_uart2),			//1.8432 MHz     
+	.c0(clk_28_636),		//28.636 -> 28.636
+	.c1(clk_56_875),		//56.875 -> 57.272
+	.c2(clk_uart2),			//1.8432 ->  1.842    
 //	.c3(),			
 //	.c4(),
 	.locked()
@@ -999,13 +999,9 @@ end
 		.clk_vid(CLK_VIDEO),
 		.ce_pix(ce_pixel),
 		
-		// .R({r_in, 2'b00}),
-		// .G({g_in, 1'b0}),		// (MDA MODE PINK ??)
-		// .B({b_in, 2'b00}),
-
-		.R({r_in, r_in[1:0]}),			
-		.G({g_in, g_in[0]}  ),		// TO BE CHECKED  
-		.B({b_in, b_in[1:0]}),
+		.R({r_in, 2'b00}),
+		.G({g_in, 1'b0}),		
+		.B({b_in, 2'b00}),
 
 		.gfx_mode(screen_mode),
 		
@@ -1059,19 +1055,14 @@ end
 		.VGA_HS      ( vga_hs_o   )
 	);
 	
-	// assign VGA_R  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
-	// assign VGA_G  = osd_disable ? {gaux2,gaux2[0]  } : {gaux3,gaux3[1:0]};
-	// assign VGA_B  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
-	
-	assign VGA_R  = osd_disable ? {raux2,2'b00} : {raux3,2'b00};
-	assign VGA_G  = osd_disable ? {gaux2,1'b0 } : {gaux3,2'b00};
-	assign VGA_B  = osd_disable ? {baux2,2'b00} : {baux3,2'b00};
+	assign VGA_R  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
+	assign VGA_G  = osd_disable ? {gaux2,gaux2[0]  } : {gaux3,gaux3[1:0]};
+	assign VGA_B  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
 
 	assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;		
 	assign VGA_HS = osd_disable ? ~vga_hs : ~vga_hs_o;		
 
 	assign VGA_DE = ~(HBlank | VBlank);
-
 
 
 	// wire [5:0] osd_r_o;
