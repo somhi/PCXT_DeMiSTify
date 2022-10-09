@@ -251,25 +251,40 @@ wire clk_uart;
 wire clk_uart2;
 
 
-`ifdef DEMISTIFY_SOCKIT
+`ifdef DEMISTIFY_SOCKIT		/////  SOCKIT BOARD with Cyclone V
 
 assign SDRAM_CLK = clk_chipset;
+
+	// .outclk_0(clk_100),		//100
+	// .outclk_1(clk_56_875),	//56.875
+	// .outclk_2(clk_28_636),	//28.636
+	// .outclk_3(clk_uart),		//14.7456
+	// .outclk_4(clk_opl2),		//3.58
+	// .outclk_5(clk_chipset),	//50
+	// .outclk_6(clk_113_750),	//113.75
 
 pll pll
 (
 	.refclk(CLK_50M),
 	.rst(0),
 	.outclk_0(clk_100),			//100
-	.outclk_1(clk_56_875),		//56.875
-	.outclk_2(clk_28_636),		//28.636
-	.outclk_3(clk_uart),		//14.7456
-	.outclk_4(clk_opl2),		//3.58
-	.outclk_5(clk_chipset),		//50
-//	.outclk_6(clk_113_750),		//113.75
+	.outclk_1(clk_chipset),		//50
+	.outclk_2(clk_uart),		//14.7456 -> 14.7541
+//	.outclk_3(clk_uart2),		//1.8432  -> 1.8442    [LONG COMPILATION TIMES IF (status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en]
 	.locked(pll_locked)
 );
 
-`else  
+pllvideo pllvideo
+(
+	.refclk(CLK_50M),
+	.rst(0),
+	.outclk_0(clk_28_636),		//28.636
+	.outclk_1(clk_56_875),		//56.875 -> 57.272
+	.outclk_2(clk_opl2),		//3.58
+	.locked()
+);
+
+`else  						/////  REST OF BOARDS
 
 pll pll
 (
@@ -287,9 +302,9 @@ pllvideo pllvideo
 (
 	.inclk0(CLK_50M),
 	.areset(1'b0),
-	.c0(clk_28_636),		//28.4375
+	.c0(clk_28_636),		//28.636  -> 28.4375
 	.c1(clk_56_875),		//56.875
-	.c2(clk_uart2),			//1.8432 MHz
+	.c2(clk_uart2),			//1.8432 MHz     
 //	.c3(),			
 //	.c4(),
 	.locked()
@@ -802,6 +817,7 @@ end
 		// NO COM2 UART PORT
 
 		`else
+		  									  //[LONG COMPILATION TIMES with ? clk_uart2 : clk_uart_en]
 		  .clk_uart                           ((status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en),
 	      .uart_rx                            (UART_RX),
 	      .uart_tx                            (UART_TX),
@@ -986,9 +1002,13 @@ end
 		.clk_vid(CLK_VIDEO),
 		.ce_pix(ce_pixel),
 		
-		.R({r_in, 2'b00}),
-		.G({g_in, 1'b0}),
-		.B({b_in, 2'b00}),
+		// .R({r_in, 2'b00}),
+		// .G({g_in, 1'b0}),		// (MDA MODE PINK ??)
+		// .B({b_in, 2'b00}),
+
+		.R({r_in, r_in[1:0]}),			
+		.G({g_in, g_in[0]}  ),		// TO BE CHECKED  
+		.B({b_in, b_in[1:0]}),
 
 		.gfx_mode(screen_mode),
 		
