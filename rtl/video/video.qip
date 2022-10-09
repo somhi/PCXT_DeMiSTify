@@ -19,4 +19,5 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip_32.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip_64.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip_128.v ]
-
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip_4_CV.v ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram_ip_128_CV.v ]

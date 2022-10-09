@@ -844,6 +844,24 @@ module PERIPHERALS #(
         .q_b                      (CGA_VRAM_DOUT)
 	);
 
+    `elsif CGA_128_CV
+
+     vram_ip_128_CV  cga_vram	// 128 kB
+	 (
+        .clock_a                  (clock),
+        .enable_a                 (~cga_chip_select_n_1 || ~video_chip_select_n_1),
+        .wren_a                   (~video_memory_write_n),
+        .address_a                ((tandy_video & grph_mode & hres_mode) ? ~video_chip_select_n_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
+        .data_a                   (video_ram_data),
+        .q_a                      (cga_vram_cpu_dout),
+        .clock_b                  (clk_vga_cga),
+        .enable_b                 (CGA_VRAM_ENABLE),
+        .wren_b                   (1'b0),
+        .address_b                ((tandy_video & grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : CGA_VRAM_ADDR[13:0]),
+        .data_b                   (8'h0),
+        .q_b                      (CGA_VRAM_DOUT)
+	);
+
     `elsif CGA_64
 
     vram_ip_64  cga_vram	// 64 kB     Improves arkanoid and Gods video output, but then Prince does not display well
@@ -916,6 +934,24 @@ module PERIPHERALS #(
     `ifdef NO_MDA
 
         // NO MDA 
+
+    `elsif MDA_CV
+
+    vram_ip_4_CV mda_vram   //4 kB
+    (
+       .clock_a                  (clock),
+       .enable_a                 (~mda_chip_select_n_1),
+       .wren_a                   (~video_memory_write_n),
+       .address_a                (video_ram_address[11:0]),
+       .data_a                   (video_ram_data),
+       .q_a                      (mda_vram_cpu_dout),
+       .clock_b                  (clk_vga_mda),
+       .enable_b                 (MDA_VRAM_ENABLE),
+       .wren_b                   (1'b0),
+       .address_b                (MDA_VRAM_ADDR[11:0]),
+       .data_b                   (8'h0),
+       .q_b                      (MDA_VRAM_DOUT)
+   );
 
     `else
 
