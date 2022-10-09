@@ -6,4 +6,6 @@
 //`define CGA_16
 //`define CGA_32
 //`define CGA_64
-`define CGA_128
+//`define CGA_128
+`define MDA_CV
+`define CGA_128_CV
