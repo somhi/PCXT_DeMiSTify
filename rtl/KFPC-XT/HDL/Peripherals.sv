@@ -974,35 +974,9 @@ module PERIPHERALS #(
     `endif
 
 
-
     //
-    // KFTVGA
+    // Joysticks
     //
-    /*
-	 logic   [7:0]   tvga_data_bus_out;
-
-    KFTVGA u_KFTVGA (
-        // Bus
-        .clock                      (clock),
-        .reset                      (reset),
-        .chip_select_n              (tvga_chip_select_n),
-        .read_enable_n              (memory_read_n),
-        .write_enable_n             (memory_write_n),
-        .address                    (address[13:0]),
-        .data_bus_in                (internal_data_bus),
-        .data_bus_out               (tvga_data_bus_out),
-
-        // I/O
-        .video_clock                (video_clock),
-        .video_reset                (video_reset),
-        .video_h_sync               (video_h_sync),
-        .video_v_sync               (video_v_sync),
-        .video_r                    (video_r),
-        .video_g                    (video_g),
-        .video_b                    (video_b)
-    );
-	 
-	 */
 
     logic [7:0] joy_data;
 	 
@@ -1019,6 +993,7 @@ module PERIPHERALS #(
         .joya1                     (joya1),
         .d_out                     (joy_data)
     );
+
     //
     // data_bus_out
     //

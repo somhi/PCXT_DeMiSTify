@@ -6,9 +6,10 @@ set PCLK         ${topmodule}peripheral_clock|q
 
 if {[info exists cyclonev] && ($cyclonev==1)} {
 	set CLOCK_CORE   ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[0].output_counter|divclk
-    set CLOCK_CHIP   ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[5].output_counter|divclk
-    set CLOCK_UART   ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[3].output_counter|divclk
-    set clk_28_636   ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[2].output_counter|divclk
+    set CLOCK_CHIP   ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[1].output_counter|divclk
+    set CLOCK_UART   ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[2].output_counter|divclk
+#   set CLOCK_UART2  ${topmodule}pll|pll_inst|altera_pll_i|cyclonev_pll|counter[3].output_counter|divclk    
+    set clk_28_636   ${topmodule}pllvideo|pll_inst|altera_pll_i|cyclonev_pll|counter[0].output_counter|divclk
 
     create_generated_clock -name sdramclk -source [get_pins $CLOCK_CHIP] [get_ports $RAM_CLK]
 
