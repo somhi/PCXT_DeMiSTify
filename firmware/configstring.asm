@@ -739,9 +739,51 @@ l39: #
 	sub	r2
 						// (save result) // isreg
 l42: # 
+
+						//../DeMiSTify/firmware/configstring.c, line 70
+						// (compare) (q1 unsigned) (q2 unsigned)
+						// (obj to tmp) flags 1 type 103
+						// const
+	.liconst	97
+	cmp	r2
+
+						//../DeMiSTify/firmware/configstring.c, line 70
+	cond	SLT
+						//conditional branch regular
+						//pcreltotemp
+	.lipcrel	l45
+		add	r7
+
+						//../DeMiSTify/firmware/configstring.c, line 70
+						// (compare) (q1 unsigned) (q2 unsigned)
+						// (obj to tmp) flags 1 type 103
+						// matchobj comparing flags 1 with 1
+						// const
+						// matchobj comparing flags 1 with 1
+	.liconst	122
+	cmp	r2
+
+						//../DeMiSTify/firmware/configstring.c, line 70
+	cond	SGT
+						//conditional branch regular
+						//pcreltotemp
+	.lipcrel	l45
+		add	r7
+
+						//../DeMiSTify/firmware/configstring.c, line 71
+						// (bitwise/arithmetic) 	//ops: 3, 0, 3
+						// WARNING - q1 and target collision - check code for correctness.
+						// (obj to tmp) flags 1 type 103
+						// matchobj comparing flags 1 with 1
+						// const
+						// matchobj comparing flags 1 with 1
+	.liconst	61
+	sub	r2
+						// (save result) // isreg
+l45: # 
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 69
+						//../DeMiSTify/firmware/configstring.c, line 73
 						// Q1 disposable
 						//FIXME convert
 						// (convert - reducing type 103 to 3
@@ -793,7 +835,7 @@ _configstring_setindex:
 						// allocreg r4
 						// allocreg r3
 
-						//../DeMiSTify/firmware/configstring.c, line 77
+						//../DeMiSTify/firmware/configstring.c, line 81
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r3 - no need to prep
@@ -807,7 +849,7 @@ _configstring_setindex:
 						//save_temp done
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 79
+						//../DeMiSTify/firmware/configstring.c, line 83
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
@@ -819,7 +861,7 @@ _configstring_setindex:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 79
+						//../DeMiSTify/firmware/configstring.c, line 83
 						//call
 						//pcreltotemp
 	.lipcrel	_configstring_matchextension
@@ -827,12 +869,12 @@ _configstring_setindex:
 						// Flow control - popping 0 + 0 bytes
 						// freereg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 79
+						//../DeMiSTify/firmware/configstring.c, line 83
 						// (getreturn)						// (save result) // isreg
 	mt	r0
 	mr	r4
 
-						//../DeMiSTify/firmware/configstring.c, line 81
+						//../DeMiSTify/firmware/configstring.c, line 85
 						// (test)
 						// (obj to tmp) flags 42 type 3
 						// matchobj comparing flags 66 with 66
@@ -840,15 +882,15 @@ _configstring_setindex:
 				// flags 42
 	and	r4
 
-						//../DeMiSTify/firmware/configstring.c, line 81
+						//../DeMiSTify/firmware/configstring.c, line 85
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l47
+	.lipcrel	l50
 		add	r7
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 82
+						//../DeMiSTify/firmware/configstring.c, line 86
 						// (bitwise/arithmetic) 	//ops: 5, 0, 5
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
@@ -860,9 +902,9 @@ _configstring_setindex:
 						// (save result) // isreg
 						// freereg r1
 						// freereg r2
-l47: # 
+l50: # 
 
-						//../DeMiSTify/firmware/configstring.c, line 86
+						//../DeMiSTify/firmware/configstring.c, line 90
 						// (a/p assign)
 						// (prepobj r0)
  						// deref
@@ -880,7 +922,7 @@ l47: #
 	st	r0
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 86
+						//../DeMiSTify/firmware/configstring.c, line 90
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r3 - no need to prep
@@ -896,7 +938,7 @@ l47: #
 						//save_temp done
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 86
+						//../DeMiSTify/firmware/configstring.c, line 90
 						// Q1 disposable
 						// (bitwise/arithmetic) 	//ops: 5, 0, 2
 						// (obj to r1) flags 42 type 3
@@ -916,7 +958,7 @@ l47: #
 						// (save result) // isreg
 						// allocreg r2
 
-						//../DeMiSTify/firmware/configstring.c, line 86
+						//../DeMiSTify/firmware/configstring.c, line 90
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -935,7 +977,7 @@ l47: #
 	mr	r2
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 86
+						//../DeMiSTify/firmware/configstring.c, line 90
 						// Q1 disposable
 						// Q2 disposable
 						// Z disposable
@@ -959,7 +1001,7 @@ l47: #
 						// freereg r2
 						// freereg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 86
+						//../DeMiSTify/firmware/configstring.c, line 90
 						// (a/p assign)
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 98
@@ -1023,7 +1065,7 @@ _configstring_matchextension:
 						// allocreg r3
 						// allocreg r2
 
-						//../DeMiSTify/firmware/configstring.c, line 92
+						//../DeMiSTify/firmware/configstring.c, line 96
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r6 - no need to prep
@@ -1036,14 +1078,14 @@ _configstring_matchextension:
 	st	r6
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 107
+						//../DeMiSTify/firmware/configstring.c, line 111
 						//call
 						//pcreltotemp
 	.lipcrel	_configstring_begin
 	add	r7
 						// Flow control - popping 0 + 0 bytes
 
-						//../DeMiSTify/firmware/configstring.c, line 117
+						//../DeMiSTify/firmware/configstring.c, line 121
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r3 - no need to prep
@@ -1055,7 +1097,7 @@ _configstring_matchextension:
 						//save_temp done
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 118
+						//../DeMiSTify/firmware/configstring.c, line 122
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -1073,7 +1115,7 @@ _configstring_matchextension:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 118
+						//../DeMiSTify/firmware/configstring.c, line 122
 						// Q1 disposable
 						// (compare) (q1 unsigned) (q2 unsigned)
 						// (obj to tmp) flags 1 type 103
@@ -1084,22 +1126,22 @@ _configstring_matchextension:
 	cmp	r1
 						// freereg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 118
+						//../DeMiSTify/firmware/configstring.c, line 122
 	cond	SLT
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l77
+	.lipcrel	l80
 		add	r7
-l74: # 
+l77: # 
 
-						//../DeMiSTify/firmware/configstring.c, line 118
+						//../DeMiSTify/firmware/configstring.c, line 122
 						//call
 						//pcreltotemp
 	.lipcrel	_configstring_nextfield
 	add	r7
 						// Flow control - popping 0 + 0 bytes
 
-						//../DeMiSTify/firmware/configstring.c, line 118
+						//../DeMiSTify/firmware/configstring.c, line 122
 						// (bitwise/arithmetic) 	//ops: 4, 0, 4
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 103
@@ -1109,7 +1151,7 @@ l74: #
 						// (save result) // isreg
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 118
+						//../DeMiSTify/firmware/configstring.c, line 122
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -1127,7 +1169,7 @@ l74: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 118
+						//../DeMiSTify/firmware/configstring.c, line 122
 						// Q2 disposable
 						// (compare) (q1 unsigned) (q2 unsigned)
 						// (obj to tmp) flags 4a type 103
@@ -1137,16 +1179,16 @@ l74: #
 	cmp	r3
 						// freereg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 118
+						//../DeMiSTify/firmware/configstring.c, line 122
 	cond	LE
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l74
+	.lipcrel	l77
 		add	r7
-l77: # 
+l80: # 
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 122
+						//../DeMiSTify/firmware/configstring.c, line 126
 						// (test)
 						// (obj to tmp) flags 2 type 101
 						// extern
@@ -1156,27 +1198,27 @@ l77: #
 	byt
 	ldt
 
-						//../DeMiSTify/firmware/configstring.c, line 122
+						//../DeMiSTify/firmware/configstring.c, line 126
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l78
+	.lipcrel	l81
 		add	r7
-l75: # 
+l78: # 
 
-						//../DeMiSTify/firmware/configstring.c, line 126
+						//../DeMiSTify/firmware/configstring.c, line 130
 						//call
 						//pcreltotemp
 	.lipcrel	_configstring_next
 	add	r7
 						// Flow control - popping 0 + 0 bytes
 
-						//../DeMiSTify/firmware/configstring.c, line 126
+						//../DeMiSTify/firmware/configstring.c, line 130
 						// (getreturn)						// (save result) // isreg
 	mt	r0
 	mr	r1
 
-						//../DeMiSTify/firmware/configstring.c, line 128
+						//../DeMiSTify/firmware/configstring.c, line 132
 						// (test)
 						// (obj to tmp) flags 42 type 3
 						// matchobj comparing flags 66 with 66
@@ -1184,14 +1226,14 @@ l75: #
 				// flags 42
 	and	r1
 
-						//../DeMiSTify/firmware/configstring.c, line 128
+						//../DeMiSTify/firmware/configstring.c, line 132
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l78
+	.lipcrel	l81
 		add	r7
 
-						//../DeMiSTify/firmware/configstring.c, line 128
+						//../DeMiSTify/firmware/configstring.c, line 132
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 66
@@ -1200,15 +1242,15 @@ l75: #
 	.liconst	44
 	cmp	r1
 
-						//../DeMiSTify/firmware/configstring.c, line 128
+						//../DeMiSTify/firmware/configstring.c, line 132
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l75
+	.lipcrel	l78
 		add	r7
-l78: # 
+l81: # 
 
-						//../DeMiSTify/firmware/configstring.c, line 131
+						//../DeMiSTify/firmware/configstring.c, line 135
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r3 - no need to prep
@@ -1219,28 +1261,28 @@ l78: #
 	mr	r3
 						//save_temp done
 						// freereg r1
-l76: # 
+l79: # 
 
-						//../DeMiSTify/firmware/configstring.c, line 135
+						//../DeMiSTify/firmware/configstring.c, line 139
 						//call
 						//pcreltotemp
 	.lipcrel	_configstring_next
 	add	r7
 						// Flow control - popping 0 + 0 bytes
 
-						//../DeMiSTify/firmware/configstring.c, line 135
+						//../DeMiSTify/firmware/configstring.c, line 139
 						// (getreturn)						// (save result) // isreg
 	mt	r0
 	mr	r5
 
-						//../DeMiSTify/firmware/configstring.c, line 136
+						//../DeMiSTify/firmware/configstring.c, line 140
 						//call
 						//pcreltotemp
 	.lipcrel	_configstring_next
 	add	r7
 						// Flow control - popping 0 + 0 bytes
 
-						//../DeMiSTify/firmware/configstring.c, line 136
+						//../DeMiSTify/firmware/configstring.c, line 140
 						// (getreturn)						// (save result) // not reg
 						// Store_reg to type 0x3, flags 0x2
 						// (prepobj tmp)
@@ -1250,19 +1292,19 @@ l76: #
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
 
-						//../DeMiSTify/firmware/configstring.c, line 137
+						//../DeMiSTify/firmware/configstring.c, line 141
 						//call
 						//pcreltotemp
 	.lipcrel	_configstring_next
 	add	r7
 						// Flow control - popping 0 + 0 bytes
 
-						//../DeMiSTify/firmware/configstring.c, line 137
+						//../DeMiSTify/firmware/configstring.c, line 141
 						// (getreturn)						// (save result) // isreg
 	mt	r0
 	mr	r2
 
-						//../DeMiSTify/firmware/configstring.c, line 139
+						//../DeMiSTify/firmware/configstring.c, line 143
 						// (bitwise/arithmetic) 	//ops: 4, 0, 4
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 103
@@ -1274,7 +1316,7 @@ l76: #
 						// (save result) // isreg
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						// (bitwise/arithmetic) 	//ops: 5, 0, 2
 						//Special case - addt
 						// (prepobj r0)
@@ -1289,7 +1331,7 @@ l76: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -1304,7 +1346,7 @@ l76: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						// Q2 disposable
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 4a type 3
@@ -1314,15 +1356,15 @@ l76: #
 	cmp	r5
 						// freereg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l66
+	.lipcrel	l69
 		add	r7
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 74
@@ -1331,17 +1373,17 @@ l76: #
 	.liconst	63
 	cmp	r5
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l64
+	.lipcrel	l67
 		add	r7
 						// freereg r1
-l66: # 
+l69: # 
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						// (bitwise/arithmetic) 	//ops: 5, 0, 2
 						//Special case - addt
 						// (prepobj r0)
@@ -1354,7 +1396,7 @@ l66: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -1369,7 +1411,7 @@ l66: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						// Q2 disposable
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 2 type 3
@@ -1382,15 +1424,15 @@ l66: #
 	cmp	r1
 						// freereg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 	cond	EQ
 						//conditional branch reversed
 						//pcreltotemp
-	.lipcrel	l65
+	.lipcrel	l68
 		add	r7
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to r0) flags 2 type 3
 						// matchobj comparing flags 2 with 2
@@ -1405,17 +1447,17 @@ l66: #
 	.liconst	63
 	cmp	r0
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l64
+	.lipcrel	l67
 		add	r7
 						// freereg r1
-l65: # 
+l68: # 
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						// (bitwise/arithmetic) 	//ops: 5, 0, 2
 						//Special case - addt
 						// (prepobj r0)
@@ -1428,7 +1470,7 @@ l65: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -1443,7 +1485,7 @@ l65: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						// Q2 disposable
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 4a type 3
@@ -1453,15 +1495,15 @@ l65: #
 	cmp	r2
 						// freereg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l63
+	.lipcrel	l66
 		add	r7
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 74
@@ -1470,15 +1512,15 @@ l65: #
 	.liconst	63
 	cmp	r2
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l64
+	.lipcrel	l67
 		add	r7
-l63: # 
+l66: # 
 
-						//../DeMiSTify/firmware/configstring.c, line 141
+						//../DeMiSTify/firmware/configstring.c, line 145
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r6 - no need to prep
@@ -1489,27 +1531,27 @@ l63: #
 	st	r6
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 142
+						//../DeMiSTify/firmware/configstring.c, line 146
 						//pcreltotemp
-	.lipcrel	l72
+	.lipcrel	l75
 	add	r7
-l64: # 
+l67: # 
 
-						//../DeMiSTify/firmware/configstring.c, line 142
+						//../DeMiSTify/firmware/configstring.c, line 146
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// const
 	.liconst	44
 	cmp	r5
 
-						//../DeMiSTify/firmware/configstring.c, line 142
+						//../DeMiSTify/firmware/configstring.c, line 146
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l71
+	.lipcrel	l74
 		add	r7
 
-						//../DeMiSTify/firmware/configstring.c, line 142
+						//../DeMiSTify/firmware/configstring.c, line 146
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 1
@@ -1518,15 +1560,15 @@ l64: #
 	.liconst	59
 	cmp	r5
 
-						//../DeMiSTify/firmware/configstring.c, line 142
+						//../DeMiSTify/firmware/configstring.c, line 146
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l72
+	.lipcrel	l75
 		add	r7
-l71: # 
+l74: # 
 
-						//../DeMiSTify/firmware/configstring.c, line 144
+						//../DeMiSTify/firmware/configstring.c, line 148
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r3 - no need to prep
@@ -1537,7 +1579,7 @@ l71: #
 	mr	r3
 						//save_temp done
 
-						//../DeMiSTify/firmware/configstring.c, line 145
+						//../DeMiSTify/firmware/configstring.c, line 149
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r6 - no need to prep
@@ -1549,23 +1591,23 @@ l71: #
 						// (save temp)store type 3
 	st	r6
 						//save_temp done
-l72: # 
+l75: # 
 
-						//../DeMiSTify/firmware/configstring.c, line 133
+						//../DeMiSTify/firmware/configstring.c, line 137
 						// (test)
 						// (obj to tmp) flags 62 type 3
 						// deref 
 	ld	r6
 
-						//../DeMiSTify/firmware/configstring.c, line 133
+						//../DeMiSTify/firmware/configstring.c, line 137
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l76
+	.lipcrel	l79
 		add	r7
 						// freereg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 148
+						//../DeMiSTify/firmware/configstring.c, line 152
 						//call
 						//pcreltotemp
 	.lipcrel	_configstring_end
@@ -1573,7 +1615,7 @@ l72: #
 						// Deferred popping of 0 bytes (0 in total)
 						// allocreg r1
 
-						//../DeMiSTify/firmware/configstring.c, line 150
+						//../DeMiSTify/firmware/configstring.c, line 154
 						// Q1 disposable
 						//FIXME convert
 						// (convert - reducing type 103 to 3

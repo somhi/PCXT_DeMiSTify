@@ -49,7 +49,10 @@ here, the number of units defaults to 4. */
 
 /* Do we support configuration files? */
 #undef CONFIG_SETTINGS
-#undef CONFIG_SETTINGS_FILENAME "VIC20   CFG"
+#undef CONFIG_SETTINGS_FILENAME "PCXT    CFG"
+
+/* Support for 64-bit status word.  Adds around 200 bytes to the firmware size. */
+#define CONFIG_STATUSWORD_64BIT
 
 #endif
 
