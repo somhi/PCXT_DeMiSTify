@@ -138,10 +138,6 @@ architecture RTL of atlas_top is
 	-- DAC AUDIO     
 	signal dac_l : signed(15 downto 0);
 	signal dac_r : signed(15 downto 0);
-	--signal dac_l: std_logic_vector(15 downto 0);
-	--signal dac_r: std_logic_vector(15 downto 0);
-	--signal dac_l_s: signed(15 downto 0);
-	--signal dac_r_s: signed(15 downto 0);
 
 	-- I2S 
 	signal i2s_mclk : std_logic;
@@ -222,10 +218,10 @@ begin
 	SD_SCLK_O <= sd_clk;
 
 	-- External devices tied to GPIOs
-	-- ps2_mouse_dat_in <= PS2_MOUSE_DAT;
-	-- PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
-	-- ps2_mouse_clk_in <= PS2_MOUSE_CLK;
-	-- PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
+	ps2_mouse_dat_in <= PS2_MOUSE_DAT;
+	PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
+	ps2_mouse_clk_in <= PS2_MOUSE_CLK;
+	PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
 
 -- ATLAS_CYC_KEYB -- 0 = PS2 NON AT1, 1 = PS2 AT1,  2 = USB NON AT1, 3 = USB AT1, 
 
@@ -536,7 +532,7 @@ begin
 				DAC_L   => dac_l,
 				DAC_R   => dac_r,
 			AUDIO_L => SIGMA_L,
-			AUDIO_R => SIGMA_R,
+			AUDIO_R => SIGMA_R
 		--	PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 		--	PS2K_DAT_IN => ps2_keyboard_dat_in
 		--	PS2K_CLK_OUT => ps2_keyboard_clk_out,
@@ -546,8 +542,8 @@ begin
 				-- PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
 				-- PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
 				-- PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
-			PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
-			PS2_MOUSE_DAT => PS2_MOUSE_DAT  
+			-- PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
+			-- PS2_MOUSE_DAT => PS2_MOUSE_DAT  
 		);
 
 
@@ -584,10 +580,10 @@ begin
 				ps2k_dat_in  => ps2_keyboard_dat_in,
 				ps2k_clk_out => ps2_keyboard_clk_out,
 				ps2k_dat_out => ps2_keyboard_dat_out,
-				-- ps2m_clk_in  => ps2_mouse_clk_in,
-				-- ps2m_dat_in  => ps2_mouse_dat_in,
-				-- ps2m_clk_out => ps2_mouse_clk_out,
-				-- ps2m_dat_out => ps2_mouse_dat_out,
+				ps2m_clk_in  => ps2_mouse_clk_in,
+				ps2m_dat_in  => ps2_mouse_dat_in,
+				ps2m_clk_out => ps2_mouse_clk_out,
+				ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
 				buttons => (0 => KEY0, others => '1'),

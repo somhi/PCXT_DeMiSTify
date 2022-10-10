@@ -87,7 +87,7 @@ constant demistify_serialdebug : std_logic := '0';
 			AUDIO_L  		: 	OUT STD_LOGIC;
 			AUDIO_R  		: 	OUT STD_LOGIC;
 			DAC_L			: 	OUT SIGNED(15 DOWNTO 0);
-			DAC_R			: 	OUT SIGNED(15 DOWNTO 0);
+			DAC_R			: 	OUT SIGNED(15 DOWNTO 0)
 
 			-- SD_SCK			:	 OUT STD_LOGIC;
 			-- SD_MOSI			:	 OUT STD_LOGIC;
@@ -104,8 +104,8 @@ constant demistify_serialdebug : std_logic := '0';
 			-- PS2K_MOUSE_CLK_OUT 	: OUT STD_LOGIC;
 			-- PS2K_MOUSE_DAT_OUT 	: OUT STD_LOGIC
 
-			PS2_MOUSE_CLK    : inout std_logic;
-			PS2_MOUSE_DAT    : inout std_logic
+			-- PS2_MOUSE_CLK    : inout std_logic;
+			-- PS2_MOUSE_DAT    : inout std_logic
 		);
 	END COMPONENT;
 	

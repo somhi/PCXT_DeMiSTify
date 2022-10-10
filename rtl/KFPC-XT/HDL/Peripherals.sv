@@ -7,6 +7,7 @@ module PERIPHERALS #(
 ) (
     input   logic           clock,
 	 input   logic           clk_sys,
+     input  logic           cpu_clock,
     input   logic           peripheral_clock,	 
 	 input   logic   [1:0]   turbo_mode,
 	 input   logic           color,
@@ -62,6 +63,10 @@ module PERIPHERALS #(
     input   logic           ps2_data,
     output  logic           ps2_clock_out,
     output  logic           ps2_data_out,
+	 input   logic           ps2_mouseclk_in,
+	 input   logic           ps2_mousedat_in,
+	 output  logic           ps2_mouseclk_out,
+	 output  logic           ps2_mousedat_out,
 	 input   logic   [4:0]   joy_opts,
 	 input   logic   [31:0]  joy0,
 	 input   logic   [31:0]  joy1,
@@ -77,6 +82,7 @@ module PERIPHERALS #(
 	 output  logic           tandy_snd_rdy,	 
 	 // UART
 	 input   logic           clk_uart,
+	 input   logic           clk_uart2,
 	 input   logic           uart_rx,
 	 output  logic           uart_tx,
 	 input   logic           uart_cts_n,
@@ -84,15 +90,6 @@ module PERIPHERALS #(
 	 input   logic           uart_dsr_n,
 	 output  logic           uart_rts_n,
 	 output  logic           uart_dtr_n,
-	 // UART 2
-	 input   logic           clk_uart2,     
-	 input   logic           uart2_rx,
-	 output  logic           uart2_tx,
-	 input   logic           uart2_cts_n,
-	 input   logic           uart2_dcd_n,
-	 input   logic           uart2_dsr_n,
-	 output  logic           uart2_rts_n,
-	 output  logic           uart2_dtr_n,
 	 // EMS
 	 input   logic           ems_enabled,
 	 input   logic   [1:0]   ems_address,
@@ -108,6 +105,24 @@ module PERIPHERALS #(
 	 wire grph_mode;
 	 wire hres_mode;
 	 
+	 
+    
+    //
+    // CPU clock edge
+    //
+    logic   prev_cpu_clock;
+
+    always_ff @(posedge clock, posedge reset) begin
+        if (reset)
+            prev_cpu_clock <= 1'b0;
+        else
+            prev_cpu_clock <= cpu_clock;
+    end
+
+    wire    cpu_clock_posedge = ~prev_cpu_clock & cpu_clock;
+    wire    cpu_clock_negedge = prev_cpu_clock & ~cpu_clock;
+
+
     //
     // chip select
     //
@@ -191,7 +206,8 @@ module PERIPHERALS #(
 					map_ems[ems_access_address] <= write_map_ems_data;
 					ena_ems[ems_access_address] <= write_map_ena_data;
 		  end
-    end
+    end 
+ 
 
     //
     // 8259
@@ -222,8 +238,12 @@ module PERIPHERALS #(
         //.slave_program_or_enable_buffer     (),
         .interrupt_acknowledge_n    (interrupt_acknowledge_n),
         .interrupt_to_cpu           (interrupt_to_cpu),
-        .interrupt_request          ({interrupt_request[7:5], uart_interrupt, uart2_interrupt, interrupt_request[2],
-                                        keybord_interrupt, timer_interrupt})
+        .interrupt_request          ({interrupt_request[7:5],
+                                        uart_interrupt,
+                                        uart2_interrupt,
+                                        interrupt_request[2],
+                                        keybord_interrupt,
+                                        timer_interrupt})
     );
 
     //
@@ -320,6 +340,8 @@ module PERIPHERALS #(
     //
     logic           ps2_send_clock;
     logic           keybord_irq;
+	 logic           uart_irq;
+	 logic           uart2_irq;
     logic   [7:0]   keycode;
     logic   [7:0]   tandy_keycode;
     logic           prev_ps2_reset;
@@ -431,14 +453,24 @@ module PERIPHERALS #(
 	);	
 	
 	    logic   keybord_interrupt_ff;
+		 logic   uart_interrupt_ff;
+		 logic   uart2_interrupt_ff;
     always_ff @(posedge clock, posedge reset) begin
         if (reset) begin
             keybord_interrupt_ff    <= 1'b0;
             keybord_interrupt       <= 1'b0;
+				uart_interrupt_ff       <= 1'b0;
+				uart_interrupt          <= 1'b0;
+				uart2_interrupt_ff      <= 1'b0;
+				uart2_interrupt         <= 1'b0;
         end
         else begin
             keybord_interrupt_ff    <= keybord_irq;
             keybord_interrupt       <= keybord_interrupt_ff;
+				uart_interrupt_ff       <= uart_irq;
+				uart_interrupt          <= uart_interrupt_ff;
+				uart2_interrupt_ff      <= uart2_irq;
+				uart2_interrupt         <= uart2_interrupt_ff;
         end
 	end
 	
@@ -457,7 +489,7 @@ module PERIPHERALS #(
 	end
 
     logic   [7:0]   keycode_ff;
-    always_ff @(posedge clock, posedge reset) begin  
+    always_ff @(posedge clock, posedge reset) begin
         if (reset) begin
             keycode_ff  <= 8'h00;
             port_a_in   <= 8'h00;
@@ -514,17 +546,12 @@ module PERIPHERALS #(
 		.dtr_n             (uart_dtr_n),
 		.ri_n              (1),
 
-		.irq               (uart_interrupt)
+		.irq               (uart_irq)
 	);	
 	
-    `ifdef NO_COM2
-
-    assign uart2_interrupt = 1'b0;
-
-    // NO COM2 UART PORT
-
-    `else
-
+	wire uart2_tx;
+	wire rts_n;
+	
 	uart uart2
 	(
 		.clk               (clock),
@@ -537,20 +564,24 @@ module PERIPHERALS #(
 		.write             (io_write_n & ~prev_io_write_n),
 		.readdata          (uart2_readdata_1),
 		.cs                (uart2_cs & iorq_uart),
-
-		.rx                (uart2_rx),
-		.tx                (uart2_tx),
-		.cts_n             (uart2_cts_n),
-		.dcd_n             (uart2_dcd_n),
-		.dsr_n             (uart2_dsr_n),
-		.rts_n             (uart2_rts_n),
-		.dtr_n             (uart2_dtr_n),
+		.rx                (uart2_tx),
+		.cts_n             (0),
+		.dcd_n             (0),
+		.dsr_n             (0),
 		.ri_n              (1),
-
-		.irq               (uart2_interrupt)
+		.rts_n             (rts_n),
+		.irq               (uart2_irq)
 	);
-
-    `endif
+	
+	MSMouseWrapper MSMouseWrapper_inst (
+		.clk(clock),
+		.ps2dta_in(ps2_mousedat_in),
+		.ps2clk_in(ps2_mouseclk_in),
+		.ps2dta_out(ps2_mousedat_out),
+		.ps2clk_out(ps2_mouseclk_out),
+		.rts(~rts_n),
+		.rd(uart2_tx)
+    );
 
 	// Timing of the readings may need to be reviewed.
 	always_ff @(posedge clock) begin
@@ -681,7 +712,6 @@ module PERIPHERALS #(
 	 assign VGA_R = video_output ? R_MDA : composite_on ?       6'd0 : R_CGA;
 	 assign VGA_G = video_output ? G_MDA : composite_on ? comp_video : G_CGA;
 	 assign VGA_B = video_output ? B_MDA : composite_on ?       6'd0 : B_CGA;	 
-
 	 assign VGA_HSYNC = video_output ? HSYNC_MDA : HSYNC_CGA;
 	 assign VGA_VSYNC = video_output ? VSYNC_MDA : VSYNC_CGA;
 	 
@@ -710,7 +740,7 @@ module PERIPHERALS #(
         .intensity(intensity),
         .red(R_MDA),
         .green(G_MDA),
-        .blue(B_MDA),
+        .blue(B_MDA)
 	//	  .mda_rgb(mda_rgb)
     );
 	 
@@ -768,8 +798,8 @@ module PERIPHERALS #(
 
 	 
     // CGA digital to analog converter
-    cga_vgaport vga_cga (
-        .clk(clk_vga_cga),		  
+    cga_vgaport vga_cga (	 
+        .clk(clk_vga_cga),        
         .video(video_cga),
         .red(R_CGA),
         .green(G_CGA),
@@ -1038,16 +1068,10 @@ module PERIPHERALS #(
             data_bus_out_from_chipset <= 1'b1;
             data_bus_out <= uart_readdata;			
         end
-
-        `ifdef NO_COM2
-		// NO COM2 UART PORT
-		`else
-        else if ((uart2_cs) && (~io_read_n)) begin
-          data_bus_out_from_chipset <= 1'b1;
-          data_bus_out <= uart2_readdata;			
+		  else if ((uart2_cs) && (~io_read_n)) begin
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= uart2_readdata;			
         end
-		`endif
-
 		  else if ((ems_oe) && (~io_read_n)) begin
             data_bus_out_from_chipset <= 1'b1;				
 				data_bus_out <= ena_ems[address[1:0]] ? map_ems[address[1:0]] : 8'hFF;            
