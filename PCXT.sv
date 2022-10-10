@@ -62,7 +62,7 @@ module PCXT
 	input         UART_RX,
 	output        UART_TX,
 	input		  UART_CTS,
-	output 		  UART_RTS,
+	output 		  UART_RTS
 
 	// input         UART2_RX,
 	// output        UART2_TX,
@@ -76,8 +76,8 @@ module PCXT
 //  output        PS2K_MOUSE_CLK_OUT,
 //  output        PS2K_MOUSE_DAT_OUT
 
-	inout		  PS2_MOUSE_CLK,
-	inout		  PS2_MOUSE_DAT
+//	inout		  PS2_MOUSE_CLK,
+//	inout		  PS2_MOUSE_DAT
 );
 
 wire CLK_50M;
@@ -155,10 +155,10 @@ wire        ps2_kbd_clk_in;
 wire        ps2_kbd_data_in;
 
 //Mouse PS2
-// wire        ps2_mouse_clk_out;
-// wire        ps2_mouse_data_out;
-// wire        ps2_mouse_clk_in;
-// wire        ps2_mouse_data_in;
+wire        ps2_mouse_clk_out;
+wire        ps2_mouse_data_out;
+wire        ps2_mouse_clk_in;
+wire        ps2_mouse_data_in;
 
 wire        ioctl_download;
 wire  [7:0] ioctl_index;
@@ -192,10 +192,11 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	.ps2_kbd_data_i		(ps2_kbd_data_out),
 	.ps2_kbd_clk		(ps2_kbd_clk_in),
 	.ps2_kbd_data		(ps2_kbd_data_in),
-//  .ps2_mouse_clk_i	(ps2_mouse_clk_out),
-//	.ps2_mouse_data_i	(ps2_mouse_data_out),
-//	.ps2_mouse_clk		(ps2_mouse_clk_in),
-//	.ps2_mouse_data		(ps2_mouse_data_in),
+
+    .ps2_mouse_clk_i	(ps2_mouse_clk_out),
+	.ps2_mouse_data_i	(ps2_mouse_data_out),
+	.ps2_mouse_clk		(ps2_mouse_clk_in),
+	.ps2_mouse_data		(ps2_mouse_data_in),
 
 	.joystick_0(joy0),
 	.joystick_1(joy1),
@@ -242,7 +243,6 @@ wire clk_opl2;
 wire clk_chipset;
 wire peripheral_clock;
 wire clk_uart;
-wire clk_uart2;
 
 
 `ifdef DEMISTIFY_SOCKIT		/////  SOCKIT BOARD with Cyclone V   /////
@@ -298,7 +298,7 @@ pllvideo pllvideo
 	.areset(1'b0),
 	.c0(clk_28_636),		//28.636 -> 28.636
 	.c1(clk_56_875),		//56.875 -> 57.272
-	.c2(clk_uart2),			//1.8432 ->  1.842    
+//	.c2(clk_uart2),			//1.8432 ->  1.842    
 //	.c3(),			
 //	.c4(),
 	.locked()
@@ -316,7 +316,7 @@ always @(posedge clk_28_636)
 
 always @(posedge clk_14_318)
 	clk_7_16 <= ~clk_7_16; // 7.16Mhz
-
+	
 clk_div3 clk_normal // 4.77MHz
 (
 	.clk(clk_14_318),
@@ -383,6 +383,7 @@ always @(posedge clk_chipset) begin
     clk_opl2_ff_3 <= clk_opl2_ff_2;
     cen_opl2 <= clk_opl2_ff_2 & ~clk_opl2_ff_3;
 end
+
 
 //////////////////////////////////////////////////////////////////
 
@@ -542,6 +543,7 @@ end
 					bios_protect_flag   <= 1'b0;
 					bios_access_request <= 1'b1;
 					tandy_bios_write    <= select_tandy;
+
 					if (~ioctl_download) begin
 						bios_access_address <= 20'hFFFFF;
 						bios_write_data     <= 8'hFF;
@@ -615,6 +617,7 @@ end
 		end
 	end
 
+
 //////////////////////////////////////////////////////////////////
 
 	//
@@ -625,8 +628,9 @@ end
 	reg splashscreen = 1;
 	
 	always @ (posedge clk_14_318) begin
+	
 		if (splashscreen) begin
-			if (status[7])  				  
+			if (status[7])
 				splashscreen <= 0;
 			else if(splash_cnt2 == 5) // 5 seconds delay
 				splashscreen <= 0;
@@ -637,6 +641,7 @@ end
 			else
 				splash_cnt <= splash_cnt + 1;			
 		end
+	
 	end
 	
     //
@@ -731,7 +736,7 @@ end
         .enable_cga                         (1'b1),
         .clk_vga_mda                        (clk_56_875),
         .enable_mda                         (1'b1),
-		.mda_rgb                            (2'b10), // always B&W - monochrome monitor tint handled down below
+        .mda_rgb                            (2'b10), // always B&W - monochrome monitor tint handled down below
         //.de_o                               (VGA_DE),
         .VGA_R                              (r_in),
         .VGA_G                              (g_in),
@@ -747,7 +752,7 @@ end
         .ext_access_request                 (bios_access_request),
         .address_direction                  (address_direction),
         .data_bus                           (data_bus),
-        .data_bus_ext                       (bios_write_data),
+        .data_bus_ext                       (bios_write_data[7:0]),
 //      .data_bus_direction                 (data_bus_direction),
         .address_latch_enable               (address_latch_enable),
 //      .io_channel_check                   (),
@@ -772,14 +777,16 @@ end
         .port_b_out                         (port_b_out),
 		  .port_c_in                          (port_c_in),
 	     .speaker_out                        (speaker_out),   
-         .ps2_clock                          (device_clock),
+        .ps2_clock                          (device_clock),
 	     .ps2_data                           (device_data),
 	     .ps2_clock_out                      (ps2_kbd_clk_out),
 	     .ps2_data_out                       (ps2_kbd_data_out),
-//       .ps2_clock                          (PS2K_CLK_IN),
-//	     .ps2_data                           (PS2K_DAT_IN),
-//	     .ps2_clock_out                      (PS2K_CLK_OUT),
-//	     .ps2_data_out                       (PS2K_DAT_OUT),
+
+	     .ps2_mouseclk_in                    (ps2_mouse_clk_out),
+	     .ps2_mousedat_in                    (ps2_mouse_data_out),
+	     .ps2_mouseclk_out                   (ps2_mouse_clk_in),
+	     .ps2_mousedat_out                   (ps2_mouse_data_in),
+		  
 		  .joy_opts                           (joy_opts),                          //Joy0-Disabled, Joy0-Type, Joy1-Disabled, Joy1-Type, turbo_sync
         .joy0                               (status[28] ? joy1 : joy0),
         .joy1                               (status[28] ? joy0 : joy1),
@@ -791,39 +798,16 @@ end
 		  .adlibhide                          (adlibhide),
 		  .tandy_video                        (tandy_mode),
 		  .tandy_bios_flag                    (tandy_bios_flag),
-
-		`ifdef NO_COM2
-		  .clk_uart                          (clk_uart_en),
-		  .uart_rx                           (UART_RX),
-		  .uart_tx                           (UART_TX),
-		  .uart_cts_n                        (UART_CTS),
-		//.uart_dcd_n                        (uart_dcd),
-		//.uart_dsr_n                        (uart_dsr),
-		  .uart_rts_n                        (UART_RTS),
-		//.uart_dtr_n                        (uart_dtr),
-
-		// NO COM2 UART PORT
-
-		`else
-		  									  //[LONG COMPILATION TIMES with ? clk_uart2 : clk_uart_en]
-		  .clk_uart                           ((status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en),
+		  .clk_uart                          ((status[22:21] == 2'b00) ? clk_uart : clk_uart_en),
+		  .clk_uart2                          (clk_uart2_en), 
 	      .uart_rx                            (UART_RX),
 	      .uart_tx                            (UART_TX),
 	      .uart_cts_n                         (UART_CTS),
-	    //.uart_dcd_n                         (uart_dcd),
-	    //.uart_dsr_n                         (uart_dsr),
-	      .uart_rts_n                         (UART_RTS),
-	    //.uart_dtr_n                         (uart_dtr),
-		  .clk_uart2                          ((status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en),
-	      .uart2_rx                           (UART2_RX),
-	      .uart2_tx                           (UART2_TX),
-	      .uart2_cts_n                        (uart2_cts),
-	    //.uart2_dcd_n                        (uart2_dcd),
-	    //.uart2_dsr_n                        (uart2_dsr),
-	      .uart2_rts_n                        (uart2_rts),
-	    //.uart2_dtr_n                        (uart2_dtr),
-		`endif
-		
+	    .uart_dcd_n                        (uart_dcd),
+	    .uart_dsr_n                        (uart_dsr),
+	     .uart_rts_n                        (UART_RTS),
+	    .uart_dtr_n                        (uart_dtr),
+
 		  .enable_sdram                       (1'b1),
 		 .initilized_sdram                   (initilized_sdram),
 		  .sdram_clock                        (clk_chipset),
@@ -849,6 +833,7 @@ end
 	wire [15:0] SDRAM_DQ_OUT;
 	wire        SDRAM_DQ_IO;
 	wire        initilized_sdram;
+	
 
 	assign SDRAM_DQ_IN = SDRAM_DQ;
 	assign SDRAM_DQ = ~SDRAM_DQ_IO ? SDRAM_DQ_OUT : 16'hZZZZ;
@@ -914,6 +899,8 @@ end
 	logic clk_uart_ff_2;
 	logic clk_uart_ff_3;
 	logic clk_uart_en;
+	logic clk_uart2_en;
+	logic [2:0] clk_uart2_counter;
 
 	always @(posedge clk_chipset) begin
 		clk_uart_ff_1 <= clk_uart;
@@ -922,38 +909,27 @@ end
 		clk_uart_en   <= ~clk_uart_ff_3 & clk_uart_ff_2;
     end
 
-	`ifdef NO_COM2
+	always @(posedge clk_chipset) begin
+		if (clk_uart_en) begin
+			if (3'd7 != clk_uart2_counter) begin
+				clk_uart2_counter <= clk_uart2_counter +3'd1;
+				clk_uart2_en <= 1'b0;
+			end
+			else begin
+				clk_uart2_counter <= 3'd0;
+				clk_uart2_en <= 1'b1;
+			end
+		end
+		else begin
+			clk_uart2_counter <= clk_uart2_counter;
+			clk_uart2_en <= 1'b0;
+		end
+	end
 
-	// NO COM2 UART PORT
-
-	`else
-
-	/// SERIAL MICROSOFT MOUSE
-	wire UART2_RX;
-	wire UART2_TX;
-	wire uart2_rts;
-	wire uart2_cts;
-	wire rts;
-
-	// 	.ps2dta_in(PS2K_MOUSE_DAT_IN),
-	// 	.ps2clk_in(PS2K_MOUSE_CLK_IN),
-	// 	.ps2dta_out(PS2K_MOUSE_DAT_OUT),
-	// 	.ps2clk_out(PS2K_MOUSE_CLK_OUT),
-
-	MSMouseWrapper MSMouseWrapper_inst (
-		.clk(clk_chipset),
-		.ps2dta(PS2_MOUSE_DAT),
-		.ps2clk(PS2_MOUSE_CLK),
-		.rts(rts),
-		.rd(UART2_RX)
-	);
-
-	assign rts = ~uart2_rts;
-
-	// assign xxxx = UART2_RX;		//debug output
-	// assign xxxx = rts;			//debug output
-
-	`endif
+	wire uart_dtr;
+	
+	wire uart_dsr = 1'b0;
+	wire uart_dcd = uart_dtr;
 
 
 //
