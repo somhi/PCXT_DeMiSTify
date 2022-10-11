@@ -126,12 +126,12 @@ parameter CONF_STR = {		// options order: 0,1,2,...
 	//"P2OT,Border,No,Yes;",
 	"P2O4,Video Output,CGA/Tandy,MDA;",
 	"P2OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
-	"P2Og,YPbPr,No,Yes;",
 	"P2Oh,Composite Blending,No,Yes;",
-	"P2Oi,Composite,No,Yes;",
-	"P2Oj,Display mode disable,No,Yes;",
-	"P2Ok,OSD disable,No,Yes;",
+	"P2Oi,Composite video (real),Off,On;",
 	"P2O7,Splash Screen,Yes,No;",
+	"P2Og,EXPER. YPbPr,Off,On;",
+	"P2Oj,DEBUG. Display mode disable,No,Yes;",
+	"P2Ok,DEBUG. OSD disable,No,Yes;",
 	//
 	"P3,Hardware;",
 	"P3OB,Lo-tech 2MB EMS,Enabled,Disabled;",
@@ -230,7 +230,7 @@ data_io data_io (
 );
 
 //
-///////////////////////   CLOCKS   ///////////////////////
+///////////////////////   CLOCKS   /////////////////////////////
 //
 
 wire clk_sys;
@@ -254,14 +254,6 @@ wire clk_uart;
 `ifdef DEMISTIFY_SOCKIT		/////  SOCKIT BOARD with Cyclone V   /////
 
 assign SDRAM_CLK = clk_chipset;
-
-	// .outclk_0(clk_100),		//100
-	// .outclk_1(clk_56_875),	//56.875
-	// .outclk_2(clk_28_636),	//28.636
-	// .outclk_3(clk_uart),		//14.7456
-	// .outclk_4(clk_opl2),		//3.58
-	// .outclk_5(clk_chipset),	//50
-	// .outclk_6(clk_113_750),	//113.75
 
 pll pll
 (
@@ -476,7 +468,7 @@ always @(posedge CLK_50M, posedge reset_sdram_wire) begin
 end
 
 //
-///////////////////////   BIOS LOADER   ///////////////////////
+///////////////////////   BIOS LOADER   ////////////////////////////
 //
 
 	reg [4:0]  bios_load_state = 4'h0;
@@ -809,11 +801,10 @@ end
 	      .uart_rx                            (UART_RX),
 	      .uart_tx                            (UART_TX),
 	      .uart_cts_n                         (UART_CTS),
-	    .uart_dcd_n                        (uart_dcd),
-	    .uart_dsr_n                        (uart_dsr),
-	     .uart_rts_n                        (UART_RTS),
-	    .uart_dtr_n                        (uart_dtr),
-
+	      .uart_dcd_n                         (1'b0), //(uart_dcd),
+	      .uart_dsr_n                         (1'b0), //(uart_dsr),
+	      .uart_rts_n                         (UART_RTS),
+	    //.uart_dtr_n                         (uart_dtr),
 		  .enable_sdram                       (1'b1),
 		 .initilized_sdram                   (initilized_sdram),
 		  .sdram_clock                        (clk_chipset),
@@ -931,11 +922,6 @@ end
 			clk_uart2_en <= 1'b0;
 		end
 	end
-
-	wire uart_dtr;
-	
-	wire uart_dsr = 1'b0;
-	wire uart_dcd = uart_dtr;
 
 
 //
