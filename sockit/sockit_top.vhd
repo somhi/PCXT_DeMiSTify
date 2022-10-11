@@ -332,14 +332,14 @@ begin
 	--		PS2K_CLK_OUT => ps2_keyboard_clk_out,
 	--		PS2K_DAT_OUT => ps2_keyboard_dat_out
 
-	--		PS2K_MOUSE_CLK_IN => ps2_mouse_clk_in,
-	--		PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
-	--		PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
-	--		PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
+			PS2K_MOUSE_CLK_IN => ps2_mouse_clk_in,
+			PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
+			PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
+			PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
 
 
-			PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
-			PS2_MOUSE_DAT => PS2_MOUSE_DAT   
+			-- PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
+			-- PS2_MOUSE_DAT => PS2_MOUSE_DAT   
 		);
 
 
