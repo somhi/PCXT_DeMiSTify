@@ -62,7 +62,7 @@ module PCXT
 	input         UART_RX,
 	output        UART_TX,
 	input		  UART_CTS,
-	output 		  UART_RTS
+	output 		  UART_RTS,
 
 	// input         UART2_RX,
 	// output        UART2_TX,
@@ -71,10 +71,11 @@ module PCXT
 //	input         PS2K_DAT_IN,
 //	output        PS2K_CLK_OUT,
 //	output        PS2K_DAT_OUT
-//  input         PS2K_MOUSE_CLK_IN,
-//  input         PS2K_MOUSE_DAT_IN,
-//  output        PS2K_MOUSE_CLK_OUT,
-//  output        PS2K_MOUSE_DAT_OUT
+
+ input         PS2K_MOUSE_CLK_IN,
+ input         PS2K_MOUSE_DAT_IN,
+ output        PS2K_MOUSE_CLK_OUT,
+ output        PS2K_MOUSE_DAT_OUT
 
 //	inout		  PS2_MOUSE_CLK,
 //	inout		  PS2_MOUSE_DAT
@@ -193,10 +194,10 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	.ps2_kbd_clk		(ps2_kbd_clk_in),
 	.ps2_kbd_data		(ps2_kbd_data_in),
 
-    .ps2_mouse_clk_i	(ps2_mouse_clk_out),
-	.ps2_mouse_data_i	(ps2_mouse_data_out),
-	.ps2_mouse_clk		(ps2_mouse_clk_in),
-	.ps2_mouse_data		(ps2_mouse_data_in),
+    // .ps2_mouse_clk_i	(ps2_mouse_clk_out),
+	// .ps2_mouse_data_i	(ps2_mouse_data_out),
+	// .ps2_mouse_clk		(ps2_mouse_clk_in),
+	// .ps2_mouse_data		(ps2_mouse_data_in),
 
 	.joystick_0(joy0),
 	.joystick_1(joy1),
@@ -204,6 +205,11 @@ user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io (
 	.joystick_analog_1(joya1)
 );
 
+
+assign PS2K_MOUSE_CLK_OUT = ps2_mouse_clk_out;
+assign PS2K_MOUSE_DAT_OUT = ps2_mouse_data_out;
+assign ps2_mouse_clk_in   = PS2K_MOUSE_CLK_IN;
+assign ps2_mouse_data_in  = PS2K_MOUSE_DAT_IN;
 
 data_io data_io (
 	.clk_sys    ( clk_chipset ),
@@ -782,10 +788,10 @@ end
 	     .ps2_clock_out                      (ps2_kbd_clk_out),
 	     .ps2_data_out                       (ps2_kbd_data_out),
 
-	     .ps2_mouseclk_in                    (ps2_mouse_clk_out),
-	     .ps2_mousedat_in                    (ps2_mouse_data_out),
-	     .ps2_mouseclk_out                   (ps2_mouse_clk_in),
-	     .ps2_mousedat_out                   (ps2_mouse_data_in),
+	     .ps2_mouseclk_in                    (ps2_mouse_clk_in),
+	     .ps2_mousedat_in                    (ps2_mouse_data_in),
+	     .ps2_mouseclk_out                   (ps2_mouse_clk_out),
+	     .ps2_mousedat_out                   (ps2_mouse_data_out),
 		  
 		  .joy_opts                           (joy_opts),                          //Joy0-Disabled, Joy0-Type, Joy1-Disabled, Joy1-Type, turbo_sync
         .joy0                               (status[28] ? joy1 : joy0),
