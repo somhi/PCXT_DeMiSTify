@@ -146,10 +146,10 @@ begin
 
 
 -- External devices tied to GPIOs
--- ps2_mouse_dat_in <= PS2_MOUSE_DAT;
--- PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
--- ps2_mouse_clk_in <= PS2_MOUSE_CLK;
--- PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
+ps2_mouse_dat_in <= PS2_MOUSE_DAT;
+PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
+ps2_mouse_clk_in <= PS2_MOUSE_CLK;
+PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
 
 ps2_keyboard_dat_in <=ps2_keyboard_dat;
 ps2_keyboard_dat <= '0' when ps2_keyboard_dat_out='0' else 'Z';
@@ -246,9 +246,18 @@ guest: COMPONENT  PCXT
 	AUDIO_L => SIGMA_L,
 	AUDIO_R => SIGMA_R,
 
-	-- PS2
-	PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
-	PS2_MOUSE_DAT => PS2_MOUSE_DAT   		
+	--	PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
+	--	PS2K_DAT_IN => ps2_keyboard_dat_in
+	--	PS2K_CLK_OUT => ps2_keyboard_clk_out,
+	--	PS2K_DAT_OUT => ps2_keyboard_dat_out
+
+	PS2K_MOUSE_CLK_IN => ps2_mouse_clk_in,
+	PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
+	PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
+	PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
+
+	-- PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
+	-- PS2_MOUSE_DAT => PS2_MOUSE_DAT   		
   );
 
 
