@@ -149,7 +149,7 @@ module crtc6845(
 
     wire h_end;
     wire v_end;
-    
+
     assign vsync = vs;
     assign hsync = hs;
     assign display_enable = hdisp & vdisp;
