@@ -173,7 +173,8 @@ wire        ioctl_download;
 wire  [7:0] ioctl_index;
 wire        ioctl_wr;
 wire [24:0] ioctl_addr;
-wire  [7:0] ioctl_data;
+wire [7:0]  ioctl_data;
+reg         ioctl_wait;
 
 wire        adlibhide = status[10];
 
@@ -483,9 +484,10 @@ end
 	reg        bios_protect_flag;
     reg        bios_access_request;
 	reg [19:0] bios_access_address;
-	reg [7:0]  bios_write_data;
+	reg [15:0] bios_write_data;
 	reg        bios_write_n;
 	reg [7:0]  bios_write_wait_cnt;
+	reg        bios_write_byte_cnt;
 	reg        tandy_bios_write;
 
 	wire select_pcxt  = (ioctl_index[5:0] <  2) && (ioctl_addr[24:16] == 9'b000000000);
@@ -504,21 +506,23 @@ end
 			bios_protect_flag   <= 1'b1;
 			bios_access_request <= 1'b0;
 			bios_access_address <= 20'hFFFFF;
-			bios_write_data     <= 8'hFF;
+			bios_write_data     <= 16'hFFFF;
 			bios_write_n        <= 1'b1;
 			bios_write_wait_cnt <= 'h0;
+			bios_write_byte_cnt <= 1'h0;
 			tandy_bios_write    <= 1'b0;
-		//	ioctl_wait          <= 1'b1;
+			ioctl_wait          <= 1'b1;
 			bios_load_state     <= 4'h00;
 		end
 		else if (~initilized_sdram) begin
 			bios_protect_flag   <= 1'b1;
 			bios_access_request <= 1'b0;
 			bios_access_address <= 20'hFFFFF;
-			bios_write_data     <= 8'hFF;
+			bios_write_data     <= 16'hFFFF;
 			bios_write_n        <= 1'b1;
 			bios_write_wait_cnt <= 'h0;
-		//	ioctl_wait          <= 1'b1;
+			bios_write_byte_cnt <= 1'h0;
+			ioctl_wait          <= 1'b1;
 			bios_load_state     <= 4'h00;
 		end
 		else begin
@@ -526,18 +530,19 @@ end
 				4'h00: begin
 					bios_protect_flag   <= 1'b1;
 					bios_access_address <= 20'hFFFFF;
-					bios_write_data     <= 8'hFF;
+					bios_write_data     <= 16'hFFFF;
 					bios_write_n        <= 1'b1;
 					bios_write_wait_cnt <= 'h0;
+					bios_write_byte_cnt <= 1'h0;
 					tandy_bios_write    <= 1'b0;
 
 					if (~ioctl_download) begin
 						bios_access_request <= 1'b0;
-		//				ioctl_wait          <= 1'b0;
+						ioctl_wait          <= 1'b0;
 					end
 					else begin
 						bios_access_request <= 1'b1;
-		//				ioctl_wait          <= 1'b1;
+						ioctl_wait          <= 1'b1;
 					end
 
 					if ((ioctl_download) && (~processor_ready) && (address_direction))
@@ -548,30 +553,31 @@ end
 				4'h01: begin
 					bios_protect_flag   <= 1'b0;
 					bios_access_request <= 1'b1;
+					bios_write_byte_cnt <= 1'h0;
 					tandy_bios_write    <= select_tandy;
 
 					if (~ioctl_download) begin
 						bios_access_address <= 20'hFFFFF;
-						bios_write_data     <= 8'hFF;
+						bios_write_data     <= 16'hFFFF;
 						bios_write_n        <= 1'b1;
 						bios_write_wait_cnt <= 'h0;
-		//				ioctl_wait          <= 1'b0;
+						ioctl_wait          <= 1'b0;
 						bios_load_state     <= 4'h00;
 					end
 					else if ((~ioctl_wr) || (bios_load_n)) begin
 						bios_access_address <= 20'hFFFFF;
-						bios_write_data     <= 8'hFF;
+						bios_write_data     <= 16'hFFFF;
 						bios_write_n        <= 1'b1;
 						bios_write_wait_cnt <= 'h0;
-		//				ioctl_wait          <= 1'b0;
+						ioctl_wait          <= 1'b0;
 						bios_load_state     <= 4'h01;
 					end
 					else begin
 						bios_access_address <= bios_access_address_wire;
-						bios_write_data     <= ioctl_data;
+						bios_write_data     <= {8'hFF,ioctl_data};
 						bios_write_n        <= 1'b1;
 						bios_write_wait_cnt <= 'h0;
-		//				ioctl_wait          <= 1'b1;
+						ioctl_wait          <= 1'b1;
 						bios_load_state     <= 4'h02;
 					end
 				end
@@ -580,8 +586,9 @@ end
 					bios_access_request <= 1'b1;
 					bios_access_address <= bios_access_address;
 					bios_write_data     <= bios_write_data;
+					bios_write_byte_cnt <= bios_write_byte_cnt;
 					tandy_bios_write    <= select_tandy;
-		//			ioctl_wait          <= 1'b1;
+					ioctl_wait          <= 1'b1;
 					bios_write_wait_cnt <= bios_write_wait_cnt + 'h1;
 
 					if (bios_write_wait_cnt != 'd20) begin
@@ -599,24 +606,26 @@ end
 					bios_access_address <= 20'hFFFFF;
 					bios_write_data     <= 8'hFF;
 					bios_write_n        <= 1'b1;
+					bios_write_byte_cnt <= bios_write_byte_cnt;
 					tandy_bios_write    <= 1'b0;
-		//			ioctl_wait          <= 1'b1;
+					ioctl_wait          <= 1'b1;
 					bios_write_wait_cnt <= bios_write_wait_cnt + 'h1;
 
 					if (bios_write_wait_cnt != 'd40)
 						bios_load_state     <= 4'h03;
                     else
 						bios_load_state     <= 4'h01;
-                end
+				end
 				default: begin
 					bios_protect_flag   <= 1'b1;
 					bios_access_request <= 1'b0;
 					bios_access_address <= 20'hFFFFF;
-					bios_write_data     <= 8'hFF;
+					bios_write_data     <= 16'hFFFF;
 					bios_write_n        <= 1'b1;
 					bios_write_wait_cnt <= 'h0;
+					bios_write_byte_cnt <= 1'h0;
 					tandy_bios_write    <= 1'b0;
-		//			ioctl_wait          <= 1'b0;
+					ioctl_wait          <= 1'b0;
 					bios_load_state     <= 4'h00;
 				end
 			endcase
@@ -688,14 +697,6 @@ end
     end
 	
 
-	 always @(posedge clk_100) begin
-		if (address_latch_enable)
-			cpu_address <= cpu_ad_out;
-		else
-			cpu_address <= cpu_address;
-	end	
-
-
     wire [7:0] data_bus;
     wire INTA_n;	
     wire [19:0] cpu_ad_out;
@@ -715,6 +716,13 @@ end
     logic   [7:0]   port_c_in;	 
 	 reg     [7:0]   sw;
 	 
+	always @(posedge clk_100) begin
+		if (address_latch_enable)
+			cpu_address <= cpu_ad_out;
+		else
+			cpu_address <= cpu_address;
+	end	
+
 	 assign  sw = mda_mode ? 8'b00111101 : 8'b00101101; // PCXT DIP Switches (MDA or CGA 80)
 	 assign  port_c_in[3:0] = port_b_out[3] ? sw[7:4] : sw[3:0];
 

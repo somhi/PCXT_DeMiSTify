@@ -37,4 +37,6 @@ set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/Peripherals.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/Chipset.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/Bus_Arbiter.sv"]
-set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/hps_ext.v"]
+
+#hsp_ext.v used for ao486 FDD from MiSTer core
+#set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/hps_ext.v"]
