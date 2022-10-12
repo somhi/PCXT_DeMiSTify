@@ -25,14 +25,15 @@ serdrive_x64 -g 733:7:17 -v -c /dev/ttyUSB0 -b 921.6K PCXT_CGA_Tandy.img
 
 Some notes about serdrive:
 
-* 921.6 Kb only works at 14.3 MHz
+* 115.2 kbps does not work
+* 921.6 kbps only works at 14.3 MHz
 * Core has enabled RTS/CTS signals which gives better stability and speed to the HDD
   * Windows does not care about RTS/CTS signals
   * In Linux those RTS/CTS lines need to be connected for XTIDE to detect the image. Take care that CTS goes to RTS and RTS to CTS.
 
 **Mouse support**:
 
-* Core includes a wrapper that converts PS2 mouse protocol to Microsoft Mouse mode. Mouse support is experimental and seems to stop working most of the times when the other COM port is being used for serdrive. UART speed should be selected at 1200..115kbps in OSD and therefore serdrive should serve images at 115 kpbs.  Cutemouse drivers has been tested and works `ctmouse /s2`
+* Core includes a wrapper that converts PS2 mouse protocol to Microsoft Mouse mode. Mouse support is experimental and stops working most of the times when the other COM port is being used for serdrive.  Cutemouse driver has been tested and works `ctmouse /s2`
 
 Follows original Readme (with some crossed out text where does not apply).
 

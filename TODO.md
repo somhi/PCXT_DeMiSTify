@@ -12,6 +12,12 @@
     * CGA video (not TGA) deformed at top part of screen in some resolutions
 
   * YPbPr video output did not work on my setup.
+  
+  * Composite video output
+    * center image from core
+    * hotkey to enable composite mode without OSD
+    * OSD not displaying well
+  
 
 
 
