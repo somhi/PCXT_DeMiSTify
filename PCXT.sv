@@ -98,7 +98,7 @@ assign LED =  ~ioctl_download;   //1'b1;
 // 0         1         2         3          4         5         6
 // 01234567890123456789012345678901 234567890123456789012345678901
 // 0123456789ABCDEFGHIJKLMNOPQRSTUV WXYZabcdefghijklmnopqrstuvwxyz
-// XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX ----------DDDDD      
+// XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX aaaaaaaa--DDDDD      
 
 
 `include "build_id.v" 
@@ -106,7 +106,6 @@ parameter CONF_STR = {		// options order: 0,1,2,...
 	"PCXT;;",
 	"O3,Model,IBM PCXT,Tandy 1000;",
 	"OHI,CPU Speed,4.77MHz,7.16MHz,14.318MHz;",
-	"OLM,UART Speed,1200..115200bps,115200..921600bps;",
 	// 
 	"P1,BIOS;",
 	"P1F,ROM,PCXT BIOS:;",
@@ -119,27 +118,36 @@ parameter CONF_STR = {		// options order: 0,1,2,...
 	//"P1OJK,Write Protect,None,FDD,HDD,FDD & HDD;",
 	//"P1OLM,Speed,115200,230400,460800,921600;",
 	//
-	"P2,Audio & Video;",
+	"P2,Audio;",
 	"P2OA,Adlib,On,Invisible;",
-	//"P2O12,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
-	//"P2O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
-	//"P2OT,Border,No,Yes;",
-	"P2O4,Video Output,CGA/Tandy,MDA;",
-	"P2OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
-	"P2Oh,Composite Blending,No,Yes;",
-	"P2Oi,Composite video (real),Off,On;",
-	"P2O7,Splash Screen,Yes,No;",
-	"P2Og,EXPER. YPbPr,Off,On;",
-	"P2Oj,DEBUG. Display mode disable,No,Yes;",
-	"P2Ok,DEBUG. OSD disable,No,Yes;",
+	"P2OWX,Speaker Volume,1,2,3,4;",
+	"P2OYZ,Tandy Volume,1,2,3,4;",
+	"P2Oab,Audio Boost,No,2x,4x;",
+	//"P2Ocd,Stereo Mix,none,25%,50%,100%;",
 	//
-	"P3,Hardware;",
-	"P3OB,Lo-tech 2MB EMS,Enabled,Disabled;",
-	"P3OCD,EMS Frame,A000,C000,D000;",
-	"P3ONO,Joystick 1, Analog, Digital, Disabled;",
-	"P3OPQ,Joystick 2, Analog, Digital, Disabled;",
-	"P3OR,Sync Joy to CPU Speed,No,Yes;",
-	"P3OS,Swap Joysticks,No,Yes;",
+	"P3,Video;",
+	//"P3O12,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%;",
+	//"P3O89,Aspect ratio,Original,Full Screen,[ARC1],[ARC2];",
+	//"P3OT,Border,No,Yes;",
+	"P3O4,Video Output,CGA/Tandy,MDA;",
+	"P3OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
+	"P3Oh,Composite Blending,No,Yes;",
+	"P3Oi,Composite video (real),Off,On;",
+	"P3O7,Splash Screen,Yes,No;",
+	"P3Og,EXPER.YPbPr,Off,On;",
+	//
+	"P4,Hardware;",
+	"P4OB,Lo-tech 2MB EMS,Enabled,Disabled;",
+	"P4OCD,EMS Frame,A000,C000,D000;",
+	"P4ONO,Joystick 1, Analog, Digital, Disabled;",
+	"P4OPQ,Joystick 2, Analog, Digital, Disabled;",
+	"P4OR,Sync Joy to CPU Speed,No,Yes;",
+	"P4OS,Swap Joysticks,No,Yes;",
+	//
+	"P5,Debug;",
+	"P5OLM,UART Speed,1200..115200bps,115200..921600bps;",
+	"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
+	"P5Ok,DEBUG.OSD disable,No,Yes;",
 	//
 	"T0,Reset;",
 	"V,v",`BUILD_DATE 
@@ -831,7 +839,6 @@ end
 	wire        SDRAM_DQ_IO;
 	wire        initilized_sdram;
 	
-
 	assign SDRAM_DQ_IN = SDRAM_DQ;
 	assign SDRAM_DQ = ~SDRAM_DQ_IO ? SDRAM_DQ_OUT : 16'hZZZZ;
 
@@ -861,29 +868,98 @@ end
 	);
 	
 //
-///////////////////////   AUDIO   ///////////////////////
+////////////////////////////  AUDIO  /////////////////////////////////// 
 //
-
-	wire speaker_out;
-	wire  [7:0]   tandy_snd_e;
-	wire tandy_snd_rdy;
-
-	wire [15:0] jtopl2_snd_e;	
+	
 	//wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + {tandy_snd_e, 6'd0}; // signed mixer
 	//wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 1) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 1
 	//wire [16:0]sndmix = (({1'b0, jtopl2_snd_e}) ) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // bad
 	//wire [16:0]sndmix_pcm = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (~speaker_out << 15) + {tandy_snd_e, 9'd0}; // not bad
-	wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 2
+	
+	// wire speaker_out;
+	// wire  [7:0] tandy_snd_e;
+	// wire [15:0] jtopl2_snd_e;
+	// wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 2
 
+	// `ifdef DEMISTIFY
+	// assign DAC_R = sndmix >> 1;
+	// assign DAC_L = sndmix >> 1;	
+	// `endif
+
+	// sigma_delta_dac sigma_delta_dac (
+	// 	.clk      ( CLK_50M     ),      // bus clock
+	// 	.ldatasum ( sndmix >> 2 ),      // left channel data		(ok1) sndmix >> 1 bad, (ok2) sndmix >> 2 ok
+	// 	.rdatasum ( sndmix >> 2 ),      // right channel data		sndmix_pcm >> 1 bad, sndmix_pcm >> 2 bad
+	// 	.left     ( AUDIO_L     ),      // left bitstream output
+	// 	.right    ( AUDIO_R     )       // right bitsteam output
+	// );
+
+
+	wire [15:0] jtopl2_snd_e;
+	wire [16:0] jtopl2_snd;
+	wire [7:0]  tandy_snd_e;
+	wire [16:0] tandy_snd;
+	reg  [16:0] spk_vol;
+	wire        speaker_out;
+	always @(posedge CLK_50M) begin		//CLK_AUDIO
+		reg [15:0] oldj_0, oldj_1;
+		reg [15:0] oldt_0, oldt_1;
+		
+		oldj_0 <= jtopl2_snd_e;
+		oldj_1 <= oldj_0;
+		if(oldj_0 == oldj_1) jtopl2_snd <= {oldj_1[15],oldj_1};
+		
+		oldt_0 <= {2'b00, {3'b000, tandy_snd_e} << status[35:34], 4'd0};
+		oldt_1 <= oldt_0;
+		if(oldt_0 == oldt_1) tandy_snd <= {oldt_1[15],oldt_1};
+		
+		spk_vol <= {2'b00, {3'b000,~speaker_out} << status[33:32], 11'd0};
+	end
+	
+	localparam [3:0] comp_f1 = 4;
+	localparam [3:0] comp_a1 = 2;
+	localparam       comp_x1 = ((32767 * (comp_f1 - 1)) / ((comp_f1 * comp_a1) - 1)) + 1; // +1 to make sure it won't overflow
+	localparam       comp_b1 = comp_x1 * comp_a1;
+	
+	localparam [3:0] comp_f2 = 8;
+	localparam [3:0] comp_a2 = 4;
+	localparam       comp_x2 = ((32767 * (comp_f2 - 1)) / ((comp_f2 * comp_a2) - 1)) + 1; // +1 to make sure it won't overflow
+	localparam       comp_b2 = comp_x2 * comp_a2;
+	
+	function [15:0] compr; input [15:0] inp;
+		reg [15:0] v, v1, v2;
+		begin
+			v  = inp[15] ? (~inp) + 1'd1 : inp;
+			v1 = (v < comp_x1[15:0]) ? (v * comp_a1) : (((v - comp_x1[15:0])/comp_f1) + comp_b1[15:0]);
+			v2 = (v < comp_x2[15:0]) ? (v * comp_a2) : (((v - comp_x2[15:0])/comp_f2) + comp_b2[15:0]);
+			v  = status[37] ? v2 : v1;
+			compr = inp[15] ? ~(v-1'd1) : v;
+		end
+	endfunction 
+	
+	reg [15:0] cmp;
+	reg [15:0] out;
+	always @(posedge CLK_50M) begin		//CLK_AUDIO
+		reg [16:0] tmp;
+	
+		tmp <= jtopl2_snd + tandy_snd + spk_vol;
+	
+		// clamp the output
+		out <= (^tmp[16:15]) ? {tmp[16], {15{tmp[15]}}} : tmp[15:0];
+	
+		cmp <= compr(out);
+	end
+	
+		
 	`ifdef DEMISTIFY
-	assign DAC_R = sndmix >> 1;
-	assign DAC_L = sndmix >> 1;	
+	assign DAC_R =  status[37:36] ? cmp : out;
+	assign DAC_L =  status[37:36] ? cmp : out;	
 	`endif
 
 	sigma_delta_dac sigma_delta_dac (
 		.clk      ( CLK_50M     ),      // bus clock
-		.ldatasum ( sndmix >> 2 ),      // left channel data		(ok1) sndmix >> 1 bad, (ok2) sndmix >> 2 ok
-		.rdatasum ( sndmix >> 2 ),      // right channel data		sndmix_pcm >> 1 bad, sndmix_pcm >> 2 bad
+		.ldatasum ( status[37:36] ? cmp : out ),      // left channel data		(ok1) sndmix >> 1 bad, (ok2) sndmix >> 2 ok
+		.rdatasum ( status[37:36] ? cmp : out ),      // right channel data		sndmix_pcm >> 1 bad, sndmix_pcm >> 2 bad
 		.left     ( AUDIO_L     ),      // left bitstream output
 		.right    ( AUDIO_R     )       // right bitsteam output
 	);
