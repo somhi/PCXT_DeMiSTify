@@ -144,12 +144,13 @@ parameter CONF_STR = {		// options order: 0,1,2,...
 	"P4OR,Sync Joy to CPU Speed,No,Yes;",
 	"P4OS,Swap Joysticks,No,Yes;",
 	//
+	"T0,Reset;",
+	//
 	"P5,Debug;",
 	"P5OLM,UART Speed,1200..115200bps,115200..921600bps;",
 	"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
 	"P5Ok,DEBUG.OSD disable,No,Yes;",
 	//
-	"T0,Reset;",
 	"V,v",`BUILD_DATE 
 };
 

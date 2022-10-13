@@ -240,7 +240,7 @@ module PERIPHERALS #(
         .interrupt_to_cpu           (interrupt_to_cpu),
         .interrupt_request          ({interrupt_request[7:5],
                                         uart_interrupt,
-                                        uart2_interrupt,
+                                        uart2_interrupt & ~uart2_cs,
                                         interrupt_request[2],
                                         keybord_interrupt,
                                         timer_interrupt})
