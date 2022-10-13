@@ -37,6 +37,7 @@ module PERIPHERALS #(
 	output  logic           VGA_VBlank,	 
     input   logic           scandoubler,
     input   logic           composite_on,   
+	output logic	[1:0]	composite_output,
     // I/O Ports
     input   logic   [19:0]  address,
     input   logic   [7:0]   internal_data_bus,
@@ -829,6 +830,7 @@ module PERIPHERALS #(
     //    .video                      (video_cga),              // non scandoubled
     //    .dbl_video                  (video_cga),                // scandoubled
           .comp_video                 (comp_video),
+	      .composite_output		 	  (composite_output),
 		  .splashscreen               (splashscreen),
         .thin_font                  (thin_font),
 		  .tandy_video                (tandy_video),
