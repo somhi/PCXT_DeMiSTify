@@ -38,6 +38,7 @@ module CHIPSET (
 	output  logic           VGA_VBlank,
     input   logic           scandoubler,
     input   logic           composite_on,   
+	output logic	[1:0]	composite_output,
     // I/O Ports
     output  logic   [19:0]  address,
     input   logic   [19:0]  address_ext,
@@ -263,6 +264,7 @@ module CHIPSET (
         .VGA_VBlank                         (VGA_VBlank),
         .scandoubler						(scandoubler),
         .composite_on                       (composite_on),
+		.composite_output					(composite_output),
         .address                            (address),
         .internal_data_bus                  (internal_data_bus),
         .data_bus_out                       (internal_data_bus_chipset),

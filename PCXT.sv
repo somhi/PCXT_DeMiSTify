@@ -48,6 +48,8 @@ module PCXT
 	output        VGA_HS,
 	output        VGA_VS,
 
+	output  [1:0] COMPOSITE_OUT,
+
 	output        CLK_VIDEO,	//Base video clock. Usually equals to CLK_SYS.
 	output        VGA_DE,    	// = ~(VBlank | HBlank)
 
@@ -762,6 +764,7 @@ end
 		.VGA_VBlank							(VBlank),
 		.scandoubler						(~forced_scandoubler),
 		.composite_on						(composite_on),
+		.composite_output                   (COMPOSITE_OUT),
 //      .address                            (address),
         .address_ext                        (bios_access_address),
         .ext_access_request                 (bios_access_request),

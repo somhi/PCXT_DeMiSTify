@@ -49,6 +49,9 @@ entity atlas_top is
 		UART_RXD_MIDI_WSBD 		: 	in std_logic;
 		--PI_CS_MIDI_CLKBD		: 	in std_logic;		
 
+		PI_CLK_I2S_DATA			: 	 out std_logic;	  	-- Composite output 0
+		PI_CS_MIDI_CLKBD		: 	 out std_logic;	  	-- Composite output 1
+
 		PI_MISO_I2S_BCLK		: 	 in  std_logic;   			-- UART_CTS
 		PI_MOSI_I2S_LRCLK		: 	 out std_logic	:= '0';	  	-- UART_RTS
 
@@ -169,6 +172,8 @@ architecture RTL of atlas_top is
 	signal vga_x_b   : std_logic_vector(5 downto 0);
 	signal vga_x_hs  : std_logic;
 	signal vga_x_vs  : std_logic;
+
+	signal composite_output : std_logic_vector(1 downto 0);
 
 	signal CLK50M : std_logic;
 	signal CLK48M : std_logic;
@@ -335,6 +340,10 @@ begin
 	end generate PINS_HDMI_VGA_1;
 	-- END VGA ATLAS -------------------  
 
+	-- Composite video output
+	 PI_CLK_I2S_DATA  <= composite_output(0);
+	 PI_CS_MIDI_CLKBD <= composite_output(1);
+
 
 	-- PLL VIDEO / 50 MHz / 48 USB
 	pllvideo : pll2
@@ -366,7 +375,6 @@ begin
 		-- JUST LEAVE ONE HDMI WRAPPER (1/2/3) UNCOMMENTED                                                  --
 		-- SELECT PROJECT FILES FOR HDMI WRAPPER (1/2/3) AT DeMiSTify/Board/atlas_cyc/atlas_cyc_support.tcl --
 		------------------------------------------------------------------------------------------------------
-		
 
 		---- BEGIN HDMI 1 NO SOUND (MULTICPM / Next186) 
 
@@ -520,6 +528,9 @@ begin
 			VGA_R     => vga_red,
 			VGA_G     => vga_green,
 			VGA_B     => vga_blue,
+
+			COMPOSITE_OUT => composite_output,
+
 				-- VGA_BLANK => vga_blank,
 				-- VGA_CLK   => vga_clk,
 				-- HDMI_CLK  => hdmi_clk,

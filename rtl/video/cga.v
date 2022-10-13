@@ -38,6 +38,7 @@ module cga(
     output[3:0] video,
     output[3:0] dbl_video,
     output[6:0] comp_video,
+	output[1:0] composite_output,
 
 	 input splashscreen,
     input thin_font,
@@ -388,7 +389,8 @@ module cga(
         .hsync_out(hsync_out),
         .vsync_out(vsync_out),
         .csync_out(csync_out),
-        .comp_video(comp_video)
+        .comp_video(comp_video),
+		.composite_output(composite_output)
     );
 
 

@@ -22,7 +22,8 @@ module cga_composite(
     output hsync_out,
     output vsync_out,
     output csync_out,
-    output [6:0] comp_video
+    output [6:0] comp_video,
+	output [1:0] composite_output
     );
 
     reg[3:0] vid_del;
@@ -187,5 +188,48 @@ module cga_composite(
 
     assign comp_video = ~csync ? 0 : (grey_level + (vid_del[3] ? 7'd31 : 7'd0) +
                         (color_out2 ? 7'd28 : 7'd0));
+
+
+	 
+	 //////////  Composite direct output with 2 pins by @thesonders  ///////////
+
+	reg [6:0]datainH=0;
+	reg [6:0]datainL=0;
+	 
+	test_tx test_tx(
+	    .tx_in({datainL,datainH}),
+	    .tx_inclock(clk),
+	    .tx_out(composite_output)
+    );
+	 
+	always @ (posedge clk) 
+    begin
+        if (clk_14m3 && !clk_old) begin
+				 case (comp_video[6:4])
+				 0:begin datainH<=0;end
+				 1:begin datainH<=1;end
+				 2:begin datainH<=3;end
+				 3:begin datainH<=7;end
+				 4:begin datainH<=15;end
+				 5:begin datainH<=31;end
+				 6:begin datainH<=63;end
+				 7:begin datainH<=127;end
+				 endcase
+				 
+				 case (comp_video[3:1])
+				 0:begin datainL<=0;end
+				 1:begin datainL<=1;end
+				 2:begin datainL<=3;end
+				 3:begin datainL<=7;end
+				 4:begin datainL<=15;end
+				 5:begin datainL<=31;end
+				 6:begin datainL<=63;end
+				 7:begin datainL<=127;end
+				 endcase
+				 
+        end
+    end
+	  
+
 
 endmodule
