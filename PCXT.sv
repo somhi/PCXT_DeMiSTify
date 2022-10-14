@@ -976,7 +976,7 @@ module PCXT
     reg  [16:0] spk_vol;
     wire        speaker_out;
 
-    always @(posedge CLK_AUDIO)
+    always @(posedge CLK_50M)		//CLK_AUDIO
     begin
         reg [15:0] oldj_0, oldj_1;
         reg [15:0] oldt_0, oldt_1;
@@ -1018,7 +1018,7 @@ module PCXT
 
     reg [15:0] cmp;
     reg [15:0] out;
-    always @(posedge CLK_50M)
+    always @(posedge CLK_50M)		//CLK_AUDIO
     begin
         reg [16:0] tmp;
 
