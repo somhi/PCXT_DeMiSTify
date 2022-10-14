@@ -71,6 +71,20 @@ An SN76489AN Compatible Implementation (Tandy Sound) written in VHDL was also in
 * Joystick support
 * Mouse support into COM2 serial port, this works like any Microsoft mouse... you just need a driver to configure it, like CTMOUSE 1.9 (available into hdd folder), with the command CTMOUSE /s2 
 
+## Quick Start
+
+* [Download](https://github.com/MiSTer-devel/PCXT_MiSTer/raw/main/games/PCXT/hd_image.zip) and uncompress hd_image.zip on your host system. It contains a [freedos](http://www.freedos.org/ ) image
+* Load OS with [Serdrive](SW/ ) as explained before
+* Prepare an SD card for your FPGA with a PCXT folder containing the BIOS  (see ROM instructions below)
+* Upload bitstream into your FPGA (check release in each FPGA folder)
+* Press F12 on your keyboard to access the OSD and select options below
+  * Model: IBM PCXT
+  * CPU Speed: 14.318MHz
+  * BIOS:  pcxt_micro8088.rom
+  * Finally apply Reset
+
+* NOTE: If you leave a BIOS file with the name PCXT.ROM into the root of the SD card it will be loaded straight away after the splash screen
+
 ## ROM Instructions
 
 ROMs should be provided initially from the BIOS section of the OSD menu, then it is only necessary to indicate the computer model and reset, on subsequent boot of the core, it is no longer necessary to provide them, unless we want to use others. Original and copyrighted ROMs can be generated on the fly using the python scripts available in the SW folder of this repository:
