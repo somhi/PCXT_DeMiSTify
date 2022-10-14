@@ -80,7 +80,7 @@ An SN76489AN Compatible Implementation (Tandy Sound) written in VHDL was also in
 * Press F12 on your keyboard to access the OSD and select options below
   * Model: IBM PCXT
   * CPU Speed: 14.318MHz
-  * BIOS:  pcxt_micro8088.rom
+  * BIOS > PCXT BIOS > browse to the SD folder and choose  pcxt_micro8088.rom or any other ROM
   * Finally apply Reset
 
 * NOTE: If you leave a BIOS file with the name PCXT.ROM into the root of the SD card it will be loaded straight away after the splash screen
@@ -100,6 +100,8 @@ Other Open Source ROMs are available in the same folder:
 * `pcxt_pcxt31.rom`: This ROM already has the XTIDE BIOS embedded at address F000h. ([Source Code](https://github.com/virtualxt/pcxtbios))
 * `pcxt_micro8088.rom`: This ROM already has the XTIDE BIOS embedded at address F000h. ([Source Code](https://github.com/skiselev/8088_bios))
 * `ide_xtl.rom`: This ROM corresponds to the XTIDE BIOS, it must be maintained for some scripts to work, it can also be upgraded to a newer version. ([Source Code](https://www.xtideuniversalbios.org/))
+
+Note: Not all ROMs work with MDA video: (Yuko ST and pcxt31 works), (Tandy, micro8088, IBM5160, full XTIDE BIOS do not work).
 
 ## Mounting the disk image
 
