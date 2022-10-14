@@ -892,7 +892,7 @@ module PERIPHERALS #(
         .grph_mode                  (grph_mode),
         .hres_mode                  (hres_mode),
 
-        .scandoubler				  (scandoubler),
+        .scandoubler			 	(scandoubler),
         .hsync_sd                   (HSYNC_CGA),
         .vsync_sd                   (VSYNC_CGA),
         .video_sd                   (video_cga)
@@ -1059,6 +1059,7 @@ module PERIPHERALS #(
         );
 
     `endif
+
 
 
     //

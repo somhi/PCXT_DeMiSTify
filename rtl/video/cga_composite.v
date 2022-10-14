@@ -189,7 +189,6 @@ module cga_composite(
     assign comp_video = ~csync ? 0 : (grey_level + (vid_del[3] ? 7'd31 : 7'd0) +
                         (color_out2 ? 7'd28 : 7'd0));
 
-
 	 
 	 //////////  Composite direct output with 2 pins by @thesonders  ///////////
 
@@ -229,7 +228,5 @@ module cga_composite(
 				 
         end
     end
-	  
-
 
 endmodule

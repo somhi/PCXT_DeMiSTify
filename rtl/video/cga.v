@@ -282,8 +282,8 @@ module cga(
         .mem_addr(crtc_addr),
         .row_addr(row_addr),
         .line_reset(line_reset),
-		  .tandy_16_gfx(tandy_16_mode & grph_mode & hres_mode),
-		  .color(color)
+		.tandy_16_gfx(tandy_16_mode & grph_mode & hres_mode),
+		.color(color)
     );
 
     // CGA 80 column timings
