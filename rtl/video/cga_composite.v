@@ -195,7 +195,7 @@ module cga_composite(
 	reg [6:0]datainH=0;
 	reg [6:0]datainL=0;
 	 
-	test_tx test_tx(
+	serialize_comp_tx serialize_comp_tx(
 	    .tx_in({datainL,datainH}),
 	    .tx_inclock(clk),
 	    .tx_out(composite_output)
