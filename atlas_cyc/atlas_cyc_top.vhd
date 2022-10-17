@@ -606,6 +606,7 @@ begin
 				-- UART
 				rxd       => rs232_rxd,
 				txd       => rs232_txd,
+				--
 				intercept => intercept
 			);
 

@@ -38,7 +38,8 @@ module cga(
     output[3:0] video,
     output[3:0] dbl_video,
     output[6:0] comp_video,
-	output[1:0] composite_output,
+    output composite_resync,
+    output csync_out,
 
 	 input splashscreen,
     input thin_font,
@@ -376,7 +377,7 @@ module cga(
 
     wire hsync_out;
     wire vsync_out;
-    wire csync_out;
+    //wire csync_out;
 
     cga_composite comp (
         .clk(clk),
@@ -390,7 +391,7 @@ module cga(
         .vsync_out(vsync_out),
         .csync_out(csync_out),
         .comp_video(comp_video),
-		.composite_output(composite_output)
+        .composite_resync(composite_resync)
     );
 
 
