@@ -40,6 +40,7 @@ module CHIPSET (
         output  reg     [6:0]   comp_video,
         output  logic           composite_resync,
         output  logic           csync_out,
+        input   logic   [17:0]  rgb_18b,
         // I/O Ports
         output  logic   [19:0]  address,
         input   logic   [19:0]  address_ext,
@@ -272,6 +273,7 @@ module CHIPSET (
         .comp_video                         (comp_video),
         .composite_resync                   (composite_resync),
         .csync_out                          (csync_out),
+        .rgb_18b                            (rgb_18b),
         .address                            (address),
         .internal_data_bus                  (internal_data_bus),
         .data_bus_out                       (internal_data_bus_chipset),

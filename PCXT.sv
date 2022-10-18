@@ -137,7 +137,9 @@ module PCXT
 		"P3OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
 		"P3Oh,Composite Blending,No,Yes;",
 		"P3Oi,Composite video (real),Off,On;",
-		"P3O7,Splash Screen,Yes,No;",
+		"P3Ok,DEBUG.OSD disable,No,Yes;",
+        "P3Oj,DEBUG.Displ.mode disable,No,Yes;",
+        "P3O7,Splash Screen,Yes,No;",
 		"P3Og,EXPER.YPbPr,Off,On;",
 		//
 		"P4,Hardware;",
@@ -152,8 +154,8 @@ module PCXT
 		//
 		"P5,Debug;",
 		"P5OLM,UART Speed,1200..115200bps,115200..921600bps;",
-		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
-		"P5Ok,DEBUG.OSD disable,No,Yes;",
+		// "P5Oj,DEBUG.Displ.mode disable,No,Yes;",
+		// "P5Ok,DEBUG.OSD disable,No,Yes;",
 		//
 		"V,v",`BUILD_DATE
 	};
@@ -829,6 +831,7 @@ module PCXT
         .comp_video                         (comp_video),
         .composite_resync                   (composite_resync),
         .csync_out                          (csync_out),
+        .rgb_18b                            (rgb_18b),
 	//	.address                            (address),
 		.address_ext                        (bios_access_address),
 		.ext_access_request                 (bios_access_request),
@@ -1181,30 +1184,59 @@ module PCXT
     assign gaux4  = osd_disable ? {gaux2,gaux2[1:0]} : {gaux3,gaux3[1:0]};
     assign baux4  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
 
+    // wire [3:0] video_osd;
     wire [6:0] comp_video;
-    wire [5:0] comp_video_osd;
-    wire csync_out;
+    // wire [5:0] comp_video_osd;
+    wire csync_out;                 // REMOVE ?
 
-    osd #(.OSD_COLOR(3'd5), .OSD_AUTO_CE(1'b0) ) osd
-    (
-    	.clk_sys ( clk_56_875       ),	// clk_56_875, clk_28_636, clk_56_875 /auto 0/clk_28_636/clk_56_875/clk_56_875
-    	.rotate  ( 2'b00            ),
-    	.ce      ( composite_resync ),	// clk_28_636, 1'b0      , clk_14_318 /auto 0/clk_14_318/clk_28_636/clk_14_318
-    	.SPI_DI  ( SPI_DI           ),
-    	.SPI_SCK ( SPI_SCK          ),
-    	.SPI_SS3 ( SPI_SS3          ),
-    	.R_in    ( 6'd0             ),
-    	.G_in    ( comp_video[6:1]  ),
-    	.B_in    ( 6'd0             ),
-    	.HSync   ( csync_out        ),  
-    	.VSync   ( 1'b1             ),
-    	.R_out   (                  ),
-    	.G_out   ( comp_video_osd   ),
-    	.B_out   (                  )
-    );
+    wire [17:0] rgb_18b;
+    assign  rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
+
+
+    // // VGA analog to CGA digital converter
+    // vga_cgaport vga_cgaport_dut (
+    //   .clk      (clk_28_636 ),
+    //   .red      (raux3 ),
+    //   .green    (gaux3 ),
+    //   .blue     (baux3 ),
+    //   //output
+    //   .video    (video_osd )
+    // );
+
+    
+    // // CGA digital to analog converter
+    // cga_vgaport vga_cga 
+    // (
+    //     .clk    (clk_28_636     ),
+    //     .video  (video_osd      ),
+    //     //output
+    //     .red    (               ),
+    //     .green  (comp_video_osd ),
+    //     .blue   (               )
+    // );
+
+
+    // osd #(.OSD_COLOR(3'd5), .OSD_AUTO_CE(1'b0) ) osd
+    // (
+    // 	.clk_sys ( clk_56_875       ),	// clk_56_875, clk_28_636, clk_56_875 /auto 0/clk_28_636/clk_56_875/clk_56_875
+    // 	.rotate  ( 2'b00            ),
+    // 	.ce      ( composite_resync ),	// clk_28_636, 1'b0      , clk_14_318 /auto 0/clk_14_318/clk_28_636/clk_14_318
+    // 	.SPI_DI  ( SPI_DI           ),
+    // 	.SPI_SCK ( SPI_SCK          ),
+    // 	.SPI_SS3 ( SPI_SS3          ),
+    // 	.R_in    ( 6'd0             ),
+    // 	.G_in    ( comp_video[6:1]  ),
+    // 	.B_in    ( 6'd0             ),
+    // 	.HSync   ( csync_out        ),  
+    // 	.VSync   ( 1'b1             ),
+    // 	.R_out   (                  ),
+    // 	.G_out   ( comp_video_osd   ),
+    // 	.B_out   (                  )
+    // );
 
     assign VGA_R = composite_on ?  8'd0 : raux4;
-    assign VGA_G = composite_on ? (osd_disable ? {comp_video,comp_video[0]} : {comp_video_osd,comp_video_osd[1:0]} ) : gaux4;
+    // assign VGA_G = composite_on ? (osd_disable ? {comp_video,comp_video[0]} : {comp_video_osd,comp_video_osd[1:0]} ) : gaux4;
+    assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
     assign VGA_B = composite_on ?  8'd0 : baux4;
 
     assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;
