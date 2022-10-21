@@ -10,6 +10,7 @@ use work.demistify_config_pkg.all;
 entity neptuno_top is
 	port (
 		CLOCK_50_I : in std_logic;
+		KEY        : in std_logic_vector(1 downto 0);  -- KEY(0) SW1, KEY(1) SW2
 		LED        : out std_logic;
 		-- SDRAM
 		DRAM_CLK   : out std_logic;
@@ -339,7 +340,7 @@ begin
 			)
 			port map(
 				clk       => CLOCK_50_I,
-				reset_in  => '1',			--reset_in when 0
+				reset_in  => KEY(1),		--reset_in when 0
 				reset_out => reset_n,		--reset_out when 0
 
 				-- SPI signals
@@ -366,7 +367,7 @@ begin
 				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
-				buttons => (others => '1'),
+				buttons => (0 => KEY(0), others => '1'),	-- 0 = opens OSD
 
 				-- Joysticks
 				joy1 => joya,

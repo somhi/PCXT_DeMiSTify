@@ -598,7 +598,7 @@ begin
 				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
-				buttons => (0 => KEY0, others => '1'),
+				buttons => (0 => '1', others => '1'),	-- 0 = opens OSD
 
 				-- JOYSTICKS
 				joy1 => joya,
