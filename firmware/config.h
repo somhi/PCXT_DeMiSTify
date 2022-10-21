@@ -11,8 +11,8 @@
 #undef CONFIG_WITHOUT_FILESYSTEM
 
 /* PS/2 Mouse support */
-#define PS2_MOUSE
-#define PS2_WRITE /* Needed to initialise the mouse and put it in wheel mode */
+#undef PS2_MOUSE
+#undef PS2_WRITE /* Needed to initialise the mouse and put it in wheel mode */
 
 /* CDROM support - used by the TurboGrafx core */
 #undef CONFIG_CD
@@ -53,6 +53,9 @@ here, the number of units defaults to 4. */
 
 /* Support for 64-bit status word.  Adds around 200 bytes to the firmware size. */
 #define CONFIG_STATUSWORD_64BIT
+
+/* Automatically close OSD on toggle menu items (generally reset) */
+#undef CONFIG_AUTOCLOSE_OSD
 
 #endif
 

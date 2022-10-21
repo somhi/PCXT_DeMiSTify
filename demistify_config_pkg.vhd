@@ -106,8 +106,6 @@ constant demistify_serialdebug : std_logic := '0';
 			PS2K_MOUSE_CLK_OUT 	: OUT STD_LOGIC;
 			PS2K_MOUSE_DAT_OUT 	: OUT STD_LOGIC
 
-			-- PS2_MOUSE_CLK    : inout std_logic;
-			-- PS2_MOUSE_DAT    : inout std_logic
 		);
 	END COMPONENT;
 	

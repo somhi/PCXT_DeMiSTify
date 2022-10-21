@@ -382,7 +382,7 @@ begin
 				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
-				buttons => (0 => KEY(0), 1 => KEY(1), others => '1'),
+				buttons => (0 => KEY(0), 1 => KEY(1), others => '1'),    -- 0 = opens OSD
 
 				-- Joysticks
 				joy1 => joya,
