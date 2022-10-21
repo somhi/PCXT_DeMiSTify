@@ -4,7 +4,7 @@
 // MODULE: ALTLVDS_TX 
 
 // ============================================================
-// File Name: test_tx.v
+// File Name: serialize_comp_tx.v
 // Megafunction Name(s):
 // 			ALTLVDS_TX
 //
@@ -36,7 +36,7 @@
 // synopsys translate_off
 `timescale 1 ps / 1 ps
 // synopsys translate_on
-module test_tx (
+module serialize_comp_tx (
 	tx_in,
 	tx_inclock,
 	tx_out);
@@ -75,7 +75,7 @@ module test_tx (
 		ALTLVDS_TX_component.inclock_period = 34916,
 		ALTLVDS_TX_component.inclock_phase_shift = 0,
 		ALTLVDS_TX_component.intended_device_family = "Cyclone 10 LP",
-		ALTLVDS_TX_component.lpm_hint = "CBX_MODULE_PREFIX=test_tx",
+		ALTLVDS_TX_component.lpm_hint = "CBX_MODULE_PREFIX=serialize_comp_tx",
 		ALTLVDS_TX_component.lpm_type = "altlvds_tx",
 		ALTLVDS_TX_component.multi_clock = "OFF",
 		ALTLVDS_TX_component.number_of_channels = 2,

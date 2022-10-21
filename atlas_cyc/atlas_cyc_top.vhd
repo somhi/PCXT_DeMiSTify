@@ -540,8 +540,8 @@ begin
 				-- vga_x_hs  => vga_x_hs,
 				-- vga_x_vs  => vga_x_vs,
 			--AUDIO
-				DAC_L   => dac_l,
-				DAC_R   => dac_r,
+			DAC_L   => dac_l,
+			DAC_R   => dac_r,
 			AUDIO_L => SIGMA_L,
 			AUDIO_R => SIGMA_R,
 		--	PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
@@ -554,8 +554,6 @@ begin
 			PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
 			PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
 
-			-- PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
-			-- PS2_MOUSE_DAT => PS2_MOUSE_DAT  
 		);
 
 
@@ -598,7 +596,7 @@ begin
 				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
-				buttons => (0 => KEY0, others => '1'),
+				buttons => (0 => '1', others => '1'),	-- 0 = opens OSD
 
 				-- JOYSTICKS
 				joy1 => joya,
@@ -606,6 +604,7 @@ begin
 				-- UART
 				rxd       => rs232_rxd,
 				txd       => rs232_txd,
+				--
 				intercept => intercept
 			);
 
