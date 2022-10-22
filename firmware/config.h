@@ -42,10 +42,10 @@ here, the number of units defaults to 4. */
 #define CONFIG_EXTJOYSTICK
 
 /* Do we require an autoboot ROM, and thus should we notify the user if it's not found? */
-#define ROM_REQUIRED
+#undef ROM_REQUIRED
 
 /* ROM name will default to "BOOT    ROM" if not defined here... */ 
-#define ROM_FILENAME "PCXT    ROM"
+#undef ROM_FILENAME "PCXT    ROM"
 
 /* Do we support configuration files? */
 #undef CONFIG_SETTINGS
