@@ -151,23 +151,20 @@ PS2_MOUSE_DAT    <= '0' when ps2_mouse_dat_out = '0' else 'Z';
 ps2_mouse_clk_in <= PS2_MOUSE_CLK;
 PS2_MOUSE_CLK    <= '0' when ps2_mouse_clk_out = '0' else 'Z';
 
-ps2_keyboard_dat_in <=ps2_keyboard_dat;
-ps2_keyboard_dat <= '0' when ps2_keyboard_dat_out='0' else 'Z';
-ps2_keyboard_clk_in<=ps2_keyboard_clk;
-ps2_keyboard_clk <= '0' when ps2_keyboard_clk_out='0' else 'Z';
+ps2_keyboard_dat_in <= PS2_KEYBOARD_DAT;
+PS2_KEYBOARD_DAT    <= '0' when ((ps2_keyboard_dat_out = '0') and (intercept = '0') ) else 'Z';
+ps2_keyboard_clk_in <= PS2_KEYBOARD_CLK;
+PS2_KEYBOARD_CLK    <= '0' when ((ps2_keyboard_clk_out = '0') and (intercept = '0') ) else 'Z';
 	
 JOY_SELECT<= '1';
-
 	
 joya<="11" & JOYSTICK1(5) & JOYSTICK1(4) & JOYSTICK1(0) & JOYSTICK1(1) & JOYSTICK1(2) &JOYSTICK1(3);
 joyB<="11" & JOYSTICK2(5) & JOYSTICK2(4) & JOYSTICK2(0) & JOYSTICK2(1) & JOYSTICK2(2) &JOYSTICK2(3);
-
 
 joyc<=(others=>'1');
 joyd<=(others=>'1');
 
 STM_RST <= '0';
-
 
 -- pll_vga: entity work.pll_vga
 -- port map (
@@ -175,7 +172,6 @@ STM_RST <= '0';
 --      c0      => VGA_CLOCK,     
 --      locked  => open
 -- );
-
 
 VGA_R 		 <=vga_red;
 VGA_G 		 <=vga_green;
@@ -246,21 +242,17 @@ guest: COMPONENT  PCXT
 	AUDIO_L => SIGMA_L,
 	AUDIO_R => SIGMA_R,
 
-	--	PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
-	--	PS2K_DAT_IN => ps2_keyboard_dat_in
-	--	PS2K_CLK_OUT => ps2_keyboard_clk_out,
-	--	PS2K_DAT_OUT => ps2_keyboard_dat_out
+	PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
+	PS2K_DAT_IN => ps2_keyboard_dat_in
+	PS2K_CLK_OUT => ps2_keyboard_clk_out,
+	PS2K_DAT_OUT => ps2_keyboard_dat_out
 
 	PS2K_MOUSE_CLK_IN => ps2_mouse_clk_in,
 	PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
 	PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
 	PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
-
-	-- PS2_MOUSE_CLK => PS2_MOUSE_CLK,   
-	-- PS2_MOUSE_DAT => PS2_MOUSE_DAT   		
+		
   );
-
-
 
 
 -- Pass internal signals to external SPI interface
@@ -294,8 +286,9 @@ controller : entity work.substitute_mcu
 		-- PS/2 signals
 		ps2k_clk_in => ps2_keyboard_clk_in,
 		ps2k_dat_in => ps2_keyboard_dat_in,
-		ps2k_clk_out => ps2_keyboard_clk_out,
-		ps2k_dat_out => ps2_keyboard_dat_out,
+		-- ps2k_clk_out => ps2_keyboard_clk_out,
+		-- ps2k_dat_out => ps2_keyboard_dat_out,
+		
 		-- ps2m_clk_in => ps2_mouse_clk_in,
 		-- ps2m_dat_in => ps2_mouse_dat_in,
 		-- ps2m_clk_out => ps2_mouse_clk_out,

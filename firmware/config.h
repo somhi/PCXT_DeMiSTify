@@ -34,7 +34,7 @@ here, the number of units defaults to 4. */
 
 /* Send key events via the mist_io block. If the core can support
    a PS/2 keyboard directly then that's probably a better option. */
-#define CONFIG_SENDKEYS
+#undef CONFIG_SENDKEYS
 
 /* Send joystick events using the "new" extended joystick protocol.
    This could support more buttons (if DeMiSTify itself supported them,
@@ -55,7 +55,7 @@ here, the number of units defaults to 4. */
 #define CONFIG_STATUSWORD_64BIT
 
 /* Automatically close OSD on toggle menu items (generally reset) */
-#undef CONFIG_AUTOCLOSE_OSD
+#define CONFIG_AUTOCLOSE_OSD
 
 #endif
 

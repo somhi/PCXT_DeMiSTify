@@ -62,9 +62,6 @@ constant demistify_serialdebug : std_logic := '0';
 			UART_CTS  		:	IN STD_LOGIC := '1';
 			UART_RTS  		:	OUT STD_LOGIC;
 
-			-- UART2_RX		:	IN STD_LOGIC := '1';
-			-- UART2_TX		:	OUT STD_LOGIC;
-
 			SPI_DO			:	 OUT STD_LOGIC;
 	-- 		We can't do bi-directional signals here, so we need separate in and out signals.
 	--		If the guest core uses direct mode for ROM upload it will need to be adapted.
@@ -96,10 +93,10 @@ constant demistify_serialdebug : std_logic := '0';
 			-- SD_MISO			:	 IN STD_LOGIC;
 			-- SD_CS			:	 OUT STD_LOGIC;
 
-			-- PS2K_CLK_IN 	: IN STD_LOGIC;
-			-- PS2K_DAT_IN	 	: IN STD_LOGIC
-			-- PS2K_CLK_OUT 	: OUT STD_LOGIC;
-			-- PS2K_DAT_OUT 	: OUT STD_LOGIC
+			PS2K_CLK_IN 	: IN STD_LOGIC;
+			PS2K_DAT_IN	 	: IN STD_LOGIC;
+			PS2K_CLK_OUT 	: OUT STD_LOGIC;
+			PS2K_DAT_OUT 	: OUT STD_LOGIC;
 
 			PS2K_MOUSE_CLK_IN 	: IN STD_LOGIC;
 			PS2K_MOUSE_DAT_IN	: IN STD_LOGIC;
