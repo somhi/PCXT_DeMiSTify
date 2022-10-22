@@ -331,7 +331,7 @@ begin
 			PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 			PS2K_DAT_IN => ps2_keyboard_dat_in,
 			PS2K_CLK_OUT => ps2_keyboard_clk_out,
-			PS2K_DAT_OUT => ps2_keyboard_dat_out
+			PS2K_DAT_OUT => ps2_keyboard_dat_out,
 
 			PS2K_MOUSE_CLK_IN => ps2_mouse_clk_in,
 			PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
