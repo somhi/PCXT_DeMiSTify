@@ -436,7 +436,9 @@ module PERIPHERALS #(
         if (reset)
             ps2_clock_out = 1'b1;
         else
-            ps2_clock_out = ~(keybord_irq | ~ps2_send_clock | ~ps2_reset_n);
+            //ps2_clock_out = ~(keybord_irq | ~ps2_send_clock | ~ps2_reset_n);
+            ps2_clock_out = ps2_send_clock;
+
     end
 
 
