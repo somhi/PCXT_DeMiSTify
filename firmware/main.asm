@@ -8914,7 +8914,7 @@ l251: #
 	//registers used:
 		//r1: yes
 		//r2: no
-		//r3: yes
+		//r3: no
 		//r4: no
 		//r5: no
 		//r6: yes
@@ -8924,26 +8924,11 @@ l251: #
 	.weak	_autoboot
 _autoboot:
 	stdec	r6
-	mt	r3
-	stdec	r6
-						// allocreg r3
-
-						//../DeMiSTify/firmware/main.c, line 681
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r3 - no need to prep
-						// (obj to tmp) flags 1 type a
-						// const
-	.liconst	0
-						// (save temp)isreg
-	mr	r3
-						//save_temp done
 
 						//../DeMiSTify/firmware/main.c, line 685
 						// (a/p assign)
 						// (prepobj r0)
- 						// matchobj comparing flags 130 with 1
-						// extern (offset 0)
+ 						// extern (offset 0)
 	.liabs	_romtype
 						// extern pe not varadr
 	mr	r0
@@ -8960,7 +8945,7 @@ _autoboot:
 						//save_temp done
 						// allocreg r1
 
-						//../DeMiSTify/firmware/main.c, line 687
+						//../DeMiSTify/firmware/main.c, line 692
 						// (a/p assign)
 						// (prepobj r0)
  						// reg r1 - no need to prep
@@ -8976,81 +8961,23 @@ _autoboot:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/main.c, line 687
+						//../DeMiSTify/firmware/main.c, line 692
 						//call
 						//pcreltotemp
 	.lipcrel	_LoadROM
 	add	r7
-						// Flow control - popping 0 + 0 bytes
+						// Deferred popping of 0 bytes (0 in total)
 						// freereg r1
-						// allocreg r1
-
-						//../DeMiSTify/firmware/main.c, line 687
-						// (test)
-						// (obj to tmp) flags 4a type 3
-						// reg r0 - only match against tmp
-	mt	r0
-				// flags 4a
-	and	r0
-						// freereg r1
-
-						//../DeMiSTify/firmware/main.c, line 687
-	cond	NEQ
-						//conditional branch regular
-						//pcreltotemp
-	.lipcrel	l256
-		add	r7
-						// allocreg r1
-
-						//../DeMiSTify/firmware/main.c, line 688
-						// (a/p assign)
-						// (prepobj r0)
- 						// reg r3 - no need to prep
-						// (obj to tmp) flags 82 type a
-						// matchobj comparing flags 130 with 74
-						// (prepobj tmp)
- 						// matchobj comparing flags 130 with 74
-						// static
-	.liabs	l257,0
-						// static pe is varadr
-						// (save temp)isreg
-	mr	r3
-						//save_temp done
-l256: # 
 
 						//../DeMiSTify/firmware/main.c, line 692
-						// Q1 disposable
 						//setreturn
-						// (obj to r0) flags 42 type a
-						// reg r3 - only match against tmp
-	mt	r3
+						// (obj to r0) flags 1 type a
+						// const
+	.liconst	0
 	mr	r0
-						// freereg r1
-						// freereg r3
-	.lipcrel	.functiontail, 4
-	add	r7
+	ldinc	r6
+	mr	r7
 
-	.section	.rodata.14
-l257:
-	.byte	82
-	.byte	79
-	.byte	77
-	.byte	32
-	.byte	108
-	.byte	111
-	.byte	97
-	.byte	100
-	.byte	105
-	.byte	110
-	.byte	103
-	.byte	32
-	.byte	102
-	.byte	97
-	.byte	105
-	.byte	108
-	.byte	101
-	.byte	100
-	.byte	0
 	//registers used:
 		//r1: yes
 		//r2: yes
@@ -9060,7 +8987,7 @@ l257:
 		//r6: yes
 		//r7: yes
 		//tmp: yes
-	.section	.text.15
+	.section	.text.14
 	.weak	_get_rtc
 _get_rtc:
 	stdec	r6
@@ -9134,7 +9061,7 @@ _get_rtc:
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l261
+	.lipcrel	l258
 		add	r7
 
 						//../DeMiSTify/firmware/main.c, line 705
@@ -9455,9 +9382,9 @@ _get_rtc:
 
 						//../DeMiSTify/firmware/main.c, line 718
 						//pcreltotemp
-	.lipcrel	l262
+	.lipcrel	l259
 	add	r7
-l261: # 
+l258: # 
 						// allocreg r1
 
 						//../DeMiSTify/firmware/main.c, line 719
@@ -9609,7 +9536,7 @@ l261: #
 	stbinc	r0
 						//Disposable, postinc doesn't matter.
 						//save_temp done
-l262: # 
+l259: # 
 
 						//../DeMiSTify/firmware/main.c, line 727
 						// (a/p assign)
@@ -9656,7 +9583,7 @@ l262: #
 		//r6: yes
 		//r7: yes
 		//tmp: yes
-	.section	.text.16
+	.section	.text.15
 	.weak	_init
 _init:
 	stdec	r6
@@ -9710,7 +9637,7 @@ _init:
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l269
+	.lipcrel	l266
 		add	r7
 
 						//../DeMiSTify/firmware/main.c, line 745
@@ -9734,7 +9661,7 @@ _init:
 	cond	EQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l269
+	.lipcrel	l266
 		add	r7
 						// allocreg r1
 
@@ -9753,9 +9680,9 @@ _init:
 
 						//../DeMiSTify/firmware/main.c, line 745
 						//pcreltotemp
-	.lipcrel	l270
+	.lipcrel	l267
 	add	r7
-l269: # 
+l266: # 
 
 						//../DeMiSTify/firmware/main.c, line 745
 						// (a/p assign)
@@ -9767,7 +9694,7 @@ l269: #
 						// (save temp)isreg
 	mr	r2
 						//save_temp done
-l270: # 
+l267: # 
 
 						//../DeMiSTify/firmware/main.c, line 745
 						// (test)
@@ -9781,7 +9708,7 @@ l270: #
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
-	.lipcrel	l277
+	.lipcrel	l274
 		add	r7
 						// freereg r1
 
@@ -9805,7 +9732,7 @@ l270: #
 						// (prepobj tmp)
  						// matchobj comparing flags 130 with 1
 						// static
-	.liabs	l271,0
+	.liabs	l268,0
 						// static pe is varadr
 						// (save temp)isreg
 	mr	r1
@@ -9820,14 +9747,14 @@ l270: #
 	.liconst	4
 	add	r6
 						// freereg r1
-l276: # 
+l273: # 
 						// allocreg r1
 
 						//../DeMiSTify/firmware/main.c, line 748
 						//pcreltotemp
-	.lipcrel	l276
+	.lipcrel	l273
 	add	r7
-l277: # 
+l274: # 
 						// freereg r1
 
 						//../DeMiSTify/firmware/main.c, line 753
@@ -9848,7 +9775,7 @@ l277: #
 						// (prepobj tmp)
  						// matchobj comparing flags 130 with 1
 						// static
-	.liabs	l275,0
+	.liabs	l272,0
 						// static pe is varadr
 						// (save temp)isreg
 	mr	r1
@@ -9903,8 +9830,8 @@ l277: #
 	ldinc	r6
 	mr	r7
 
-	.section	.rodata.17
-l271:
+	.section	.rodata.16
+l268:
 	.byte	83
 	.byte	68
 	.byte	32
@@ -9916,8 +9843,8 @@ l271:
 	.byte	100
 	.byte	46
 	.byte	0
-	.section	.rodata.18
-l275:
+	.section	.rodata.17
+l272:
 	.byte	66
 	.byte	111
 	.byte	111
@@ -9938,11 +9865,11 @@ l275:
 		//r6: yes
 		//r7: yes
 		//tmp: yes
-	.section	.text.19
+	.section	.text.18
 	.weak	_mainloop
 _mainloop:
 	stdec	r6
-l283: # 
+l280: # 
 
 						//../DeMiSTify/firmware/main.c, line 774
 						//call
@@ -9953,7 +9880,7 @@ l283: #
 
 						//../DeMiSTify/firmware/main.c, line 765
 						//pcreltotemp
-	.lipcrel	l283
+	.lipcrel	l280
 	add	r7
 	ldinc	r6
 	mr	r7
@@ -9967,7 +9894,7 @@ l283: #
 		//r6: yes
 		//r7: yes
 		//tmp: yes
-	.section	.text.1a
+	.section	.text.19
 	.weak	_main
 _main:
 	stdec	r6
@@ -10034,19 +9961,19 @@ _main:
 	ldinc	r6
 	mr	r7
 
-	.section	.data.1b
+	.section	.data.1a
 	.global	_romtype
 _romtype:
 	.byte	0
-	.section	.data.1c
+	.section	.data.1b
 	.global	_unit
 _unit:
 	.byte	0
-	.section	.data.1d
+	.section	.data.1c
 	.weak	_rom_minsize
 _rom_minsize:
 	.int	1
-	.section	.data.1e
+	.section	.data.1d
 	.global	_std_label_exit
 _std_label_exit:
 	.byte	128
@@ -10056,7 +9983,7 @@ _std_label_exit:
 	.byte	105
 	.byte	116
 	.byte	0
-	.section	.data.1f
+	.section	.data.1e
 	.global	_std_label_back
 _std_label_back:
 	.byte	128
@@ -10066,7 +9993,7 @@ _std_label_back:
 	.byte	99
 	.byte	107
 	.byte	0
-	.section	.data.20
+	.section	.data.1f
 	.global	_menu
 _menu:
 						// Declaring from tree
@@ -10146,35 +10073,35 @@ _menu:
 	.byte	0
 	.byte	0
 	.byte	0
-	.section	.data.21
+	.section	.data.20
 	.weak	_bootrom_name
 _bootrom_name:
 						// Declaring from tree
 						// static
 	.ref	l252
-	.section	.bss.22
+	.section	.bss.21
 	.global	_menupage
 	.comm	_menupage,4
-	.section	.bss.23
+	.section	.bss.22
 	.global	_file
 	.comm	_file,20
-	.section	.bss.24
+	.section	.bss.23
 	.global	_menuindex
 	.comm	_menuindex,4
-	.section	.bss.25
+	.section	.bss.24
 	.global	_moremenu
 	.comm	_moremenu,4
-	.section	.bss.26
+	.section	.bss.25
 	.global	_romindex
 	.comm	_romindex,4
-	.section	.bss.27
+	.section	.bss.26
 	.global	_filename
 	.comm	_filename,12
-	.section	.rodata.28
+	.section	.rodata.27
 l252:
-	.byte	80
-	.byte	67
-	.byte	88
+	.byte	66
+	.byte	79
+	.byte	79
 	.byte	84
 	.byte	32
 	.byte	32
@@ -10184,5 +10111,5 @@ l252:
 	.byte	79
 	.byte	77
 	.byte	0
-	.section	.bss.29
+	.section	.bss.28
 	.lcomm	l45,210
