@@ -336,7 +336,7 @@ module PCXT
 
 	`endif
 
-    wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | splashscreen;
+    wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | splashscreen | bios_access_request;
     wire reset_sdram_wire = !RESET_N | !pll_locked;
 
     //////////////////////////////////////////////////////////////////
