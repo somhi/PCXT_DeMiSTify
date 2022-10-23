@@ -7,7 +7,7 @@ module PERIPHERALS #(
     ) (
         input   logic           clock,
         input   logic           clk_sys,
-        input  logic           cpu_clock,
+        input   logic           cpu_clock,
         input   logic           peripheral_clock,
         input   logic   [1:0]   turbo_mode,
         input   logic           color,

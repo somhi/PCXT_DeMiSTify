@@ -4,8 +4,7 @@
 // Written by kitune-san
 //
 module KFPS2KB_Send_Data #(
-    parameter device_out_clock_wait = 16'd240,
-    parameter over_time = 16'd1000
+    parameter device_out_clock_wait = 16'd240
 ) (
     input   logic           clock,
     input   logic           peripheral_clock,
@@ -32,9 +31,6 @@ module KFPS2KB_Send_Data #(
     logic           send_request_trigger;
     logic   [9:0]   shift_register;
     logic   [7:0]   parity_bit;
-
-    logic   [15:0]  sending_time;
-    logic           over_sending_time;
 
     shit_state_t    state;
     shit_state_t    next_state;
@@ -116,25 +112,6 @@ module KFPS2KB_Send_Data #(
 
 
     //
-    // Count receiving time
-    //
-    always_ff @(posedge clock, posedge reset) begin
-        if (reset)
-            sending_time <= 16'h0000;
-        else if (state == READY)
-            sending_time <= 16'h0000;
-        else if (device_clock_edge)
-            sending_time <= 16'h0000;
-        else if ((p_clock_posedge) && (over_sending_time == 1'b0))
-            sending_time <= sending_time + 16'h0001;
-        else
-            sending_time <= sending_time;
-    end
-
-    assign over_sending_time = (sending_time >= over_time) ? 1'b1 : 1'b0;
-
-
-    //
     // State Machine
     //
     always_comb begin
@@ -166,9 +143,6 @@ module KFPS2KB_Send_Data #(
                     next_state = READY;
             end
         endcase
-
-        if (over_sending_time)
-            next_state = READY;
     end
 
     always_ff @(posedge clock, posedge reset) begin
