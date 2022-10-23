@@ -11,8 +11,8 @@
 #undef CONFIG_WITHOUT_FILESYSTEM
 
 /* PS/2 Mouse support */
-#define PS2_MOUSE
-#define PS2_WRITE /* Needed to initialise the mouse and put it in wheel mode */
+#undef PS2_MOUSE
+#undef PS2_WRITE /* Needed to initialise the mouse and put it in wheel mode */
 
 /* CDROM support - used by the TurboGrafx core */
 #undef CONFIG_CD
@@ -34,7 +34,7 @@ here, the number of units defaults to 4. */
 
 /* Send key events via the mist_io block. If the core can support
    a PS/2 keyboard directly then that's probably a better option. */
-#define CONFIG_SENDKEYS
+#undef CONFIG_SENDKEYS
 
 /* Send joystick events using the "new" extended joystick protocol.
    This could support more buttons (if DeMiSTify itself supported them,
@@ -42,10 +42,10 @@ here, the number of units defaults to 4. */
 #define CONFIG_EXTJOYSTICK
 
 /* Do we require an autoboot ROM, and thus should we notify the user if it's not found? */
-#define ROM_REQUIRED
+#undef ROM_REQUIRED
 
 /* ROM name will default to "BOOT    ROM" if not defined here... */ 
-#define ROM_FILENAME "PCXT    ROM"
+#undef ROM_FILENAME "PCXT    ROM"
 
 /* Do we support configuration files? */
 #undef CONFIG_SETTINGS
@@ -53,6 +53,9 @@ here, the number of units defaults to 4. */
 
 /* Support for 64-bit status word.  Adds around 200 bytes to the firmware size. */
 #define CONFIG_STATUSWORD_64BIT
+
+/* Automatically close OSD on toggle menu items (generally reset) */
+#define CONFIG_AUTOCLOSE_OSD
 
 #endif
 

@@ -73,17 +73,19 @@ An SN76489AN Compatible Implementation (Tandy Sound) written in VHDL was also in
 
 ## Quick Start
 
-* [Download](https://github.com/MiSTer-devel/PCXT_MiSTer/raw/main/games/PCXT/hd_image.zip) and uncompress hd_image.zip on your host system. It contains a [freedos](http://www.freedos.org/ ) image
+* Download and uncompress [hd_image.zip](https://github.com/MiSTer-devel/PCXT_MiSTer/raw/main/games/PCXT/hd_image.zip)  on your host system. It contains a [freedos](http://www.freedos.org/ ) image
 * Load OS with [Serdrive](SW/ ) as explained before
 * Prepare an SD card for your FPGA with a PCXT folder containing the BIOS  (see ROM instructions below)
 * Upload bitstream into your FPGA (check release in each FPGA folder)
 * Press F12 on your keyboard to access the OSD and select options below
   * Model: IBM PCXT
-  * CPU Speed: 14.318MHz
+  * CPU Speed: choose 14.318MHz for fastest turbo speed
   * BIOS > PCXT BIOS > browse to the SD folder and choose  pcxt_micro8088.rom or any other ROM
-  * Finally apply Reset
+* NOTE: If you leave a BIOS file with the name PCXT.ROM into the root of the SD card it will be loaded straight away after the splash screen. Also you can prepare the other two roms on the SD card:
+  * PCXT.ROM  for the IBM PCXT model
+  * TANDY.ROM for the TANDY 1000 model
+  * XTIDE.ROM for the EC00 BIOS needed to load the OS for Tandy and some PCXT BIOS
 
-* NOTE: If you leave a BIOS file with the name PCXT.ROM into the root of the SD card it will be loaded straight away after the splash screen
 
 ## ROM Instructions
 
@@ -101,7 +103,7 @@ Other Open Source ROMs are available in the same folder:
 * `pcxt_micro8088.rom`: This ROM already has the XTIDE BIOS embedded at address F000h. ([Source Code](https://github.com/skiselev/8088_bios))
 * `ide_xtl.rom`: This ROM corresponds to the XTIDE BIOS, it must be maintained for some scripts to work, it can also be upgraded to a newer version. ([Source Code](https://www.xtideuniversalbios.org/))
 
-Note: Not all ROMs work with MDA video: (IBM5160, Yuko ST and pcxt31 works), (Tandy, micro8088, full XTIDE BIOS do not work).
+Note: Not all ROMs work with MDA video: (IBM5160, Yuko ST and pcxt31 work), (Tandy, micro8088, full XTIDE BIOS do not work).
 
 ## Mounting the disk image
 

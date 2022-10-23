@@ -66,21 +66,16 @@ module PCXT
         input		  UART_CTS,
         output 		  UART_RTS,
 
-        // input         UART2_RX,
-        // output        UART2_TX,
-
-        //	input         PS2K_CLK_IN,
-        //	input         PS2K_DAT_IN,
-        //	output        PS2K_CLK_OUT,
-        //	output        PS2K_DAT_OUT
+        input         PS2K_CLK_IN,
+        input         PS2K_DAT_IN,
+        output        PS2K_CLK_OUT,
+        output        PS2K_DAT_OUT,
 
         input         PS2K_MOUSE_CLK_IN,
         input         PS2K_MOUSE_DAT_IN,
         output        PS2K_MOUSE_CLK_OUT,
         output        PS2K_MOUSE_DAT_OUT
 
-        //	inout		  PS2_MOUSE_CLK,
-        //	inout		  PS2_MOUSE_DAT
     );
 
     wire CLK_50M;
@@ -197,9 +192,9 @@ module PCXT
     wire osd_disable = status[46];
 
 
-    // .PS2DIV(2000) value is adequate		// without .PS2BIDIR(1) do not boot
+    // .PS2DIV(2000) value is adequate
 
-    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io 
+    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000)) user_io 
 	(
 		.conf_str      ( CONF_STR       ),
 		.clk_sys       ( clk_chipset    ),
@@ -214,10 +209,10 @@ module PCXT
 		.buttons        ( buttons       ),
 		.scandoubler_disable ( forced_scandoubler ),
 
-		.ps2_kbd_clk_i		(ps2_kbd_clk_out),
-		.ps2_kbd_data_i		(ps2_kbd_data_out),
-		.ps2_kbd_clk		(ps2_kbd_clk_in),
-		.ps2_kbd_data		(ps2_kbd_data_in),
+		// .ps2_kbd_clk_i		(ps2_kbd_clk_out),
+		// .ps2_kbd_data_i		(ps2_kbd_data_out),
+		// .ps2_kbd_clk		    (ps2_kbd_clk_in),
+		// .ps2_kbd_data		(ps2_kbd_data_in),
 
 		// .ps2_mouse_clk_i		(ps2_mouse_clk_out),
 		// .ps2_mouse_data_i	(ps2_mouse_data_out),
@@ -231,10 +226,17 @@ module PCXT
 	);
 
 
+    assign PS2K_CLK_OUT = ps2_kbd_clk_out;
+    assign PS2K_DAT_OUT = ps2_kbd_data_out;
+    assign ps2_kbd_clk_in   = PS2K_CLK_IN;
+    assign ps2_kbd_data_in  = PS2K_DAT_IN; 
+
+
     assign PS2K_MOUSE_CLK_OUT = ps2_mouse_clk_out;
     assign PS2K_MOUSE_DAT_OUT = ps2_mouse_data_out;
     assign ps2_mouse_clk_in   = PS2K_MOUSE_CLK_IN;
     assign ps2_mouse_data_in  = PS2K_MOUSE_DAT_IN;
+
 
     data_io data_io 
 	(
@@ -330,7 +332,7 @@ module PCXT
 
 	`endif
 
-    wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | splashscreen;
+    wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | splashscreen | bios_access_request;
     wire reset_sdram_wire = !RESET_N | !pll_locked;
 
     //////////////////////////////////////////////////////////////////
@@ -1250,7 +1252,7 @@ module PCXT
 	// reg [6:0]datainH=0;
 	// reg [6:0]datainL=0;
 	 
-	// test_tx test_tx(
+	// serialize_comp_tx serialize_comp_tx(
 	//     .tx_in({datainL,datainH}),
 	//     .tx_inclock(clk_28_636),
 	//     .tx_out(COMPOSITE_OUT)
