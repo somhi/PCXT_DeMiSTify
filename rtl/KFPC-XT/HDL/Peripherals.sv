@@ -39,7 +39,7 @@ module PERIPHERALS #(
         output  reg     [6:0]   comp_video,
         output  logic           composite_resync,
         output  logic           csync_out,
-        input   logic   [17:0]  rgb_18b,
+        input   logic   [17:0]  bgr_18b,
         // I/O Ports
         input   logic   [19:0]  address,
         input   logic   [7:0]   internal_data_bus,
@@ -438,7 +438,9 @@ module PERIPHERALS #(
         if (reset)
             ps2_clock_out = 1'b1;
         else
-            ps2_clock_out = ~(keybord_irq | ~ps2_send_clock | ~ps2_reset_n);
+            //ps2_clock_out = ~(keybord_irq | ~ps2_send_clock | ~ps2_reset_n);
+            ps2_clock_out = ps2_send_clock;
+
     end
 
 
@@ -898,7 +900,7 @@ module PERIPHERALS #(
         .hsync_sd                   (HSYNC_CGA),
         .vsync_sd                   (VSYNC_CGA),
         .video_sd                   (video_cga),
-        .rgb_18b                    (rgb_18b)
+        .bgr_18b                    (bgr_18b)
     );
 
     always_ff @(posedge clock)

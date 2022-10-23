@@ -49,7 +49,7 @@ module cga(
 	 output hres_mode,
 
      input  scandoubler,
-     input  [17:0] rgb_18b,
+     input  [17:0] bgr_18b,
      output hsync_sd,
      output vsync_sd,
      output [3:0] video_sd
@@ -381,7 +381,7 @@ module cga(
     // VGA analog to CGA digital converter
     vga_cgaport vga_cgaport_inst (
       .clk      (clk_28_636 ),
-      .rgb      (rgb_18b    ),
+      .bgr      (bgr_18b    ),
       //output
       .video    (video_osd  )
     );
@@ -422,12 +422,12 @@ module cga(
         .dbl_video(dbl_video)
     );
 
-    assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //not ok: hsync, csync_out      
-    assign vsync_sd = scandoubler ? vsync     : 1'b1;
-    assign video_sd = scandoubler ? dbl_video : video;
-
-    // assign hsync_sd = scandoubler ? dbl_hsync : hsync;          
-    // assign vsync_sd = scandoubler ? vsync     : vsync;
+    // assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //not ok: hsync, csync_out      
+    // assign vsync_sd = scandoubler ? vsync     : 1'b1;
     // assign video_sd = scandoubler ? dbl_video : video;
+
+    assign hsync_sd = scandoubler ? dbl_hsync : hsync;          
+    assign vsync_sd = scandoubler ? vsync     : vsync;
+    assign video_sd = scandoubler ? dbl_video : video;
 
 endmodule
