@@ -832,7 +832,7 @@ module PCXT
 		.scandoubler						(~forced_scandoubler),
         .comp_video                         (comp_video),
         .composite_out                      (COMPOSITE_OUT),
-        .bgr_18b                            (bgr_18b),
+        .rgb_18b                            (rgb_18b),
 	//	.address                            (address),
 		.address_ext                        (bios_access_address),
 		.ext_access_request                 (bios_access_request),
@@ -1115,7 +1115,7 @@ module PCXT
     wire vga_vs_o;
 
     wire [6:0] comp_video;
-    wire [17:0] bgr_18b;
+    wire [17:0] rgb_18b;
 
     assign CLK_VIDEO = clk_56_875;
     assign ce_pixel = 1'b1;
@@ -1188,7 +1188,7 @@ module PCXT
     assign gaux4  = osd_disable ? {gaux2,gaux2[1:0]} : {gaux3,gaux3[1:0]};
     assign baux4  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
 
-    assign bgr_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
+    assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
 
     assign VGA_R = composite_on ?                        8'd0 : raux4;
     assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;

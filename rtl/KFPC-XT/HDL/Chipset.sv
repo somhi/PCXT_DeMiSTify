@@ -39,7 +39,7 @@ module CHIPSET (
         input   logic           scandoubler,
         output  reg     [6:0]   comp_video,
         output  logic   [1:0]   composite_out,
-        input   logic   [17:0]  bgr_18b,
+        input   logic   [17:0]  rgb_18b,
         // I/O Ports
         output  logic   [19:0]  address,
         input   logic   [19:0]  address_ext,
@@ -271,7 +271,7 @@ module CHIPSET (
         .scandoubler						(scandoubler),
         .comp_video                         (comp_video),
         .composite_out                      (composite_out),
-        .bgr_18b                            (bgr_18b),
+        .rgb_18b                            (rgb_18b),
         .address                            (address),
         .internal_data_bus                  (internal_data_bus),
         .data_bus_out                       (internal_data_bus_chipset),

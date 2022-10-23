@@ -1,29 +1,23 @@
 **Bugs and TODO list:**
 
-* Mouse stops after some time. It can be related to reading disk using serdrive at COM1 that it could hang the mouse. Also related to UART 16750 not working in DemiSTified ports.
-  
 * Keyboard
   
-  * Keyboard controller does not pass diagnostic tests. Juko ST BIOS gives keyboard error
-  
-  * IBM5160 BIOS: keyboard not working right (kind of working at 14.3 Mhz CPU speed)
+  * IBM5160 BIOS: Starting BIOS at 14 MHz, lights start blinking and keyboard doesn't work anymore. Starting BIOS at 4.77 MHz and changing it thereafter during the RAM test to 14.3 MHz it lets work in this BIOS without keyboard problems.
   
 * Video
   * No overscan with Graphic Gremlins scandoubler (//.video(video))
   
   * RGB 15 kHz video output 
-    * Not displaying OSD correctly
     * CGA video (not TGA) deformed at top part of screen in some resolutions
-  
+    
   * YPbPr video output did not work on my setup.
   
   * Composite video output
     * center image from core
-    * OSD not displaying well
-    
     * hotkey to enable composite mode without OSD
     
       
+    
   
 
 

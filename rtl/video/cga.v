@@ -48,7 +48,7 @@ module cga(
 	 output hres_mode,
 
      input  scandoubler,
-     input  [17:0] bgr_18b,
+     input  [17:0] rgb_18b,
      output hsync_sd,
      output vsync_sd,
      output [3:0] video_sd
@@ -378,8 +378,8 @@ module cga(
     wire [3:0] video_osd;
 
     vga_cgaport vga_cgaport_inst (
-      .clk      (clk_28_636 ),
-      .bgr      (bgr_18b    ),
+      .clk      (clk        ),
+      .rgb      (rgb_18b    ),
       //output
       .video    (video_osd  )
     );

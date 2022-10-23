@@ -38,7 +38,7 @@ module PERIPHERALS #(
         input   logic           scandoubler,
         output  reg     [6:0]   comp_video,
         output  logic   [1:0]   composite_out,
-        input   logic   [17:0]  bgr_18b,
+        input   logic   [17:0]  rgb_18b,
         // I/O Ports
         input   logic   [19:0]  address,
         input   logic   [7:0]   internal_data_bus,
@@ -898,7 +898,7 @@ module PERIPHERALS #(
         .vsync_sd                   (VSYNC_CGA),
         .video_sd                   (video_cga),
         .composite_out              (composite_out),
-        .bgr_18b                    (bgr_18b)
+        .rgb_18b                    (rgb_18b)
     );
 
     always_ff @(posedge clock)

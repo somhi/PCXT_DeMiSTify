@@ -14,7 +14,7 @@ module cga_composite(
     input lclk,
     input hclk,
 
-    input[3:0] video, // IRGB video in
+    input [3:0] video, // IRGB video in
     input hsync,
     input vsync_l,
     input bw_mode,
