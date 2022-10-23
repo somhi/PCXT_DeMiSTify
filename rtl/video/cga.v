@@ -35,11 +35,10 @@ module cga(
     output vsync,
 	output vblank,
 	 output de_o,
-    output[3:0] video,
-    output[3:0] dbl_video,
-    output[6:0] comp_video,
-    output composite_resync,
-    output csync_out,
+    output[3:0] video,              // irgb 15 kHz
+    output[3:0] dbl_video,          // irgb 31 kHz
+    output[6:0] comp_video,         // composite 15 kHz
+    output[1:0] composite_out,      // composite 15 kHz serialized (@theSonders)
 
 	 input splashscreen,
     input thin_font,
@@ -374,11 +373,10 @@ module cga(
     end
 
 
-    // Get irgb video with OSD
-
-    wire [3:0] video_osd;
 
     // VGA analog to CGA digital converter
+    wire [3:0] video_osd;
+
     vga_cgaport vga_cgaport_inst (
       .clk      (clk_28_636 ),
       .bgr      (bgr_18b    ),
@@ -386,13 +384,7 @@ module cga(
       .video    (video_osd  )
     );
 
-
     // Composite video generation
-
-    wire hsync_out;
-    wire vsync_out;
-    //wire csync_out;
-
     cga_composite comp (
         .clk(clk),
         .lclk(lclk),
@@ -402,13 +394,9 @@ module cga(
         .hsync(hsync_int),
         .vsync_l(vsync_l),
         .bw_mode(bw_mode),
-        .hsync_out(hsync_out),
-        .vsync_out(vsync_out),
-        .csync_out(csync_out),
         .comp_video(comp_video),
-        .composite_resync(composite_resync)
+        .composite_out(composite_out)
     );
-
 
     wire cga_de;
     assign cga_de = ~(hblank | vblank);
@@ -422,7 +410,7 @@ module cga(
         .dbl_video(dbl_video)
     );
 
-    // assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //not ok: hsync, csync_out      
+    // assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //mist_video will do the csync      
     // assign vsync_sd = scandoubler ? vsync     : 1'b1;
     // assign video_sd = scandoubler ? dbl_video : video;
 

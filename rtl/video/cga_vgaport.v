@@ -19,10 +19,9 @@ module cga_vgaport(
 
     reg[17:0] c;
 
-    assign blue = c[5:0];
-    // assign green = {c[11:6], c[6]};
+    assign blue  = c[5:0];
     assign green = c[11:6];
-    assign red = c[17:12];
+    assign red   = c[17:12];
 
     always @(posedge clk)
     begin

@@ -37,8 +37,7 @@ module PERIPHERALS #(
         output  logic           VGA_VBlank,
         input   logic           scandoubler,
         output  reg     [6:0]   comp_video,
-        output  logic           composite_resync,
-        output  logic           csync_out,
+        output  logic   [1:0]   composite_out,
         input   logic   [17:0]  bgr_18b,
         // I/O Ports
         input   logic   [19:0]  address,
@@ -887,8 +886,6 @@ module PERIPHERALS #(
     //  .video                      (video_cga),              // non scandoubled
     //  .dbl_video                  (video_cga),              // scandoubled
         .comp_video                 (comp_video),
-        .composite_resync           (composite_resync),
-        .csync_out                  (csync_out),
         .splashscreen               (splashscreen),
         .thin_font                  (thin_font),
         .tandy_video                (tandy_video),
@@ -900,6 +897,7 @@ module PERIPHERALS #(
         .hsync_sd                   (HSYNC_CGA),
         .vsync_sd                   (VSYNC_CGA),
         .video_sd                   (video_cga),
+        .composite_out              (composite_out),
         .bgr_18b                    (bgr_18b)
     );
 

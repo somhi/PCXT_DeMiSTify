@@ -831,8 +831,7 @@ module PCXT
 		.VGA_VBlank							(VBlank),
 		.scandoubler						(~forced_scandoubler),
         .comp_video                         (comp_video),
-        .composite_resync                   (composite_resync),
-        .csync_out                          (csync_out),
+        .composite_out                      (COMPOSITE_OUT),
         .bgr_18b                            (bgr_18b),
 	//	.address                            (address),
 		.address_ext                        (bios_access_address),
@@ -1115,6 +1114,9 @@ module PCXT
     wire vga_hs_o;
     wire vga_vs_o;
 
+    wire [6:0] comp_video;
+    wire [17:0] bgr_18b;
+
     assign CLK_VIDEO = clk_56_875;
     assign ce_pixel = 1'b1;
 
@@ -1186,106 +1188,16 @@ module PCXT
     assign gaux4  = osd_disable ? {gaux2,gaux2[1:0]} : {gaux3,gaux3[1:0]};
     assign baux4  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
 
-    // wire [3:0] video_osd;
-    wire [6:0] comp_video;
-    // wire [5:0] comp_video_osd;
-    wire csync_out;                 // REMOVE ?
+    assign bgr_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
 
-    wire [17:0] bgr_18b;
-    assign  bgr_18b = {baux4[7:2],gaux4[7:2],raux4[7:2]};
-
-    assign VGA_R = composite_on ?  8'd0 : raux4;
+    assign VGA_R = composite_on ?                        8'd0 : raux4;
     assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
-    assign VGA_B = composite_on ?  8'd0 : baux4;
+    assign VGA_B = composite_on ?                        8'd0 : baux4;
 
     assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;
     assign VGA_HS = osd_disable ? ~vga_hs : ~vga_hs_o;
 
     assign VGA_DE = ~(HBlank | VBlank);
-
-
-    // osd #(.OSD_COLOR(3'd5), .OSD_AUTO_CE(1'b0) ) osd
-    // (
-    // 	.clk_sys ( clk_56_875       ),	// clk_56_875, clk_28_636, clk_56_875 /auto 0/clk_28_636/clk_56_875/clk_56_875
-    // 	.rotate  ( 2'b00            ),
-    // 	.ce      ( composite_resync ),	// clk_28_636, 1'b0      , clk_14_318 /auto 0/clk_14_318/clk_28_636/clk_14_318
-    // 	.SPI_DI  ( SPI_DI           ),
-    // 	.SPI_SCK ( SPI_SCK          ),
-    // 	.SPI_SS3 ( SPI_SS3          ),
-    // 	.R_in    ( 6'd0             ),
-    // 	.G_in    ( comp_video[6:1]  ),
-    // 	.B_in    ( 6'd0             ),
-    // 	.HSync   ( csync_out        ),  
-    // 	.VSync   ( 1'b1             ),
-    // 	.R_out   (                  ),
-    // 	.G_out   ( comp_video_osd   ),
-    // 	.B_out   (                  )
-    // );
-
-
-    // // VGA analog to CGA digital converter
-    // vga_cgaport vga_cgaport_dut (
-    //   .clk      (clk_28_636 ),
-    //   .red      (raux3 ),
-    //   .green    (gaux3 ),
-    //   .blue     (baux3 ),
-    //   //output
-    //   .video    (video_osd )
-    // );
-
-    
-    // // CGA digital to analog converter
-    // cga_vgaport vga_cga 
-    // (
-    //     .clk    (clk_28_636     ),
-    //     .video  (video_osd      ),
-    //     //output
-    //     .red    (               ),
-    //     .green  (comp_video_osd ),
-    //     .blue   (               )
-    // );
-
-
-	 //////////  Composite direct output with 2 pins by @thesonders  ///////////
-
-    wire composite_resync;
-	// reg [6:0]datainH=0;
-	// reg [6:0]datainL=0;
-	 
-	// serialize_comp_tx serialize_comp_tx(
-	//     .tx_in({datainL,datainH}),
-	//     .tx_inclock(clk_28_636),
-	//     .tx_out(COMPOSITE_OUT)
-    // );
-	 
-	// always @ (posedge clk_28_636) 
-    // begin
-    //     if (composite_resync) begin
-	// 			 case (    osd_disable ? comp_video[6:4] : comp_video_osd[5:3]   )
-	// 			 0:begin datainH<=0;end
-	// 			 1:begin datainH<=1;end
-	// 			 2:begin datainH<=3;end
-	// 			 3:begin datainH<=7;end
-	// 			 4:begin datainH<=15;end
-	// 			 5:begin datainH<=31;end
-	// 			 6:begin datainH<=63;end
-	// 			 7:begin datainH<=127;end
-	// 			 endcase
-				 
-	// 			 case (    osd_disable ? comp_video[3:1] : comp_video_osd[2:0]    )
-	// 			 0:begin datainL<=0;end
-	// 			 1:begin datainL<=1;end
-	// 			 2:begin datainL<=3;end
-	// 			 3:begin datainL<=7;end
-	// 			 4:begin datainL<=15;end
-	// 			 5:begin datainL<=31;end
-	// 			 6:begin datainL<=63;end
-	// 			 7:begin datainL<=127;end
-	// 			 endcase
-				 
-    //     end
-    // end
-
 
 
     // wire [5:0] osd_r_o;

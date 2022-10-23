@@ -23,7 +23,7 @@ module cga_composite(
     output vsync_out,
     output csync_out,
     output [6:0] comp_video,
-    output composite_resync
+    output [1:0] composite_out
     );
 
     reg[3:0] vid_del;
@@ -190,9 +190,43 @@ module cga_composite(
                         (color_out2 ? 7'd28 : 7'd0));
 
 	 
-	 //////////  Composite direct output with 2 pins by @thesonders  ///////////
-    // now on top PCXT.sv
-    assign composite_resync  = clk_14m3 && !clk_old;
-
+	//////////  Composite direct output with 2 pins by @thesonders  ///////////
+	reg [6:0] datainH = 0;
+	reg [6:0] datainL = 0;
+    wire composite_resync  = clk_14m3 && !clk_old;
+	 
+	serialize_comp_tx serialize_comp_tx(
+	    .tx_in({datainL,datainH}),
+	    .tx_inclock(clk),
+	    .tx_out(composite_out)
+    );
+	 
+	always @ (posedge clk) 
+    begin
+        if (composite_resync) begin
+				 case (comp_video[6:4])
+				 0:begin datainH<=0;end
+				 1:begin datainH<=1;end
+				 2:begin datainH<=3;end
+				 3:begin datainH<=7;end
+				 4:begin datainH<=15;end
+				 5:begin datainH<=31;end
+				 6:begin datainH<=63;end
+				 7:begin datainH<=127;end
+				 endcase
+				 
+				 case (comp_video[3:1])
+				 0:begin datainL<=0;end
+				 1:begin datainL<=1;end
+				 2:begin datainL<=3;end
+				 3:begin datainL<=7;end
+				 4:begin datainL<=15;end
+				 5:begin datainL<=31;end
+				 6:begin datainL<=63;end
+				 7:begin datainL<=127;end
+				 endcase
+				 
+        end
+    end
 
 endmodule
