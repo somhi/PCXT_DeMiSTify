@@ -38,6 +38,8 @@ module PERIPHERALS #(
         input   logic           scandoubler,
         output  reg     [6:0]   comp_video,
         output  logic   [1:0]   composite_out,
+        input   logic           composite_on,
+        input   logic           osd_disable,
         input   logic   [17:0]  rgb_18b,
         // I/O Ports
         input   logic   [19:0]  address,
@@ -898,6 +900,8 @@ module PERIPHERALS #(
         .vsync_sd                   (VSYNC_CGA),
         .video_sd                   (video_cga),
         .composite_out              (composite_out),
+        .composite_on               (composite_on),
+        .osd_disable                (osd_disable),
         .rgb_18b                    (rgb_18b)
     );
 

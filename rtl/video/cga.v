@@ -49,6 +49,8 @@ module cga(
 
      input  scandoubler,
      input  [17:0] rgb_18b,
+     input  composite_on,
+     input  osd_disable,
      output hsync_sd,
      output vsync_sd,
      output [3:0] video_sd
@@ -389,11 +391,11 @@ module cga(
         .clk(clk),
         .lclk(lclk),
         .hclk(hclk),
-    //  .video(video),          // without OSD
-        .video(video_osd),      // with    OSD
+        .video(~osd_disable ? video_osd : video),         
         .hsync(hsync_int),
         .vsync_l(vsync_l),
         .bw_mode(bw_mode),
+        .osd_disable(osd_disable),
         .comp_video(comp_video),
         .composite_out(composite_out)
     );

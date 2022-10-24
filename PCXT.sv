@@ -831,6 +831,8 @@ module PCXT
 		.VGA_VBlank							(VBlank),
 		.scandoubler						(~forced_scandoubler),
         .comp_video                         (comp_video),
+        .composite_on                       (composite_on),
+        .osd_disable                        (osd_disable),
         .composite_out                      (COMPOSITE_OUT),
         .rgb_18b                            (rgb_18b),
 	//	.address                            (address),
