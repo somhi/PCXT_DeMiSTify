@@ -1,8 +1,10 @@
 # [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify) - SoCkit port
 
-Port DeMiSTified by Somhic from original MiSTer port currently in development  https://github.com/MiSTer-devel/PCXT_MiSTer
+Port DeMiSTified by @somhi from original MiSTer port currently in development  https://github.com/MiSTer-devel/PCXT_MiSTer
 
 [Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
+
+Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### STATUS
 
