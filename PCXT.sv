@@ -1125,7 +1125,7 @@ module PCXT
 
     video_monochrome_converter video_mono
 	(
-		.clk_vid(CLK_VIDEO),
+		.clk_vid(mda_mode ? clk_56_875 : clk_28_636),          //CLK_VIDEO
 		.ce_pix(ce_pixel),
 
 		.R({r_in, 2'b00}),
