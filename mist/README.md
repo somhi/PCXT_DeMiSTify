@@ -1,6 +1,8 @@
 # [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT) - MIST port
 
-24/09/22 MIST port by Somhic from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
+24/09/22 MIST port by @somhi from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
+
+Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### STATUS
 
@@ -11,8 +13,9 @@
 * ~~Open OSD with F12 key. Go to Video and change CGA to MDA output. The Splash screen should appear. Then Load XT BIOS ROM (and EC00 XT-IDE 16 kB if not included in the main BIOS) and Reset from OSD.~~
 
 Notes about ROMs:
-- Not all ROMs work with MDA video: (YUKO ST and PCXT31 works), (TANDY, micro8088, IBM5160, full XTIDE BIOS do not work).
-- If you load a BIOS that does not work with MDA you need to power cycle the board.
+
+- ROMs working with MDA video: (IBM5160, Yuko ST and pcxt31 work), (Tandy, micro8088, full XTIDE BIOS do not work).
+- If you load a BIOS that does not work with MDA you may need to power cycle the board.
 
 
 
