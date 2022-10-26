@@ -1144,7 +1144,7 @@ module PCXT
     assign baux2 = display_mode_disable ? b_in : baux[7:2];
 
 
-    mist_video #(.OSD_COLOR(3'd5), .SD_HCNT_WIDTH(10) ) mist_video 
+    mist_video #( .SD_HCNT_WIDTH(10) ) mist_video    //.OSD_COLOR(3'd5),
 	(
 		.clk_sys     ( clk_56_875 ),
 

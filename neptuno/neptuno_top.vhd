@@ -37,6 +37,9 @@ entity neptuno_top is
 		VGA_R      : out std_logic_vector(5 downto 0);
 		VGA_G      : out std_logic_vector(5 downto 0);
 		VGA_B      : out std_logic_vector(5 downto 0);
+		--COMPOSITE VIDEO
+		PMOD4_D0 : out std_logic;		--1 PIN
+		PMOD4_D1 : out std_logic;		--OPTIONAL 2 PIN
 		-- AUDIO
 		SIGMA_R : out std_logic;
 		SIGMA_L : out std_logic;
@@ -114,6 +117,8 @@ architecture RTL of neptuno_top is
 	signal vga_blue  : std_logic_vector(7 downto 0);
 	signal vga_hsync : std_logic;
 	signal vga_vsync : std_logic;
+
+	signal composite_output : std_logic_vector(1 downto 0);
 
 	-- RS232 serial
 	signal rs232_rxd : std_logic;
@@ -225,6 +230,10 @@ begin
 	VGA_HS    <= vga_hsync;
 	VGA_VS    <= vga_vsync;
 
+	-- Composite video output
+	PMOD4_D0  <= composite_output(0);
+	PMOD4_D1 <= composite_output(1);
+
 	-- I2S audio
 	audio_i2s : entity work.audio_top
 		port map(
@@ -304,6 +313,9 @@ begin
 			VGA_R  => vga_red,
 			VGA_G  => vga_green,
 			VGA_B  => vga_blue,
+
+			COMPOSITE_OUT => composite_output,
+
 			--AUDIO
 				DAC_L   => dac_l,
 				DAC_R   => dac_r,
