@@ -85,7 +85,7 @@ module video_monochrome_converter
 		g <= G;
 		b <= B;
 		
-		r1 <= r;
+		r1 <= r;		// flip-flop added for getting the right colors in composite video output
 		g1 <= g;
 		b1 <= b;
 

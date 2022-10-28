@@ -18,7 +18,6 @@ module cga_composite(
     input hsync,
     input vsync_l,
     input bw_mode,
-    input osd_disable,
 
     output hsync_out,
     output vsync_out,
@@ -26,24 +25,6 @@ module cga_composite(
     output [6:0] comp_video,
     output [1:0] composite_out
     );
-
-    reg [9:0] lclk_del;
-    reg [9:0] hclk_del;
-    reg [9:0] hsync_del;
-    reg [9:0] vsync_l_del;
-    wire lclk_delx, hclk_delx, hsync_delx, vsync_l_delx;
-
-    always @ (posedge clk) begin
-        lclk_del  <= {lclk_del[9], lclk_del[8], lclk_del[7], lclk_del[6], lclk_del[5], lclk_del[4], lclk_del[3], lclk_del[2], lclk_del[1], lclk_del[0], lclk};
-        hclk_del  <= {hclk_del[9], hclk_del[8], hclk_del[7], hclk_del[6], hclk_del[5], hclk_del[4], hclk_del[3], hclk_del[2], hclk_del[1], hclk_del[0], hclk};
-        hsync_del <= {hsync_del[9], hsync_del[8], hsync_del[7], hsync_del[6], hsync_del[5], hsync_del[4], hsync_del[3], hsync_del[2], hsync_del[1], hsync_del[0], hsync};
-        vsync_l_del <= {vsync_l_del[9], vsync_l_del[8], vsync_l_del[7], vsync_l_del[6], vsync_l_del[5], vsync_l_del[4], vsync_l_del[3], vsync_l_del[2], vsync_l_del[1], vsync_l_del[0], vsync_l};		  	  
-    end
-
-    assign lclk_delx    = ~osd_disable ? lclk_del[5]    : lclk;      //every 32 clk
-    assign hclk_delx    = ~osd_disable ? hclk_del[5]    : hclk;      //every 16 clk
-    assign hsync_delx   = ~osd_disable ? hsync_del[5]   : hsync;     //every line 114*16 clk
-    assign vsync_l_delx = ~osd_disable ? vsync_l_del[5] : vsync_l;   //every screen 
 
     reg[3:0] vid_del;
     reg hsync_dly = 1'b0;
@@ -77,7 +58,7 @@ module cga_composite(
 
     always @ (posedge clk)
     begin
-        hclk_old <= hclk_delx;
+        hclk_old <= hclk;
     end
 
     // Resync the video to the falling edge of 14.318MHz
@@ -91,16 +72,16 @@ module cga_composite(
     // Delay the sync pulses
     always @ (posedge clk)
     begin
-        if (hclk_delx && !hclk_old) begin
-            hsync_dly <= hsync_delx;
-            vsync_dly_l <= vsync_l_delx;
+        if (hclk && !hclk_old) begin
+            hsync_dly <= hsync;
+            vsync_dly_l <= vsync_l;
         end
     end
 
     // hsync counter
     always @ (posedge clk)
     begin
-        if (lclk_delx) begin
+        if (lclk) begin
             if (hsync_dly) begin
                 if (hsync_counter == 4'd11) begin
                     hsync_counter <= 4'd0;

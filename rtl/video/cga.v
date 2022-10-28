@@ -50,7 +50,7 @@ module cga(
      input  scandoubler,
      input  [17:0] rgb_18b,
      input  composite_on,
-     input  osd_disable,
+     input  vga_composite,
      output hsync_sd,
      output vsync_sd,
      output [3:0] video_sd
@@ -285,7 +285,9 @@ module cga(
         .mem_addr(crtc_addr),
         .row_addr(row_addr),
         .line_reset(line_reset),
+        // signals to adjust the phantom lines and start of video output (left colums)
 		.tandy_16_gfx(tandy_16_mode & grph_mode & hres_mode),
+        .composite_on(composite_on),
 		.color(color)
     );
 
@@ -391,11 +393,10 @@ module cga(
         .clk(clk),
         .lclk(lclk),
         .hclk(hclk),
-        .video(~osd_disable ? video_osd : video),         
+        .video(~vga_composite ? video_osd : video),         
         .hsync(hsync_int),
         .vsync_l(vsync_l),
         .bw_mode(bw_mode),
-        .osd_disable(osd_disable),
         .comp_video(comp_video),
         .composite_out(composite_out)
     );

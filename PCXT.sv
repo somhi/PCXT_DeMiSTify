@@ -96,7 +96,7 @@ module PCXT
     // 0         1         2         3          4         5         6
     // 01234567890123456789012345678901 234567890123456789012345678901
     // 0123456789ABCDEFGHIJKLMNOPQRSTUV WXYZabcdefghijklmnopqrstuvwxyz
-    // XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX aaaaaaaa--DDDDD
+    // XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX aaaaaaaa--DDDDDD
 
 
 	`include "build_id.v"
@@ -131,9 +131,10 @@ module PCXT
 		"P3O4,Video Output,CGA/Tandy,MDA;",
 		"P3OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
 		"P3Oh,Composite Blending,No,Yes;",
-		"P3Oi,Composite video (real),Off,On;",
-		"P3Ok,DEBUG.OSD disable,No,Yes;",
-        "P3Oj,DEBUG.Displ.mode disable,No,Yes;",
+		"P3Oi,Composite (VGA conn.),Off,On;",
+		"P3Ol,VGA+Compos(1pin,no.osd),Off,On;",
+		// "P3Ok,DEBUG.OSD disable,No,Yes;",
+        // "P3Oj,DEBUG.Displ.mode disable,No,Yes;",
         "P3O7,Splash Screen,Yes,No;",
 		"P3Og,EXPER.YPbPr,Off,On;",
 		//
@@ -149,8 +150,8 @@ module PCXT
 		//
 		"P5,Debug;",
 		"P5OLM,UART Speed,1200..115200bps,115200..921600bps;",
-		// "P5Oj,DEBUG.Displ.mode disable,No,Yes;",
-		// "P5Ok,DEBUG.OSD disable,No,Yes;",
+		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
+		"P5Ok,DEBUG.OSD disable,No,Yes;",
 		//
 		"V,v",`BUILD_DATE
 	};
@@ -190,6 +191,7 @@ module PCXT
     wire composite_on = status[44];
     wire display_mode_disable = status[45];
     wire osd_disable = status[46];
+    wire vga_composite = status[47];
 
 
     // .PS2DIV(2000) value is adequate
@@ -832,7 +834,7 @@ module PCXT
 		.scandoubler						(~forced_scandoubler),
         .comp_video                         (comp_video),
         .composite_on                       (composite_on),
-        .osd_disable                        (osd_disable),
+        .vga_composite                      (vga_composite),
         .composite_out                      (COMPOSITE_OUT),
         .rgb_18b                            (rgb_18b),
 	//	.address                            (address),

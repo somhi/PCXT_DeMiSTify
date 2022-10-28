@@ -232,7 +232,7 @@ begin
 
 	-- Composite video output
 	PMOD4_D0  <= composite_output(0);
-	PMOD4_D1 <= composite_output(1);
+	PMOD4_D1  <= composite_output(1);
 
 	-- I2S audio
 	audio_i2s : entity work.audio_top
@@ -317,8 +317,8 @@ begin
 			COMPOSITE_OUT => composite_output,
 
 			--AUDIO
-				DAC_L   => dac_l,
-				DAC_R   => dac_r,
+			DAC_L   => dac_l,
+			DAC_R   => dac_r,
 			AUDIO_L => SIGMA_L,
 			AUDIO_R => SIGMA_R,
 
