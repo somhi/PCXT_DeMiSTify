@@ -96,7 +96,7 @@ module PCXT
     // 0         1         2         3          4         5         6
     // 01234567890123456789012345678901 234567890123456789012345678901
     // 0123456789ABCDEFGHIJKLMNOPQRSTUV WXYZabcdefghijklmnopqrstuvwxyz
-    // XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX aaaaaaaa--DDDDD
+    // XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX aaaaaaaa--DDDDDD
 
 
 	`include "build_id.v"
@@ -131,8 +131,11 @@ module PCXT
 		"P3O4,Video Output,CGA/Tandy,MDA;",
 		"P3OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
 		"P3Oh,Composite Blending,No,Yes;",
-		"P3Oi,Composite video (real),Off,On;",
-		"P3O7,Splash Screen,Yes,No;",
+		"P3Oi,Composite (VGA conn.),Off,On;",
+		"P3Ol,VGA+Compos(1pin no.osd),Off,On;",
+		// "P3Ok,DEBUG.OSD disable,No,Yes;",
+        // "P3Oj,DEBUG.Displ.mode disable,No,Yes;",
+        "P3O7,Splash Screen,Yes,No;",
 		"P3Og,EXPER.YPbPr,Off,On;",
 		//
 		"P4,Hardware;",
@@ -188,6 +191,7 @@ module PCXT
     wire composite_on = status[44];
     wire display_mode_disable = status[45];
     wire osd_disable = status[46];
+    wire vga_composite = status[47];
 
 
     // .PS2DIV(2000) value is adequate
@@ -828,8 +832,11 @@ module PCXT
 		.VGA_HBlank	  				        (HBlank),
 		.VGA_VBlank							(VBlank),
 		.scandoubler						(~forced_scandoubler),
-		.composite_on						(composite_on),
-		.composite_output                   (COMPOSITE_OUT),
+        .comp_video                         (comp_video),
+        .composite_on                       (composite_on),
+        .vga_composite                      (vga_composite),
+        .composite_out                      (COMPOSITE_OUT),
+        .rgb_18b                            (rgb_18b),
 	//	.address                            (address),
 		.address_ext                        (bios_access_address),
 		.ext_access_request                 (bios_access_request),
@@ -1100,31 +1107,31 @@ module PCXT
     wire ce_pixel;
     wire de_o;
 
-    wire [5:0] r_in, b_in;
-    wire [6:0] g_in;
-    reg  [7:0] raux, gaux, baux;
-    wire [5:0] raux2, baux2;
-    wire [6:0] gaux2;
+    wire [5:0] r_in, g_in, b_in;
+    reg  [7:0] raux,  gaux,  baux;
+    wire [5:0] raux2, gaux2, baux2;
     wire [5:0] raux3, gaux3, baux3;
+    reg  [7:0] raux4, gaux4, baux4;
 
     wire vga_hs;
     wire vga_vs;
     wire vga_hs_o;
     wire vga_vs_o;
 
+    wire [6:0] comp_video;
+    wire [17:0] rgb_18b;
 
     assign CLK_VIDEO = clk_56_875;
     assign ce_pixel = 1'b1;
 
 
-
     video_monochrome_converter video_mono
 	(
-		.clk_vid(CLK_VIDEO),
+		.clk_vid(mda_mode ? clk_56_875 : clk_28_636),          //CLK_VIDEO
 		.ce_pix(ce_pixel),
 
 		.R({r_in, 2'b00}),
-		.G({g_in, 1'b0}),
+		.G({g_in, 2'b00}),
 		.B({b_in, 2'b00}),
 
 		.gfx_mode(screen_mode),
@@ -1135,11 +1142,11 @@ module PCXT
 	);
 
     assign raux2 = display_mode_disable ? r_in : raux[7:2];
-    assign gaux2 = display_mode_disable ? g_in : gaux[7:1];
+    assign gaux2 = display_mode_disable ? g_in : gaux[7:2];
     assign baux2 = display_mode_disable ? b_in : baux[7:2];
 
 
-    mist_video #(.OSD_COLOR(3'd5), .SD_HCNT_WIDTH(10) ) mist_video 
+    mist_video #( .SD_HCNT_WIDTH(10) ) mist_video    //.OSD_COLOR(3'd5),
 	(
 		.clk_sys     ( clk_56_875 ),
 
@@ -1167,7 +1174,7 @@ module PCXT
 
 		// video in
 		.R           ( raux2      ),
-		.G           ( gaux2[6:1] ),
+		.G           ( gaux2      ),
 		.B           ( baux2      ),
 		.HSync       ( ~vga_hs    ),
 		.VSync       ( ~vga_vs    ),
@@ -1180,9 +1187,16 @@ module PCXT
 		.VGA_HS      ( vga_hs_o   )
 	);
 
-    assign VGA_R  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
-    assign VGA_G  = osd_disable ? {gaux2,gaux2[0]  } : {gaux3,gaux3[1:0]};
-    assign VGA_B  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
+
+    assign raux4  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
+    assign gaux4  = osd_disable ? {gaux2,gaux2[1:0]} : {gaux3,gaux3[1:0]};
+    assign baux4  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
+
+    assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
+
+    assign VGA_R = composite_on ?                        8'd0 : raux4;
+    assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
+    assign VGA_B = composite_on ?                        8'd0 : baux4;
 
     assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;
     assign VGA_HS = osd_disable ? ~vga_hs : ~vga_hs_o;

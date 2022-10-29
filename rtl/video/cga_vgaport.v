@@ -13,15 +13,15 @@ module cga_vgaport(
 
     // Analog outputs
     output wire[5:0] red,
-    output wire[6:0] green,
+    output wire[5:0] green,
     output wire[5:0] blue
     );
 
     reg[17:0] c;
 
-    assign blue = c[5:0];
-    assign green = {c[11:6], c[6]};
-    assign red = c[17:12];
+    assign blue  = c[5:0];
+    assign green = c[11:6];
+    assign red   = c[17:12];
 
     always @(posedge clk)
     begin

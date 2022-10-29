@@ -1,27 +1,23 @@
 **Bugs and TODO list:**
 
-* Keyboard
-  
-  * IBM5160 BIOS: Starting BIOS at 14 MHz, lights start blinking and keyboard doesn't work anymore. Starting BIOS at 4.77 MHz and changing it thereafter during the RAM test to 14.3 MHz it lets work in this BIOS without keyboard problems.
-  
+* Save OSD configuration in a config file in SD card
+
 * Video
+
   * No overscan with Graphic Gremlins scandoubler (//.video(video))
-  
+
   * RGB 15 kHz video output 
-    * Not displaying OSD correctly
     * CGA video (not TGA) deformed at top part of screen in some resolutions
     
   * YPbPr video output did not work on my setup.
-  
+
   * Composite video output
-    * center image from core
-    * OSD not displaying well
-    
-    * hotkey to enable composite mode without OSD
+    * center image from core through hblank delays
+    * Hot-key to enable composite mode without OSD 
+    * OSD background solid color to improve visualization (display green workaround)
     
       
-    
-  
+
 
 
 ### Parts from MiSTer original core not ported to DeMiSTify ports

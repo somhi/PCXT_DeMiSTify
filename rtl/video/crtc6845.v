@@ -32,6 +32,7 @@ module crtc6845(
     output [4:0] row_addr,
     output line_reset,
 	 input tandy_16_gfx,
+     input  composite_on,
 	 input color);
 
     parameter H_TOTAL = 0;
@@ -154,7 +155,12 @@ module crtc6845(
     assign hsync = hs;
     assign display_enable = hdisp & vdisp;
     //assign hblank = tandy_16_gfx ? ~hdisp_del[color ? 7 : 9] : ~hdisp_del[color ? 3 : 5];
-    assign hblank = tandy_16_gfx ? (color? ~hdisp_del[7] : ~hdisp_del[9]) : (color? ~hdisp_del[3] : ~hdisp_del[5]);
+    //assign hblank = tandy_16_gfx ? (color? ~hdisp_del[7] : ~hdisp_del[9]) : (color? ~hdisp_del[3] : ~hdisp_del[5]);
+    assign hblank = tandy_16_gfx ? (color? ~hdisp_del[7] : ~hdisp_del[9]) :        //tandy
+                    composite_on ? (color? ~hdisp_del[0] : ~hdisp_del[0]) :        //composite
+                    (color? ~hdisp_del[3] : ~hdisp_del[5]);                        //cga
+
+    
     assign vblank = ~vdisp;
 
     assign row_addr = v_scancount;

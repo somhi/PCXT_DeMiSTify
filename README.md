@@ -1,6 +1,6 @@
 # [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify)
 
-Port DeMiSTified by Somhic from original MiSTer port currently in development  https://github.com/MiSTer-devel/PCXT_MiSTer
+Port DeMiSTified by @somhi from original MiSTer port currently in development  https://github.com/MiSTer-devel/PCXT_MiSTer
 
 [Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
 
@@ -31,9 +31,20 @@ Some notes about serdrive:
   * Windows does not care about RTS/CTS signals
   * In Linux those RTS/CTS lines need to be connected for XTIDE to detect the image. Take care that CTS goes to RTS and RTS to CTS.
 
-**Mouse support**:
+**Composite CGA video output**: 
 
-* Core includes a wrapper that converts PS2 mouse protocol to Microsoft Mouse mode. Mouse support is experimental and stops working most of the times when the other COM port is being used for serdrive.  Cutemouse driver has been tested and works `ctmouse /s2`
+CGA mode has available composite video output:
+
+* Through green pin of the DB15 VGA connector
+* Simultaneous output through 1 GPIO pin
+
+Just add 1 resistor in series of aprox. 200 Ohm between the FPGA output pin and the TV composite input. Ground connection between FPGA and TV is direct.
+
+
+
+[SCHEMATIC TO BE DONE]
+
+
 
 Follows original Readme (with some crossed out text where does not apply).
 
@@ -59,14 +70,17 @@ An SN76489AN Compatible Implementation (Tandy Sound) written in VHDL was also in
 
 ## Key features
 
+* Support for Tandy 1000
+* Support for IBM PCXT 5160 and clones
 * CPU Speed 4.77 MHz and turbo modes 7.16 MHz / 14.318 MHz
-* BIOS selectable (Tandy 1000 / PCXT)
-* Support for IBM Tandy 1000
-* Support for IBM PCXT 5160 and clones (CGA graphics)
+* Video modes: 
+  * Tandy 320x200x16 graphics 128 kB VRAM (not available on all ports due to BRAM resources)
+  * CGA graphics 32kB VRAM (VGA or Composite)
+  * MDA monochrome 
+
+* Compatible BIOS selection (IBM5160, Yuko ST, pcxt31, Tandy, micro8088, XT-IDE, ...)
 * Main memory 640Kb + 384Kb UMB memory
-* Simultaneous video MDA
 * EMS memory up to 2Mb
-* Tandy 320x200x16 graphics with 128Kb of shared RAM + CGA graphics
 * Audio: Adlib, Tandy, speaker
 * Joystick support
 * Mouse support into COM2 serial port, this works like any Microsoft mouse... you just need a driver to configure it, like CTMOUSE 1.9 (available into hdd folder), with the command CTMOUSE /s2 
