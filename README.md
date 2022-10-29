@@ -38,13 +38,9 @@ CGA mode has available composite video output:
 * Through green pin of the DB15 VGA connector
 * Simultaneous output through 1 GPIO pin
 
-Just add 1 resistor in series of aprox. 200 Ohm between the FPGA output pin and the TV composite input. Ground connection between FPGA and TV is direct.
+Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composite output pin and the TV composite input central pin. 
 
-
-
-[SCHEMATIC TO BE DONE]
-
-
+![composite_schematic](composite_schematic.png)
 
 Follows original Readme (with some crossed out text where does not apply).
 
