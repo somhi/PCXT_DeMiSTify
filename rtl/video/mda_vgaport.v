@@ -14,7 +14,7 @@ module mda_vgaport(
 
     // Analog outputs
     output[5:0] red,
-    output[6:0] green,
+    output[5:0] green,
     output[5:0] blue
     );
 
@@ -22,7 +22,8 @@ module mda_vgaport(
     reg[5:0] g;
 
     assign red = r;
-    assign green = {g, 1'b0};
+    // assign green = {g, 1'b0};
+    assign green = g;
     assign blue = 6'd0;
 
     always @(posedge clk)

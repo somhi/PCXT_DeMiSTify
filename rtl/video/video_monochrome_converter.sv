@@ -26,6 +26,8 @@ module video_monochrome_converter
 );
   
   wire [7:0] r, g, b;	
+  wire [7:0] r1, g1, b1;	
+
   wire [7:0] mono;
   wire [7:0] shifted_mono;
     
@@ -83,6 +85,11 @@ module video_monochrome_converter
 		g <= G;
 		b <= B;
 		
+		r1 <= r;		// flip-flop added for getting the right colors in composite video output
+		g1 <= g;
+		b1 <= b;
+
+
 		mono         <= red_weight[r] + green_weight[g] + blue_weight[b];
 		shifted_mono <= red_weight[r] + green_weight[g] + blue_weight[b] >> 1;
 		  
@@ -132,9 +139,9 @@ module video_monochrome_converter
 			end
 			// Color mode i.e. 3'b000
 			default: begin
-				R_OUT <= r;
-				G_OUT <= g;
-				B_OUT <= b;
+				R_OUT <= r1;
+				G_OUT <= g1;
+				B_OUT <= b1;
 			end
 		endcase
 

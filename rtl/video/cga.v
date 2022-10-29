@@ -35,10 +35,10 @@ module cga(
     output vsync,
 	output vblank,
 	 output de_o,
-    output[3:0] video,
-    output[3:0] dbl_video,
-    output[6:0] comp_video,
-	output[1:0] composite_output,
+    output[3:0] video,              // irgb 15 kHz
+    output[3:0] dbl_video,          // irgb 31 kHz
+    output[6:0] comp_video,         // composite 15 kHz
+    output[1:0] composite_out,      // composite 15 kHz serialized (@theSonders)
 
 	 input splashscreen,
     input thin_font,
@@ -48,6 +48,9 @@ module cga(
 	 output hres_mode,
 
      input  scandoubler,
+     input  [17:0] rgb_18b,
+     input  composite_on,
+     input  vga_composite,
      output hsync_sd,
      output vsync_sd,
      output [3:0] video_sd
@@ -282,7 +285,9 @@ module cga(
         .mem_addr(crtc_addr),
         .row_addr(row_addr),
         .line_reset(line_reset),
+        // signals to adjust the phantom lines and start of video output (left colums)
 		.tandy_16_gfx(tandy_16_mode & grph_mode & hres_mode),
+        .composite_on(composite_on),
 		.color(color)
     );
 
@@ -372,27 +377,29 @@ module cga(
     end
 
 
+
+    // VGA analog to CGA digital converter
+    wire [3:0] video_osd;
+
+    vga_cgaport vga_cgaport_inst (
+      .clk      (clk        ),
+      .rgb      (rgb_18b    ),
+      //output
+      .video    (video_osd  )
+    );
+
     // Composite video generation
-
-    wire hsync_out;
-    wire vsync_out;
-    wire csync_out;
-
     cga_composite comp (
         .clk(clk),
         .lclk(lclk),
         .hclk(hclk),
-        .video(video),
+        .video(~vga_composite ? video_osd : video),         
         .hsync(hsync_int),
         .vsync_l(vsync_l),
         .bw_mode(bw_mode),
-        .hsync_out(hsync_out),
-        .vsync_out(vsync_out),
-        .csync_out(csync_out),
         .comp_video(comp_video),
-		.composite_output(composite_output)
+        .composite_out(composite_out)
     );
-
 
     wire cga_de;
     assign cga_de = ~(hblank | vblank);
@@ -406,12 +413,12 @@ module cga(
         .dbl_video(dbl_video)
     );
 
-    assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //not ok: hsync, csync_out      
-    assign vsync_sd = scandoubler ? vsync     : 1'b1;
-    assign video_sd = scandoubler ? dbl_video : video;
-
-    // assign hsync_sd = scandoubler ? dbl_hsync : hsync;          
-    // assign vsync_sd = scandoubler ? vsync     : vsync;
+    // assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //mist_video will do the csync      
+    // assign vsync_sd = scandoubler ? vsync     : 1'b1;
     // assign video_sd = scandoubler ? dbl_video : video;
+
+    assign hsync_sd = scandoubler ? dbl_hsync : hsync;          
+    assign vsync_sd = scandoubler ? vsync     : vsync;
+    assign video_sd = scandoubler ? dbl_video : video;
 
 endmodule
