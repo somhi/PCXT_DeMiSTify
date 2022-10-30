@@ -29,3 +29,7 @@
 * Simulated composite video output
 * OSD save configuration
   *  the BBC core can load and save configs.  (The config file has to be pre-existing on the SD Card, though - the filesystem code can't create files.)  You can save whatever you want in the config file, there are configtocore() and coretoconfig() functions in overrides.c.  The loading / saving is done from an extra menu page, accessed with the right cursor key while the menu is shown.
+
+### Differences in Demistify ports
+
+* KFPS2KB.sv includes kitune-san changes to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag)

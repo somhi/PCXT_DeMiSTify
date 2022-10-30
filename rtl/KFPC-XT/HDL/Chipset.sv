@@ -101,7 +101,7 @@ module CHIPSET (
         // TANDY
         input   logic           tandy_video,
         input   logic           tandy_bios_flag,
-        output  logic   [7:0]   tandy_snd_e,
+        output  logic   [10:0]  tandy_snd_e,
         // UART
         input   logic           clk_uart,
         input   logic           clk_uart2,
@@ -132,8 +132,9 @@ module CHIPSET (
         input   logic           ems_enabled,
         input   logic   [1:0]   ems_address,
         // BIOS
-        input  logic            bios_protect_flag,
-        input   logic   [2:0]   bios_writable
+        input  logic    [1:0]   bios_protect_flag,
+        // XTCTL DATA
+        output  logic   [7:0]   xtctl
     );
 
     logic           dma_ready;
@@ -161,6 +162,7 @@ module CHIPSET (
     logic           ems_b3;
     logic           ems_b4;
     logic           tandy_snd_rdy;
+
 
     always_ff @(posedge clock)
     begin
@@ -330,7 +332,8 @@ module CHIPSET (
         .ems_b2                            (ems_b2),
         .ems_b3                            (ems_b3),
         .ems_b4                            (ems_b4),
-        .bios_writable                       (bios_writable)
+        // XTCTL DATA
+        .xtctl                             (xtctl)
     );
 
     RAM u_RAM 
