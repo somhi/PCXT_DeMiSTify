@@ -1119,15 +1119,18 @@ module PCXT
     wire vga_vs_o;
 
     wire [6:0] comp_video;
+    wire [6:0] comp_video_del;	
     wire [17:0] rgb_18b;
+    wire clk_vid;
 
     assign CLK_VIDEO = clk_56_875;
     assign ce_pixel = 1'b1;
+    assign clk_vid = mda_mode ? clk_56_875 : clk_28_636;
 
 
     video_monochrome_converter video_mono
 	(
-		.clk_vid(mda_mode ? clk_56_875 : clk_28_636),          //CLK_VIDEO
+		.clk_vid(clk_vid),
 		.ce_pix(ce_pixel),
 
 		.R({r_in, 2'b00}),
@@ -1187,15 +1190,18 @@ module PCXT
 		.VGA_HS      ( vga_hs_o   )
 	);
 
-
     assign raux4  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
     assign gaux4  = osd_disable ? {gaux2,gaux2[1:0]} : {gaux3,gaux3[1:0]};
     assign baux4  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
 
     assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
 
+    always @(posedge clk_vid) begin
+		comp_video_del <= comp_video;		// flip-flop added for getting the right colors in composite video output
+    end
+
     assign VGA_R = composite_on ?                        8'd0 : raux4;
-    assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
+    assign VGA_G = composite_on ?  {comp_video_del,comp_video_del[0]} : gaux4;
     assign VGA_B = composite_on ?                        8'd0 : baux4;
 
     assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;
