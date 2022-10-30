@@ -66,9 +66,9 @@ The purpose of this core is to implement a PCXT as reliable as possible. For thi
 
 The [Graphics Gremlin project](https://github.com/schlae/graphics-gremlin) from TubeTimeUS ([@schlae](https://github.com/schlae)) has also been integrated in this first stage.
 
-[JTOPL](https://github.com/jotego/jtopl) by Jose Tejada (@topapate) was integrated for AdLib sound.
+[JTOPL](https://github.com/jotego/jtopl) by Jose Tejada (@jotego) was integrated for AdLib sound.
 
-An SN76489AN Compatible Implementation (Tandy Sound) written in VHDL was also integrated - Copyright (c) 2005, 2006, [Arnim Laeuger](https://github.com/devsaurus) (arnim.laeuger@gmx.net)
+[JT89](https://github.com/jotego/jt89) by Jose Tejada (@jotego) was integrated for Tandy sound.
 
 ## Key features
 
@@ -125,9 +125,13 @@ NOTES:
 
 * IBM5160 BIOS: Starting BIOS at 14 MHz, lights start blinking and keyboard doesn't work anymore. Starting BIOS at 4.77 MHz and changing it thereafter during the RAM test to 14.3 MHz it lets work in this BIOS without keyboard problems.
 
+## Other BIOSes
+
+* https://github.com/640-KB/GLaBIOS
+
 ## Mounting the disk image
 
-Initially, and until an 8-bit IDE module compatible with XTIDE is available, floppy and hdd mounting will be done through the serial port available in the core via the OSD menu. The available transfer speeds are as follows:
+Initially, and until an 8-bit IDE module compatible with XTIDE is available, floppy and HDD mounting will be done through the serial port available in the core via the OSD menu. The available transfer speeds are as follows:
 
 * 115200 Kbps
 * 230400 Kbps

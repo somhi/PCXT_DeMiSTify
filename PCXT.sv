@@ -111,12 +111,7 @@ module PCXT
 		"P1F,ROM,Tandy BIOS:;",
 		"P1F,ROM,EC00 BIOS:;",
 		"P1OUV,BIOS Writable,None,EC00,PCXT/Tandy,All;",
-		//"P1,FDD & HDD;",
-		//"P1S1,IMGIMA,FDD Image:;",
-		//"P1S0,IMG,HDD Image:;",
-		//"P1OJK,Write Protect,None,FDD,HDD,FDD & HDD;",
-		//"P1OLM,Speed,115200,230400,460800,921600;",
-		//
+        "P1O7,Boot Splash Screen,Yes,No;",
 		"P2,Audio;",
 		"P2OA,Adlib,On,Invisible;",
 		"P2OWX,Speaker Volume,1,2,3,4;",
@@ -131,11 +126,10 @@ module PCXT
 		"P3O4,Video Output,CGA/Tandy,MDA;",
 		"P3OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
 		"P3Oh,Composite Blending,No,Yes;",
-		"P3Oi,Composite (VGA conn.),Off,On;",
+		"P3Oi,Composite (DB15 green),Off,On;",
 		"P3Ol,VGA+Compos(1pin no.osd),Off,On;",
 		// "P3Ok,DEBUG.OSD disable,No,Yes;",
         // "P3Oj,DEBUG.Displ.mode disable,No,Yes;",
-        "P3O7,Splash Screen,Yes,No;",
 		"P3Og,EXPER.YPbPr,Off,On;",
 		//
 		"P4,Hardware;",
@@ -159,6 +153,7 @@ module PCXT
     wire forced_scandoubler;
     wire  [1:0] buttons;
     wire [63:0] status;
+    wire [7:0]  xtctl;
 
     //Keyboard Ps2
     wire        ps2_kbd_clk_out;
@@ -179,19 +174,21 @@ module PCXT
     wire [7:0]  ioctl_data;
     reg         ioctl_wait;
 
-    wire        adlibhide = status[10];
+    wire        adlibhide = status[10] | xtctl[4];
 
     wire [31:0] joy0, joy1;
     wire [31:0] joya0, joya1;
     wire [4:0]  joy_opts = status[27:23];
 
 	//wire [1:0] scale = status[2:1];
-    wire mda_mode = status[4];
+    wire mda_mode = status[4] | xtctl[5];
     wire [2:0] screen_mode = status[16:14];
     wire composite_on = status[44];
+    wire vga_composite = status[47];
+	//debug
     wire display_mode_disable = status[45];
     wire osd_disable = status[46];
-    wire vga_composite = status[47];
+
 
 
     // .PS2DIV(2000) value is adequate
@@ -334,7 +331,7 @@ module PCXT
 
 	`endif
 
-    wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | splashscreen | bios_access_request;
+    wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | splashscreen | bios_access_request;   //bios_access_request by kitune-san to supply ioctl_wait signal
     wire reset_sdram_wire = !RESET_N | !pll_locked;
 
     //////////////////////////////////////////////////////////////////
@@ -343,13 +340,13 @@ module PCXT
         clk_14_318 <= ~clk_14_318; 	// 14.318Mhz
 
     always @(posedge clk_14_318)
-        clk_7_16 <= ~clk_7_16; 		// 7.16Mhz
+        clk_7_16 <= ~clk_7_16;      // 7.16Mhz
 
-    clk_div3 clk_normal 			// 4.77MHz
-	(
-		.clk(clk_14_318),
-		.clk_out(clk_4_77)
-	);
+    clk_div3 clk_normal             // 4.77MHz
+    (
+        .clk(clk_14_318),
+        .clk_out(clk_4_77)
+    );
 
     always @(posedge clk_4_77)
         peripheral_clock <= ~peripheral_clock; // 2.385Mhz
@@ -369,8 +366,8 @@ module PCXT
         end
         else if (biu_done)
         begin
-            turbo_mode  <= (status[18:17] == 2'b01 || status[18:17] == 2'b10);
-            clk_select  <= status[18:17];
+            turbo_mode  <= xtctl[3:2] == 2'b00 ? (status[18:17] == 2'b01 || status[18:17] == 2'b10) : (xtctl[3:2] == 2'b10 || xtctl[3:2] == 2'b11);
+            clk_select  <= xtctl[3:2] == 2'b00 ? status[18:17] : xtctl[3:2] - 2'b01;
         end
         else
         begin
@@ -528,7 +525,7 @@ module PCXT
     //
 
     reg [4:0]  bios_load_state = 4'h0;
-    reg        bios_protect_flag;
+    reg [1:0]  bios_protect_flag;
     reg        bios_access_request;
     reg [19:0] bios_access_address;
     reg [15:0] bios_write_data;
@@ -552,7 +549,7 @@ module PCXT
     begin
         if (reset_sdram)
         begin
-            bios_protect_flag   <= 1'b1;
+            bios_protect_flag   <= 2'b11;
             bios_access_request <= 1'b0;
             bios_access_address <= 20'hFFFFF;
             bios_write_data     <= 16'hFFFF;
@@ -565,7 +562,7 @@ module PCXT
         end
         else if (~initilized_sdram)
         begin
-            bios_protect_flag   <= 1'b1;
+            bios_protect_flag   <= 2'b11;
             bios_access_request <= 1'b0;
             bios_access_address <= 20'hFFFFF;
             bios_write_data     <= 16'hFFFF;
@@ -580,7 +577,7 @@ module PCXT
             casez (bios_load_state)
                 4'h00:
                 begin
-                    bios_protect_flag   <= 1'b1;
+                    bios_protect_flag   <= ~status[31:30];  // bios_writable
                     bios_access_address <= 20'hFFFFF;
                     bios_write_data     <= 16'hFFFF;
                     bios_write_n        <= 1'b1;
@@ -606,7 +603,7 @@ module PCXT
                 end
                 4'h01:
                 begin
-                    bios_protect_flag   <= 1'b0;
+                    bios_protect_flag   <= 2'b00;
                     bios_access_request <= 1'b1;
                     bios_write_byte_cnt <= 1'h0;
                     tandy_bios_write    <= select_tandy;
@@ -641,7 +638,7 @@ module PCXT
                 end
                 4'h02:
                 begin
-                    bios_protect_flag   <= 1'b0;
+                    bios_protect_flag   <= 2'b00;
                     bios_access_request <= 1'b1;
                     bios_access_address <= bios_access_address;
                     bios_write_data     <= bios_write_data;
@@ -663,10 +660,10 @@ module PCXT
                 end
                 4'h03:
                 begin
-                    bios_protect_flag   <= 1'b0;
+                    bios_protect_flag   <= 2'b00;
                     bios_access_request <= 1'b1;
                     bios_access_address <= 20'hFFFFF;
-                    bios_write_data     <= 8'hFF;
+                    bios_write_data     <= 16'hFFFF;
                     bios_write_n        <= 1'b1;
                     bios_write_byte_cnt <= bios_write_byte_cnt;
                     tandy_bios_write    <= 1'b0;
@@ -680,7 +677,7 @@ module PCXT
                 end
                 default:
                 begin
-                    bios_protect_flag   <= 1'b1;
+                    bios_protect_flag   <= 2'b11;
                     bios_access_request <= 1'b0;
                     bios_access_address <= 20'hFFFFF;
                     bios_write_data     <= 16'hFFFF;
@@ -805,7 +802,7 @@ module PCXT
 		.cpu_clock                          (clk_cpu),
 		.clk_sys                            (clk_chipset),
 		.peripheral_clock                   (pclk),
-		.turbo_mode                         (status[18:17]),
+		.turbo_mode                         (xtctl[3:2] == 2'b00 ? status[18:17] : xtctl[3:2] - 2'b01),
 		.color							    (screen_mode == 3'd0),
 		.reset                              (reset_cpu),
 		.sdram_reset                        (reset_sdram),
@@ -913,7 +910,7 @@ module PCXT
 		.ems_enabled                        (~status[11]),
 		.ems_address                        (status[13:12]),
 		.bios_protect_flag                  (bios_protect_flag),
-		.bios_writable                      (status[31:30])
+		.xtctl                              (xtctl)
 	);
 
     wire [15:0] SDRAM_DQ_IN;
@@ -980,7 +977,7 @@ module PCXT
 
     wire [15:0] jtopl2_snd_e;
     wire [16:0] jtopl2_snd;
-    wire [7:0]  tandy_snd_e;
+    wire [10:0] tandy_snd_e;
     wire [16:0] tandy_snd;
     reg  [16:0] spk_vol;
     wire        speaker_out;
@@ -988,18 +985,18 @@ module PCXT
     always @(posedge CLK_50M)		//CLK_AUDIO
     begin
         reg [15:0] oldj_0, oldj_1;
-        reg [15:0] oldt_0, oldt_1;
+        reg [10:0] oldt_0, oldt_1;
 
         oldj_0 <= jtopl2_snd_e;
         oldj_1 <= oldj_0;
         if(oldj_0 == oldj_1)
             jtopl2_snd <= {oldj_1[15],oldj_1};
-
-        oldt_0 <= {2'b00, {3'b000, tandy_snd_e} << status[35:34], 4'd0};
+				
+        oldt_0 <= -tandy_snd_e;
         oldt_1 <= oldt_0;
-        if(oldt_0 == oldt_1)
-            tandy_snd <= {oldt_1[15],oldt_1};
-
+        if(oldt_0 == oldt_1)				
+            tandy_snd <= {{{2{oldt_1[10]}}, {4{oldt_1[10]}}, oldt_1} << status[35:34], 2'b00};
+				
         spk_vol <= {2'b00, {3'b000,~speaker_out} << status[33:32], 11'd0};
     end
 
@@ -1040,7 +1037,7 @@ module PCXT
     end
 
 
-	`ifdef DEMISTIFY
+	`ifdef DEMISTIFY	//needed for not getting error in Quartus compilation for MiST board
 		assign DAC_R =  status[37:36] ? cmp : out;
 		assign DAC_L =  status[37:36] ? cmp : out;
 	`endif
@@ -1119,7 +1116,8 @@ module PCXT
     wire vga_vs_o;
 
     wire [6:0] comp_video;
-    wire [6:0] comp_video_del;	
+    wire [6:0] comp_video_del1;	
+    wire [6:0] comp_video_del2;	
     wire [17:0] rgb_18b;
     wire clk_vid;
 
@@ -1197,11 +1195,13 @@ module PCXT
     assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
 
     always @(posedge clk_vid) begin
-		comp_video_del <= comp_video;		// flip-flop added for getting the right colors in composite video output
+        // flip-flop added for getting the right colors in composite video output
+		comp_video_del1 <= comp_video;	
+        comp_video_del2 <= comp_video_del1;	
     end
 
     assign VGA_R = composite_on ?                        8'd0 : raux4;
-    assign VGA_G = composite_on ?  {comp_video_del,comp_video_del[0]} : gaux4;
+    assign VGA_G = composite_on ?  {comp_video_del2,comp_video_del2[0]} : gaux4;
     assign VGA_B = composite_on ?                        8'd0 : baux4;
 
     assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;
