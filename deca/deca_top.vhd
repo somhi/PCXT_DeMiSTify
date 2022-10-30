@@ -36,6 +36,9 @@ entity deca_top is
 		VGA_R  : out std_logic_vector(3 downto 0);
 		VGA_G  : out std_logic_vector(3 downto 0);
 		VGA_B  : out std_logic_vector(3 downto 0);
+		--COMPOSITE VIDEO
+		SPI_CS0_CLKBD 	: out std_logic;		--1 PIN
+		SPI_MOSI 		: out std_logic;		--OPTIONAL 2 PIN
 		-- -- AUDIO
 		-- SIGMA_R : out std_logic;
 		-- SIGMA_L : out std_logic;
@@ -44,7 +47,7 @@ entity deca_top is
 		-- SPI_SCLK_DABD         : in    std_logic;
 		-- SPI_CS0_CLKBD        : in    std_logic;
 		-- EAR
-		EAR : in std_logic;
+		EAR 			 : in std_logic;
 		-- PS2
 		PS2_KEYBOARD_CLK : inout std_logic := '1';
 		PS2_KEYBOARD_DAT : inout std_logic := '1';
@@ -53,10 +56,8 @@ entity deca_top is
 		-- UART
 		UART_RXD : in std_logic;
 		UART_TXD : out std_logic;
-
-		DETO1_PMOD2_6 : in std_logic;		--CTS
-		DETO2_PMOD2_7 : out std_logic;		--RTS
-
+		SPI_CS1 : in std_logic;			--CTS
+		SPI_CS2 : out std_logic;		--RTS
 		-- JOYSTICK
 		JOY1_B2_P9 : in std_logic;
 		JOY1_B1_P6 : in std_logic;
@@ -233,6 +234,8 @@ architecture RTL of deca_top is
 	signal vga_clk   : std_logic;
 	signal vga_de : std_logic;
 
+	signal composite_output : std_logic_vector(1 downto 0);
+
 	-- USB ULPI KEYBOARD
 	signal USB_CLK_PHASE  : std_logic;
 	signal USB_PLL_LOCKED : std_logic;
@@ -343,6 +346,9 @@ begin
 	VGA_HS      <= vga_hsync;
 	VGA_VS      <= vga_vsync;
 
+	-- Composite video output
+	SPI_CS0_CLKBD  	<= composite_output(0);		--1 PIN
+	SPI_MOSI 		<= composite_output(1);		--OPTIONAL 2 PIN
 
 	-- DECA AUDIO CODEC
 	
@@ -444,8 +450,8 @@ begin
 			UART_TX => UART_TXD,
 			UART_RX => UART_RXD,
 
-			UART_CTS  => DETO1_PMOD2_6,
-			UART_RTS  => DETO2_PMOD2_7,
+			UART_CTS  => SPI_CS1,
+			UART_RTS  => SPI_CS2,
 
 			--SPI
 --			SPI_SD_DI  => sd_miso,
@@ -462,6 +468,9 @@ begin
 			VGA_R     => vga_red,
 			VGA_G     => vga_green,
 			VGA_B     => vga_blue,
+
+			COMPOSITE_OUT => composite_output,
+
 				-- VGA_DE => vga_de,
 				-- CLK_VIDEO   => vga_clk
 				-- vga_x_r   => vga_x_r,

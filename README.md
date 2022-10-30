@@ -33,14 +33,20 @@ Some notes about serdrive:
 
 **Composite CGA video output**: 
 
-CGA mode has available composite video output:
+CGA mode has available composite video output through:
 
-* Through green pin of the DB15 VGA connector
-* Simultaneous output through 1 GPIO pin
+* Green pin of the DB15 VGA connector
+* Simultaneous output through 1 GPIO pin 
+  * Check pin location in the corresponding top and qsf files inside the respective board folder
+  * Optionally a second pin might be used with a 2k resistor connected in the same way as the first pin  
+  * Currently only implemented in Atlas cyc1000, Deca and Neptuno boards.
+
 
 Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composite output pin and the TV composite input central pin. 
 
 ![composite_schematic](composite_schematic.png)
+
+
 
 Follows original Readme (with some crossed out text where does not apply).
 
