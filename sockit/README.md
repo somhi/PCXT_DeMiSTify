@@ -80,10 +80,12 @@ An specific addon for SoCkit might be developed in the future.
 **Others:**
 
 * Button KEY4 is a reset button
+* Button KEY0 is OSD button
 
 ### OSD Controls
 
 * F12 show/hide OSD 
 * Long F12 toggles VGA/RGB mode
 * The reset button KEY4 resets the controller (so re-initialises the SD card if it's been changed, reloads any autoboot ROM.) The OSD Reset menu item resets the core itself.
+* The user button KEY0 opens the OSD
 

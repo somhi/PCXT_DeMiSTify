@@ -508,7 +508,7 @@ begin
 			)
 			port map(
 				clk       => MAX10_CLK1_50,
-				reset_in  => KEY(1) and USB_PLL_LOCKED,		--reset_in  when 0
+				reset_in  => KEY(0) and USB_PLL_LOCKED,		--reset_in  when 0
 				reset_out => reset_n,						--reset_out when 0
 
 				-- SPI signals
@@ -535,7 +535,7 @@ begin
 				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
-				buttons => (0 => KEY(0), others => '1'),	-- 0 = opens OSD
+				buttons => (0 => KEY(1), others => '1'),	-- 0 = opens OSD
 
 				-- Joysticks
 				joy1 => joya,
