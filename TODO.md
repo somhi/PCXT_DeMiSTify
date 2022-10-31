@@ -2,12 +2,14 @@
 
 * Save OSD configuration in a config file in SD card
 
+* Keyboard error controller message with Turbo mode (start BIOS with 4.77 MHz for not getting this error).
+
 * Video
 
   * No overscan with Graphic Gremlins scandoubler (//.video(video))
 
   * RGB 15 kHz video output 
-    * CGA video (not TGA) deformed at top part of screen in some resolutions
+    * CGA video deformed at top part of screen in some resolutions (don't happen so often in TGA).
     
   * YPbPr video output did not work on my setup.
 
@@ -17,8 +19,6 @@
     * OSD background solid color to improve visualization (display green workaround)
     
       
-
-
 
 ### Parts from MiSTer original core not ported to DeMiSTify ports
 
@@ -30,6 +30,6 @@
 * OSD save configuration
   *  the BBC core can load and save configs.  (The config file has to be pre-existing on the SD Card, though - the filesystem code can't create files.)  You can save whatever you want in the config file, there are configtocore() and coretoconfig() functions in overrides.c.  The loading / saving is done from an extra menu page, accessed with the right cursor key while the menu is shown.
 
-### Differences in Demistify ports
+### Other differences in Demistify ports
 
 * KFPS2KB.sv includes kitune-san changes to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag)

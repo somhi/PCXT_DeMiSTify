@@ -157,8 +157,8 @@ module crtc6845(
     //assign hblank = tandy_16_gfx ? ~hdisp_del[color ? 7 : 9] : ~hdisp_del[color ? 3 : 5];
     //assign hblank = tandy_16_gfx ? (color? ~hdisp_del[7] : ~hdisp_del[9]) : (color? ~hdisp_del[3] : ~hdisp_del[5]);
     assign hblank = tandy_16_gfx ? (color? ~hdisp_del[7] : ~hdisp_del[9]) :        //tandy      
-                    composite_on ? (color? ~hdisp_del[0] : ~hdisp_del[0]) :        //composite
-                    (color? ~hdisp_del[3] : ~hdisp_del[5]);                        //cga
+                    composite_on ? (color? ~hdisp_del[5] : ~hdisp_del[7]) :        //composite
+                                   (color? ~hdisp_del[3] : ~hdisp_del[5]);         //cga
     //video_monochrome_converter in MiSTer alters the start of video, hence the color selection above
     
     assign vblank = ~vdisp;

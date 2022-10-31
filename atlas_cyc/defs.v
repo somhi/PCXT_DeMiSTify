@@ -1,5 +1,4 @@
 `define EMBED_8088_ROM
-//`define NO_COM2
 `define NO_ADLIB	//DOES NOT FIT WITH CGA_32
 //`define NO_MDA
 //`define NO_CGA

@@ -8,7 +8,6 @@ Follow PCXT core discussion at https://misterfpga.org/viewtopic.php?t=4680
 
 **Status**: 
 
-* Work in progress
 * Check [Bugs and TODO list](TODO.md)
 * Check specific BOARD limitations on each board folder's readme
 
