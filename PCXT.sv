@@ -1116,8 +1116,6 @@ module PCXT
     wire vga_vs_o;
 
     wire [6:0] comp_video;
-    wire [6:0] comp_video_del1;	
-    wire [6:0] comp_video_del2;	
     wire [17:0] rgb_18b;
     wire clk_vid;
 
@@ -1194,14 +1192,8 @@ module PCXT
 
     assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
 
-    always @(posedge clk_vid) begin
-        // flip-flop added for getting the right colors in composite video output
-		comp_video_del1 <= comp_video;	
-        comp_video_del2 <= comp_video_del1;	
-    end
-
     assign VGA_R = composite_on ?                        8'd0 : raux4;
-    assign VGA_G = composite_on ?  {comp_video_del2,comp_video_del2[0]} : gaux4;
+    assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
     assign VGA_B = composite_on ?                        8'd0 : baux4;
 
     assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;

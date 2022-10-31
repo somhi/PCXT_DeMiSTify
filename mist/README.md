@@ -1,6 +1,6 @@
 # [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT) - MIST port
 
-24/09/22 MIST port by @somhi from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
+24/09/22 MiST port by @somhi from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
 
 Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
