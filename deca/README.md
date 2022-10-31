@@ -77,7 +77,8 @@ For 444 video DAC use all VGA pins. For 333 video DAC connect MSB from addon to 
 
 **Others:**
 
-* Button KEY0 is a reset button
+* Button KEY0 is Reset button
+* Button KEY1 is OSD button
 
 ### OSD Controls
 
@@ -85,3 +86,5 @@ For 444 video DAC use all VGA pins. For 333 video DAC connect MSB from addon to 
 * Long F12 toggles VGA/RGB mode
 * The reset button KEY0 resets the controller (so re-initialises the SD card if it's been changed, reloads any autoboot ROM.) The OSD Reset menu item resets the core itself.
 
+* The user button KEY0 resets the controller (so re-initialises the SD card if it's been changed, reloads any autoboot ROM.) The OSD Reset menu item resets the core itself.
+* The user button KEY1 opens the OSD
