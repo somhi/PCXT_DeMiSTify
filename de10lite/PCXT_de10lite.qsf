@@ -516,6 +516,13 @@ set_location_assignment PIN_AB2 -to GPIO[34]
 set_location_assignment PIN_AA2 -to GPIO[35]
 set_location_assignment PIN_R3 -to CLK_I2C_SCL
 set_location_assignment PIN_P3 -to CLK_I2C_SDA
+
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ARDUINO_IO[12]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[10]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[12]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[14]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[16]
+
 set_global_assignment -name SDC_FILE ../DeMiSTify/Board/de10lite/constraints.sdc
 set_global_assignment -name VERILOG_MACRO "SDRAM_WINBOND=0"
 set_global_assignment -name VERILOG_MACRO "SDRAM_ROWBITS=13"
@@ -536,4 +543,6 @@ set_global_assignment -name VHDL_FILE ../demistify_config_pkg.vhd
 set_global_assignment -name VHDL_FILE ../firmware/controller_rom1_byte.vhd
 set_global_assignment -name VHDL_FILE ../firmware/controller_rom2_byte.vhd
 set_global_assignment -name PRE_FLOW_SCRIPT_FILE "quartus_sh:../build_id.tcl"
+
+
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

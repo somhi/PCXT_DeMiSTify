@@ -5,6 +5,15 @@ use ieee.numeric_std.all;
 library work;
 use work.demistify_config_pkg.all;
 
+
+-- Make sure following lines uncommented exist into the PCXT_de10lite.qsf file
+--
+-- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ARDUINO_IO[12]
+-- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[10]
+-- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[12]
+-- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[14]
+-- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[16]
+
 -------------------------------------------------------------------------
 
 entity de10lite_top is
@@ -157,16 +166,16 @@ uart_cts <= ARDUINO_IO(2);
 
 -- External devices tied to GPIOs
 
-ps2_mouse_dat_in<=ps2_mouse_dat;
-ps2_mouse_dat <= '0' when ps2_mouse_dat_out='0' else 'Z';
-ps2_mouse_clk_in<=ps2_mouse_clk;
-ps2_mouse_clk <= '0' when ps2_mouse_clk_out='0' else 'Z';
+ps2_mouse_dat_in <=ps2_mouse_dat;
+ps2_mouse_dat    <= '0' when ps2_mouse_dat_out='0' else 'Z';
+ps2_mouse_clk_in <=ps2_mouse_clk;
+ps2_mouse_clk    <= '0' when ps2_mouse_clk_out='0' else 'Z';
 
-ps2_keyboard_dat_in <= PS2_KEYBOARD_DAT;
-PS2_KEYBOARD_DAT    <= '0' when ((ps2_keyboard_dat_out = '0') and (intercept = '0') ) else 'Z';
-ps2_keyboard_clk_in <= PS2_KEYBOARD_CLK;
-PS2_KEYBOARD_CLK    <= '0' when ((ps2_keyboard_clk_out = '0') and (intercept = '0') ) else 'Z';
-	
+ps2_keyboard_dat_in <= ps2_keyboard_dat;
+ps2_keyboard_dat    <= '0' when ((ps2_keyboard_dat_out = '0') and (intercept = '0') ) else 'Z';
+ps2_keyboard_clk_in <= ps2_keyboard_clk;
+ps2_keyboard_clk    <= '0' when ((ps2_keyboard_clk_out = '0') and (intercept = '0') ) else 'Z';
+
 GPIO(0)<=rs232_txd;
 rs232_rxd<=GPIO(1);
 
@@ -191,57 +200,55 @@ guest: COMPONENT PCXT
 	PORT map
 	(
 		CLOCK_27 => MAX10_CLK2_50,
-		RESET_N => reset_n,
-		LED 	=> act_led,
+		RESET_N  => reset_n,
+		LED 	 => act_led,
 		-- clocks
-		SDRAM_DQ => DRAM_DQ,
-		SDRAM_A => DRAM_ADDR,
+		SDRAM_DQ   => DRAM_DQ,
+		SDRAM_A    => DRAM_ADDR,
 		SDRAM_DQML => DRAM_LDQM,
 		SDRAM_DQMH => DRAM_UDQM,
-		SDRAM_nWE => DRAM_WE_N,
+		SDRAM_nWE  => DRAM_WE_N,
 		SDRAM_nCAS => DRAM_CAS_N,
 		SDRAM_nRAS => DRAM_RAS_N,
-		SDRAM_nCS => DRAM_CS_N,
-		SDRAM_BA => DRAM_BA,
-		SDRAM_CLK => DRAM_CLK,
-		SDRAM_CKE => DRAM_CKE,
+		SDRAM_nCS  => DRAM_CS_N,
+		SDRAM_BA   => DRAM_BA,
+		SDRAM_CLK  => DRAM_CLK,
+		SDRAM_CKE  => DRAM_CKE,
 		--UART
-		UART_TX   => uart_txd,
-		UART_RX   => uart_rxd,
-		UART_CTS  => uart_cts,
-		UART_RTS  => uart_rts,
+		UART_TX    => uart_txd,
+		UART_RX    => uart_rxd,
+		UART_CTS   => uart_cts,
+		UART_RTS   => uart_rts,
 		--SPI		
 --		SPI_SD_DI => sd_miso,
-		SPI_DO => spi_fromguest,
-		SPI_DI => spi_toguest,
-		SPI_SCK => spi_clk_int,
-		SPI_SS2	=> spi_ss2,
-		SPI_SS3 => spi_ss3,
-		SPI_SS4 => spi_ss4,
+		SPI_DO     => spi_fromguest,
+		SPI_DI     => spi_toguest,
+		SPI_SCK    => spi_clk_int,
+		SPI_SS2    => spi_ss2,
+		SPI_SS3    => spi_ss3,
+		SPI_SS4    => spi_ss4,
 		CONF_DATA0 => conf_data0,
 		--VGA
-		VGA_HS => vga_hsync,
-		VGA_VS => vga_vsync,
-		VGA_R => vga_red,
-		VGA_G => vga_green,
-		VGA_B => vga_blue,
+		VGA_HS 	=> vga_hsync,
+		VGA_VS 	=> vga_vsync,
+		VGA_R  	=> vga_red,
+		VGA_G  	=> vga_green,
+		VGA_B  	=> vga_blue,
 
 		COMPOSITE_OUT => composite_output,
 
 		AUDIO_L => sigma_l,
 		AUDIO_R => sigma_r,
 
-		PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
-		PS2K_DAT_IN => ps2_keyboard_dat_in,
+		PS2K_CLK_IN  => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
+		PS2K_DAT_IN  => ps2_keyboard_dat_in,
 		PS2K_CLK_OUT => ps2_keyboard_clk_out,
 		PS2K_DAT_OUT => ps2_keyboard_dat_out,
 
-		PS2K_MOUSE_CLK_IN => ps2_mouse_clk_in,
-		PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
+		PS2K_MOUSE_CLK_IN  => ps2_mouse_clk_in,
+		PS2K_MOUSE_DAT_IN  => ps2_mouse_dat_in,
 		PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
 		PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
-
-
 );
 
 -- Pass internal signals to external SPI interface
@@ -250,25 +257,27 @@ sd_clk <= spi_clk_int;
 controller : entity work.substitute_mcu
 	generic map (
 		sysclk_frequency => 500,
-		debug => false,
+		--		SPI_FASTBIT=>3,
+		--		SPI_INTERNALBIT=>2,		--keyb beeps if I discomment these two lines
+		debug     => false,
 		jtag_uart => false
 	)
 	port map (
-		clk => MAX10_CLK1_50,
-		reset_in  => KEY(0),
-		reset_out => reset_n,
+		clk       => MAX10_CLK1_50,
+		reset_in  => KEY(0),		--reset_in when 0
+		reset_out => reset_n,		--reset_out when 0
 
 		-- SPI signals
-		spi_miso => sd_miso,
-		spi_mosi	=> sd_mosi,
-		spi_clk => spi_clk_int,
-		spi_cs => sd_cs,
+		spi_miso      => sd_miso,
+		spi_mosi      => sd_mosi,
+		spi_clk       => spi_clk_int,
+		spi_cs        => sd_cs,
 		spi_fromguest => spi_fromguest,
-		spi_toguest => spi_toguest,
-		spi_ss2 => spi_ss2,
-		spi_ss3 => spi_ss3,
-		spi_ss4 => spi_ss4,
-		conf_data0 => conf_data0,
+		spi_toguest   => spi_toguest,
+		spi_ss2       => spi_ss2,
+		spi_ss3       => spi_ss3,
+		spi_ss4       => spi_ss4,
+		conf_data0    => conf_data0,
 		
 		-- PS/2 signals
 		ps2k_clk_in => ps2_keyboard_clk_in,

@@ -11,6 +11,7 @@
                              Port by @spark2k06
 
            Powered by KFPC-XT (@kitune-san) & MCL86 (@MicroCoreLabs)
+                          & DeMiSTify (@robinsonb5)
                                        
                        Contributors & Special Thanks
                        -----------------------------
@@ -19,5 +20,4 @@
             @Newsdee - @birdybro - @Flandango - @pgimeno - @jordi
 
                             @Adr1048 - TonyEscobar
-
 
