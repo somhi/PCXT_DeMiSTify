@@ -9,7 +9,7 @@ Follow PCXT core discussion at https://misterfpga.org/viewtopic.php?t=4680
 **Ported FPGA platforms:**:
 
 * Altera Max 10:
-  * Terasic de10-lite
+  * Terasic DE10-lite
   * Arrow Terasic DECA
 * Altera Cyclone III:  MiST, MiSTica
 * Altera Cyclone IV:
