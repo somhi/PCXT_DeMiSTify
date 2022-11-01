@@ -13,6 +13,9 @@ use work.demistify_config_pkg.all;
 -- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[12]
 -- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[14]
 -- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[16]
+--
+-- edit DeMiSTify/Board/de10lite/constraints.sdc and in second line make sure that ":\controlblock" is removed. Second line should be lite this:
+-- create_generated_clock -name spiclk -source [get_ports {MAX10_CLK1_50}] -divide_by 16 [get_registers {substitute_mcu:controller|spi_controller:spi|sck}]
 
 -------------------------------------------------------------------------
 
