@@ -6,6 +6,21 @@ Port DeMiSTified by @somhi from original MiSTer port currently in development  h
 
 Follow PCXT core discussion at https://misterfpga.org/viewtopic.php?t=4680
 
+**Ported FPGA platforms:**:
+
+* Altera Max 10:
+  * Terasic de10-lite
+  * Arrow Terasic DECA
+* Altera Cyclone III:  MiST, MiSTica
+* Altera Cyclone IV:
+  * NeptUNO (Qmtech EP4CE55)
+  * UAreloaded (Qmtech EP4CE55)
+  * SiDi (ManuFerHi EP4CE22)
+* Altera Cyclone V: Arrow Terasic SoCkit
+* Altera Cyclone 10 LP: Trenz CYC1000 with Atlas carrier board
+
+
+
 **Status**: 
 
 * Check [Bugs and TODO list](TODO.md)
