@@ -38,6 +38,11 @@ Notes about ROMs:
 
 
 
+### Composite output:
+
+		PI_CLK_I2S_DATA			-- Composite output 0		-- pin 23
+		PI_CS_MIDI_CLKBD		-- Composite output 1		-- pin 24
+
 ### Compile the project in Quartus:
 
 Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
