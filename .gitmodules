@@ -4,3 +4,6 @@
 [submodule "mist-modules"]
 	path = mist-modules
 	url = https://github.com/mist-devel/mist-modules.git
+[submodule "rtl/jtopl"]
+	path = rtl/jtopl
+	url = https://github.com/jotego/jtopl
