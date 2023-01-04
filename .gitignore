@@ -20,6 +20,7 @@ PLLJ_PLLSPE_INFO.txt
 *.done
 *.jdi
 *.pin
+*.sof
 *.qws
 *.ppf
 *.ddb
@@ -38,4 +39,3 @@ c5_pin_model_dump.txt
 *.cdf
 **/.DS_Store
 *.log
-upd.sh

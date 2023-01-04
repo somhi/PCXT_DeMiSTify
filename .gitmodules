@@ -5,5 +5,8 @@
 	path = mist-modules
 	url = https://github.com/mist-devel/mist-modules.git
 [submodule "rtl/jtopl"]
-	path = rtl/jtopl
+	path = rtl/sound/jtopl
 	url = https://github.com/jotego/jtopl
+[submodule "rtl/sound/jt89"]
+	path = rtl/sound/jt89
+	url = https://github.com/jotego/jt89

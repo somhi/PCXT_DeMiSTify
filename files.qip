@@ -4,8 +4,9 @@ set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) P
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/common/common.qip]
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/video/video.qip]
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/uart/uart.qip]
-set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/jt89/hdl/jt89.qip]
-set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/jtopl/target/quartus/jtopl2.qip]
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/sound/saa1099.sv"]
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/sound/jt89/hdl/jt89.qip]
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/sound/jtopl/target/quartus/jtopl2.qip]
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/8088/8088.qip]
 #set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/KFSDRAM/HDL/KFSDRAM.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/KFPS2KB/HDL/KFPS2KB_Shift_Register.sv"]
@@ -34,9 +35,16 @@ set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/KF8237/HDL/KF8237.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/Ready.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/RAM.sv"]
+#set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/XT2IDE.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/RTC.v"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/Peripherals.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/Chipset.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/Bus_Arbiter.sv"]
-
-#hsp_ext.v used for ao486 FDD from MiSTer core
 #set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/hps_ext.v"]
+#
+#pll.qip is added in every respective board folder/top.qip
+#KFSDRAM.sv  is added in every respective board folder/top.qip
+#
+#Modules not used for DeMiSTify ports:
+#XT2IDE.sv used with main MiSTer for IDE interface 
+#hsp_ext.v used with main MiSTer for FDD interface (from ao486)

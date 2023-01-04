@@ -34,3 +34,14 @@
 ### Other differences in Demistify ports
 
 * KFPS2KB.sv includes kitune-san changes to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag)
+
+
+
+### Pending to update
+
+* SW/splash*
+* rtl/
+* /
+  * PCXT.sdc
+  * PCXT.sv
+  * README.md
