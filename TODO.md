@@ -33,8 +33,8 @@
 
 ### Other differences in Demistify ports
 
-* KFPS2KB.sv includes kitune-san changes to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag)
 * eu_rom.v includes macro EMBED_8088_ROM to use LE instead of BRAM
+* KFPS2KB.sv includes many changes by kitune-san to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag)
 
 
 
