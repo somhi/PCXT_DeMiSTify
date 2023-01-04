@@ -18,7 +18,10 @@ _HandlePS2RawCodes:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/keyboard.c, line 43
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -77,7 +80,10 @@ l20: #
 		add	r7
 
 						//../DeMiSTify/firmware/keyboard.c, line 46
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// static
@@ -116,7 +122,10 @@ l9: #
 		add	r7
 
 						//../DeMiSTify/firmware/keyboard.c, line 48
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// static
@@ -179,7 +188,10 @@ l12: #
 l15: # 
 
 						//../DeMiSTify/firmware/keyboard.c, line 51
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -446,7 +458,10 @@ l19: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/keyboard.c, line 70
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l4,0
@@ -464,7 +479,10 @@ l19: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/keyboard.c, line 71
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -487,7 +505,10 @@ l13: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/keyboard.c, line 43
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -578,7 +599,10 @@ _UpdateKeys:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 3
@@ -591,13 +615,16 @@ _UpdateKeys:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/keyboard.c, line 80
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3
 						// matchobj comparing flags 66 with 64
 						// reg r2 - only match against tmp
-	//mt
+	mt	r2
 						// (save temp)isreg
 	mr	r1
 						//save_temp done
@@ -636,7 +663,10 @@ _ClearKeyboard:
 						// allocreg r2
 
 						//../DeMiSTify/firmware/keyboard.c, line 86
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -675,7 +705,10 @@ l30: #
 
 						//../DeMiSTify/firmware/keyboard.c, line 87
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? no, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -740,7 +773,10 @@ _TestKey:
 						// allocreg r5
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 40 type 3
@@ -822,7 +858,10 @@ _TestKey:
 	mul	r4
 						// (save result) // isreg
 						// allocreg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 103

@@ -14,7 +14,10 @@ _spi_write:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -27,7 +30,10 @@ _spi_write:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi.c, line 7
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -110,7 +116,10 @@ l6: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi.c, line 7
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -186,7 +195,10 @@ _spi_read:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -199,7 +211,10 @@ _spi_read:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi.c, line 14
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -259,7 +274,10 @@ _spi_read:
 l13: # 
 
 						//../DeMiSTify/firmware/spi.c, line 15
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -296,7 +314,10 @@ l13: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi.c, line 14
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3

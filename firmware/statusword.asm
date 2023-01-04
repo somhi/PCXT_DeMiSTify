@@ -12,7 +12,10 @@
 _sendstatus:
 	stdec	r6
 						// allocreg r2
+		// Offsets -44, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 1000a
@@ -23,7 +26,10 @@ _sendstatus:
 						//save_temp done
 
 						//../DeMiSTify/firmware/statusword.c, line 14
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -36,7 +42,10 @@ _sendstatus:
 						//save_temp done
 
 						//../DeMiSTify/firmware/statusword.c, line 15
+		// Offsets 33, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// deref
@@ -56,7 +65,10 @@ _sendstatus:
 						//save_temp done
 
 						//../DeMiSTify/firmware/statusword.c, line 16
+		// Offsets 30, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -71,7 +83,10 @@ _sendstatus:
 						//save_temp done
 
 						//../DeMiSTify/firmware/statusword.c, line 17
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 2 type 503
@@ -86,7 +101,10 @@ _sendstatus:
 	st	r2
 						//save_temp done
 						// allocreg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -163,7 +181,10 @@ _sendstatus:
 						// freereg r1
 
 						//../DeMiSTify/firmware/statusword.c, line 22
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 2 type 503
@@ -178,7 +199,10 @@ _sendstatus:
 	st	r2
 						//save_temp done
 						// allocreg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -256,7 +280,10 @@ _sendstatus:
 						// freereg r1
 
 						//../DeMiSTify/firmware/statusword.c, line 27
+		// Offsets 32, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 608
 						// matchobj comparing flags 161 with 608
@@ -298,7 +325,10 @@ _statusword_get:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 103
@@ -505,7 +535,10 @@ _statusword_cycle:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 103
@@ -518,7 +551,10 @@ _statusword_cycle:
 						// freereg r1
 						// allocreg r5
 						// allocreg r4
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -563,7 +599,10 @@ _statusword_cycle:
 		add	r7
 
 						//../DeMiSTify/firmware/statusword.c, line 53
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// var, auto|reg
@@ -647,7 +686,10 @@ _statusword_cycle:
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
 						// freereg r2
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -778,7 +820,10 @@ l11: #
 						//FIXME convert
 						// (convert - reducing type 103 to 3
 						//No need to mask - same size
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -863,7 +908,10 @@ l12: #
 		add	r7
 
 						//../DeMiSTify/firmware/statusword.c, line 66
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -891,7 +939,10 @@ l14: #
 		add	r7
 
 						//../DeMiSTify/firmware/statusword.c, line 69
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// var, auto|reg

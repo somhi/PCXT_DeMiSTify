@@ -16,7 +16,10 @@ _LBA2MSF:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 3
@@ -232,7 +235,10 @@ _MSF2LBA:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -389,7 +395,10 @@ l6:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -1600,7 +1609,10 @@ l49:
 						// allocreg r5
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -1617,7 +1629,10 @@ l49:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 98
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -1630,7 +1645,10 @@ l49:
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 99
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -1645,7 +1663,10 @@ l94: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 102
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -2191,7 +2212,10 @@ l95: #
 
 						//../DeMiSTify/firmware/cue_parser.c, line 107
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? no, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -2223,7 +2247,10 @@ l95: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 108
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2257,7 +2284,10 @@ l86: #
 		add	r7
 
 						//../DeMiSTify/firmware/cue_parser.c, line 108
+		// Offsets 3, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 138 with 66
 						// var, auto|reg
@@ -2299,7 +2329,10 @@ l89: #
 		add	r7
 
 						//../DeMiSTify/firmware/cue_parser.c, line 108
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2318,7 +2351,10 @@ l89: #
 l92: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 108
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2330,7 +2366,10 @@ l92: #
 l93: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 108
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	4
@@ -2348,7 +2387,10 @@ l93: #
 l90: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 108
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags a type 3
@@ -2400,7 +2442,10 @@ _cue_open:
 						// allocreg r5
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -2414,7 +2459,10 @@ _cue_open:
 						// allocreg r3
 
 						//../DeMiSTify/firmware/cue_parser.c, line 116
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -2430,7 +2478,10 @@ _cue_open:
 						// allocreg r2
 
 						//../DeMiSTify/firmware/cue_parser.c, line 116
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2444,7 +2495,10 @@ _cue_open:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 116
+		// Offsets 56, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -2476,7 +2530,10 @@ _cue_open:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 121
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -2522,7 +2579,10 @@ _cue_open:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 123
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2543,7 +2603,10 @@ l99: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 126
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2583,7 +2646,10 @@ l99: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 128
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -2628,7 +2694,10 @@ l102: #
 		add	r7
 
 						//../DeMiSTify/firmware/cue_parser.c, line 130
+		// Offsets 20, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 66
 						// extern (offset 0)
@@ -2654,7 +2723,10 @@ l102: #
 l104: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 132
+		// Offsets 0, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 4)
 	.liabs	_toc, 4
@@ -2710,7 +2782,10 @@ _cue_parse:
 						// allocreg r4
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 40 type 3
@@ -2727,7 +2802,10 @@ _cue_parse:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 145
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -2741,7 +2819,10 @@ _cue_parse:
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 145
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// var, auto|reg
@@ -2763,7 +2844,10 @@ _cue_parse:
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 145
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -2783,7 +2867,10 @@ _cue_parse:
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 145
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -2803,7 +2890,10 @@ _cue_parse:
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 145
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -2823,7 +2913,10 @@ _cue_parse:
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 146
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2835,7 +2928,10 @@ _cue_parse:
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 146
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -2854,7 +2950,10 @@ _cue_parse:
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 148
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -2876,7 +2975,10 @@ _cue_parse:
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 149
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -2898,7 +3000,10 @@ _cue_parse:
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 149
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -2955,7 +3060,10 @@ _cue_parse:
 l109: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 162
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 0)
 	.liabs	_cue_file
@@ -2973,7 +3081,10 @@ l109: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 162
+		// Offsets 0, 16
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -2995,7 +3106,10 @@ l109: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 162
+		// Offsets 12, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -3018,7 +3132,10 @@ l109: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 164
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -3038,7 +3155,10 @@ l109: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 166
+		// Offsets 0, 20
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -3061,7 +3181,10 @@ l218: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 171
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3200,7 +3323,10 @@ l218: #
 l116: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 176
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	4
@@ -3221,7 +3347,10 @@ l116: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/cue_parser.c, line 177
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3239,7 +3368,10 @@ l116: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 177
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3284,7 +3416,10 @@ l116: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 177
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -3307,7 +3442,10 @@ l118: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/cue_parser.c, line 178
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3321,7 +3459,10 @@ l118: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 178
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3364,7 +3505,10 @@ l118: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 178
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -3387,7 +3531,10 @@ l122: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/cue_parser.c, line 179
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3401,7 +3548,10 @@ l122: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 179
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3444,7 +3594,10 @@ l122: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 179
+		// Offsets 3, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -3467,7 +3620,10 @@ l126: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/cue_parser.c, line 180
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3481,7 +3637,10 @@ l126: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 180
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3524,7 +3683,10 @@ l126: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 180
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -3586,7 +3748,10 @@ l132: #
 		add	r7
 
 						//../DeMiSTify/firmware/cue_parser.c, line 184
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 2
@@ -3647,7 +3812,10 @@ l132: #
 		add	r7
 
 						//../DeMiSTify/firmware/cue_parser.c, line 197
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -3688,7 +3856,10 @@ l139: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 200
+		// Offsets 36, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3734,7 +3905,10 @@ l139: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 201
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// var, auto|reg
@@ -3762,7 +3936,10 @@ l139: #
 l142: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 203
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	5
@@ -3795,7 +3972,10 @@ l143: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 205
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3851,7 +4031,10 @@ l134: #
 		add	r7
 
 						//../DeMiSTify/firmware/cue_parser.c, line 211
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -3900,7 +4083,10 @@ l146: #
 l147: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 216
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	20
@@ -3993,7 +4179,10 @@ l147: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 218
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -4120,7 +4309,10 @@ l150: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 220
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	5
@@ -4146,7 +4338,10 @@ l150: #
 l151: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 220
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -4190,7 +4385,10 @@ l149: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/cue_parser.c, line 223
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -4206,7 +4404,10 @@ l149: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 223
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -4249,7 +4450,10 @@ l149: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 225
+		// Offsets 2352, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// var, auto|reg
@@ -4270,7 +4474,10 @@ l149: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 226
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -4301,7 +4508,10 @@ l159: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/cue_parser.c, line 230
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -4315,7 +4525,10 @@ l159: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 230
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -4358,7 +4571,10 @@ l159: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 232
+		// Offsets 2352, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// var, auto|reg
@@ -4379,7 +4595,10 @@ l159: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 233
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -4410,7 +4629,10 @@ l163: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/cue_parser.c, line 237
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -4424,7 +4646,10 @@ l163: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 237
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -4467,7 +4692,10 @@ l163: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 239
+		// Offsets 2048, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// var, auto|reg
@@ -4488,7 +4716,10 @@ l163: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 240
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -4516,7 +4747,10 @@ l163: #
 l167: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 245
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	5
@@ -4551,7 +4785,10 @@ l169: #
 		add	r7
 
 						//../DeMiSTify/firmware/cue_parser.c, line 249
+		// Offsets 0, 28
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 66
 						// extern (offset 28)
@@ -4572,7 +4809,10 @@ l169: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/cue_parser.c, line 250
+		// Offsets 0, 24
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -4597,7 +4837,10 @@ l169: #
 l171: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 253
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -4658,7 +4901,10 @@ l172: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 259
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -4702,7 +4948,10 @@ l172: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 260
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// var, auto|reg
@@ -4866,7 +5115,10 @@ l175: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 264
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -4952,7 +5204,10 @@ l176: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 269
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -5046,7 +5301,10 @@ l178: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 271
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -5090,7 +5348,10 @@ l178: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 272
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// var, auto|reg
@@ -5792,7 +6053,10 @@ l196: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 314
+		// Offsets 0, 12
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 2
@@ -5815,7 +6079,10 @@ l196: #
 l204: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 316
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	12
@@ -5833,7 +6100,10 @@ l204: #
 l192: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 320
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -5934,7 +6204,10 @@ l219: #
 		add	r7
 
 						//../DeMiSTify/firmware/cue_parser.c, line 337
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// var, auto|reg
@@ -6105,7 +6378,10 @@ l212: #
 		add	r7
 
 						//../DeMiSTify/firmware/cue_parser.c, line 349
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 66
 						// var, auto|reg
@@ -6144,7 +6420,10 @@ l214: #
 		add	r7
 
 						//../DeMiSTify/firmware/cue_parser.c, line 352
+		// Offsets 0, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// extern (offset 4)
@@ -6169,7 +6448,10 @@ l214: #
 l216: # 
 
 						//../DeMiSTify/firmware/cue_parser.c, line 354
+		// Offsets 0, 4
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 4)
 	.liabs	_toc, 8
@@ -6193,7 +6475,10 @@ l217: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 358
+		// Offsets 16, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -6219,7 +6504,10 @@ l217: #
 
 						//../DeMiSTify/firmware/cue_parser.c, line 365
 						// Q1 disposable
+		// Offsets 0, 32
+		// Have am? yes, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 32)
 	.liabs	_toc, 36
@@ -6342,7 +6630,10 @@ _cue_gettrackbylba:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 3
@@ -6356,7 +6647,10 @@ _cue_gettrackbylba:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 374
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -6426,7 +6720,10 @@ l226: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/cue_parser.c, line 379
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3

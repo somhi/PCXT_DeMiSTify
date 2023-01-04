@@ -46,7 +46,10 @@ _autoboot:
 						// Deferred popping of 0 bytes (0 in total)
 
 						//overrides.c, line 19
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 0)
 	.liabs	_romtype
@@ -66,7 +69,10 @@ _autoboot:
 						// allocreg r1
 
 						//overrides.c, line 20
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -90,7 +96,10 @@ _autoboot:
 						// freereg r1
 
 						//overrides.c, line 22
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 0)
 	.liabs	_romtype
@@ -110,7 +119,10 @@ _autoboot:
 						// allocreg r1
 
 						//overrides.c, line 23
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -134,7 +146,10 @@ _autoboot:
 						// freereg r1
 
 						//overrides.c, line 25
+		// Offsets 3, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 0)
 	.liabs	_romtype
@@ -154,7 +169,10 @@ _autoboot:
 						// allocreg r1
 
 						//overrides.c, line 26
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a

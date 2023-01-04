@@ -14,7 +14,10 @@ _SPI_PUMP:
 	mt	r3
 	stdec	r6
 						// allocreg r3
+		// Offsets -44, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 1000a
@@ -25,7 +28,10 @@ _SPI_PUMP:
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 62
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -54,7 +60,10 @@ _SPI_PUMP:
 						//No need to mask - same size
 
 						//../DeMiSTify/firmware/spi_sd.c, line 64
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -106,7 +115,10 @@ _SPI_PUMP:
 						// freereg r2
 
 						//../DeMiSTify/firmware/spi_sd.c, line 67
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -158,7 +170,10 @@ _SPI_PUMP:
 						// freereg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 70
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -254,7 +269,10 @@ _SPI_PUMP_LE:
 	.liconst	-12
 	add	r6
 						// allocreg r3
+		// Offsets -44, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 1000a
@@ -267,7 +285,10 @@ _SPI_PUMP_LE:
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 80
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -296,7 +317,10 @@ _SPI_PUMP_LE:
 						//No need to mask - same size
 
 						//../DeMiSTify/firmware/spi_sd.c, line 82
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -358,7 +382,10 @@ _SPI_PUMP_LE:
 						// freereg r2
 
 						//../DeMiSTify/firmware/spi_sd.c, line 85
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -431,7 +458,10 @@ _SPI_PUMP_LE:
 						// freereg r2
 
 						//../DeMiSTify/firmware/spi_sd.c, line 88
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -543,7 +573,10 @@ _cmd_write:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 104
@@ -555,7 +588,10 @@ _cmd_write:
 						// freereg r1
 						// allocreg r5
 						// allocreg r4
+		// Offsets -44, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 1000a
@@ -866,7 +902,10 @@ l8: #
 						//No need to mask - same size
 
 						//../DeMiSTify/firmware/spi_sd.c, line 121
+		// Offsets 39999, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -896,7 +935,10 @@ l8: #
 l14: # 
 
 						//../DeMiSTify/firmware/spi_sd.c, line 123
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -986,7 +1028,10 @@ _spi_spin:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 136
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -998,7 +1043,10 @@ _spi_spin:
 l22: # 
 
 						//../DeMiSTify/firmware/spi_sd.c, line 137
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -1076,7 +1124,10 @@ _wait_initV2:
 						// Flow control - popping 0 + 0 bytes
 
 						//../DeMiSTify/firmware/spi_sd.c, line 147
+		// Offsets 19999, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -1098,7 +1149,10 @@ l34: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 149
+		// Offsets 16711799, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -1139,7 +1193,10 @@ l34: #
 		add	r7
 
 						//../DeMiSTify/firmware/spi_sd.c, line 151
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// deref
@@ -1172,7 +1229,10 @@ l34: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 152
+		// Offsets 8847465, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -1217,7 +1277,10 @@ l34: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 154
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 74
 						// deref
@@ -1312,7 +1375,10 @@ _wait_init:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 172
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -1330,7 +1396,10 @@ _wait_init:
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 174
+		// Offsets 19, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -1356,7 +1425,10 @@ l44: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 176
+		// Offsets 16711745, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -1398,7 +1470,10 @@ l44: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 179
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 74
 						// deref
@@ -1491,7 +1566,10 @@ _is_sdhc:
 	stmpdec	r4
 	exg	r6
 						// allocreg r4
+		// Offsets -44, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 1000a
@@ -1519,7 +1597,10 @@ _is_sdhc:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 198
+		// Offsets 8847432, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -1645,7 +1726,10 @@ l49: #
 l51: # 
 
 						//../DeMiSTify/firmware/spi_sd.c, line 217
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1656,7 +1740,10 @@ l51: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 224
+		// Offsets 49, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -1706,7 +1793,10 @@ l65: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 228
+		// Offsets 16711802, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -1747,7 +1837,10 @@ l65: #
 		add	r7
 
 						//../DeMiSTify/firmware/spi_sd.c, line 231
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1776,7 +1869,10 @@ l65: #
 						//No need to mask - same size
 
 						//../DeMiSTify/firmware/spi_sd.c, line 234
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1789,7 +1885,10 @@ l65: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 235
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1801,7 +1900,10 @@ l65: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 236
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1813,7 +1915,10 @@ l65: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 237
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1953,7 +2058,10 @@ _sd_init:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 266
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 0)
 	.liabs	_sd_is_sdhc
@@ -1971,7 +2079,10 @@ _sd_init:
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 269
+		// Offsets 7, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -1988,7 +2099,10 @@ _sd_init:
 l79: # 
 
 						//../DeMiSTify/firmware/spi_sd.c, line 271
+		// Offsets 2, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -2013,7 +2127,10 @@ l79: #
 						// Deferred popping of 0 bytes (0 in total)
 
 						//../DeMiSTify/firmware/spi_sd.c, line 274
+		// Offsets 3, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -2044,7 +2161,10 @@ l79: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 275
+		// Offsets 9764928, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -2089,7 +2209,10 @@ l79: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 276
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2200,7 +2323,10 @@ l75: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 292
+		// Offsets 16711760, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -2228,7 +2354,10 @@ l78: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 294
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -2263,7 +2392,10 @@ l78: #
  						// WARNING - check that 4 has been added.
 
 						//../DeMiSTify/firmware/spi_sd.c, line 300
+		// Offsets 2, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 130
 						// matchobj comparing flags 161 with 2
@@ -2285,7 +2417,10 @@ l78: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 301
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -2343,7 +2478,10 @@ _sd_write_sector:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 104
@@ -2354,7 +2492,10 @@ _sd_write_sector:
 						//save_temp done
 						// freereg r1
 						// allocreg r5
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -2366,7 +2507,10 @@ _sd_write_sector:
 	mr	r5
 						//save_temp done
 						// allocreg r4
+		// Offsets -44, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 1000a
@@ -2380,7 +2524,10 @@ _sd_write_sector:
 						// allocreg r3
 
 						//../DeMiSTify/firmware/spi_sd.c, line 312
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 240 type 503
@@ -2392,7 +2539,10 @@ _sd_write_sector:
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 313
+		// Offsets 259, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 576
 						// deref
@@ -2412,7 +2562,10 @@ _sd_write_sector:
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 314
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 240 type 503
@@ -2436,7 +2589,10 @@ _sd_write_sector:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 316
+		// Offsets 16711768, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -2497,7 +2653,10 @@ _sd_write_sector:
 l84: # 
 
 						//../DeMiSTify/firmware/spi_sd.c, line 324
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 240 type 503
@@ -2508,7 +2667,10 @@ l84: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 325
+		// Offsets 254, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -2532,7 +2694,10 @@ l84: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 328
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -2556,7 +2721,10 @@ l84: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 340
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 240 type 503
@@ -2568,7 +2736,10 @@ l84: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 341
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 240 type 503
@@ -2580,7 +2751,10 @@ l84: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 342
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 240 type 503
@@ -2592,7 +2766,10 @@ l84: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 344
+		// Offsets 100000, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2606,7 +2783,10 @@ l84: #
 l89: # 
 
 						//../DeMiSTify/firmware/spi_sd.c, line 346
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 240 type 503
@@ -2675,7 +2855,10 @@ l90: #
 						//../DeMiSTify/firmware/spi_sd.c, line 349
 						// Q1 disposable
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 240 type 503
@@ -2686,7 +2869,10 @@ l90: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 350
+		// Offsets 2, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 576
 						// deref
@@ -2744,7 +2930,10 @@ l91:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -2760,7 +2949,10 @@ l91:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 359
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2773,7 +2965,10 @@ l91:
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 361
+		// Offsets 1499999, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2788,7 +2983,10 @@ l91:
 l107: # 
 
 						//../DeMiSTify/firmware/spi_sd.c, line 364
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -2847,7 +3045,10 @@ l107: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 368
+		// Offsets -44, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 1 type a
@@ -2894,7 +3095,10 @@ l107: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 371
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -2925,7 +3129,10 @@ l100: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 383
+		// Offsets 273, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -2944,7 +3151,10 @@ l100: #
 l108: # 
 
 						//../DeMiSTify/firmware/spi_sd.c, line 387
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 1 type 403
@@ -3003,7 +3213,10 @@ l108: #
 l110: # 
 
 						//../DeMiSTify/firmware/spi_sd.c, line 390
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -3021,7 +3234,10 @@ l110: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 391
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -3055,7 +3271,10 @@ l110: #
 		add	r7
 
 						//../DeMiSTify/firmware/spi_sd.c, line 393
+		// Offsets 16, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 66
 						// matchobj comparing flags 161 with 1
@@ -3078,7 +3297,10 @@ l110: #
 l106: # 
 
 						//../DeMiSTify/firmware/spi_sd.c, line 395
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -3089,7 +3311,10 @@ l106: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 396
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -3153,7 +3378,10 @@ _sd_read_sector:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 104
@@ -3166,7 +3394,10 @@ _sd_read_sector:
 						// allocreg r3
 
 						//../DeMiSTify/firmware/spi_sd.c, line 404
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -3179,7 +3410,10 @@ _sd_read_sector:
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 408
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// deref
@@ -3199,7 +3433,10 @@ _sd_read_sector:
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 409
+		// Offsets 259, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -3221,7 +3458,10 @@ _sd_read_sector:
 						//save_temp done
 
 						//../DeMiSTify/firmware/spi_sd.c, line 410
+		// Offsets 255, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -3254,7 +3494,10 @@ _sd_read_sector:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 412
+		// Offsets 16711761, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -3309,7 +3552,10 @@ _sd_read_sector:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 419
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -3338,7 +3584,10 @@ _sd_read_sector:
 	mr	r3
 
 						//../DeMiSTify/firmware/spi_sd.c, line 421
+		// Offsets 2, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 66
 						// deref
@@ -3403,7 +3652,10 @@ _sd_get_size:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 430
+		// Offsets 16711753, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -3433,7 +3685,10 @@ _sd_get_size:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 432
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3458,7 +3713,10 @@ _sd_get_size:
 						// freereg r1
 
 						//../DeMiSTify/firmware/spi_sd.c, line 433
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3

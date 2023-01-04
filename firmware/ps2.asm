@@ -14,7 +14,10 @@ _ps2_ringbuffer_init:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -26,7 +29,10 @@ _ps2_ringbuffer_init:
 						// freereg r1
 
 						//../DeMiSTify/firmware/ps2.c, line 27
+		// Offsets 0, 0
+		// Have am? no, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 501
@@ -41,7 +47,10 @@ _ps2_ringbuffer_init:
 
 						//../DeMiSTify/firmware/ps2.c, line 28
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? no, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 501
@@ -80,7 +89,10 @@ _ps2_ringbuffer_read:
 						// allocreg r5
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -237,7 +249,10 @@ l6: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/ps2.c, line 56
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -395,7 +410,10 @@ _ps2_ringbuffer_receive:
 						// allocreg r4
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -940,7 +958,10 @@ _PS2Handler:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/ps2.c, line 89
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -1007,7 +1028,10 @@ _PS2Init:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/ps2.c, line 120
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -1029,7 +1053,10 @@ _PS2Init:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/ps2.c, line 124
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a

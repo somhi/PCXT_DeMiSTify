@@ -16,7 +16,10 @@ _bin2bcd:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -163,7 +166,10 @@ _bcd2bin:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -281,7 +287,10 @@ _gettrackbybcd:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -355,7 +364,10 @@ _gettrackbybcd:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 94
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -387,7 +399,10 @@ l8: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 96
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -402,7 +417,10 @@ l10: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 97
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -448,7 +466,10 @@ l13:
 
 						//../DeMiSTify/firmware/pcecd.c, line 140
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// static
 	.liabs	l11,4
@@ -458,7 +479,10 @@ l13:
 	stmpdec	r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 141
+		// Offsets 0, 1
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l11,1
@@ -478,7 +502,10 @@ l13:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 142
+		// Offsets 0, 2
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -498,7 +525,10 @@ l13:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 143
+		// Offsets 0, 3
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -537,7 +567,10 @@ l16:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 102
@@ -549,7 +582,10 @@ l16:
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 148
+		// Offsets 517, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 64
 						// deref
@@ -569,7 +605,10 @@ l16:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 149
+		// Offsets 97, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -683,7 +722,10 @@ l16:
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 151
+		// Offsets 4, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 74
 						// matchobj comparing flags 161 with 1
@@ -723,7 +765,10 @@ l19:
 
 						//../DeMiSTify/firmware/pcecd.c, line 156
 						// Q1 disposable
+		// Offsets 0, 54
+		// Have am? yes, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// static
 	.liabs	l12,58
@@ -733,7 +778,10 @@ l19:
 	stmpdec	r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 157
+		// Offsets 1, 10
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,10
@@ -772,7 +820,10 @@ l22:
 						// allocreg r4
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -784,7 +835,10 @@ l22:
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 161
+		// Offsets 517, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 64
 						// deref
@@ -804,7 +858,10 @@ l22:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 162
+		// Offsets 100, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -999,7 +1056,10 @@ l22:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 165
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -1020,7 +1080,10 @@ l22:
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 166
+		// Offsets 4, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -1060,7 +1123,10 @@ l25:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -1073,7 +1139,10 @@ l25:
 						// allocreg r4
 
 						//../DeMiSTify/firmware/pcecd.c, line 171
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -1292,7 +1361,10 @@ l33: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 182
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// var, auto|reg
@@ -1355,7 +1427,10 @@ l35:
 	mt	r3
 	stdec	r6
 						// allocreg r3
+		// Offsets 2048, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -1460,7 +1535,10 @@ l35:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 197
+		// Offsets 36, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -1507,7 +1585,10 @@ l42: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 201
+		// Offsets 36, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -1599,7 +1680,10 @@ l42: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 204
+		// Offsets 36, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -1661,7 +1745,10 @@ l44: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 209
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -1713,7 +1800,10 @@ l39: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 212
+		// Offsets 36, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -1775,7 +1865,10 @@ l39: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 213
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -1837,7 +1930,10 @@ l46:
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 220
+		// Offsets 1, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// static
@@ -1891,7 +1987,10 @@ l46:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 221
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -1918,7 +2017,10 @@ l46:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 222
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2053,7 +2155,10 @@ l52:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 235
+		// Offsets 13, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -2189,7 +2294,10 @@ l56: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 243
+		// Offsets 0, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// static
@@ -2251,7 +2359,10 @@ l62: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 253
+		// Offsets 1, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// static
@@ -2305,7 +2416,10 @@ l62: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 254
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2332,7 +2446,10 @@ l62: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 255
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2360,7 +2477,10 @@ l66: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 264
+		// Offsets 0, 15
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,15
@@ -2411,7 +2531,10 @@ l66: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 268
+		// Offsets 2048, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2471,7 +2594,10 @@ l68: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 271
+		// Offsets 0, 5
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// static
@@ -2541,7 +2667,10 @@ l71: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 278
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2564,7 +2693,10 @@ l71: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 279
+		// Offsets 0, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,4
@@ -2666,7 +2798,10 @@ l73: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 285
+		// Offsets 17, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -2689,7 +2824,10 @@ l73: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 286
+		// Offsets 1, 5
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,5
@@ -2741,7 +2879,10 @@ l73: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 287
+		// Offsets 36, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -2808,7 +2949,10 @@ l60: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 292
+		// Offsets 1, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// static
@@ -2862,7 +3006,10 @@ l60: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 293
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2889,7 +3036,10 @@ l60: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 294
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2917,7 +3067,10 @@ l80: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 298
+		// Offsets 21, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -2971,7 +3124,10 @@ l80: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 303
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -3093,7 +3249,10 @@ l98: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 305
+		// Offsets 36, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -3125,7 +3284,10 @@ l98: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 307
+		// Offsets 2352, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -3212,7 +3374,10 @@ l88: #
 l99: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 313
+		// Offsets 0, 49
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,49
@@ -3345,7 +3510,10 @@ l89: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 318
+		// Offsets 41, 21
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// static
@@ -3366,7 +3534,10 @@ l89: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 319
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -3392,7 +3563,10 @@ l89: #
 l94: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 322
+		// Offsets 0, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,4
@@ -3451,7 +3625,10 @@ l95: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 326
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -3512,7 +3689,10 @@ l100:
 						// allocreg r2
 
 						//../DeMiSTify/firmware/pcecd.c, line 340
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -3524,7 +3704,10 @@ l100:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 340
+		// Offsets 32, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -3547,7 +3730,10 @@ l100:
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 344
+		// Offsets 517, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -3565,7 +3751,10 @@ l100:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 345
+		// Offsets 98, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -3587,7 +3776,10 @@ l100:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 347
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 1
@@ -3613,7 +3805,10 @@ l176: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/pcecd.c, line 348
+		// Offsets 0, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -3735,7 +3930,10 @@ l176: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 349
+		// Offsets 4, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// deref
@@ -3943,7 +4141,10 @@ l108: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 357
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -3970,7 +4171,10 @@ l108: #
 l111: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 363
+		// Offsets 18, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -3982,7 +4186,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 364
+		// Offsets 128, 1
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// var, auto|reg
@@ -4004,7 +4211,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 366
+		// Offsets 112, 2
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -4023,7 +4233,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 367
+		// Offsets 0, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -4049,7 +4262,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 368
+		// Offsets 10, 9
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -4072,7 +4288,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 369
+		// Offsets 1, 14
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -4098,7 +4317,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 370
+		// Offsets 2, 15
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -4120,7 +4342,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 371
+		// Offsets 3, 16
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -4142,7 +4367,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 373
+		// Offsets 0, 3
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -4163,7 +4391,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 373
+		// Offsets 3, 2
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -4187,7 +4418,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 373
+		// Offsets 2, 1
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -4211,7 +4445,10 @@ l111: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 373
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -4286,7 +4523,10 @@ l111: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 379
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -4460,7 +4700,10 @@ l112: #
 l116: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 389
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -4472,7 +4715,10 @@ l116: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 390
+		// Offsets 128, 1
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// var, auto|reg
@@ -4494,7 +4740,10 @@ l116: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 391
+		// Offsets 1, 2
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -4514,7 +4763,10 @@ l116: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 392
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -4548,7 +4800,10 @@ l116: #
 	stbinc	r0	//WARNING - pointer / reg not restored, might cause trouble!
 
 						//../DeMiSTify/firmware/pcecd.c, line 393
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	32
@@ -4607,7 +4862,10 @@ l118: #
 						// freereg r2
 
 						//../DeMiSTify/firmware/pcecd.c, line 398
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type 3
@@ -4629,7 +4887,10 @@ l118: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 400
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -4642,7 +4903,10 @@ l118: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 401
+		// Offsets 128, 1
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// var, auto|reg
@@ -4773,7 +5037,10 @@ l118: #
 	stbinc	r0	//WARNING - pointer / reg not restored, might cause trouble!
 
 						//../DeMiSTify/firmware/pcecd.c, line 405
+		// Offsets 0, 5
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	5
@@ -4793,7 +5060,10 @@ l118: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 406
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -4879,7 +5149,10 @@ l119: #
 						// freereg r2
 
 						//../DeMiSTify/firmware/pcecd.c, line 414
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type 3
@@ -4901,7 +5174,10 @@ l119: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 416
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -4914,7 +5190,10 @@ l119: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 417
+		// Offsets 128, 1
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// var, auto|reg
@@ -5077,7 +5356,10 @@ l119: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 422
+		// Offsets 4, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 130
 						//auto: flags: 82, comparing 32, 0 with 0, 5
@@ -5145,7 +5427,10 @@ l115: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 430
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -5364,7 +5649,10 @@ l120: #
 l124: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 438
+		// Offsets 256, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	32
@@ -5386,7 +5674,10 @@ l125: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 440
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -5415,7 +5706,10 @@ l125: #
  						// WARNING - check that 4 has been added.
 
 						//../DeMiSTify/firmware/pcecd.c, line 456
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 130
 						// matchobj comparing flags 130 with 2
@@ -5435,7 +5729,10 @@ l125: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 460
+		// Offsets 0, 21
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// static
 	.liabs	l12,25
@@ -5444,7 +5741,10 @@ l125: #
 	stmpdec	r5
 
 						//../DeMiSTify/firmware/pcecd.c, line 461
+		// Offsets 0, 25
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 130
 						// static
@@ -5530,7 +5830,10 @@ l125: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 464
+		// Offsets 36, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -5558,7 +5861,10 @@ l125: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 468
+		// Offsets 0, 37
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// static
@@ -5577,7 +5883,10 @@ l125: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 470
+		// Offsets 1, 15
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -5598,7 +5907,10 @@ l125: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 471
+		// Offsets 2, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -5642,7 +5954,10 @@ l130: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 481
+		// Offsets 1, 14
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// static
@@ -5670,7 +5985,10 @@ l132: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 484
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -6160,7 +6478,10 @@ l141: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 506
+		// Offsets 16, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -6175,7 +6496,10 @@ l141: #
 l137: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 517
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,0
@@ -6193,7 +6517,10 @@ l137: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 522
+		// Offsets 0, 21
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// static
 	.liabs	l12,25
@@ -6203,7 +6530,10 @@ l137: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 523
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -6233,7 +6563,10 @@ l137: #
  						// WARNING - check that 4 has been added.
 
 						//../DeMiSTify/firmware/pcecd.c, line 528
+		// Offsets 0, 41
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// static
 	.liabs	l12,45
@@ -6242,7 +6575,10 @@ l137: #
 	stmpdec	r5
 
 						//../DeMiSTify/firmware/pcecd.c, line 529
+		// Offsets 0, 45
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// static
@@ -6262,7 +6598,10 @@ l137: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 530
+		// Offsets 1, 53
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -6286,7 +6625,10 @@ l137: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 531
+		// Offsets 1, 49
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -6347,7 +6689,10 @@ l137: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 534
+		// Offsets 4, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// matchobj comparing flags 130 with 130
@@ -6374,7 +6719,10 @@ l137: #
 l143: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 536
+		// Offsets 3, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,4
@@ -6396,7 +6744,10 @@ l144: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 539
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -6934,7 +7285,10 @@ l152: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 562
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 2
@@ -6983,7 +7337,10 @@ l154: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 563
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 138 with 2
 						// var, auto|reg
@@ -7011,7 +7368,10 @@ l154: #
 l156: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 563
+		// Offsets 20, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	32
@@ -7032,7 +7392,10 @@ l156: #
 l157: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 563
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags a type 3
@@ -7047,7 +7410,10 @@ l157: #
 l148: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 568
+		// Offsets 1, 53
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,53
@@ -7069,7 +7435,10 @@ l148: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 569
+		// Offsets 0, 45
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// static
 	.liabs	l12,49
@@ -7118,7 +7487,10 @@ l148: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 572
+		// Offsets 0, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// matchobj comparing flags 130 with 130
@@ -7145,7 +7517,10 @@ l148: #
 l159: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 574
+		// Offsets 3, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,4
@@ -7204,7 +7579,10 @@ l160: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 580
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -7255,7 +7633,10 @@ l163: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 588
+		// Offsets 4, 4
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// static
@@ -7276,7 +7657,10 @@ l163: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 590
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -7360,7 +7744,10 @@ l166: #
  						// WARNING - check that 4 has been added.
 
 						//../DeMiSTify/firmware/pcecd.c, line 600
+		// Offsets 10, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 101
@@ -7376,7 +7763,10 @@ l166: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 601
+		// Offsets 128, 1
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 2
@@ -7447,7 +7837,10 @@ l166: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 602
+		// Offsets 2, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 138 with 1
 						// var, auto|reg
@@ -7496,7 +7889,10 @@ l170: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 602
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 138 with 1
 						// var, auto|reg
@@ -7523,7 +7919,10 @@ l170: #
 l173: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 602
+		// Offsets 3, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	55
@@ -7543,7 +7942,10 @@ l173: #
 l174: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 602
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	51
@@ -7591,7 +7993,10 @@ l171: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 603
+		// Offsets 0, 3
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 10
 						// matchobj comparing flags 130 with 130
@@ -7652,7 +8057,10 @@ l171: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 605
+		// Offsets 17, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -7706,7 +8114,10 @@ l171: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 607
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -7845,7 +8256,10 @@ l171: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 612
+		// Offsets 21, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -8016,7 +8430,10 @@ l171: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 621
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8072,7 +8489,10 @@ l175: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 626
+		// Offsets 5, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8095,7 +8515,10 @@ l175: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 630
+		// Offsets 0, 10
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// static
@@ -8115,7 +8538,10 @@ l175: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 631
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8166,7 +8592,10 @@ _pcecd_data:
 						// allocreg r2
 
 						//../DeMiSTify/firmware/pcecd.c, line 639
+		// Offsets 517, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// deref
@@ -8186,7 +8615,10 @@ _pcecd_data:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 640
+		// Offsets 99, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -8208,7 +8640,10 @@ _pcecd_data:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 642
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8224,7 +8659,10 @@ _pcecd_data:
 l184: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 643
+		// Offsets 0, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -8315,7 +8753,10 @@ l184: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 644
+		// Offsets 4, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -8358,7 +8799,10 @@ _pcecd_clear_busy:
 	stdec	r6
 
 						//../DeMiSTify/firmware/pcecd.c, line 652
+		// Offsets 1, 15
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,15
@@ -8394,7 +8838,10 @@ _pcecd_reset:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 657
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,0
@@ -8412,7 +8859,10 @@ _pcecd_reset:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 658
+		// Offsets 0, 17
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8432,7 +8882,10 @@ _pcecd_reset:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 659
+		// Offsets 0, 21
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8447,7 +8900,10 @@ _pcecd_reset:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 660
+		// Offsets 0, 29
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8467,7 +8923,10 @@ _pcecd_reset:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 661
+		// Offsets 1, 5
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8506,7 +8965,10 @@ _pcecd_reset:
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 662
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8527,7 +8989,10 @@ _pcecd_reset:
 l191: # 
 
 						//../DeMiSTify/firmware/pcecd.c, line 662
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8551,7 +9016,10 @@ l192: #
 	stmpdec	r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 663
+		// Offsets 0, 33
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 130
 						// static
@@ -8570,7 +9038,10 @@ l192: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 664
+		// Offsets 0, 37
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8585,7 +9056,10 @@ l192: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 665
+		// Offsets 0, 10
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8605,7 +9079,10 @@ l192: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 666
+		// Offsets 0, 14
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8621,7 +9098,10 @@ l192: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 667
+		// Offsets 0, 15
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8637,7 +9117,10 @@ l192: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 668
+		// Offsets 0, 41
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8657,7 +9140,10 @@ l192: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 669
+		// Offsets 0, 45
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8672,7 +9158,10 @@ l192: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 670
+		// Offsets 0, 53
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8693,7 +9182,10 @@ l192: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 671
+		// Offsets 0, 54
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8709,7 +9201,10 @@ l192: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 672
+		// Offsets 1, 16
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 130
@@ -8750,7 +9245,10 @@ _pcecd_poll:
 						// allocreg r3
 
 						//../DeMiSTify/firmware/pcecd.c, line 679
+		// Offsets 517, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -8768,7 +9266,10 @@ _pcecd_poll:
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 680
+		// Offsets 96, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -8813,7 +9314,10 @@ _pcecd_poll:
 	and	r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 681
+		// Offsets 4, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -8986,7 +9490,10 @@ l201: #
 						// Flow control - popping 0 + 0 bytes
 
 						//../DeMiSTify/firmware/pcecd.c, line 687
+		// Offsets 517, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -9004,7 +9511,10 @@ l201: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 688
+		// Offsets 102, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -9026,7 +9536,10 @@ l201: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 689
+		// Offsets 0, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -9046,7 +9559,10 @@ l201: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 690
+		// Offsets 4, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -9170,7 +9686,10 @@ l203: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/pcecd.c, line 701
+		// Offsets 0, 10
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,10
@@ -9208,7 +9727,10 @@ l205: #
 		add	r7
 
 						//../DeMiSTify/firmware/pcecd.c, line 704
+		// Offsets 517, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 2
 						// deref
@@ -9228,7 +9750,10 @@ l205: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 705
+		// Offsets 101, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -9250,7 +9775,10 @@ l205: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 706
+		// Offsets 0, -44
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -9270,7 +9798,10 @@ l205: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 707
+		// Offsets 4, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -9292,7 +9823,10 @@ l205: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/pcecd.c, line 708
+		// Offsets 0, 14
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 1

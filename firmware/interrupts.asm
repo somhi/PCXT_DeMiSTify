@@ -14,7 +14,10 @@ _SetIntHandler:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/interrupts.c, line 31
+		// Offsets 0, -80
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -33,7 +36,10 @@ _SetIntHandler:
 
 						//../DeMiSTify/firmware/interrupts.c, line 32
 						// Q1 disposable
+		// Offsets 0, 13
+		// Have am? yes, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -109,7 +115,10 @@ _EnableInterrupts:
 	stdec	r6
 
 						//../DeMiSTify/firmware/interrupts.c, line 52
+		// Offsets 1, -80
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -143,7 +152,10 @@ _DisableInterrupts:
 	stdec	r6
 
 						//../DeMiSTify/firmware/interrupts.c, line 58
+		// Offsets 0, -80
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0

@@ -14,7 +14,10 @@ _spi_osd_cmd_cont:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/osd.c, line 25
+		// Offsets 521, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -75,7 +78,10 @@ _spi_osd_cmd:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -110,7 +116,10 @@ _spi_osd_cmd:
 						// freereg r1
 
 						//../DeMiSTify/firmware/osd.c, line 31
+		// Offsets 8, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -146,7 +155,10 @@ _spi_osd_cmd8_cont:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/osd.c, line 35
+		// Offsets 521, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -230,7 +242,10 @@ _spi_osd_cmd8:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -293,7 +308,10 @@ _spi_osd_cmd8:
 						// freereg r1
 
 						//../DeMiSTify/firmware/osd.c, line 42
+		// Offsets 8, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -332,7 +350,10 @@ _OsdWriteStart:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 3
@@ -373,7 +394,10 @@ _OsdWriteStart:
 l16: # 
 
 						//../DeMiSTify/firmware/osd.c, line 54
+		// Offsets 521, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -433,7 +457,10 @@ l16: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/osd.c, line 56
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// matchobj comparing flags 130 with 1
@@ -472,7 +499,10 @@ l16: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/osd.c, line 57
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -493,7 +523,10 @@ l16: #
 l18: # 
 
 						//../DeMiSTify/firmware/osd.c, line 57
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -505,7 +538,10 @@ l18: #
 l19: # 
 
 						//../DeMiSTify/firmware/osd.c, line 57
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// static
 	.liabs	l10,4
@@ -528,7 +564,10 @@ l19: #
 		add	r7
 
 						//../DeMiSTify/firmware/osd.c, line 58
+		// Offsets 21845, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -547,7 +586,10 @@ l19: #
 l21: # 
 
 						//../DeMiSTify/firmware/osd.c, line 58
+		// Offsets 65535, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -560,7 +602,10 @@ l22: #
 
 						//../DeMiSTify/firmware/osd.c, line 58
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// static
 	.liabs	l11,4
@@ -569,7 +614,10 @@ l22: #
 	stmpdec	r2
 
 						//../DeMiSTify/firmware/osd.c, line 59
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// static
 	.liabs	l12,0
@@ -625,7 +673,10 @@ _OsdPutChar:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -640,7 +691,10 @@ _OsdPutChar:
 						// allocreg r3
 
 						//../DeMiSTify/firmware/osd.c, line 64
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -720,7 +774,10 @@ _OsdPutChar:
 l26: # 
 
 						//../DeMiSTify/firmware/osd.c, line 70
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -734,7 +791,10 @@ l26: #
 l27: # 
 
 						//../DeMiSTify/firmware/osd.c, line 71
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -900,7 +960,10 @@ _OsdPuts:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -914,7 +977,10 @@ _OsdPuts:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/osd.c, line 82
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -966,7 +1032,10 @@ l39: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/osd.c, line 82
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -1015,7 +1084,10 @@ _OsdWriteEnd:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/osd.c, line 89
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -1096,7 +1168,10 @@ l46: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/osd.c, line 89
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -1157,7 +1232,10 @@ l46: #
 l47: # 
 
 						//../DeMiSTify/firmware/osd.c, line 91
+		// Offsets 8, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -1175,7 +1253,10 @@ l47: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/osd.c, line 92
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// matchobj comparing flags 130 with 1

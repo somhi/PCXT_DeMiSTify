@@ -14,7 +14,10 @@ _GetTimer:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 103
@@ -27,7 +30,10 @@ _GetTimer:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/timer.c, line 5
+		// Offsets -56, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 21 type 103
@@ -112,7 +118,10 @@ _CheckTimer:
 		add	r7
 
 						//../DeMiSTify/firmware/timer.c, line 14
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -131,7 +140,10 @@ _CheckTimer:
 l5: # 
 
 						//../DeMiSTify/firmware/timer.c, line 14
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3

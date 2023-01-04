@@ -19,7 +19,10 @@ _user_io_sd_get_status:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -31,7 +34,10 @@ _user_io_sd_get_status:
 						// freereg r1
 						// allocreg r5
 						// allocreg r4
+		// Offsets -44, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 1000a
@@ -45,7 +51,10 @@ _user_io_sd_get_status:
 						// allocreg r2
 
 						//../DeMiSTify/firmware/diskimg.c, line 18
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 162 with 1
 						// deref
@@ -64,7 +73,10 @@ _user_io_sd_get_status:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 19
+		// Offsets 22, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -85,7 +97,10 @@ _user_io_sd_get_status:
 						// freereg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 20
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -165,7 +180,10 @@ _user_io_sd_get_status:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 21
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -209,7 +227,10 @@ _user_io_sd_get_status:
 l4: # 
 
 						//../DeMiSTify/firmware/diskimg.c, line 22
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -220,7 +241,10 @@ l4: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 22
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 260 type 103
@@ -248,7 +272,10 @@ l4: #
 						// (save result) // isreg
 
 						//../DeMiSTify/firmware/diskimg.c, line 23
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -293,7 +320,10 @@ l4: #
 						// (save result) // isreg
 
 						//../DeMiSTify/firmware/diskimg.c, line 24
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -338,7 +368,10 @@ l4: #
 						// (save result) // isreg
 
 						//../DeMiSTify/firmware/diskimg.c, line 25
+		// Offsets 255, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -367,7 +400,10 @@ l4: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 26
+		// Offsets 32, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 74
 						// deref
@@ -407,7 +443,10 @@ l4: #
 						//../DeMiSTify/firmware/diskimg.c, line 28
 						// Q1 disposable
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 42 type 103
@@ -739,7 +778,10 @@ l17: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 63
+		// Offsets 24, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -767,7 +809,10 @@ l17: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 64
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -790,7 +835,10 @@ l17: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 65
+		// Offsets 32, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -1032,7 +1080,10 @@ l19: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 76
+		// Offsets 23, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -1060,7 +1111,10 @@ l19: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 77
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -1085,7 +1139,10 @@ l19: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 78
+		// Offsets 32, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// deref
@@ -1137,7 +1194,10 @@ _diskimg_mount:
 						// allocreg r5
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -1148,7 +1208,10 @@ _diskimg_mount:
 						//save_temp done
 						// freereg r1
 						// allocreg r4
+		// Offsets -44, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 1000a
@@ -1217,7 +1280,10 @@ l25: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 91
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -1275,7 +1341,10 @@ l25: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 92
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type a
@@ -1319,7 +1388,10 @@ l25: #
 						//No need to mask - same size
 
 						//../DeMiSTify/firmware/diskimg.c, line 95
+		// Offsets 545, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 106
 						// deref
@@ -1339,7 +1411,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 96
+		// Offsets 29, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1523,7 +1598,10 @@ l25: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 99
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1538,7 +1616,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 99
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1550,7 +1631,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 99
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1562,7 +1646,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 99
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1574,7 +1661,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 100
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1586,7 +1676,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 100
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1598,7 +1691,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 100
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1610,7 +1706,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 100
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1622,7 +1721,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 101
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1634,7 +1736,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 101
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1646,7 +1751,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 101
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1658,7 +1766,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 101
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 503
@@ -1670,7 +1781,10 @@ l25: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/diskimg.c, line 102
+		// Offsets 32, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 1
 						// matchobj comparing flags 161 with 1
@@ -1705,7 +1819,10 @@ l25: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/diskimg.c, line 105
+		// Offsets 28, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3

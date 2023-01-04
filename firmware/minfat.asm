@@ -24,7 +24,10 @@ _FindDrive:
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 112
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// extern (offset 0)
@@ -60,7 +63,10 @@ _FindDrive:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 116
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -123,7 +129,10 @@ _FindDrive:
 l6: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 124
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -134,7 +143,10 @@ l6: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 125
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -148,7 +160,10 @@ l6: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 128
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -164,7 +179,10 @@ l6: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 128
+		// Offsets 54, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -179,7 +197,10 @@ l6: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 128
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type a
@@ -192,7 +213,10 @@ l6: #
 						// allocreg r3
 
 						//../DeMiSTify/firmware/minfat.c, line 128
+		// Offsets 8, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -235,7 +259,10 @@ l6: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 129
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -253,7 +280,10 @@ l8: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 130
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -268,7 +298,10 @@ l8: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 130
+		// Offsets 82, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -283,7 +316,10 @@ l8: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 130
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type a
@@ -296,7 +332,10 @@ l8: #
 						// allocreg r3
 
 						//../DeMiSTify/firmware/minfat.c, line 130
+		// Offsets 8, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -339,7 +378,10 @@ l8: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 131
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -366,7 +408,10 @@ l10: #
 		add	r7
 
 						//../DeMiSTify/firmware/minfat.c, line 141
+		// Offsets 454, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -420,7 +465,10 @@ l10: #
 		add	r7
 
 						//../DeMiSTify/firmware/minfat.c, line 143
+		// Offsets 454, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -551,7 +599,10 @@ l19: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 158
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -566,7 +617,10 @@ l19: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 158
+		// Offsets 82, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -581,7 +635,10 @@ l19: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 158
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type a
@@ -594,7 +651,10 @@ l19: #
 						// allocreg r3
 
 						//../DeMiSTify/firmware/minfat.c, line 158
+		// Offsets 8, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -637,7 +697,10 @@ l19: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 159
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 74
 						// extern (offset 0)
@@ -666,7 +729,10 @@ l21: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 160
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -681,7 +747,10 @@ l21: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 160
+		// Offsets 54, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -696,7 +765,10 @@ l21: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 160
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type a
@@ -709,7 +781,10 @@ l21: #
 						// allocreg r3
 
 						//../DeMiSTify/firmware/minfat.c, line 160
+		// Offsets 8, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -1040,7 +1115,10 @@ l32: #
 						// extern pe not varadr
 	stmpdec	r0
  						// WARNING - check that 4 has been added.
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -1168,7 +1246,10 @@ l32: #
 						// Obsoleting t1
 						// freereg r2
 						// freereg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 98
 						// extern (offset 0)
@@ -1230,7 +1311,10 @@ l32: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 191
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -1247,7 +1331,10 @@ l32: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 191
+		// Offsets 82, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -1264,7 +1351,10 @@ l32: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 191
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type a
@@ -1278,7 +1368,10 @@ l32: #
 						// allocreg r3
 
 						//../DeMiSTify/firmware/minfat.c, line 191
+		// Offsets 8, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -1339,7 +1432,10 @@ l32: #
 						// freereg r2
 						// freereg r3
 l37: # 
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -1353,7 +1449,10 @@ l37: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 195
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 0)
 	.liabs	_root_directory_size, 4
@@ -1546,7 +1645,10 @@ l37: #
 	ldt
 	add	r1
 						// (save result) // isreg
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 0)
 	.liabs	_data_start, 4
@@ -1908,7 +2010,10 @@ l35: #
 	.liconst	9
 	shr	r1
 						// (save result) // isreg
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 0)
 	.liabs	_root_directory_size, 4
@@ -2006,7 +2111,10 @@ l35: #
 	ld	r6
 	add	r2
 						// (save result) // isreg
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 0)
 	.liabs	_root_directory_start, 4
@@ -2015,7 +2123,10 @@ l35: #
 	stmpdec	r2
 
 						//../DeMiSTify/firmware/minfat.c, line 212
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 0)
 	.liabs	_root_directory_cluster
@@ -2064,7 +2175,10 @@ l38: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 219
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 0)
 	.liabs	_current_directory_cluster
@@ -2083,7 +2197,10 @@ l38: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 220
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -2173,7 +2290,10 @@ l40: #
 l41: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 221
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 0)
 	.liabs	_dir_entries
@@ -2240,7 +2360,10 @@ _GetCluster:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 103
@@ -2370,7 +2493,10 @@ l46: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 245
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 0)
 	.liabs	_cachedsector, 4
@@ -2600,7 +2726,10 @@ _FileOpen:
 						// allocreg r4
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -2661,13 +2790,16 @@ l57: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 263
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 162 with 98
 						// deref
 						// var FIXME - deref?
 						// reg - auto
-	//nop
+	ld	r6
 	mr	r0
 						// (obj to tmp) flags 1 type 103
 						// const
@@ -2741,7 +2873,10 @@ l59: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 269
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -2754,7 +2889,10 @@ l59: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 269
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type 3
@@ -2799,7 +2937,10 @@ l79: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 272
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -2813,7 +2954,10 @@ l79: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 272
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -2855,7 +2999,10 @@ l79: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 275
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -2868,7 +3015,10 @@ l79: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 275
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -2883,7 +3033,10 @@ l79: #
 						// allocreg r3
 
 						//../DeMiSTify/firmware/minfat.c, line 275
+		// Offsets 11, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -2952,7 +3105,10 @@ l79: #
 		add	r7
 
 						//../DeMiSTify/firmware/minfat.c, line 269
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 138 with 66
 						// var, auto|reg
@@ -2979,7 +3135,10 @@ l79: #
 l71: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 269
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	8
@@ -3001,7 +3160,10 @@ l72: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 269
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 3
@@ -3081,7 +3243,10 @@ l80: #
 
 						//../DeMiSTify/firmware/minfat.c, line 281
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 162 with 74
 						// deref
@@ -3254,7 +3419,10 @@ l77: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 283
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -3322,7 +3490,10 @@ l78: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 284
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -3350,7 +3521,10 @@ l78: #
 
 						//../DeMiSTify/firmware/minfat.c, line 285
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? no, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 22 type 103
@@ -3389,7 +3563,10 @@ l78: #
 
 						//../DeMiSTify/firmware/minfat.c, line 286
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? no, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -3456,7 +3633,10 @@ _FileNextSector:
 						// allocreg r4
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -3536,7 +3716,10 @@ _FileNextSector:
 						//save_temp done
 						//No need to mask - same size
 						// allocreg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 62 type 103
@@ -3659,7 +3842,10 @@ l89: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 313
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 103
@@ -3705,7 +3891,10 @@ l89: #
 	ld	r4
 	add	r1
 						// (save result) // isreg
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 4a type 103
@@ -3783,7 +3972,10 @@ l90: #
 						//../DeMiSTify/firmware/minfat.c, line 316
 						// Q1 disposable
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 42 type 103
@@ -3817,7 +4009,10 @@ _FileReadSector:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -3896,7 +4091,10 @@ l94: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 327
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -4004,7 +4202,10 @@ l94: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 330
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 0)
 	.liabs	_cachedsector, 4
@@ -4113,7 +4314,10 @@ _FileWriteSector:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -4192,7 +4396,10 @@ l102: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 345
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -4300,7 +4507,10 @@ l102: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 348
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 0)
 	.liabs	_cachedsector, 4
@@ -4413,7 +4623,10 @@ _FileSeek:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -4429,7 +4642,10 @@ _FileSeek:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 468
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -4521,7 +4737,10 @@ _FileSeek:
 	.liconst	-1
 	xor	r1
 						// (save result) // isreg
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 62 type 103
@@ -4541,7 +4760,10 @@ _FileSeek:
 	//mt
 	and	r1
 						// (save result) // isreg
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 42 type 103
@@ -4572,7 +4794,10 @@ _FileSeek:
 						// freereg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 474
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -4585,7 +4810,10 @@ _FileSeek:
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 475
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -4631,7 +4859,10 @@ _FileSeek:
 						//../DeMiSTify/firmware/minfat.c, line 476
 						// Q1 disposable
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 103
@@ -4718,7 +4949,10 @@ l114: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 480
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -4749,7 +4983,10 @@ l114: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 481
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -4772,7 +5009,10 @@ l114: #
 
 						//../DeMiSTify/firmware/minfat.c, line 482
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? no, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -4817,7 +5057,10 @@ _FileRead:
 	add	r6
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// var, auto|reg
 						// matchobj comparing flags 1 with 1
@@ -4829,7 +5072,10 @@ _FileRead:
 						// allocreg r5
 						// allocreg r4
 						// allocreg r3
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 102 type 3
@@ -4948,7 +5194,10 @@ l118: #
 	mr	r1
 						//save_temp done
 						//No need to mask - same size
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 66
 						// var, auto|reg
@@ -4980,7 +5229,10 @@ l118: #
 	ldidx	r6
 	add	r1
 						// (save result) // isreg
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -5219,7 +5471,10 @@ l123: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 503
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -5283,7 +5538,10 @@ l127: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 506
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -5327,7 +5585,10 @@ l127: #
 l140: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 507
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// var FIXME - deref?
@@ -5373,7 +5634,10 @@ l140: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 506
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -5424,7 +5688,10 @@ l143: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 508
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -5464,7 +5731,10 @@ l125: #
 						//pcreltotemp
 	.lipcrel	l144
 		add	r7
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 102 type a
@@ -5505,7 +5775,10 @@ l131: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 514
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -5583,7 +5856,10 @@ l131: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 518
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -5628,7 +5904,10 @@ l135: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 522
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -5653,7 +5932,10 @@ l135: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 523
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -5705,7 +5987,10 @@ l135: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 525
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -5751,7 +6036,10 @@ l135: #
 l142: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 526
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -5775,7 +6063,10 @@ l142: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 525
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -5871,7 +6162,10 @@ _FileGetCh:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -6011,7 +6305,10 @@ l149: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 540
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -6045,7 +6342,10 @@ l154: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 541
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -6067,7 +6367,10 @@ l154: #
 						// freereg r1
 l152: # 
 						// allocreg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 62 type 103
@@ -6199,7 +6502,10 @@ _LoadFile:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -6236,7 +6542,10 @@ _LoadFile:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 553
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -6277,7 +6586,10 @@ _LoadFile:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 555
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -6326,7 +6638,10 @@ l168: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 560
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -6392,7 +6707,10 @@ l166: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 562
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -6524,7 +6842,10 @@ _ChangeDirectoryByCluster:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 103
@@ -6554,7 +6875,10 @@ _ChangeDirectoryByCluster:
 						// freereg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 581
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 0)
 	.liabs	_current_directory_cluster, 4
@@ -6577,7 +6901,10 @@ _ChangeDirectoryByCluster:
 	sub	r2
 						// (save result) // isreg
 						// allocreg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -6662,7 +6989,10 @@ l173: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 587
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 0)
 	.liabs	_current_directory_cluster
@@ -6681,7 +7011,10 @@ l173: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 588
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// matchobj comparing flags 130 with 130
@@ -6767,7 +7100,10 @@ l177: #
 
 						//../DeMiSTify/firmware/minfat.c, line 589
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+							// Not using addressing mode
 						// (prepobj tmp)
  						// extern (offset 0)
 	.liabs	_dir_entries, 4
@@ -6795,7 +7131,10 @@ _CurrentDirectory:
 	stdec	r6
 						// allocreg r2
 						// allocreg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -6827,7 +7166,10 @@ _CurrentDirectory:
 		add	r7
 
 						//../DeMiSTify/firmware/minfat.c, line 596
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -6847,7 +7189,10 @@ l181: #
 
 						//../DeMiSTify/firmware/minfat.c, line 596
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 42 type 103
@@ -6890,7 +7235,10 @@ _ChangeDirectory:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -6905,7 +7253,10 @@ _ChangeDirectory:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 602
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -7051,7 +7402,10 @@ l188: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 606
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -7093,7 +7447,10 @@ l186: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 608
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 103
@@ -7139,7 +7496,10 @@ _NextDirEntry:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 3
@@ -7156,7 +7516,10 @@ _NextDirEntry:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 618
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -7185,7 +7548,10 @@ _NextDirEntry:
 		add	r7
 
 						//../DeMiSTify/firmware/minfat.c, line 622
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 66
 						// static
@@ -7251,7 +7617,10 @@ _NextDirEntry:
 l197: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 627
+		// Offsets 0, 13
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 13)
 	.liabs	_longfilename, 13
@@ -7288,7 +7657,10 @@ l236: #
 	mr	r1
 						//save_temp done
 						//No need to mask - same size
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 2 type 104
@@ -7385,7 +7757,10 @@ l237: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 637
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 104
@@ -7426,7 +7801,10 @@ l237: #
 						// Obsoleting t1
 
 						//../DeMiSTify/firmware/minfat.c, line 637
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type 104
@@ -7448,7 +7826,10 @@ l237: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 638
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 1
 						// static
@@ -7588,7 +7969,10 @@ l206: #
 	.lipcrel	l220
 		add	r7
 						// freereg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 2 type a
@@ -7720,7 +8104,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 653
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -7751,7 +8138,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 654
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -7782,7 +8172,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 655
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -7813,7 +8206,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 656
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -7844,7 +8240,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 657
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -7875,7 +8274,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 659
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -7906,7 +8308,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 660
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -7937,7 +8342,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 661
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -7968,7 +8376,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 662
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -7999,7 +8410,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 663
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -8030,7 +8444,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 664
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -8061,7 +8478,10 @@ l206: #
 
 						//../DeMiSTify/firmware/minfat.c, line 666
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -8093,7 +8513,10 @@ l206: #
 						//../DeMiSTify/firmware/minfat.c, line 667
 						// Q1 disposable
 						// Z disposable
+		// Offsets 0, 0
+		// Have am? yes, yes
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 6a type 101
@@ -8109,7 +8532,10 @@ l206: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 668
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8195,7 +8621,10 @@ l211: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 677
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -8256,7 +8685,10 @@ l213: #
 		add	r7
 
 						//../DeMiSTify/firmware/minfat.c, line 681
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 98
 						// extern (offset 0)
@@ -8294,7 +8726,10 @@ l219: #
 l214: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 690
+		// Offsets 0, 13
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// extern (offset 13)
 	.liabs	_longfilename, 13
@@ -8313,7 +8748,10 @@ l214: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 692
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8343,7 +8781,10 @@ l220: #
 	mr	r1
 						//save_temp done
 						//No need to mask - same size
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 2 type 104
@@ -8456,7 +8897,10 @@ l221: #
 						//sizemod based on type 0x104
 	stmpdec	r1
 						// freereg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 130
 						// var, auto|reg
@@ -8538,7 +8982,10 @@ l221: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 702
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8559,7 +9006,10 @@ l221: #
 l229: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 702
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8612,7 +9062,10 @@ l227: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 702
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 138 with 1
 						// var, auto|reg
@@ -8639,7 +9092,10 @@ l227: #
 l232: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 702
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	8
@@ -8659,7 +9115,10 @@ l232: #
 l233: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 702
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags a type 3
@@ -8783,7 +9242,10 @@ l228: #
 						// freereg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 706
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 130 with 2
 						// static
@@ -8856,7 +9318,10 @@ _FindByCluster:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 103
@@ -8872,7 +9337,10 @@ _FindByCluster:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 718
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 103
@@ -8901,7 +9369,10 @@ _FindByCluster:
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 719
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -8914,7 +9385,10 @@ _FindByCluster:
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 719
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type 3
@@ -9071,7 +9545,10 @@ l249: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 723
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -9172,7 +9649,10 @@ l252: #
 		add	r7
 
 						//../DeMiSTify/firmware/minfat.c, line 719
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -9191,7 +9671,10 @@ l252: #
 l253: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 719
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -9205,7 +9688,10 @@ l254: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 719
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -9285,7 +9771,10 @@ _ValidateDirectory:
 						// allocreg r5
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r5 - no need to prep
 						// (obj to tmp) flags 40 type 103
@@ -9455,7 +9944,10 @@ l261: #
 	stdec	r6
 
 						//../DeMiSTify/firmware/minfat.c, line 751
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 4a type 104
@@ -9512,7 +10004,10 @@ l261: #
 l265: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 753
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r4 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -9525,7 +10020,10 @@ l265: #
 						//save_temp done
 
 						//../DeMiSTify/firmware/minfat.c, line 754
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 104
@@ -9655,7 +10153,10 @@ l285: #
 						// allocreg r2
 
 						//../DeMiSTify/firmware/minfat.c, line 760
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 42 type a
@@ -9668,7 +10169,10 @@ l285: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 760
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 82 type a
@@ -9684,7 +10188,10 @@ l285: #
 						// allocreg r3
 
 						//../DeMiSTify/firmware/minfat.c, line 760
+		// Offsets 8, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 1 type 103
@@ -9836,7 +10343,10 @@ l279: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 762
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// var, auto|reg
 	.liconst	4
@@ -9910,7 +10420,10 @@ l280: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 765
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -9960,7 +10473,10 @@ l280: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 765
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2 type 103
@@ -10004,7 +10520,10 @@ l280: #
 						// allocreg r1
 
 						//../DeMiSTify/firmware/minfat.c, line 765
+		// Offsets 1, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -10023,7 +10542,10 @@ l280: #
 l283: # 
 
 						//../DeMiSTify/firmware/minfat.c, line 765
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r6 - no need to prep
 						// (obj to tmp) flags 1 type 3

@@ -13,8 +13,11 @@ _spi_uio_cmd_cont:
 	stdec	r6
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 23
+						//../DeMiSTify/firmware/user_io.c, line 24
+		// Offsets 545, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -31,7 +34,7 @@ _spi_uio_cmd_cont:
 	st	r0
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 24
+						//../DeMiSTify/firmware/user_io.c, line 25
 						// Q1 disposable
 						//FIXME convert
 						//Converting to wider type...
@@ -75,7 +78,10 @@ _spi_uio_cmd:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -87,7 +93,7 @@ _spi_uio_cmd:
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 28
+						//../DeMiSTify/firmware/user_io.c, line 29
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -101,7 +107,7 @@ _spi_uio_cmd:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 28
+						//../DeMiSTify/firmware/user_io.c, line 29
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_uio_cmd_cont
@@ -109,8 +115,11 @@ _spi_uio_cmd:
 						// Deferred popping of 0 bytes (0 in total)
 						// freereg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 29
+						//../DeMiSTify/firmware/user_io.c, line 30
+		// Offsets 32, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -145,8 +154,11 @@ _spi_uio_cmd8_cont:
 	stdec	r6
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 33
+						//../DeMiSTify/firmware/user_io.c, line 34
+		// Offsets 545, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -163,7 +175,7 @@ _spi_uio_cmd8_cont:
 	st	r0
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 34
+						//../DeMiSTify/firmware/user_io.c, line 35
 						// Q1 disposable
 						//FIXME convert
 						//Converting to wider type...
@@ -188,7 +200,7 @@ _spi_uio_cmd8_cont:
 	st	r0
 						// WARNING - Object is disposable, not bothering to undo exg - check correctness
 
-						//../DeMiSTify/firmware/user_io.c, line 35
+						//../DeMiSTify/firmware/user_io.c, line 36
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -230,7 +242,10 @@ _spi_uio_cmd8:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -242,7 +257,7 @@ _spi_uio_cmd8:
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 39
+						//../DeMiSTify/firmware/user_io.c, line 40
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -258,7 +273,7 @@ _spi_uio_cmd8:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 39
+						//../DeMiSTify/firmware/user_io.c, line 40
 						// Q1 disposable
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
@@ -270,7 +285,7 @@ _spi_uio_cmd8:
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 39
+						//../DeMiSTify/firmware/user_io.c, line 40
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -284,7 +299,7 @@ _spi_uio_cmd8:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 39
+						//../DeMiSTify/firmware/user_io.c, line 40
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_uio_cmd8_cont
@@ -292,8 +307,11 @@ _spi_uio_cmd8:
 						// Deferred popping of 4 bytes (4 in total)
 						// freereg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 40
+						//../DeMiSTify/firmware/user_io.c, line 41
+		// Offsets 32, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// deref
 						// const to r0
@@ -332,7 +350,10 @@ _user_io_digital_joystick_ext:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -344,7 +365,7 @@ _user_io_digital_joystick_ext:
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 56
+						//../DeMiSTify/firmware/user_io.c, line 57
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -360,7 +381,7 @@ _user_io_digital_joystick_ext:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 56
+						//../DeMiSTify/firmware/user_io.c, line 57
 						// Q1 disposable
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
@@ -372,7 +393,7 @@ _user_io_digital_joystick_ext:
 						// freereg r1
 						// allocreg r2
 
-						//../DeMiSTify/firmware/user_io.c, line 56
+						//../DeMiSTify/firmware/user_io.c, line 57
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -387,7 +408,7 @@ _user_io_digital_joystick_ext:
 						//save_temp done
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 56
+						//../DeMiSTify/firmware/user_io.c, line 57
 						// Q1 disposable
 						// (bitwise/arithmetic) 	//ops: 3, 0, 2
 						//Special case - addt
@@ -404,7 +425,7 @@ _user_io_digital_joystick_ext:
 						//save_temp done
 						// freereg r2
 
-						//../DeMiSTify/firmware/user_io.c, line 56
+						//../DeMiSTify/firmware/user_io.c, line 57
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_uio_cmd8
@@ -447,7 +468,10 @@ _user_io_digital_joystick:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -460,7 +484,7 @@ _user_io_digital_joystick:
 						// allocreg r3
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 60
+						//../DeMiSTify/firmware/user_io.c, line 61
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -474,7 +498,7 @@ _user_io_digital_joystick:
 	mr	r3
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 60
+						//../DeMiSTify/firmware/user_io.c, line 61
 						// (compare) (q1 signed) (q2 signed)
 						// (obj to tmp) flags 1 type 3
 						// matchobj comparing flags 1 with 66
@@ -484,7 +508,7 @@ _user_io_digital_joystick:
 	sgn
 	cmp	r3
 
-						//../DeMiSTify/firmware/user_io.c, line 60
+						//../DeMiSTify/firmware/user_io.c, line 61
 	cond	GE
 						//conditional branch regular
 						//pcreltotemp
@@ -493,7 +517,7 @@ _user_io_digital_joystick:
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 61
+						//../DeMiSTify/firmware/user_io.c, line 62
 						// (bitwise/arithmetic) 	//ops: 4, 0, 2
 						//Special case - addt
 						// (prepobj r0)
@@ -507,7 +531,7 @@ _user_io_digital_joystick:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 61
+						//../DeMiSTify/firmware/user_io.c, line 62
 						// Q1 disposable
 						//FIXME convert
 						// (convert - reducing type 3 to 101
@@ -525,14 +549,14 @@ _user_io_digital_joystick:
 	and	r2
 						// freereg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 63
+						//../DeMiSTify/firmware/user_io.c, line 64
 						//pcreltotemp
 	.lipcrel	l15
 	add	r7
 l14: # 
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 63
+						//../DeMiSTify/firmware/user_io.c, line 64
 						// (bitwise/arithmetic) 	//ops: 4, 0, 2
 						//Special case - addt
 						// (prepobj r0)
@@ -545,7 +569,7 @@ l14: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 63
+						//../DeMiSTify/firmware/user_io.c, line 64
 						// Q1 disposable
 						//FIXME convert
 						// (convert - reducing type 3 to 101
@@ -565,7 +589,7 @@ l14: #
 l15: # 
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 64
+						//../DeMiSTify/firmware/user_io.c, line 65
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -579,7 +603,7 @@ l15: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 64
+						//../DeMiSTify/firmware/user_io.c, line 65
 						// Q1 disposable
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
@@ -591,7 +615,7 @@ l15: #
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 64
+						//../DeMiSTify/firmware/user_io.c, line 65
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -605,7 +629,7 @@ l15: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 64
+						//../DeMiSTify/firmware/user_io.c, line 65
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_uio_cmd8
@@ -634,7 +658,10 @@ _user_io_analogue_joystick:
 						// allocreg r2
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 40 type 101
@@ -646,7 +673,7 @@ _user_io_analogue_joystick:
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 68
+						//../DeMiSTify/firmware/user_io.c, line 69
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -660,7 +687,7 @@ _user_io_analogue_joystick:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 68
+						//../DeMiSTify/firmware/user_io.c, line 69
 						// Q1 disposable
 						// (a/p push)
 						// a: pushed 0, regnames[sp] r6
@@ -672,8 +699,11 @@ _user_io_analogue_joystick:
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 68
+						//../DeMiSTify/firmware/user_io.c, line 69
+		// Offsets 26, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -685,7 +715,7 @@ _user_io_analogue_joystick:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 68
+						//../DeMiSTify/firmware/user_io.c, line 69
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_uio_cmd8_cont
@@ -693,7 +723,10 @@ _user_io_analogue_joystick:
 						// Deferred popping of 4 bytes (4 in total)
 						// freereg r1
 						// allocreg r1
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 2a type 3
@@ -710,7 +743,7 @@ _user_io_analogue_joystick:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 69
+						//../DeMiSTify/firmware/user_io.c, line 70
 						// (bitwise/arithmetic) 	//ops: 0, 0, 1
 						// (obj to r0) flags 2 type a
 						// matchobj comparing flags 2 with 42
@@ -738,7 +771,7 @@ _user_io_analogue_joystick:
  						// WARNING - check that 4 has been added.
 	// Volatile, or not int - not caching
 
-						//../DeMiSTify/firmware/user_io.c, line 69
+						//../DeMiSTify/firmware/user_io.c, line 70
 						// (bitwise/arithmetic) 	//ops: 2, 0, 2
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
@@ -750,7 +783,7 @@ _user_io_analogue_joystick:
 	shr	r1
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/user_io.c, line 69
+						//../DeMiSTify/firmware/user_io.c, line 70
 						// Q1 disposable
 						//FIXME convert
 						// (convert - reducing type 3 to 503
@@ -772,7 +805,7 @@ _user_io_analogue_joystick:
 						// freereg r1
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 70
+						//../DeMiSTify/firmware/user_io.c, line 71
 						// (bitwise/arithmetic) 	//ops: 0, 0, 2
 						// (obj to r1) flags 2a type 3
 						// matchobj comparing flags 42 with 74
@@ -802,7 +835,7 @@ _user_io_analogue_joystick:
 	shr	r1
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/user_io.c, line 70
+						//../DeMiSTify/firmware/user_io.c, line 71
 						// Q1 disposable
 						//FIXME convert
 						// (convert - reducing type 3 to 503
@@ -823,8 +856,11 @@ _user_io_analogue_joystick:
 						//save_temp done
 						// freereg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 71
+						//../DeMiSTify/firmware/user_io.c, line 72
+		// Offsets 32, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 74
 						// matchobj comparing flags 161 with 1
@@ -867,7 +903,10 @@ _user_io_send_rtc:
 						// allocreg r3
 						// allocreg r1
 						// Q1 disposable
+		// Offsets 0, 0
+		// Have am? yes, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r3 - no need to prep
 						// (obj to tmp) flags 40 type a
@@ -880,8 +919,11 @@ _user_io_send_rtc:
 						// allocreg r2
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 77
+						//../DeMiSTify/firmware/user_io.c, line 78
+		// Offsets 34, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -893,7 +935,7 @@ _user_io_send_rtc:
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 77
+						//../DeMiSTify/firmware/user_io.c, line 78
 						//call
 						//pcreltotemp
 	.lipcrel	_spi_uio_cmd_cont
@@ -901,8 +943,11 @@ _user_io_send_rtc:
 						// Flow control - popping 0 + 0 bytes
 						// freereg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 78
+						//../DeMiSTify/firmware/user_io.c, line 79
+		// Offsets 7, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r2 - no need to prep
 						// (obj to tmp) flags 1 type 3
@@ -913,7 +958,7 @@ _user_io_send_rtc:
 						//save_temp done
 l23: # 
 
-						//../DeMiSTify/firmware/user_io.c, line 79
+						//../DeMiSTify/firmware/user_io.c, line 80
 						//FIXME convert
 						//Converting to wider type...
 						//But unsigned, so no need to extend
@@ -936,8 +981,11 @@ l23: #
 						// WARNING - Object is disposable, not bothering to undo exg - check correctness
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 78
+						//../DeMiSTify/firmware/user_io.c, line 79
+		// Offsets 0, 0
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// reg r1 - no need to prep
 						// (obj to tmp) flags 42 type 3
@@ -947,7 +995,7 @@ l23: #
 	mr	r1
 						//save_temp done
 
-						//../DeMiSTify/firmware/user_io.c, line 78
+						//../DeMiSTify/firmware/user_io.c, line 79
 						// (bitwise/arithmetic) 	//ops: 3, 0, 3
 						// WARNING - q1 and target collision - check code for correctness.
 						// (obj to tmp) flags 1 type 3
@@ -958,7 +1006,7 @@ l23: #
 	sub	r2
 						// (save result) // isreg
 
-						//../DeMiSTify/firmware/user_io.c, line 78
+						//../DeMiSTify/firmware/user_io.c, line 79
 						// Q1 disposable
 						// (test)
 						// (obj to tmp) flags 4a type 3
@@ -969,7 +1017,7 @@ l23: #
 	and	r1
 						// freereg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 78
+						//../DeMiSTify/firmware/user_io.c, line 79
 	cond	NEQ
 						//conditional branch regular
 						//pcreltotemp
@@ -977,8 +1025,11 @@ l23: #
 		add	r7
 						// allocreg r1
 
-						//../DeMiSTify/firmware/user_io.c, line 80
+						//../DeMiSTify/firmware/user_io.c, line 81
+		// Offsets 32, -48
+		// Have am? no, no
 						// (a/p assign)
+						// Have an addressing mode...
 						// (prepobj r0)
  						// matchobj comparing flags 161 with 74
 						// deref
