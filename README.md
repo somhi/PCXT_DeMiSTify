@@ -1,10 +1,15 @@
 # [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify)
 
-Port DeMiSTified by @somhi from original MiSTer port currently in development  https://github.com/MiSTer-devel/PCXT_MiSTer
+Port DeMiSTified by @somhi from original MiSTer port by @spark2k06 https://github.com/MiSTer-devel/PCXT_MiSTer
 
 [Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
 
-Follow PCXT core discussion at https://misterfpga.org/viewtopic.php?t=4680
+Follow PCXT core discussion at [MiSTerFPGA forum](https://misterfpga.org/viewforum.php?f=40).
+
+**Status**: 
+
+* Read [Bugs and TODO list and differences with MiSTer port](TODO.md)
+* Check specific BOARD limitations on each board folder's readme
 
 **Ported FPGA platforms:**:
 
@@ -18,13 +23,6 @@ Follow PCXT core discussion at https://misterfpga.org/viewtopic.php?t=4680
   * SiDi (ManuFerHi EP4CE22)
 * Altera Cyclone V: Arrow Terasic SoCkit
 * Altera Cyclone 10 LP: Trenz CYC1000 with Atlas carrier board
-
-
-
-**Status**: 
-
-* Check [Bugs and TODO list](TODO.md)
-* Check specific BOARD limitations on each board folder's readme
 
 **Loading OS**:
 
