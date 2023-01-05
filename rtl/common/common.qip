@@ -3,7 +3,7 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) clk_div
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) bios.v ]
 #set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) floppy.v ]
 #set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) simple_fifo.v ]
-set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) simple_ram.v ]
+#set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) simple_ram.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) MSMouseWrapper.v ]
 #set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ide.v ]
 #set_global_assignment -name VHDL_FILE [file join $::quartus(qip_path) bram.vhd ]
@@ -12,6 +12,6 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtframe
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtframe_ram.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtframe_dual_ram.v ]
 #
-#floppy.v and simple_fifo.v used for ao486 FDD from MiSTer core
-#ide.v and bram.vhd used for ao486 IDE module from MiSTer core
-#simple_ram used for RTC module
+#floppy.v and simple_fifo.v used for ao486 FDD dependant of MiSTer main
+#ide.v and bram.vhd used for ao486 IDE module dependant of MiSTer main
+#simple_ram.v used for RTC module dependant of MiSTer main

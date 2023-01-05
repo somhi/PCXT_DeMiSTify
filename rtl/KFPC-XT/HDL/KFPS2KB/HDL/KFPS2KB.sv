@@ -255,8 +255,8 @@ module KFPS2KB #(
                 break_flag  <= 1'b1;
                 error_flag  <= 1'b0;
             end
-            else if (register == 8'h07) begin
-                // F12 -> Pause core and credits
+            else if (register == 8'h57) begin
+                // F11 -> Pause core and credits
                 irq         <= 1'b0;
                 keycode     <= 8'h00;
                 break_flag  <= 1'b0;
