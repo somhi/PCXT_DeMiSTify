@@ -96,15 +96,16 @@ module PCXT
     // 0         1         2         3          4         5         6
     // 01234567890123456789012345678901 234567890123456789012345678901
     // 0123456789ABCDEFGHIJKLMNOPQRSTUV WXYZabcdefghijklmnopqrstuvwxyz
-    // XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX aaaaaaaaaaDDDDDD   XX
-
+    // XttXX..XttXXXXXXXXXttXXXXXXXXtXX aaaaaattaaDDDDDD...XX.........
 
 	`include "build_id.v"
 
+    //NOTE: Too many entries will hung the OSD when entering a submenu
     parameter CONF_STR = {		// options order: 0,1,2,...
 		"PCXT;;",
 		"O3,Model,IBM PCXT,Tandy 1000;",
 		"OHI,CPU Speed,4.77MHz,7.16MHz,9.54MHz,PC/AT 3.5MHz;",
+        //"OJK,Write Protect,None,A:,B:,A: & B:;",    
 		//
 		"P1,BIOS;",
 		"P1F,ROM,PCXT BIOS:;",
@@ -113,9 +114,8 @@ module PCXT
 		"P1OUV,BIOS Writable,None,EC00,PCXT/Tandy,All;",
         "P1O7,Boot Splash Screen,Yes,No;",
 		"P2,Audio;",
-		//"P2OA,Adlib,On,Invisible;", // status[10] is available, remove this line when used
-		"P2OA,C/MS Audio,Enabled,Disabled;",
-		"P2Oef,OPL2,Adlib 388h,SB FM 388h/228h, Disabled;",     //[41:40]
+        "P2OA,C/MS Audio,Enabled,Disabled;",
+        "P2Oef,OPL2,Adlib 388h,SB FM 388h/228h, Disabled;",     //[41:40]
 		"P2OWX,Speaker Volume,1,2,3,4;",
 		"P2OYZ,Tandy Volume,1,2,3,4;",
 		"P2Oab,Audio Boost,No,2x,4x;",
@@ -128,17 +128,14 @@ module PCXT
 		"P3O4,Video Output,CGA/Tandy,MDA;",
 		"P3OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
 		"P3Oh,Composite Blending,No,Yes;",
-		//"P3Oq,Composite simulated,Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
 		"P3Oi,Composite (DB15 green),Off,On;",
 		"P3Ol,VGA+Compos(1pin no.osd),Off,On;",
-		// "P3Ok,DEBUG.OSD disable,No,Yes;",
-        // "P3Oj,DEBUG.Displ.mode disable,No,Yes;",
 		"P3Og,EXPER.YPbPr,Off,On;",
 		//
 		"P4,Hardware;",
 		"P4OB,Lo-tech 2MB EMS,Enabled,Disabled;",
 		"P4OCD,EMS Frame,C000,D000,E000;",
-		"P4Op,A000 UMB,Enabled,Disabled;",           //[51]
+        "P4Op,A000 UMB,Enabled,Disabled;",           //[51]
 		"P4ONO,Joystick 1, Analog, Digital, Disabled;",
 		"P4OPQ,Joystick 2, Analog, Digital, Disabled;",
 		"P4OR,Sync Joy to CPU Speed,No,Yes;",
@@ -147,10 +144,10 @@ module PCXT
 		"T0,Reset;",
 		//
 		"P5,Debug;",
-		"P5Oq,Comp. simulated (WIP),Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
+//      "P5Oq,Comp. simulated (WIP),Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
 		"P5OLM,UART Speed,1200..115200bps,115200..921600bps;",
-		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
-		"P5Ok,DEBUG.OSD disable,No,Yes;",
+//		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
+//		"P5Ok,DEBUG.OSD disable,No,Yes;",
 		//
 		"V,v",`BUILD_DATE
 	};
