@@ -115,7 +115,7 @@ module PCXT
 		"P2,Audio;",
 		//"P2OA,Adlib,On,Invisible;", // status[10] is available, remove this line when used
 		"P2OA,C/MS Audio,Enabled,Disabled;",
-		"P2Oef,OPL2,Adlib 388h,SB FM 388h/228h, Disabled;",
+		"P2Oef,OPL2,Adlib 388h,SB FM 388h/228h, Disabled;",     //[41:40]
 		"P2OWX,Speaker Volume,1,2,3,4;",
 		"P2OYZ,Tandy Volume,1,2,3,4;",
 		"P2Oab,Audio Boost,No,2x,4x;",
@@ -898,7 +898,7 @@ module PCXT
 		.clk_sys                            (clk_chipset),
 		.peripheral_clock                   (pclk),
 		.clk_select                         (clk_select),
-		.color							    (screen_mode == 3'd0),
+		.color							    (color),
 		.reset                              (reset_cpu),
 		.sdram_reset                        (reset_sdram),
 		.cpu_address                        (cpu_address),
@@ -909,7 +909,9 @@ module PCXT
 		.processor_ready                    (processor_ready),
 		.interrupt_to_cpu                   (interrupt_to_cpu),
 		.splashscreen                       (splashscreen),
-		.video_output                       (mda_mode),
+		.std_hsyncwidth                     (std_hsyncwidth),
+		.composite                          (composite),
+		.video_output                       (mda_mode_video_ff),
 		.clk_vga_cga                        (clk_28_636),
 		.enable_cga                         (1'b1),
 		.clk_vga_mda                        (clk_56_875),
@@ -923,6 +925,7 @@ module PCXT
 		.VGA_VSYNC                          (vga_vs),
 		.VGA_HBlank	  				        (HBlank),
 		.VGA_VBlank							(VBlank),
+	//	.VGA_VBlank_border                  (VGA_VBlank_border),
 		.scandoubler						(~forced_scandoubler),
         .comp_video                         (comp_video),
         .composite_on                       (composite_on),
@@ -976,9 +979,14 @@ module PCXT
 		.clk_en_opl2                        (cen_opl2),           // clk_en_opl2
 		.jtopl2_snd_e                       (jtopl2_snd_e),
 		.tandy_snd_e                        (tandy_snd_e),
-		.adlibhide                          (adlibhide),
+		.opl2_io                            (xtctl[4] ? 2'b10 : status[41:40]),
+		.cms_en                             (~status[10]),
+		.o_cms_l                            (cms_l_snd_e),
+		.o_cms_r                            (cms_r_snd_e),
 		.tandy_video                        (tandy_mode),
 		.tandy_bios_flag                    (tandy_bios_flag),
+	//	.tandy_16_gfx                       (tandy_16_gfx),
+	//	.tandy_color_16                     (tandy_color_16),
 		.clk_uart                           ((status[22:21] == 2'b00) ? clk_uart : clk_uart_en),
 		.clk_uart2                          (clk_uart2_en),
 		.uart_rx                            (UART_RX),
@@ -990,7 +998,7 @@ module PCXT
 	//	.uart_dtr_n                         (uart_dtr),
 		.enable_sdram                       (1'b1),
 		.initilized_sdram                   (initilized_sdram),
-		.sdram_clock                        (clk_chipset),
+		.sdram_clock                        (clk_chipset),    //SDRAM_CLK phased is sent to SDRAM pin 
 		.sdram_address                      (SDRAM_A),
 		.sdram_cke                          (SDRAM_CKE),
 		.sdram_cs                           (SDRAM_nCS),
@@ -1006,7 +1014,12 @@ module PCXT
 		.ems_enabled                        (~status[11]),
 		.ems_address                        (status[13:12]),
 		.bios_protect_flag                  (bios_protect_flag),
-		.xtctl                              (xtctl)
+		.xtctl                              (xtctl),
+		.enable_a000h                       (a000h),
+		.wait_count_clk_en                  (~clk_cpu & clk_cpu_ff_2),
+		.ram_read_wait_cycle                (ram_read_wait_cycle),
+		.ram_write_wait_cycle               (ram_write_wait_cycle),
+		.pause_core                         (pause_core)
 	);
 
     wire [15:0] SDRAM_DQ_IN;
@@ -1026,7 +1039,7 @@ module PCXT
 		.CLK(clk_cpu),
 
 		.RESET(reset_cpu),
-		.READY(processor_ready),
+		.READY(processor_ready && ~pause_core),
 		.NMI(1'b0),
 		.INTR(interrupt_to_cpu),
 
@@ -1040,7 +1053,10 @@ module PCXT
 		.SEGMENT(SEGMENT),
 
 		.biu_done(biu_done),
-		.turbo_mode(turbo_mode)
+		.cycle_accrate(cycle_accrate),
+		.clock_cycle_counter_division_ratio(clock_cycle_counter_division_ratio),
+		.clock_cycle_counter_decrement_value(clock_cycle_counter_decrement_value),
+		.shift_read_timing(shift_read_timing)
 	);
 
     //
@@ -1070,7 +1086,11 @@ module PCXT
     // 	.right    ( AUDIO_R     )       // right bitsteam output
     // );
 
-
+    wire [15:0] cms_l_snd_e;
+    wire [16:0] cms_l_snd;
+    wire [15:0] cms_r_snd_e;
+    wire [16:0] cms_r_snd;
+	 
     wire [15:0] jtopl2_snd_e;
     wire [16:0] jtopl2_snd;
     wire [10:0] tandy_snd_e;
@@ -1081,8 +1101,25 @@ module PCXT
     always @(posedge CLK_50M)		//CLK_AUDIO
     begin
         reg [15:0] oldj_0, oldj_1;
+        reg [15:0] oldcl_0, oldcl_1;
+        reg [15:0] oldcr_0, oldcr_1;
         reg [10:0] oldt_0, oldt_1;
 
+        oldj_0 <= jtopl2_snd_e;
+        oldj_1 <= oldj_0;
+        if(oldj_0 == oldj_1)
+            jtopl2_snd <= {oldj_1[15],oldj_1};
+				
+        oldcl_0 <= cms_l_snd_e;
+        oldcl_1 <= oldcl_0;
+        if(oldcl_0 == oldcl_1)
+            cms_l_snd <= {oldcl_1[15],oldcl_1};
+				
+        oldcr_0 <= cms_r_snd_e;
+        oldcr_1 <= oldcr_0;
+        if(oldcr_0 == oldcr_1)
+            cms_r_snd <= {oldcr_1[15],oldcr_1};
+				
         oldj_0 <= jtopl2_snd_e;
         oldj_1 <= oldj_0;
         if(oldj_0 == oldj_1)
@@ -1118,31 +1155,44 @@ module PCXT
         end
     endfunction
 
-    reg [15:0] cmp;
-    reg [15:0] out;
+    reg [15:0] cmp_l;
+    reg [15:0] out_l;
     always @(posedge CLK_50M)		//CLK_AUDIO
     begin
-        reg [16:0] tmp;
+        reg [16:0] tmp_l;
 
-        tmp <= jtopl2_snd + tandy_snd + spk_vol;
+        tmp_l <= jtopl2_snd + cms_l_snd + tandy_snd + spk_vol;
 
         // clamp the output
-        out <= (^tmp[16:15]) ? {tmp[16], {15{tmp[15]}}} : tmp[15:0];
+        out_l <= (^tmp_l[16:15]) ? {tmp_l[16], {15{tmp_l[15]}}} : tmp_l[15:0];
 
-        cmp <= compr(out);
+        cmp_l <= compr(out_l);
+    end
+	 
+    reg [15:0] cmp_r;
+    reg [15:0] out_r;
+    always @(posedge CLK_50M)
+    begin
+        reg [16:0] tmp_r;
+
+        tmp_r <= jtopl2_snd + cms_r_snd + tandy_snd + spk_vol;
+
+        // clamp the output
+        out_r <= (^tmp_r[16:15]) ? {tmp_r[16], {15{tmp_r[15]}}} : tmp_r[15:0];
+
+        cmp_r <= compr(out_r);
     end
 
-
 	`ifdef DEMISTIFY	//needed for not getting error in Quartus compilation for MiST board
-		assign DAC_R =  status[37:36] ? cmp : out;
-		assign DAC_L =  status[37:36] ? cmp : out;
+		assign DAC_L =  pause_core ? 1'b0 : status[37:36] ? cmp_l : out_l;
+		assign DAC_R =  pause_core ? 1'b0 : status[37:36] ? cmp_r : out_r;
 	`endif
 
     sigma_delta_dac sigma_delta_dac 
 	(
 		.clk      ( CLK_50M     ),      // bus clock
-		.ldatasum ( status[37:36] ? cmp : out ),      // left channel data		(ok1) sndmix >> 1 bad, (ok2) sndmix >> 2 ok
-		.rdatasum ( status[37:36] ? cmp : out ),      // right channel data		sndmix_pcm >> 1 bad, sndmix_pcm >> 2 bad
+		.ldatasum ( pause_core ? 1'b0 : status[37:36] ? cmp_l : out_l ),      // left channel data		(ok1) sndmix >> 1 bad, (ok2) sndmix >> 2 ok
+		.rdatasum ( pause_core ? 1'b0 : status[37:36] ? cmp_r : out_r ),      // right channel data		sndmix_pcm >> 1 bad, sndmix_pcm >> 2 bad
 		.left     ( AUDIO_L     ),      // left bitstream output
 		.right    ( AUDIO_R     )       // right bitsteam output
 	);
@@ -1188,6 +1238,8 @@ module PCXT
         end
     end
 
+	// UART1 connected to external cable to host for serdrive
+	// UART2 connected internally in Peripherals.sv for serial mouse
 
     //
     ///////////////////////   VIDEO   ///////////////////////
@@ -1219,6 +1271,7 @@ module PCXT
     assign ce_pixel = 1'b1;
     assign clk_vid = mda_mode ? clk_56_875 : clk_28_636;
 
+    wire color = (screen_mode_video_ff == 3'd0);
 
     video_monochrome_converter video_mono
 	(
@@ -1229,7 +1282,7 @@ module PCXT
 		.G({g_in, 2'b00}),
 		.B({b_in, 2'b00}),
 
-		.gfx_mode(screen_mode),
+		.gfx_mode(screen_mode_video_ff),
 
 		.R_OUT(raux),
 		.G_OUT(gaux),
@@ -1318,6 +1371,47 @@ module PCXT
     // 	.R_out   ( osd_r_o    ),
     // 	.G_out   ( osd_g_o    ),
     // 	.B_out   ( osd_b_o    )
+    // );
+	 
+
+    
+    // JTFRAME CREDITS.  SIGNALS to be updated 
+
+    // wire LHBL = border_video_ff ? HBlank_fixed : HBlank_VGA;
+    // wire LVBL = border_video_ff ? std_hsyncwidth ? VGA_VBlank_border : ~VSync : VBlank;
+
+    // wire       pre2x_LHBL, pre2x_LVBL;
+    // wire [7:0] pre2x_r, pre2x_g, pre2x_b;
+
+    // jtframe_credits #(
+    //     .PAGES  (4),
+    //     .COLW   (8),
+    //     .BLKPOL (1)
+    // ) u_credits(
+    //     .rst        ( reset         ),
+    //     .clk        ( clk_chipset ), // alt: CLK_VIDEO_CGA
+    //     .pxl_cen    ( CE_PIXEL_cga  ), // alt: ce_pixel_cga
+
+    //     // input image
+    //     .HB         ( LHBL  ),
+    //     .VB         ( LVBL  ),
+    //     .rgb_in     ( { raux_cga, gaux_cga, baux_cga } ),
+    //     .rotate     ( 2'd0  ),
+    //     .toggle     ( 1'b0  ),
+    //     .fast_scroll( 1'b0  ),
+    //     .border     ( border_video_ff ),
+
+    //     .vram_din   ( 8'h0  ),
+    //     .vram_dout  (       ),
+    //     .vram_addr  ( 8'h0  ),
+    //     .vram_we    ( 1'b0  ),
+    //     .vram_ctrl  ( 3'b0  ),
+    //     .enable     ( pause_core ),
+
+    //     // output image
+    //     .HB_out     ( pre2x_LHBL      ),
+    //     .VB_out     ( pre2x_LVBL      ),
+    //     .rgb_out    ( {pre2x_r, pre2x_g, pre2x_b } )
     // );
 
 
