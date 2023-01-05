@@ -23,29 +23,35 @@
 * Overscan control with scandoubler done in PCXT.sv. Border on/off from OSD option.
   * signals: color, tandy_16_gfx
 * FDD based on ao486 core that has dependencies with the MiSTer firmware (main)
+* IDE based on ao486 core that has dependencies with the MiSTer firmware (main)
 * UART 16750 not updated because of serdrive not loading HDD images
 * Simulated composite video output
 * OSD save configuration
   *  the BBC core can load and save configs.  (The config file has to be pre-existing on the SD Card, though - the filesystem code can't create files.)  You can save whatever you want in the config file, there are configtocore() and coretoconfig() functions in overrides.c.  The loading / saving is done from an extra menu page, accessed with the right cursor key while the menu is shown.
-*  IDE module from AO486_Mister project.
-* /SW/ROMs  the three new rom files are prepared for IDE module and therefore not valid for serdrive
+* SW/ROMs/*.rom files are prepared for IDE module and therefore not valid for serdrive
 * Pause & Credits screen (Win + F12)
 
-### Other differences in Demistify ports
+### HDL differences in Demistify ports
 
-* eu_rom.v includes macro EMBED_8088_ROM to use LE instead of BRAM
-* KFPS2KB.sv includes many changes by kitune-san to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag)
+* SW/ROMS/*.rom  roms adapted for serdrive
+* SW/   splash.txt, make_splash_ascii-hex.py, serdrive*   demistify splash and serdrive binaries
+* rtl/8088/eu_rom.v includes macro EMBED_8088_ROM to use LE instead of BRAM
+* rtl/KFPC-XT/HDL/KFPS2KB/KFPS2KB.sv includes many changes by kitune-san to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag)
+* PCXT.sv
+  * All Mister framework modules changed by MiST modules
+  * BIOS loader has some differences
 
 
 
 ### Pending to update
 
+* PCXT.sv
+* rtl/KFPC-XT/HDL/chipset.sv
+* rtl/KFPC-XT/HDL/peripherals.sv
+* rtl/video
+* PCXT.sdc
+* README.md
 * SW/splash*
-* rtl/
-* /
-  * PCXT.sdc
-  * PCXT.sv
-  * README.md
 
 
 

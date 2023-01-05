@@ -96,7 +96,7 @@ module PCXT
     // 0         1         2         3          4         5         6
     // 01234567890123456789012345678901 234567890123456789012345678901
     // 0123456789ABCDEFGHIJKLMNOPQRSTUV WXYZabcdefghijklmnopqrstuvwxyz
-    // XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX aaaaaaaa--DDDDDD
+    // XXXXX XXXXXXXXXXXXXXXXXXXXXXXXXX aaaaaaaaaaDDDDDD   XX
 
 
 	`include "build_id.v"
@@ -104,7 +104,7 @@ module PCXT
     parameter CONF_STR = {		// options order: 0,1,2,...
 		"PCXT;;",
 		"O3,Model,IBM PCXT,Tandy 1000;",
-		"OHI,CPU Speed,4.77MHz,7.16MHz,14.318MHz;",
+		"OHI,CPU Speed,4.77MHz,7.16MHz,9.54MHz,PC/AT 3.5MHz;",
 		//
 		"P1,BIOS;",
 		"P1F,ROM,PCXT BIOS:;",
@@ -113,7 +113,9 @@ module PCXT
 		"P1OUV,BIOS Writable,None,EC00,PCXT/Tandy,All;",
         "P1O7,Boot Splash Screen,Yes,No;",
 		"P2,Audio;",
-		"P2OA,Adlib,On,Invisible;",
+		//"P2OA,Adlib,On,Invisible;", // status[10] is available, remove this line when used
+		"P2OA,C/MS Audio,Enabled,Disabled;",
+		"P2Oef,OPL2,Adlib 388h,SB FM 388h/228h, Disabled;",
 		"P2OWX,Speaker Volume,1,2,3,4;",
 		"P2OYZ,Tandy Volume,1,2,3,4;",
 		"P2Oab,Audio Boost,No,2x,4x;",
@@ -126,6 +128,7 @@ module PCXT
 		"P3O4,Video Output,CGA/Tandy,MDA;",
 		"P3OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
 		"P3Oh,Composite Blending,No,Yes;",
+		"//P3Oq,Composite simulated,Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
 		"P3Oi,Composite (DB15 green),Off,On;",
 		"P3Ol,VGA+Compos(1pin no.osd),Off,On;",
 		// "P3Ok,DEBUG.OSD disable,No,Yes;",
@@ -134,7 +137,8 @@ module PCXT
 		//
 		"P4,Hardware;",
 		"P4OB,Lo-tech 2MB EMS,Enabled,Disabled;",
-		"P4OCD,EMS Frame,A000,C000,D000;",
+		"P4OCD,EMS Frame,C000,D000,E000;",
+		"P4Op,A000 UMB,Enabled,Disabled;",           //[51]
 		"P4ONO,Joystick 1, Analog, Digital, Disabled;",
 		"P4OPQ,Joystick 2, Analog, Digital, Disabled;",
 		"P4OR,Sync Joy to CPU Speed,No,Yes;",
@@ -143,6 +147,7 @@ module PCXT
 		"T0,Reset;",
 		//
 		"P5,Debug;",
+		"P3Oq,Comp. simulated (WIP),Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
 		"P5OLM,UART Speed,1200..115200bps,115200..921600bps;",
 		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
 		"P5Ok,DEBUG.OSD disable,No,Yes;",
@@ -174,22 +179,43 @@ module PCXT
     wire [7:0]  ioctl_data;
     reg         ioctl_wait;
 
-    wire        adlibhide = status[10] | xtctl[4];
+    //wire [21:0] gamma_bus;
 
     wire [31:0] joy0, joy1;
     wire [31:0] joya0, joya1;
     wire [4:0]  joy_opts = status[27:23];
 
+    //wire composite = status[52] | xtctl[0];
 	//wire [1:0] scale = status[2:1];
     wire mda_mode = status[4] | xtctl[5];
     wire [2:0] screen_mode = status[16:14];
+    //wire [1:0] ar = status[9:8];
+    //wire border = status[29] | xtctl[1];
+	wire a000h = ~status[51] & ~xtctl[6];
     wire composite_on = status[44];
     wire vga_composite = status[47];
 	//debug
     wire display_mode_disable = status[45];
     wire osd_disable = status[46];
 
+    //reg [1:0]   scale_video_ff;
+    reg         mda_mode_video_ff;
+    reg [2:0]   screen_mode_video_ff;
+    //reg         border_video_ff;
+	 
+    wire VGA_VBlank_border;
+    wire std_hsyncwidth;
+    wire pause_core;
 
+    always @(posedge CLK_VIDEO)
+    begin
+        //scale_video_ff          <= scale;
+        mda_mode_video_ff       <= mda_mode;
+        screen_mode_video_ff    <= screen_mode;
+        //border_video_ff         <= border;
+        //VIDEO_ARX               <= (!ar) ? 12'd4 : (ar - 1'd1);
+        //VIDEO_ARY               <= (!ar) ? 12'd3 : 12'd0;
+    end
 
     // .PS2DIV(2000) value is adequate
 
@@ -267,7 +293,9 @@ module PCXT
     wire clk_28_636;
     wire clk_56_875;
     //wire clk_113_750;
+    reg clk_25 = 1'b0;
     reg clk_14_318 = 1'b0;
+    reg clk_9_54 = 1'b0;
     reg clk_7_16 = 1'b0;
     wire clk_4_77;
     wire clk_cpu;
@@ -336,8 +364,26 @@ module PCXT
 
     //////////////////////////////////////////////////////////////////
 
+
     always @(posedge clk_28_636)
         clk_14_318 <= ~clk_14_318; 	// 14.318Mhz
+
+    reg [4:0] clk_9_54_cnt = 1'b0;
+    always @(posedge clk_chipset)
+        if (4'd0 == clk_9_54_cnt) begin
+            if (clk_9_54)
+                clk_9_54_cnt  <= 4'd3 - 4'd1;
+            else
+                clk_9_54_cnt  <= 4'd2 - 4'd1;
+            clk_9_54      <= ~clk_9_54;
+        end
+        else begin
+            clk_9_54_cnt  <= clk_9_54_cnt - 4'd1;
+            clk_9_54      <= clk_9_54;
+        end
+
+    always @(posedge clk_chipset)
+        clk_25 <= ~clk_25;
 
     always @(posedge clk_14_318)
         clk_7_16 <= ~clk_7_16;      // 7.16Mhz
@@ -351,29 +397,32 @@ module PCXT
     always @(posedge clk_4_77)
         peripheral_clock <= ~peripheral_clock; // 2.385Mhz
 
+    //reg [27:0] cur_rate;
+    //always @(posedge CLK_50M) cur_rate <= 30000000;
+
     //////////////////////////////////////////////////////////////////
 
     logic  biu_done;
-    logic  turbo_mode;
+    logic  [7:0] clock_cycle_counter_division_ratio;
+    logic  [7:0] clock_cycle_counter_decrement_value;
+    logic        shift_read_timing;
+    logic  [1:0] ram_read_wait_cycle;
+    logic  [1:0] ram_write_wait_cycle;
+    logic        cycle_accrate;
     logic  [1:0] clk_select;
+
 
     always @(posedge clk_chipset, posedge reset)
     begin
         if (reset)
-        begin
-            turbo_mode  <= 1'b0;
             clk_select  <= 2'b00;
-        end
+
         else if (biu_done)
-        begin
-            turbo_mode  <= xtctl[3:2] == 2'b00 ? (status[18:17] == 2'b01 || status[18:17] == 2'b10) : (xtctl[3:2] == 2'b10 || xtctl[3:2] == 2'b11);
-            clk_select  <= xtctl[3:2] == 2'b00 ? status[18:17] : xtctl[3:2] - 2'b01;
-        end
+            clk_select  <= (xtctl[3:2] == 2'b00 & ~xtctl[7]) ? status[18:17] : xtctl[7] ? 2'b11 : xtctl[3:2] - 2'b01;
+
         else
-        begin
-            turbo_mode  <= turbo_mode;
             clk_select  <= clk_select;
-        end
+
     end
 
     logic  clk_cpu_ff_1;
@@ -386,21 +435,65 @@ module PCXT
     begin
         if (reset)
         begin
-            clk_cpu_ff_1 <= 1'b0;
-            clk_cpu_ff_2 <= 1'b0;
-            clk_cpu      <= 1'b0;
-            pclk_ff_1    <= 1'b0;
-            pclk_ff_2    <= 1'b0;
-            pclk         <= 1'b0;
+            clk_cpu_ff_1    <= 1'b0;
+            clk_cpu_ff_2    <= 1'b0;
+            clk_cpu         <= 1'b0;
+            pclk_ff_1       <= 1'b0;
+            pclk_ff_2       <= 1'b0;
+            pclk            <= 1'b0;
+            cycle_accrate   <= 1'b1;
+            clock_cycle_counter_division_ratio  <= 8'd1 - 8'd1;
+            clock_cycle_counter_decrement_value <= 8'd1;
+            shift_read_timing                   <= 1'b0;
+            ram_read_wait_cycle                 <= 2'd0;
+            ram_write_wait_cycle                <= 2'd0;
         end
         else
         begin
-            clk_cpu_ff_1 <= (clk_select == 2'b10) ? clk_14_318 : (clk_select == 2'b01) ? clk_7_16 : clk_4_77;
-            clk_cpu_ff_2 <= clk_cpu_ff_1;
-            clk_cpu      <= clk_cpu_ff_2;
-            pclk_ff_1    <= peripheral_clock;
-            pclk_ff_2    <= pclk_ff_1;
-            pclk         <= pclk_ff_2;
+            clk_cpu_ff_2    <= clk_cpu_ff_1;
+            clk_cpu         <= clk_cpu_ff_2;
+            pclk_ff_1       <= peripheral_clock;
+            pclk_ff_2       <= pclk_ff_1;
+            pclk            <= pclk_ff_2;
+            casez (clk_select)
+                2'b00: begin
+                    clk_cpu_ff_1    <= clk_4_77;
+                    clock_cycle_counter_division_ratio  <= 8'd1 - 8'd1;
+                    clock_cycle_counter_decrement_value <= 8'd1;
+                    shift_read_timing                   <= 1'b0;
+                    ram_read_wait_cycle                 <= 2'd0;
+                    ram_write_wait_cycle                <= 2'd0;
+                    cycle_accrate                       <= 1'b1;
+                end
+                2'b01: begin
+                    clk_cpu_ff_1    <= clk_7_16;
+                    clock_cycle_counter_division_ratio  <= 8'd2 - 8'd1;
+                    clock_cycle_counter_decrement_value <= 8'd3;
+                    shift_read_timing                   <= 1'b0;
+                    ram_read_wait_cycle                 <= 2'd0;
+                    ram_write_wait_cycle                <= 2'd0;
+                    cycle_accrate                       <= 1'b1;
+                end
+                2'b10: begin
+                    clk_cpu_ff_1    <= clk_9_54;
+                    clock_cycle_counter_division_ratio  <= 8'd10 - 8'd1;
+                    clock_cycle_counter_decrement_value <= 8'd21;
+                    shift_read_timing                   <= 1'b0;
+                    ram_read_wait_cycle                 <= 2'd0;
+                    ram_write_wait_cycle                <= 2'd0;
+                    cycle_accrate                       <= 1'b1;
+
+                end
+                2'b11: begin
+                    clk_cpu_ff_1    <= clk_25;
+                    clock_cycle_counter_division_ratio  <= 8'd1 - 8'd1;
+                    clock_cycle_counter_decrement_value <= 8'd5;
+                    shift_read_timing                   <= 1'b1;
+                    ram_read_wait_cycle                 <= 2'd1;
+                    ram_write_wait_cycle                <= 2'd0;
+                    cycle_accrate                       <= 1'b0;
+                end
+            endcase
         end
     end
 
@@ -698,16 +791,18 @@ module PCXT
     //
     // Splash screen
     //
+    reg splash_off;
     reg [24:0] splash_cnt = 0;
     reg [3:0] splash_cnt2 = 0;
     reg splashscreen = 1;
 
     always @ (posedge clk_14_318)
     begin
+        splash_off <= status[7];
 
         if (splashscreen)
         begin
-            if (status[7])
+            if (splash_off)
                 splashscreen <= 0;
             else if(splash_cnt2 == 5) // 5 seconds delay
                 splashscreen <= 0;
@@ -788,7 +883,7 @@ module PCXT
 
     wire tandy_bios_flag = bios_write_n ? tandy_mode : tandy_bios_write;
 
-    always @(posedge clk_100)
+    always @(posedge clk_chipset)
     begin
         if (address_latch_enable)
             cpu_address <= cpu_ad_out;
@@ -802,7 +897,7 @@ module PCXT
 		.cpu_clock                          (clk_cpu),
 		.clk_sys                            (clk_chipset),
 		.peripheral_clock                   (pclk),
-		.turbo_mode                         (xtctl[3:2] == 2'b00 ? status[18:17] : xtctl[3:2] - 2'b01),
+		.clk_select                         (clk_select),
 		.color							    (screen_mode == 3'd0),
 		.reset                              (reset_cpu),
 		.sdram_reset                        (reset_sdram),

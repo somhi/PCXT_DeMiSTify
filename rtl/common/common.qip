@@ -14,4 +14,4 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) jtframe
 #
 #floppy.v and simple_fifo.v used for ao486 FDD from MiSTer core
 #ide.v and bram.vhd used for ao486 IDE module from MiSTer core
-#simple_ram used for RTC support
+#simple_ram used for RTC module
