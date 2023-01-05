@@ -45,15 +45,15 @@ The [Graphics Gremlin project](https://github.com/schlae/graphics-gremlin) from 
 ## Quick Start
 
 * Download and uncompress [hd_image.zip](https://github.com/MiSTer-devel/PCXT_MiSTer/raw/main/games/PCXT/hd_image.zip)  on your host system. It contains a [freedos](http://www.freedos.org/ ) image
-* Load the OS image with [Serdrive](SW/ ) as explained below at Mounting the disk image
+* Load the OS image with [Serdrive](SW/ ) as explained below at Mounting the disk image section
 * Prepare an SD card for your FPGA with a PCXT folder containing the BIOS  (see ROM instructions below)
-* Upload bitstream into your FPGA (check release in each FPGA folder)
+* Upload bitstream file into your FPGA
 * Press F12 on your keyboard to access the OSD and select options below
   * Model: IBM PCXT
-  * CPU Speed: choose PC/AT 3.5MHz (max. speed)
+  * CPU Speed: 4.77MHz for better compatibylity (PC/AT 3.5MHz for max. speed)
   * BIOS > PCXT BIOS > browse to the SD folder and choose  pcxt_micro8088.rom or any other ROM
 
-If you leave the BIOS files into the root of the SD card with the following names, they will be loaded automatically after the splash screen:
+NOTE: If you leave the BIOS files into the root of the SD card with the following names, they will be loaded automatically after the splash screen:
 
 * PCXT.ROM  for the IBM PCXT model
 * TANDY.ROM for the TANDY 1000 model
@@ -82,7 +82,7 @@ NOTES:
 
 * IBM5160 BIOS: Starting BIOS at PC/AT 3.5MHz (max. speed), lights start blinking and keyboard doesn't work anymore. Starting BIOS at 4.77 MHz and changing it thereafter during the RAM test to PC/AT 3.5MHz (max. speed) it lets work in this BIOS without keyboard problems.
 
-## Other BIOSes
+**Other BIOS**
 
 * https://github.com/640-KB/GLaBIOS
 
@@ -111,7 +111,7 @@ The floppy disk image is recognised by XTIDE as B: in all BIOSes except JukoST, 
 
 * 921.6 kbps only works at max speed
 
-* Core has enabled RTS/CTS signals which gives better stability and speed to the HDD
+* Core has enabled RTS/CTS control signals which gives better stability and speed to the HDD
 
   * Windows does not care about RTS/CTS signals
 
@@ -136,7 +136,7 @@ Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composi
 
 
 
-## **Ported FPGA platforms**
+## **DeMiSTified FPGA platforms**
 
 * Altera Max 10:
 
@@ -158,6 +158,8 @@ Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composi
   
 
 ## To-do list
+
+* Credits screen not implemented yet
 
 * 8-bit IDE module implementation
 

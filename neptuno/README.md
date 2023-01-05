@@ -18,7 +18,7 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### Compile the project in Quartus:
 
-Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
+Project already has the Demistify firmware already generated so if you clone it recursively then you can open the project with Quartus:
 
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify

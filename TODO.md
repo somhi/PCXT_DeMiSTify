@@ -2,14 +2,15 @@
 
 * Keyboard error controller message with Turbo mode (start BIOS with 4.77 MHz for not getting this error).
 
+* When pressing F12 for opening the OSD it sends a keystroke to the DOS program so it can interfere it
+
 * Video
 
   * No video in some parts of Area5150 dema at max. speed
 
   * No overscan with Graphic Gremlins scandoubler (//.video(video))
   
-  * RGB 15 kHz video output 
-    * CGA video deformed at top part of screen in some resolutions (don't happen so often in TGA).
+  * RGB 15 kHz video output . CGA video deformed at top part of screen in some resolutions (don't happen so often in TGA). The same happens to the MiSTer core.
     
   * YPbPr video output did not work on my setup.
   
