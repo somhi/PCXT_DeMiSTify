@@ -38,6 +38,7 @@
 * SW/   splash.txt, make_splash_ascii-hex.py, serdrive*   demistify splash and serdrive binaries
 * rtl/8088/eu_rom.v includes macro EMBED_8088_ROM to use LE instead of BRAM
 * rtl/KFPC-XT/HDL/KFPS2KB/KFPS2KB.sv includes many changes by kitune-san to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag)
+* using uart port 1 for serdrive, and uart port 2 por serial mouse
 * PCXT.sv
   * All Mister framework modules changed by MiST modules
   * BIOS loader has some differences
@@ -47,12 +48,18 @@
 ### Pending to update
 
 * PCXT.sv
+
 * rtl/KFPC-XT/HDL/chipset.sv
+
 * rtl/KFPC-XT/HDL/peripherals.sv
+
 * rtl/video
+
 * PCXT.sdc
+
 * README.md
-* SW/splash*
+
+  
 
 
 
