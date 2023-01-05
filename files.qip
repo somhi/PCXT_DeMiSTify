@@ -5,7 +5,7 @@ set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/common/
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/video/video.qip]
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/uart/uart.qip]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/sound/saa1099.sv"]
-set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/sound/jt89/syn/quartus/jt89.qip]
+set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/sound/jt89.qip]
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/sound/jtopl/target/quartus/jtopl2.qip]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) rtl/sound/sigma_delta_dac.v ]
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/8088/8088.qip]

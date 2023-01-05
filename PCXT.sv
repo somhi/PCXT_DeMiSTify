@@ -397,8 +397,8 @@ module PCXT
     always @(posedge clk_4_77)
         peripheral_clock <= ~peripheral_clock; // 2.385Mhz
 
-    //reg [27:0] cur_rate;
-    //always @(posedge CLK_50M) cur_rate <= 30000000;
+    reg [27:0] cur_rate;
+    always @(posedge CLK_50M) cur_rate <= 30000000;
 
     //////////////////////////////////////////////////////////////////
 
@@ -1014,6 +1014,7 @@ module PCXT
 		.ems_enabled                        (~status[11]),
 		.ems_address                        (status[13:12]),
 		.bios_protect_flag                  (bios_protect_flag),
+        .clock_rate                         (cur_rate),
 		.xtctl                              (xtctl),
 		.enable_a000h                       (a000h),
 		.wait_count_clk_en                  (~clk_cpu & clk_cpu_ff_2),

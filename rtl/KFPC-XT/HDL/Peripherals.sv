@@ -115,6 +115,8 @@ module PERIPHERALS #(
         output  logic           ems_b2,
         output  logic           ems_b3,
         output  logic           ems_b4,
+        //
+        input   logic   [27:0]  clock_rate,
         // XTCTL DATA
         output  logic   [7:0]   xtctl = 8'h00,
         output  logic           pause_core

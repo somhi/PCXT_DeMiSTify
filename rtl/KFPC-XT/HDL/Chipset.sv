@@ -144,6 +144,8 @@ module CHIPSET (
         input   logic   [1:0]   ems_address,
         // BIOS
         input  logic    [1:0]   bios_protect_flag,
+        //
+        input   logic   [27:0]  clock_rate,
         // XTCTL DATA
         output  logic   [7:0]   xtctl,
         // Optional flags
@@ -361,6 +363,7 @@ module CHIPSET (
         .ems_b2                            (ems_b2),
         .ems_b3                            (ems_b3),
         .ems_b4                            (ems_b4),
+        .clock_rate                         (clock_rate),
         .xtctl                              (xtctl),
         .pause_core                         (pause_core)
     );
