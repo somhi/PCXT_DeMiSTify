@@ -59,8 +59,19 @@ Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composi
 ![composite_schematic](composite_schematic.png)
 
 
+## To-do list
 
-Follows original Readme (with some crossed out text where does not apply).
+* 8-bit IDE module implementation
+* Floppy implementation
+* RTC implementation
+* Simulated composite implementation (note that is available real composite instead)
+* Border (overscan)
+* Saving OSD configuration
+
+
+
+
+Follows original Readme with some modifications.
 
 
 
@@ -68,9 +79,9 @@ Follows original Readme (with some crossed out text where does not apply).
 
 PCXT port for MiSTer by [@spark2k06](https://github.com/spark2k06/).
 
-Discussion and evolution of the core in the following misterfpga forum thread:
+Discussion and evolution of the core in the following misterfpga forum section:
 
-https://misterfpga.org/viewtopic.php?t=4680&start=1020
+https://misterfpga.org/viewforum.php?f=40
 
 ## Description
 
@@ -84,17 +95,18 @@ The [Graphics Gremlin project](https://github.com/schlae/graphics-gremlin) from 
 
 ## Key features
 
-* Support for Tandy 1000
-* Support for IBM PCXT 5160 and clones
-* CPU Speed 4.77 MHz and turbo modes 7.16 MHz / 14.318 MHz
-* Video modes: 
-  * Tandy 320x200x16 graphics 128 kB VRAM (not available on all ports due to BRAM resources)
-  * CGA graphics 32kB VRAM (VGA or Composite)
-  * MDA monochrome 
-
+* 8088 CPU with these speed settings: 4.77 MHz, 7.16 MHz, 9.54 MHz cycle accurate, and PC/AT 286 at 3.5MHz equivalent (max. speed)
+* BIOS selectable (Tandy 1000 / PCXT) 
 * Compatible BIOS selection (IBM5160, Yuko ST, pcxt31, Tandy, micro8088, XT-IDE, ...)
+* Support for IBM Tandy 1000
+* Support for IBM PCXT 5160 and clones
 * Main memory 640Kb + 384Kb UMB memory
 * EMS memory up to 2Mb
+* XTIDE support
+* Video modes: 
+  * Tandy graphics with 128Kb of shared VRAM  (not available on all ports due to BRAM resources)
+  * CGA graphics 32kB VRAM (VGA or Composite)
+  * MDA monochrome 
 * Audio: Adlib, Tandy, speaker
 * Joystick support
 * Mouse support into COM2 serial port, this works like any Microsoft mouse... you just need a driver to configure it, like CTMOUSE 1.9 (available into hdd folder), with the command CTMOUSE /s2 
@@ -143,7 +155,7 @@ NOTES:
 
 ## Mounting the disk image
 
-Initially, and until an 8-bit IDE module compatible with XTIDE is available, floppy and HDD mounting will be done through the serial port available in the core via the OSD menu. The available transfer speeds are as follows:
+Initially and until an 8-bit IDE module compatible with XTIDE is available, floppy and HDD mounting will be done through the serial port available in the core via the OSD menu. The available transfer speeds are as follows:
 
 * 115200 Kbps
 * 230400 Kbps
@@ -155,11 +167,6 @@ By default it is set to 115200, but the most suitable speed is 460800. It is als
 The floppy disk image is recognised by XTIDE as B: in all BIOSes except JukoST, so to boot from the floppy disk, press the 'B' key when the XTIDE boot screen appears. Mounting and unmounting of such a drive becomes effective after a BIOS reset. Floppy swapping is possible as long as the drive was previously mounted.
 
 The serial port speed change becomes effective after a BIOS reset, it is not possible to use the HDD or Floppy drive after a speed change, the BIOS must always be reset after that.
-
-## To-do list and challenges
-
-* 8-bit IDE module implementation
-* Floppy implementation
 
 ## Developers
 

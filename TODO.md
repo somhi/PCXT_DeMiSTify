@@ -60,15 +60,9 @@
 
 * PCXT.sv  > Pause & Credits 
 
-* rtl/KFPC-XT/HDL/chipset.sv
-
-* rtl/KFPC-XT/HDL/peripherals.sv
-
 * rtl/video
 
 * PCXT.sdc 
-
-* README.md
 
   
 
