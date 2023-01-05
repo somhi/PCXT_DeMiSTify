@@ -1,87 +1,16 @@
 # [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify)
 
-Port DeMiSTified by @somhi from original MiSTer port by @spark2k06 https://github.com/MiSTer-devel/PCXT_MiSTer
+DeMiSTified ports by [@somhi](https://github.com/somhi) from original PCXT port for [MiSTer FPGA](https://mister-devel.github.io/MkDocs_MiSTer/) by [@spark2k06](https://github.com/spark2k06/) (https://github.com/MiSTer-devel/PCXT_MiSTer).
 
-[Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
+Follow discussion and evolution of the core at [MiSTerFPGA forum](https://misterfpga.org/viewforum.php?f=40).
 
-Follow PCXT core discussion at [MiSTerFPGA forum](https://misterfpga.org/viewforum.php?f=40).
+This is a general Readme. Check specific Readme in each board folder. See list of ported platforms below.
 
-**Status**: 
+**Status of the ports** 
 
-* Read [Bugs and TODO list and differences with MiSTer port](TODO.md)
-* Check specific BOARD limitations on each board folder's readme
-
-**Ported FPGA platforms:**:
-
-* Altera Max 10:
-  * Terasic DE10-lite
-  * Arrow Terasic DECA
-* Altera Cyclone III:  MiST, MiSTica
-* Altera Cyclone IV:
-  * NeptUNO (Qmtech EP4CE55)
-  * UAreloaded (Qmtech EP4CE55)
-  * SiDi (ManuFerHi EP4CE22)
-* Altera Cyclone V: Arrow Terasic SoCkit
-* Altera Cyclone 10 LP: Trenz CYC1000 with Atlas carrier board
-
-**Loading OS**:
-
-Currently floppy and hdd images can only be loaded trough serial UART Rx/Tx with the XT IDE BIOS. Serdrive program should be used in the host computer serving the images.
-
-```sh
-#Windows example
-serdrive.exe -g 733:7:17 -v [-c <port>] -d 460.8Kb <image>
-#Linux example
-serdrive_x64 -g 733:7:17 -v -c /dev/ttyUSB0 -b 921.6K PCXT_CGA_Tandy.img 
-```
-
-Some notes about serdrive:
-
-* 115.2 kbps does not work
-* 921.6 kbps only works at 14.3 MHz
-* Core has enabled RTS/CTS signals which gives better stability and speed to the HDD
-  * Windows does not care about RTS/CTS signals
-  * In Linux those RTS/CTS lines need to be connected for XTIDE to detect the image. Take care that CTS goes to RTS and RTS to CTS.
-
-**Composite CGA video output**: 
-
-CGA mode has available composite video output through:
-
-* Green pin of the DB15 VGA connector
-* Simultaneous output through 1 GPIO pin 
-  * Check pin location in the corresponding top and qsf files inside the respective board folder
-  * Optionally a second pin might be used with a 2k resistor connected in the same way as the first pin  
-  * Currently only implemented in Atlas cyc1000, Deca and Neptuno boards.
-
-
-Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composite output pin and the TV composite input central pin. 
-
-![composite_schematic](composite_schematic.png)
-
-
-## To-do list
-
-* 8-bit IDE module implementation
-* Floppy implementation
-* RTC implementation
-* Simulated composite implementation (note that is available real composite instead)
-* Border (overscan)
-* Saving OSD configuration
-
-
-
-
-Follows original Readme with some modifications.
-
-
-
-# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT) for [MiSTer FPGA](https://mister-devel.github.io/MkDocs_MiSTer/)
-
-PCXT port for MiSTer by [@spark2k06](https://github.com/spark2k06/).
-
-Discussion and evolution of the core in the following misterfpga forum section:
-
-https://misterfpga.org/viewforum.php?f=40
+* Read To-do list below
+* Read specific BOARD limitations on each board folder's readme
+* Read [Bugs / TODO / changes list with respect to the MiSTer port](TODO.md)
 
 ## Description
 
@@ -93,20 +22,22 @@ The [Graphics Gremlin project](https://github.com/schlae/graphics-gremlin) from 
 
 [JT89](https://github.com/jotego/jt89) by Jose Tejada (@jotego) was integrated for Tandy sound.
 
+[Demistify](https://github.com/robinsonb5/DeMiSTify) by Alastair M.Robinson ([@robinsonb5](https://github.com/robinsonb5)) is used as a MiST compatible framework using a softcore for aiding porting the core to multiple FPGA boards. More information about deMiSTifying a core can be found on this [tutorial](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify). 
+
 ## Key features
 
 * 8088 CPU with these speed settings: 4.77 MHz, 7.16 MHz, 9.54 MHz cycle accurate, and PC/AT 286 at 3.5MHz equivalent (max. speed)
-* BIOS selectable (Tandy 1000 / PCXT) 
-* Compatible BIOS selection (IBM5160, Yuko ST, pcxt31, Tandy, micro8088, XT-IDE, ...)
+* BIOS selectable (Tandy 1000 / PCXT). Compatible BIOS selection (IBM5160, Yuko ST, pcxt31, Tandy, micro8088, XT-IDE, ...)
+* XTIDE support
 * Support for IBM Tandy 1000
 * Support for IBM PCXT 5160 and clones
 * Main memory 640Kb + 384Kb UMB memory
 * EMS memory up to 2Mb
-* XTIDE support
 * Video modes: 
   * Tandy graphics with 128Kb of shared VRAM  (not available on all ports due to BRAM resources)
   * CGA graphics 32kB VRAM (VGA or Composite)
-  * MDA monochrome 
+  * MDA monochrome
+  * Composite real video output 
 * Audio: Adlib, Tandy, speaker
 * Joystick support
 * Mouse support into COM2 serial port, this works like any Microsoft mouse... you just need a driver to configure it, like CTMOUSE 1.9 (available into hdd folder), with the command CTMOUSE /s2 
@@ -114,17 +45,19 @@ The [Graphics Gremlin project](https://github.com/schlae/graphics-gremlin) from 
 ## Quick Start
 
 * Download and uncompress [hd_image.zip](https://github.com/MiSTer-devel/PCXT_MiSTer/raw/main/games/PCXT/hd_image.zip)  on your host system. It contains a [freedos](http://www.freedos.org/ ) image
-* Load OS with [Serdrive](SW/ ) as explained before
+* Load the OS image with [Serdrive](SW/ ) as explained below at Mounting the disk image
 * Prepare an SD card for your FPGA with a PCXT folder containing the BIOS  (see ROM instructions below)
 * Upload bitstream into your FPGA (check release in each FPGA folder)
 * Press F12 on your keyboard to access the OSD and select options below
   * Model: IBM PCXT
-  * CPU Speed: choose 14.318MHz for fastest turbo speed
+  * CPU Speed: choose PC/AT 3.5MHz (max. speed)
   * BIOS > PCXT BIOS > browse to the SD folder and choose  pcxt_micro8088.rom or any other ROM
-* NOTE: If you leave a BIOS file with the name PCXT.ROM into the root of the SD card it will be loaded straight away after the splash screen. Also you can prepare the other two roms on the SD card:
-  * PCXT.ROM  for the IBM PCXT model
-  * TANDY.ROM for the TANDY 1000 model
-  * XTIDE.ROM for the EC00 BIOS needed to load the OS for Tandy and some PCXT BIOS
+
+If you leave the BIOS files into the root of the SD card with the following names, they will be loaded automatically after the splash screen:
+
+* PCXT.ROM  for the IBM PCXT model
+* TANDY.ROM for the TANDY 1000 model
+* XTIDE.ROM for the EC00 BIOS needed to load the OS for Tandy and some PCXT BIOS
 
 
 ## ROM Instructions
@@ -147,29 +80,95 @@ NOTES:
 
 * ROMs working with MDA video: (IBM5160, Yuko ST and pcxt31 work), (Tandy, micro8088, full XTIDE BIOS do not work).
 
-* IBM5160 BIOS: Starting BIOS at 14 MHz, lights start blinking and keyboard doesn't work anymore. Starting BIOS at 4.77 MHz and changing it thereafter during the RAM test to 14.3 MHz it lets work in this BIOS without keyboard problems.
+* IBM5160 BIOS: Starting BIOS at PC/AT 3.5MHz (max. speed), lights start blinking and keyboard doesn't work anymore. Starting BIOS at 4.77 MHz and changing it thereafter during the RAM test to PC/AT 3.5MHz (max. speed) it lets work in this BIOS without keyboard problems.
 
 ## Other BIOSes
 
 * https://github.com/640-KB/GLaBIOS
 
-## Mounting the disk image
+## Mounting the disk image (serdrive)
 
-Initially and until an 8-bit IDE module compatible with XTIDE is available, floppy and HDD mounting will be done through the serial port available in the core via the OSD menu. The available transfer speeds are as follows:
+Currently floppy and hdd images can only be loaded trough serial UART with the XT IDE BIOS. This could be done with a USB-Serial cable connected from a PC to the FPGA. [Serdrive](SW/ ) program is required in the host computer serving the OS/floppy image/s.
 
-* 115200 Kbps
-* 230400 Kbps
-* 460800 Kbps
-* 921600 Kbps (Only works with CPU speed at 14.318MHz)
+```sh
+#Usage: SerDrive [options] imagefile [[slave-options] slave-imagefile]
+#You should know the geometry of the disk (-g parameter) and the serial port of the host computer (-c parameter). UART speed is set by the -b parameter
 
-By default it is set to 115200, but the most suitable speed is 460800. It is also possible to use 921600, but only with the CPU speed at 14.318MHz.
+#Linux example
+serdrive_x64 -g 733:7:17 -v -c /dev/ttyUSB0 -b 921.6K PCXT_CGA_Tandy.img 
+serdrive_x64 -g 733:7:17 -v -c /dev/ttyUSB0 -b 921.6K PCXT_CGA_Tandy.img floppy.img
+#Windows example
+serdrive.exe -g 733:7:17 -v [-c <port>] -d 460.8Kb <image_OS> <image_floppy>
+```
+
+
 
 The floppy disk image is recognised by XTIDE as B: in all BIOSes except JukoST, so to boot from the floppy disk, press the 'B' key when the XTIDE boot screen appears. Mounting and unmounting of such a drive becomes effective after a BIOS reset. Floppy swapping is possible as long as the drive was previously mounted.
 
-The serial port speed change becomes effective after a BIOS reset, it is not possible to use the HDD or Floppy drive after a speed change, the BIOS must always be reset after that.
+**Some notes about serdrive**
 
-## Developers
+* 115.2 kbps does not work
 
-Any contribution and pull request, please carry it out on the prerelease branch. Periodically they will be reviewed, moved and merged into the main branch, together with the corresponding release.
+* 921.6 kbps only works at max speed
 
-Thank you!
+* Core has enabled RTS/CTS signals which gives better stability and speed to the HDD
+
+  * Windows does not care about RTS/CTS signals
+
+  * In Linux those RTS/CTS lines need to be connected for XTIDE to detect the image. Take care that CTS goes to RTS and RTS to CTS.
+
+    
+
+## **Composite real CGA video output** 
+
+CGA mode has available composite video output through:
+
+* Green pin of the DB15 VGA connector
+* Simultaneous output through 1 GPIO pin 
+  * Check pin location in the corresponding top and qsf files inside the respective board folder
+  * Optionally a second pin might be used with a 2k resistor connected in the same way as the first pin  
+  * Currently only implemented in Atlas cyc1000, Deca and Neptuno boards.
+
+
+Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composite output pin and the TV composite input central pin. 
+
+![composite_schematic](composite_schematic.png)
+
+
+
+## **Ported FPGA platforms**
+
+* Altera Max 10:
+
+  * Terasic DE10-lite
+  * Arrow Terasic DECA
+
+* Altera Cyclone III:  MiST, MiSTica
+
+* Altera Cyclone IV:
+
+  * NeptUNO (Qmtech EP4CE55)
+  * UAreloaded (Qmtech EP4CE55)
+  * SiDi (ManuFerHi EP4CE22)
+
+* Altera Cyclone V: Arrow Terasic SoCkit
+
+* Altera Cyclone 10 LP: Trenz CYC1000 with Atlas carrier board
+
+  
+
+## To-do list
+
+* 8-bit IDE module implementation
+
+* Floppy implementation
+
+* RTC implementation
+
+* Simulated composite implementation (note that is available real composite instead)
+
+* Border (overscan)
+
+* Saving OSD configuration
+
+  
