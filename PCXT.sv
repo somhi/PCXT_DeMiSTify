@@ -128,7 +128,7 @@ module PCXT
 		"P3O4,Video Output,CGA/Tandy,MDA;",
 		"P3OEG,Display,Full Color,Green,Amber,B&W,Red,Blue,Fuchsia,Purple;",
 		"P3Oh,Composite Blending,No,Yes;",
-		"//P3Oq,Composite simulated,Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
+		//"P3Oq,Composite simulated,Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
 		"P3Oi,Composite (DB15 green),Off,On;",
 		"P3Ol,VGA+Compos(1pin no.osd),Off,On;",
 		// "P3Ok,DEBUG.OSD disable,No,Yes;",
@@ -147,7 +147,7 @@ module PCXT
 		"T0,Reset;",
 		//
 		"P5,Debug;",
-		"P3Oq,Comp. simulated (WIP),Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
+		"P5Oq,Comp. simulated (WIP),Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
 		"P5OLM,UART Speed,1200..115200bps,115200..921600bps;",
 		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
 		"P5Ok,DEBUG.OSD disable,No,Yes;",
@@ -292,7 +292,7 @@ module PCXT
     wire clk_100;
     wire clk_28_636;
     wire clk_56_875;
-    //wire clk_113_750;
+    //wire clk_113_750;         //CLOCK_VIDEO_MDA
     reg clk_25 = 1'b0;
     reg clk_14_318 = 1'b0;
     reg clk_9_54 = 1'b0;
@@ -314,9 +314,9 @@ module PCXT
 		(
 			.refclk(CLK_50M),
 			.rst(0),
-			.outclk_0(clk_100),			//100
-			.outclk_1(clk_chipset),		//50
-			.outclk_2(clk_uart),		//14.7456 -> 14.7541
+			.outclk_0(clk_100),			//100                   CLOCK_CORE
+			.outclk_1(clk_chipset),		//50                    CLOCK_CHIP
+			.outclk_2(clk_uart),		//14.7456 -> 14.7541    CLOCK_UART
 		//	.outclk_3(clk_uart2),		//1.8432  -> 1.8442    [LONG COMPILATION TIMES IF (status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en]
 			.locked(pll_locked)
 		);
@@ -325,9 +325,9 @@ module PCXT
 		(
 			.refclk(CLK_50M),
 			.rst(0),
-			.outclk_0(clk_28_636),		//28.636
-			.outclk_1(clk_56_875),		//56.875 -> 57.272
-			.outclk_2(clk_opl2),		//3.58
+			.outclk_0(clk_28_636),		//28.636                CLOCK_VGA_CGA
+			.outclk_1(clk_56_875),		//56.875 -> 57.272      CLOCK_VGA_MDA
+			.outclk_2(clk_opl2),		//3.58                  CLOCK_OPL
 			.locked()
 		);
 
@@ -337,11 +337,11 @@ module PCXT
 		(
 			.inclk0(CLK_50M),
 			.areset(1'b0),
-			.c0(clk_100),			//100
-			.c1(clk_chipset),		//50
+			.c0(clk_100),			//100                           CLOCK_CORE
+			.c1(clk_chipset),		//50                            CLOCK_CHIP
 			.c2(SDRAM_CLK),			//50 -2ns
-			.c3(clk_uart),			//14.7456 MHz
-			.c4(clk_opl2),			//3.575  (3.58 not possible)
+			.c3(clk_uart),			//14.7456 MHz                   CLOCK_UART
+			.c4(clk_opl2),			//3.575  (3.58 not possible)    CLOCK_OPL
 			.locked(pll_locked)
 		);
 
@@ -349,8 +349,8 @@ module PCXT
 		(
 			.inclk0(CLK_50M),
 			.areset(1'b0),
-			.c0(clk_28_636),		//28.636 -> 28.636
-			.c1(clk_56_875),		//56.875 -> 57.272
+			.c0(clk_28_636),		//28.636 -> 28.636      CLOCK_VGA_CGA
+			.c1(clk_56_875),		//56.875 -> 57.272      CLOCK_VGA_MDA
 		//	.c2(clk_uart2),			//1.8432 ->  1.842
 		//	.c3(),
 		//	.c4(),

@@ -4,13 +4,15 @@
 
 * Video
 
-  * No overscan with Graphic Gremlins scandoubler (//.video(video))
+  * No video in some parts of Area5150 dema at max. speed
 
+  * No overscan with Graphic Gremlins scandoubler (//.video(video))
+  
   * RGB 15 kHz video output 
     * CGA video deformed at top part of screen in some resolutions (don't happen so often in TGA).
     
   * YPbPr video output did not work on my setup.
-
+  
   * Real composite video output
     * Center image from core through hblank delays
     * Hot-key to enable composite mode without OSD 
@@ -42,7 +44,7 @@
 
   
 
-### HDL differences in Demistify ports
+### Differences in Demistify ports
 
 * SW/ROMS/*.rom  roms are adapted for serdrive (XT-IDE BIOS) use
 * SW/   splash.txt, make_splash_ascii-hex.py, serdrive*   DeMiSTify splash screen and serdrive binaries
@@ -61,8 +63,6 @@
 * PCXT.sv  > Pause & Credits 
 
 * rtl/video
-
-* PCXT.sdc 
 
   
 
