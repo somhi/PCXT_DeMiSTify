@@ -1,13 +1,15 @@
 //
-// KFPC-XT Chipset
-// Written by kitune-san
+// MiSTer PCXT Chipset
+// Ported by @spark2k06
+//
+// Based on KFPC-XT written by @kitune-san
 //
 module CHIPSET (
         input   logic           clock,
         input   logic           cpu_clock,
         input   logic           clk_sys,
         input   logic           peripheral_clock,
-        input   logic   [1:0]   turbo_mode,
+        input   logic   [1:0]   clk_select,
         input   logic           color,
         input   logic           reset,
         input   logic           sdram_reset,
@@ -22,6 +24,8 @@ module CHIPSET (
         // SplashScreen
         input   logic           splashscreen,
         // VGA
+   //   output  logic           std_hsyncwidth,
+   //   input   logic           composite,
         input   logic           video_output,
         input   logic           clk_vga_cga,
         input   logic           enable_cga,
@@ -36,6 +40,7 @@ module CHIPSET (
         output  logic           VGA_VSYNC,
         output  logic           VGA_HBlank,
         output  logic           VGA_VBlank,
+   //   output  logic           VGA_VBlank_border,
         input   logic           scandoubler,
         output  reg     [6:0]   comp_video,
         output  logic   [1:0]   composite_out,
@@ -97,11 +102,17 @@ module CHIPSET (
         // JTOPL
         input   logic           clk_en_opl2,
         output  logic   [15:0]  jtopl2_snd_e,
-        input   logic           adlibhide,
+        input   logic   [1:0]   opl2_io,
+        // C/MS Audio
+        input   logic           cms_en,
+        output  logic   [15:0]  o_cms_l,
+        output  logic   [15:0]  o_cms_r,
         // TANDY
         input   logic           tandy_video,
         input   logic           tandy_bios_flag,
         output  logic   [10:0]  tandy_snd_e,
+   //   output  logic           tandy_16_gfx,
+   //   output  logic           tandy_color_16,
         // UART
         input   logic           clk_uart,
         input   logic           clk_uart2,
@@ -134,9 +145,18 @@ module CHIPSET (
         // BIOS
         input  logic    [1:0]   bios_protect_flag,
         // XTCTL DATA
-        output  logic   [7:0]   xtctl
+        output  logic   [7:0]   xtctl,
+        // Optional flags
+        input   logic           enable_a000h,
+        // RAM wait mode
+        input   logic           wait_count_clk_en,
+        input   logic   [1:0]   ram_read_wait_cycle,
+        input   logic   [1:0]   ram_write_wait_cycle,
+        output  logic           pause_core
     );
 
+	 logic   [19:0]  latch_address;
+	 
     logic           dma_ready;
     logic           dma_wait_n;
     logic           interrupt_acknowledge_n;
@@ -251,13 +271,15 @@ module CHIPSET (
         .clk_uart2                          (clk_uart2),
         .peripheral_clock                   (peripheral_clock),
         .color                              (color),
-        .turbo_mode                         (turbo_mode),
+        .clk_select                         (clk_select),
         .reset                              (reset),
         .interrupt_to_cpu                   (interrupt_to_cpu),
         .interrupt_acknowledge_n            (interrupt_acknowledge_n),
         .dma_chip_select_n                  (dma_chip_select_n),
         .dma_page_chip_select_n             (dma_page_chip_select_n),
         .splashscreen                       (splashscreen),
+     // .std_hsyncwidth                     (std_hsyncwidth),
+     // .composite                          (composite),
         .video_output                       (video_output),
         .clk_vga_cga                        (clk_vga_cga),
         .enable_cga                         (enable_cga),
@@ -272,6 +294,7 @@ module CHIPSET (
         .VGA_VSYNC                          (VGA_VSYNC),
         .VGA_HBlank                         (VGA_HBlank),
         .VGA_VBlank                         (VGA_VBlank),
+        .VGA_VBlank_border                  (VGA_VBlank_border),		  
         .scandoubler						(scandoubler),
         .comp_video                         (comp_video),
         .composite_on                       (composite_on),       
@@ -279,6 +302,7 @@ module CHIPSET (
         .composite_out                      (composite_out),
         .rgb_18b                            (rgb_18b),
         .address                            (address),
+		  .latch_address                      (latch_address),
         .internal_data_bus                  (internal_data_bus),
         .data_bus_out                       (internal_data_bus_chipset),
         .data_bus_out_from_chipset          (data_bus_out_from_chipset),
@@ -313,10 +337,15 @@ module CHIPSET (
         .ps2_data_out                       (ps2_data_out),
         .clk_en_opl2                        (clk_en_opl2),
         .jtopl2_snd_e                       (jtopl2_snd_e),
-        .adlibhide                          (adlibhide),
+        .opl2_io                            (opl2_io),
+        .cms_en                             (cms_en),
+        .o_cms_l                            (o_cms_l),
+        .o_cms_r                            (o_cms_r),
         .tandy_video                        (tandy_video),
         .tandy_snd_e                        (tandy_snd_e),
         .tandy_snd_rdy                      (tandy_snd_rdy),
+    //  .tandy_16_gfx                       (tandy_16_gfx),
+	// .tandy_color_16                     (tandy_color_16),
         .uart_rx                           (uart_rx),
         .uart_tx                           (uart_tx),
         .uart_cts_n                        (uart_cts_n),
@@ -332,8 +361,8 @@ module CHIPSET (
         .ems_b2                            (ems_b2),
         .ems_b3                            (ems_b3),
         .ems_b4                            (ems_b4),
-        // XTCTL DATA
-        .xtctl                             (xtctl)
+        .xtctl                              (xtctl),
+        .pause_core                         (pause_core)
     );
 
     RAM u_RAM 
@@ -342,7 +371,7 @@ module CHIPSET (
         .reset                              (sdram_reset),
         .enable_sdram                       (enable_sdram),
         .initilized_sdram                   (initilized_sdram),
-        .address                            (address),
+        .address                            (latch_address),
         .internal_data_bus                  (internal_data_bus),
         .data_bus_out                       (internal_data_bus_ram),
         .memory_read_n                      (memory_read_n),
@@ -368,7 +397,11 @@ module CHIPSET (
         .ems_b3                             (ems_b3),
         .ems_b4                             (ems_b4),
         .tandy_bios_flag                    (tandy_bios_flag),
-        .bios_protect_flag                  (bios_protect_flag)
+        .bios_protect_flag                  (bios_protect_flag),
+        .enable_a000h                       (enable_a000h),
+        .wait_count_clk_en                  (wait_count_clk_en),
+        .ram_read_wait_cycle                (ram_read_wait_cycle),
+        .ram_write_wait_cycle               (ram_write_wait_cycle)
     );
 
     assign  data_bus = internal_data_bus;

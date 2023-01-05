@@ -203,8 +203,8 @@ module PCXT
     reg [2:0]   screen_mode_video_ff;
     //reg         border_video_ff;
 	 
-    wire VGA_VBlank_border;
-    wire std_hsyncwidth;
+    //wire VGA_VBlank_border;
+    //wire std_hsyncwidth;
     wire pause_core;
 
     always @(posedge CLK_VIDEO)
@@ -909,8 +909,8 @@ module PCXT
 		.processor_ready                    (processor_ready),
 		.interrupt_to_cpu                   (interrupt_to_cpu),
 		.splashscreen                       (splashscreen),
-		.std_hsyncwidth                     (std_hsyncwidth),
-		.composite                          (composite),
+	//	.std_hsyncwidth                     (std_hsyncwidth),
+	//	.composite                          (composite),
 		.video_output                       (mda_mode_video_ff),
 		.clk_vga_cga                        (clk_28_636),
 		.enable_cga                         (1'b1),
@@ -1374,7 +1374,7 @@ module PCXT
     // );
 	 
 
-    
+
     // JTFRAME CREDITS.  SIGNALS to be updated 
 
     // wire LHBL = border_video_ff ? HBlank_fixed : HBlank_VGA;

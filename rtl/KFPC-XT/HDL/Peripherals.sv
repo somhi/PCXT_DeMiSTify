@@ -1,6 +1,8 @@
 //
-// KFPC-XT Peripherals
-// Written by kitune-san
+// MiSTer PCXT Peripherals
+// Ported by @spark2k06
+//
+// Based on KFPC-XT written by @kitune-san
 //
 module PERIPHERALS #(
         parameter ps2_over_time = 16'd1000
@@ -9,7 +11,7 @@ module PERIPHERALS #(
         input   logic           clk_sys,
         input   logic           cpu_clock,
         input   logic           peripheral_clock,
-        input   logic   [1:0]   turbo_mode,
+        input   logic   [1:0]   clk_select,
         input   logic           color,
         input   logic           reset,
         // CPU
@@ -21,6 +23,8 @@ module PERIPHERALS #(
         // SplashScreen
         input   logic           splashscreen,
         // VGA
+   //   output  logic           std_hsyncwidth,
+   //   input   logic           composite,
         input   logic           video_output,
         input   logic           clk_vga_cga,
         input   logic           enable_cga,
@@ -35,6 +39,7 @@ module PERIPHERALS #(
         output  logic           VGA_VSYNC,
         output  logic           VGA_HBlank,
         output  logic           VGA_VBlank,
+        output  logic           VGA_VBlank_border,
         input   logic           scandoubler,
         output  reg     [6:0]   comp_video,
         output  logic   [1:0]   composite_out,
@@ -43,6 +48,7 @@ module PERIPHERALS #(
         input   logic   [17:0]  rgb_18b,
         // I/O Ports
         input   logic   [19:0]  address,
+        output  logic   [19:0]  latch_address,
         input   logic   [7:0]   internal_data_bus,
         output  logic   [7:0]   data_bus_out,
         output  logic           data_bus_out_from_chipset,
@@ -79,11 +85,17 @@ module PERIPHERALS #(
         // JTOPL
         input   logic           clk_en_opl2,
         output  logic   [15:0]  jtopl2_snd_e,
-        input   logic           adlibhide,
+        input   logic   [1:0]   opl2_io,
+        // C/MS Audio
+        input   logic           cms_en,
+        output  reg     [15:0]  o_cms_l,
+        output  reg     [15:0]  o_cms_r,
         // TANDY
         input   logic           tandy_video,
         output  logic   [10:0]  tandy_snd_e,
         output  logic           tandy_snd_rdy,
+    //  output  logic           tandy_16_gfx,
+    //  output  logic           tandy_color_16,
         // UART
         input   logic           clk_uart,
         input   logic           clk_uart2,
@@ -97,14 +109,15 @@ module PERIPHERALS #(
         // EMS
         input   logic           ems_enabled,
         input   logic   [1:0]   ems_address,
-        output  reg     [6:0]   map_ems[0:3], // Segment hE000, hE400, hE800, hEC00
-        output  reg             ena_ems[0:3], // Enable Segment Map hE000, hE400, hE800, hEC00
+        output  reg     [6:0]   map_ems[0:3], // Segment hx000, hx400, hx800, hxC00
+        output  reg             ena_ems[0:3], // Enable Segment Map hx000, hx400, hx800, hxC00
         output  logic           ems_b1,
         output  logic           ems_b2,
         output  logic           ems_b3,
         output  logic           ems_b4,
         // XTCTL DATA
-        output  logic   [7:0]   xtctl = 8'h00
+        output  logic   [7:0]   xtctl = 8'h00,
+        output  logic           pause_core
     );
 
     wire [4:0] clkdiv;
@@ -137,7 +150,7 @@ module PERIPHERALS #(
 
     always_comb
     begin
-        if (~address_enable_n & ~address[9] & ~address[8])
+        if (iorq & ~address_enable_n & ~address[9] & ~address[8] & (tandy_video ? ~address[4] : 1'b1))
         begin
             casez (address[7:5])
                 3'b000:

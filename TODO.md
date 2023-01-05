@@ -23,7 +23,7 @@
 * Video
   
   * Overscan delay control with scandoubler done in PCXT.sv
-    * signals: color, tandy_16_gfx
+    * signals: color used in demisitfy, tandy_16_gfx & tandy_color_16 used in mister
   
   * Border on/off option from OSD
   * Simulated composite video output
