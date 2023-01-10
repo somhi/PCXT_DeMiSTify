@@ -1287,10 +1287,13 @@ module PCXT
 		.B_OUT(baux)
 	);
 
-    assign raux2 = display_mode_disable ? r_in : raux[7:2];
-    assign gaux2 = display_mode_disable ? g_in : gaux[7:2];
-    assign baux2 = display_mode_disable ? b_in : baux[7:2];
+    // assign raux2 = display_mode_disable ? r_in : raux[7:2];
+    // assign gaux2 = display_mode_disable ? g_in : gaux[7:2];
+    // assign baux2 = display_mode_disable ? b_in : baux[7:2];
 
+    assign raux2 = display_mode_disable ? r_in : pre2x_r[7:2];
+    assign gaux2 = display_mode_disable ? g_in : pre2x_g[7:2];
+    assign baux2 = display_mode_disable ? b_in : pre2x_b[7:2];
 
     mist_video #( .SD_HCNT_WIDTH(10) ) mist_video    //.OSD_COLOR(3'd5),
 	(
@@ -1376,42 +1379,45 @@ module PCXT
     // JTFRAME CREDITS.  
     // **********SIGNALS to be updated ************
 
-    // wire LHBL = border_video_ff ? HBlank_fixed : HBlank_VGA;
-    // wire LVBL = border_video_ff ? std_hsyncwidth ? VGA_VBlank_border : ~VSync : VBlank;
+    //wire LHBL = border_video_ff ? HBlank_fixed : HBlank_VGA;
+    //wire LVBL = border_video_ff ? std_hsyncwidth ? VGA_VBlank_border : ~VSync : VBlank;
 
-    // wire       pre2x_LHBL, pre2x_LVBL;
-    // wire [7:0] pre2x_r, pre2x_g, pre2x_b;
+    //wire       pre2x_LHBL, pre2x_LVBL;
+    wire [7:0] pre2x_r, pre2x_g, pre2x_b;
 
-    // jtframe_credits #(
-    //     .PAGES  (4),
-    //     .COLW   (8),
-    //     .BLKPOL (1)
-    // ) u_credits(
-    //     .rst        ( reset         ),
-    //     .clk        ( clk_chipset ), // alt: CLK_VIDEO_CGA
-    //     .pxl_cen    ( CE_PIXEL_cga  ), // alt: ce_pixel_cga
+    jtframe_credits #(
+        .PAGES  (4),
+        .COLW   (8),
+        .BLKPOL (1)
+    ) u_credits(
+        .rst        ( reset       ),
+        .clk        ( clk_chipset ), // alt: CLK_VIDEO 
+        .pxl_cen    ( clk_14_318  ), // CE_PIXEL_cga
 
-    //     // input image
-    //     .HB         ( LHBL  ),
-    //     .VB         ( LVBL  ),
-    //     .rgb_in     ( { raux_cga, gaux_cga, baux_cga } ),
-    //     .rotate     ( 2'd0  ),
-    //     .toggle     ( 1'b0  ),
-    //     .fast_scroll( 1'b0  ),
-    //     .border     ( border_video_ff ),
+        // input image
+        .HB         ( HBlank  ),  //LHBL
+        .VB         ( VBlank  ),  //LVBL
+        .rgb_in     ( { raux, gaux, baux } ),
 
-    //     .vram_din   ( 8'h0  ),
-    //     .vram_dout  (       ),
-    //     .vram_addr  ( 8'h0  ),
-    //     .vram_we    ( 1'b0  ),
-    //     .vram_ctrl  ( 3'b0  ),
-    //     .enable     ( pause_core ),
+        // control
+        .enable     ( pause_core ),
+        .rotate     ( 2'd0  ),
+        .toggle     ( 1'b0  ),
+        .fast_scroll( 1'b0  ),
+        .border     ( 1'b0 ),  //border_video_ff
+        .vram_ctrl  ( 3'b0  ),
 
-    //     // output image
-    //     .HB_out     ( pre2x_LHBL      ),
-    //     .VB_out     ( pre2x_LVBL      ),
-    //     .rgb_out    ( {pre2x_r, pre2x_g, pre2x_b } )
-    // );
+        // Optional VRAM control
+        .vram_din   ( 8'h0  ),
+        .vram_dout  (       ),
+        .vram_addr  ( 8'h0  ),
+        .vram_we    ( 1'b0  ),
+
+        // output image
+        .HB_out     (       ),  //pre2x_LHBL
+        .VB_out     (       ),  //pre2x_LVBL
+        .rgb_out    ( {pre2x_r, pre2x_g, pre2x_b } )
+    );
 
 
 endmodule
