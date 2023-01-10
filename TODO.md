@@ -8,6 +8,8 @@
 
   * No video in some parts of Area5150 demo at max. speed. Run it at 4.77 or 7.16 MHz.
 
+  * video in pause & credits screen could be improved. Screen is shifted to the right because the first 18 left characters appear repeated
+  
   * RGB 15 kHz video output . CGA video deformed at top part of screen in some resolutions (don't happen so often in TGA). The same happens in the original MiSTer core.
   
   * YPbPr video output did not work on my setup.
@@ -57,17 +59,11 @@
   * All Mister framework modules changed by MiST modules
   * BIOS loader has some differences
 * Using UART port 1 for serdrive, and UART port 2 por serial mouse
-* Video is quite different
+* Video is quite different  (rtl/video and PCXT.sv)
 
 
 
-### Pending to update
 
-* PCXT.sv  > Pause & Credits 
-
-* rtl/video
-
-  
 
 
 

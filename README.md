@@ -159,8 +159,6 @@ Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composi
 
 ## To-do list
 
-* Credits screen not implemented yet
-
 * 8-bit IDE module implementation
 
 * Floppy implementation

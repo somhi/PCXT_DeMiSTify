@@ -1,118 +1,116 @@
-\R    (            *       (            (            )          
-\G    )\\ )       (  `      )\\ )  *   )  )\\ )  (   ( /(   *   ) 
-\R   (()/(    (  )\\))(  ( (()/(` )  /( (()/(  )\\  )\\())` )  /( 
-\R    /(_))  ))\\((_)()\\ )\\ /(_))( )(_)  /(_)|((_)((_)\\  ( )(_))
-\W   (_))_  /((_|_()((_|(_|_)) (_(_()| (_)) )\\_____((_)(_(_()) 
-\W    |   \\(_)) |  \\/  |(_) __||_   _| | _ ((/ __\\ \\/ /|_   _| 
-\W    | |) / -_)| |\\/| || \\__ \\  | |   |  _/| (__ >  <   | |   
-\W    |___/\\___||_|  |_||_|___/  |_|   |_|   \\___/_/\\_\\  |_|  
+\R                (            *      (            )          
+\G                )\\ )       (  `     )\\ )  (   ( /(   *   ) 
+\R               (()/(    (  )\\))(   (()/(  )\\  )\\())` )  /( 
+\R                /(_))  ))\\((_)()\\   /(_)|((_)((_)\\  ( )(_))
+\W               (_))_  /((_|_()((_| (_)) )\\_____((_)(_(_()) 
+\W                |   \\(_)) |  \\/  | | _ ((/ __\\ \\/ /|_   _| 
+\W                | |) / -_)| |\\/| | |  _/| (__ >  <   | |   
+\W                |___/\\___||_|  |_| |_|   \\___/_/\\_\\  |_|  
                                   
-\W    & Tandy 1000                             by \Gspark2k06
+\W                & Tandy 1000                     by \Gspark2k06
 
-                      Aitor Gomez Garcia
-                  https://ko-fi.com/spark2k06
+                              Aitor Gomez Garcia
+                          https://ko-fi.com/spark2k06
 
-                     DeMiSTified by somhi
-                   https://github.com/somhi
+                             DeMiSTified by somhi
+                           https://github.com/somhi
 
-                          \BPOWERED BY
+                                  \BPOWERED BY
 
-                     KFPC-XT * kitune-san
-                 https://github.com/kitune-san
+                             KFPC-XT * kitune-san
+                          https://github.com/kitune-san
 
-                      MCL86 * Ted Fried
-                 http://www.microcorelabs.com/
+                              MCL86 * Ted Fried
+                          http://www.microcorelabs.com/
 
-                  GraphicsGremlin * TubeTime
-                     https://tubetime.us/
+                           GraphicsGremlin * TubeTime
+                              https://tubetime.us/
 
-                DeMiSTify * Alastair M.Robinson
-                 https://github.com/robinsonb5
+                          DeMiSTify * Alastair M.Robinson
+                           https://github.com/robinsonb5
 
-                             \BALSO
+                                     \BALSO
 
-                   JTOPL * JT89 * JTCREDITS
-                     Jose Tejada (jotego)
-                 https://www.patreon.com/jotego
+                           JTOPL * JT89 * JTCREDITS
+                              Jose Tejada (jotego)
+                          https://www.patreon.com/jotego
 
-                      MS Mouse PS2 to Serial
-                   Antonio Sanchez (TheSonders)
-                  https://github.com/TheSonders
+                              MS Mouse PS2 to Serial
+                           Antonio Sanchez (TheSonders)
+                          https://github.com/TheSonders
 
-                      SAA1099 (Tandy Sound)
-                     Dave Hooper (stripwax)
-                  https://github.com/stripwax
+                              SAA1099 (Tandy Sound)
+                             Dave Hooper (stripwax)
+                          https://github.com/stripwax
 
-                     SAA1099 (Tandy Sound)
-         Miguel Angel Rodriguez Jodar (mcleod-ideafix)
-               https://github.com/mcleod-ideafix
+                              SAA1099 (Tandy Sound)
+                          M. A. Rodr. Jodar (mcleod-ideafix)
+                          https://github.com/mcleod-ideafix
 
-                    2 Button Analog Joysticks
-                           Flandango
-                  https://github.com/Flandango
+                            2 Button Analog Joysticks
+                                   Flandango
+                          https://github.com/Flandango
 
-                           UART 16750
-                         Sebastian Witt
-            https://opencores.org/users/hasw/profile
+                                   UART 16550
+                                 Alexey Melnikov
 
-                   Other ao486-based modules
-                   Alexey Melnikov (sorgelig)
-               https://www.patreon.com/FPGAMiSTer
+                  ____________________________________________
 
-______________________________________________________________
+                            \BDEVELOPERS \W& \GCO-WORKERS
 
-                    \BDEVELOPERS \W& \GCO-WORKERS
+                          Aitor Gomez Garcia (spark2k06)
+                                  kitune-san
+                           Ted Fried (MicroCoreLabs)
+                                   somhi
+                           David Gila Blazquez (Mills)
+                                 flynnsbit
+                            Jason Alexander (JasonA)
+                                  Newsdee   
+                                  birdybro
+                            Pedro Gimeno (pgimeno)
+                               Jordi (jsmolina)
 
-                 Aitor Gomez Garcia (spark2k06)
-                         kitune-san
-                   Ted Fried (MicroCoreLabs)
-                           somhi
-                   David Gila Blazquez (Mills)
-                         flynnsbit
-                    Jason Alexander (JasonA)
-                          Newsdee
-                          birdybro
-                     Pedro Gimeno (pgimeno)
-                       Jordi (jsmolina)
+                  ____________________________________________
 
-______________________________________________________________
+                                \BSpecial Thanks
 
-                       \BSpecial Thanks
+                      https://www.xtideuniversalbios.org/
+                      https://www.lo-tech.co.uk
+                      https://github.com/640-KB/GLaBIOS
+                      https://github.com/virtualxt/pcxtbios
+                      https://github.com/skiselev/8088_bios
+                      Alejandro Valero Sebastian (Wilco2009)
+                                  naeloob
+                                   gyurco
 
-             https://www.xtideuniversalbios.org/
-                 https://www.lo-tech.co.uk
-             https://github.com/640-KB/GLaBIOS
-           https://github.com/virtualxt/pcxtbios
-           https://github.com/skiselev/8088_bios
-            Alejandro Valero Sebastian (Wilco2009)
-                           naeloob
-                           gyurco
+                  ____________________________________________
 
-______________________________________________________________
+                      \BThanks for supporting this project!!!
 
-             \BThanks for supporting this project!!!
+                                   MiSTerFPGA.co.uk
+                                       Adr1048
+                                     TonyEscobar
+                                      Kathleen
+                                    Jordi (jsmolina)
+                                       thorr
+                                       Caldor
 
-                       MiSTerFPGA.co.uk
-                           Adr1048
-                         TonyEscobar
-                          Kathleen
-                        Jordi (jsmolina)
-                           thorr
-                           Caldor
+                  ____________________________________________
 
-______________________________________________________________
-
-                       \RReport issues to
-        https://github.com/MiSTer-devel/PCXT_MiSTer/issues
+                              \RReport issues to
+                     https://github.com/somhi/PCXT_DeMiSTify
 
 
-                       \BSome Known Issues
+                              \BSome Known Issues
 
-          * The AREA5150 demo has graphical glitches.
+                   * Keyboard error controller message with 
+                   Turbo mode. Please start BIOS with 4.77 
+                   MHz to avoid this error.
 
-       * More than the standard 16 colours of simulated
-           composite video are not displayed reliably.
+                   * When pressing F12 for opening the OSD it 
+                   sends a keystroke to the DOS program so it 
+                   can interfere it
 
-   * Timing issues mean that the image may not display well on 
-      CRTs and some vertical line shifts to the right of the 
-        image, such as 640x400x4 and sometimes 320x200x16.
+                   * The AREA5150 demo has graphical glitches.
+
+

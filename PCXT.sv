@@ -1267,7 +1267,7 @@ module PCXT
 
     assign CLK_VIDEO = clk_56_875;
     assign ce_pixel = 1'b1;
-    assign clk_vid = mda_mode ? clk_56_875 : clk_28_636;
+    assign clk_vid = mda_mode_video_ff ? clk_56_875 : clk_28_636;
 
     wire color = (screen_mode_video_ff == 3'd0);
 
@@ -1287,13 +1287,13 @@ module PCXT
 		.B_OUT(baux)
 	);
 
-    // assign raux2 = display_mode_disable ? r_in : raux[7:2];
-    // assign gaux2 = display_mode_disable ? g_in : gaux[7:2];
-    // assign baux2 = display_mode_disable ? b_in : baux[7:2];
+    assign raux2 = display_mode_disable ? r_in : raux[7:2];
+    assign gaux2 = display_mode_disable ? g_in : gaux[7:2];
+    assign baux2 = display_mode_disable ? b_in : baux[7:2];
 
-    assign raux2 = display_mode_disable ? r_in : pre2x_r[7:2];
-    assign gaux2 = display_mode_disable ? g_in : pre2x_g[7:2];
-    assign baux2 = display_mode_disable ? b_in : pre2x_b[7:2];
+    // assign raux2 = display_mode_disable ? r_in : pre2x_r[7:2];
+    // assign gaux2 = display_mode_disable ? g_in : pre2x_g[7:2];
+    // assign baux2 = display_mode_disable ? b_in : pre2x_b[7:2];
 
     mist_video #( .SD_HCNT_WIDTH(10) ) mist_video    //.OSD_COLOR(3'd5),
 	(
@@ -1342,9 +1342,13 @@ module PCXT
 
     assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
 
-    assign VGA_R = composite_on ?                        8'd0 : raux4;
-    assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
-    assign VGA_B = composite_on ?                        8'd0 : baux4;
+    // assign VGA_R = composite_on ?                        8'd0 : raux4;
+    // assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
+    // assign VGA_B = composite_on ?                        8'd0 : baux4;
+
+    assign VGA_R = pause_core ? pre2x_r : composite_on ?                        8'd0 : raux4;
+    assign VGA_G = pause_core ? pre2x_g : composite_on ?  {comp_video,comp_video[0]} : gaux4;
+    assign VGA_B = pause_core ? pre2x_b : composite_on ?                        8'd0 : baux4;
 
     assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;
     assign VGA_HS = osd_disable ? ~vga_hs : ~vga_hs_o;
@@ -1391,9 +1395,10 @@ module PCXT
         .BLKPOL (1)
     ) u_credits(
         .rst        ( reset       ),
-        .clk        ( clk_chipset ), // alt: CLK_VIDEO 
-        .pxl_cen    ( clk_14_318  ), // CE_PIXEL_cga
-
+        .clk        ( clk_56_875  ), //clk_chipset not good  
+        //.pxl_cen    ( mda_mode_video_ff ? clk_14_318 : clk_56_875   ), // clk_14_318 ok en MDA, clk_28_636 o clk_56_875 millor en CGA
+        .pxl_cen    ( clk_14_318  ), 
+        
         // input image
         .HB         ( HBlank  ),  //LHBL
         .VB         ( VBlank  ),  //LVBL
@@ -1404,7 +1409,7 @@ module PCXT
         .rotate     ( 2'd0  ),
         .toggle     ( 1'b0  ),
         .fast_scroll( 1'b0  ),
-        .border     ( 1'b0 ),  //border_video_ff
+        .border     ( 1'b1 ),  //border_video_ff
         .vram_ctrl  ( 3'b0  ),
 
         // Optional VRAM control
