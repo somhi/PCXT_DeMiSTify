@@ -1373,7 +1373,8 @@ module PCXT
 	 
 
 
-    // JTFRAME CREDITS.  SIGNALS to be updated 
+    // JTFRAME CREDITS.  
+    // **********SIGNALS to be updated ************
 
     // wire LHBL = border_video_ff ? HBlank_fixed : HBlank_VGA;
     // wire LVBL = border_video_ff ? std_hsyncwidth ? VGA_VBlank_border : ~VSync : VBlank;

@@ -17,9 +17,9 @@
                                                                    
                                                                    
                MCL86             DeMiSTify        GraphicsGremlin  
-          (MicroCoreLabs)       (robinsonb5)         (TubeTime)    
+          (MicroCoreLabs)       (robinsonb5)     (schlae TubeTime) 
                                                                    
-                                                                   
+                            DeMiSTified by somhi                   
                                                                    
             F11: Pause & Credits                  F12: Menu OSD    
                                                                    
