@@ -4,6 +4,17 @@
 
 - [ ] CREDITS screen
 
+- [ ] MODEL
+
+  - [ ] IBM PCXT
+
+  - [ ] TANDY
+
+- [ ] BIOS
+
+  - [ ] Load different BIOS
+  - [ ] Diagnostic BIOS
+
 - [ ] VIDEO
 
   - [ ] MDA
@@ -15,6 +26,7 @@
     - [ ] Prince of Persia
   - [ ] TANDY 128
     - [ ] Another world
+  - [ ] Composite real
 
 - [ ] AUDIO
 
@@ -24,5 +36,7 @@
     - [ ] Prince of Percia, Cool Crooks
   - [ ] C/MS
     - [ ] Monkey Island 1
+
+- [ ] jOYSTICK
 
   

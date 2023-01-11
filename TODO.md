@@ -69,16 +69,13 @@ Not all boards can use all the sound cards and video modes with maximum memory, 
 
 Comment // each line that apply or don't apply to your board.
 
-//define EMBED_8088_ROM		 // Embeds ROM in LEs. Define only for boards with not enough BRAM
-define NO_ADLIB							// Adlib sound 
+//define EMBED_8088_ROM		 // Embeds ROM in LEs. Define for boards with not enough BRAM (16 M9K)
+define NO_ADLIB							// Adlib sound. Define for boards with not enough BRAM (4 M9K)
 define NO_CMSOUND      			 // Game Blaster sound
-//define NO_CREDITS				     // Removes Credits screen. Define only for boards with not enough BRAM
-define NO_MDA							  // Removes MDA video	
+//define NO_CREDITS			   // Remove Credits screen. Define for boards with not enough BRAM (10 M9K)
+define NO_MDA							  // Removes MDA video. Define for boards with not enough BRAM (8 M9K)
 //define NO_CGA							// Removes CGA video	
 //define CGA_16							  // Defines CGA memory (13, 32, 64, 128). Define only one of them 	
 //define CGA_32							  // depending of the BRAM available for your board	
 //define CGA_64
-define CGA_128
-
-
-
+define CGA_128							  // BRAM usage (128 M9K)

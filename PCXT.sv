@@ -130,7 +130,6 @@ module PCXT
 		"P3Oh,Composite Blending,No,Yes;",
 		"P3Oi,Composite (DB15 green),Off,On;",
 		"P3Ol,VGA+Compos(1pin no.osd),Off,On;",
-		"P3Og,EXPER.YPbPr,Off,On;",
 		//
 		"P4,Hardware;",
 		"P4OB,Lo-tech 2MB EMS,Enabled,Disabled;",
@@ -145,7 +144,8 @@ module PCXT
 		//
 		"P5,Debug;",
 //      "P5Oq,Comp. simulated (WIP),Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
-		"P5OLM,UART Speed,1200..115200bps,115200..921600bps;",
+		"P5Og,EXPER.YPbPr,Off,On;",
+        "P5OLM,UART Speed,1200..115200bps,115200..921600bps;",
 //		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
 //		"P5Ok,DEBUG.OSD disable,No,Yes;",
 		//
