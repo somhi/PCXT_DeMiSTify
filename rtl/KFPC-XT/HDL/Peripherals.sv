@@ -557,6 +557,12 @@ end
     end
 
     wire [7:0] saa1_l,saa1_r;
+    wire [7:0] saa2_l,saa2_r;
+
+    `ifdef NO_CMSOUND
+    // NO C/MS GAME BLASTER SOUND
+    `else
+
     saa1099 ssa1
     (
 	    .clk_sys(clock),
@@ -570,7 +576,6 @@ end
 	    .out_r(saa1_r)
     );
 
-    wire [7:0] saa2_l,saa2_r;
     saa1099 ssa2
     (
 	    .clk_sys(clock),
@@ -583,6 +588,8 @@ end
 	    .out_l(saa2_l),
 	    .out_r(saa2_r)
     );
+
+    `endif
 
     wire [8:0] cms_l = {1'b0, saa1_l} + {1'b0, saa2_l};
     wire [8:0] cms_r = {1'b0, saa1_r} + {1'b0, saa2_r};

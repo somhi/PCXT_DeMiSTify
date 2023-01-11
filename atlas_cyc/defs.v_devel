@@ -1,5 +1,7 @@
 //`define EMBED_8088_ROM
 `define NO_ADLIB
+`define NO_CMSOUND      //DOES NOT FIT LEs
+`define NO_CREDITS	//DOES NOT FIT WITH CGA_32
 //`define NO_MDA
 //`define NO_CGA
 `define CGA_16          // 64 / 66, [60 no_com2, no_adlib]

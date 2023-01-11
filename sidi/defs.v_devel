@@ -1,5 +1,7 @@
 //`define EMBED_8088_ROM
 `define NO_ADLIB
+`define NO_CMSOUND      //DOES NOT FIT LEs
+`define NO_CREDITS
 `define NO_MDA
 //`define NO_CGA
 `define CGA_16      64 / 66 ( 97 % )         43/66: NO_ADLIB, NO_MDA

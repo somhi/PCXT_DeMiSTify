@@ -8,9 +8,11 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 * **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable. Unfortunately MiST board does not has an easy wat to connect to the UART pins.
 * MDA not implemented due to lack of BRAM in this board.
+* Credits screen not implemented due to lack of BRAM in this board. F11 pauses the core. If you press it, remember to press it again to continue the core execution.
+* Adlib sound not implemented due to lack of BRAM in this board.
+* Game Blaster sound (C/MS) not implemented due to lack of LEs
 * CGA 32 kB implemented. Some Tandy games are now playable like Prince of Persia, Cool Crocks and Sierra's Manhunter.
-* ~~CGA not implemented due to lack of BRAM in this board.~~
-* ~~Open OSD with F12 key. Go to Video and change CGA to MDA output. The Splash screen should appear. Then Load XT BIOS ROM (and EC00 XT-IDE 16 kB if not included in the main BIOS) and Reset from OSD.~~
+* ~~CGA not implemented due to lack of BRAM in this board.~~~~Open OSD with F12 key. Go to Video and change CGA to MDA output. The Splash screen should appear. Then Load XT BIOS ROM (and EC00 XT-IDE 16 kB if not included in the main BIOS) and Reset from OSD.~~
 
 Notes about ROMs:
 

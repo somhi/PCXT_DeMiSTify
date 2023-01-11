@@ -1342,13 +1342,20 @@ module PCXT
 
     assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
 
-    // assign VGA_R = composite_on ?                        8'd0 : raux4;
-    // assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
-    // assign VGA_B = composite_on ?                        8'd0 : baux4;
+
+    `ifdef NO_CREDITS
+    
+    assign VGA_R = composite_on ?                        8'd0 : raux4;
+    assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
+    assign VGA_B = composite_on ?                        8'd0 : baux4;
+
+    `else
 
     assign VGA_R = pause_core ? pre2x_r : composite_on ?                        8'd0 : raux4;
     assign VGA_G = pause_core ? pre2x_g : composite_on ?  {comp_video,comp_video[0]} : gaux4;
     assign VGA_B = pause_core ? pre2x_b : composite_on ?                        8'd0 : baux4;
+
+    `endif
 
     assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;
     assign VGA_HS = osd_disable ? ~vga_hs : ~vga_hs_o;
@@ -1379,6 +1386,10 @@ module PCXT
     // );
 	 
 
+
+    `ifdef NO_CREDITS
+    // NO CREDITS
+    `else
 
     // JTFRAME CREDITS.  
     // **********SIGNALS to be updated ************
@@ -1424,5 +1435,6 @@ module PCXT
         .rgb_out    ( {pre2x_r, pre2x_g, pre2x_b } )
     );
 
+    `endif
 
 endmodule
