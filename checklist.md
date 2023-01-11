@@ -25,6 +25,8 @@
   - [ ] TANDY 32
     - [ ] Prince of Persia
   - [ ] TANDY 128
+    - [ ] Arkanoid
+    - [ ] GODS
     - [ ] Another world
   - [ ] Composite real
 

@@ -1,12 +1,14 @@
-//`define EMBED_8088_ROM
-//`define NO_ADLIB
-//`define NO_CMSOUND
-//`define NO_CREDITS
-//`define NO_MDA
+// PRODUCTION DEFINITIONS
+// (rename defs.v_production to defs.v)
+//
+`define EMBED_8088_ROM   //16 M9K
+//`define NO_ADLIB	 //4 M9K
+//`define NO_CMSOUND     //
+//`define NO_CREDITS     //10 M9K
+//`define NO_MDA	 //8 M9K
 //`define NO_CGA
 //`define CGA_16
 //`define CGA_32			
 //`define CGA_64
-`define CGA_128			//M9Ks  179 / 182  ( 98 % )
-						// Total logic elements	16,244 / 49,760 ( 33 % )
-
+`define CGA_128			//M9Ks  177 / 182  
+						
