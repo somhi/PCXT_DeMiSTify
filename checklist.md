@@ -1,3 +1,21 @@
+# BOARDS checklist
+
+- [x] ATLAS cyc1000
+
+- [ ] DE10-lite
+
+- [x] DECA
+
+- [ ] MiST
+
+- [x] NeptUNO
+
+- [ ] SIDI
+
+- [ ] Sockit
+
+- [ ] UA reloaded
+
 # Test core checklist
 
 - [ ] SPLASH screen
@@ -42,3 +60,4 @@
 - [ ] jOYSTICK
 
   
+
