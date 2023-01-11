@@ -78,7 +78,7 @@ Other Open Source ROMs are available in the same folder:
 
 NOTES:
 
-* ROMs working with MDA video: (IBM5160, Yuko ST and pcxt31 work), (Tandy, micro8088, full XTIDE BIOS do not work).
+* ROMs working with MDA video: (IBM5160, Yuko ST and pcxt31 work), (Tandy, micro8088, full XTIDE BIOS do not work). If you load a BIOS that does not work with MDA you may need to power cycle the board.
 
 * IBM5160 BIOS: Starting BIOS at PC/AT 3.5MHz (max. speed), lights start blinking and keyboard doesn't work anymore. Starting BIOS at 4.77 MHz and changing it thereafter during the RAM test to PC/AT 3.5MHz (max. speed) it lets work in this BIOS without keyboard problems.
 

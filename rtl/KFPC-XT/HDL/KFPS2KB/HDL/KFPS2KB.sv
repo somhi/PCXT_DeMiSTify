@@ -59,7 +59,8 @@ module KFPS2KB #(
             8'h04: scancode_converter = 8'h3D;  // F3
             8'h05: scancode_converter = 8'h3B;  // F1
             8'h06: scancode_converter = 8'h3C;  // F2
-            8'h07: scancode_converter = 8'h58;  // F12
+      //    8'h07: scancode_converter = 8'h58;  // F12	//Disabled to not interfere with DeMiSTify OSD
+            8'h07: scancode_converter = 8'hFF;  // F12	//Disabled to not interfere with DeMiSTify OSD
             8'h08: scancode_converter = 8'h64;
             8'h09: scancode_converter = 8'h44;  // F10
             8'h0A: scancode_converter = 8'h42;  // F8

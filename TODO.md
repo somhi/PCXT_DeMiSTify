@@ -2,24 +2,24 @@
 
 * Keyboard error controller message with Turbo mode. Please start BIOS with 4.77 MHz to avoid this error.
 
-* When pressing F12 for opening the OSD it sends a keystroke to the DOS program so it can interfere it
-
 * Video
 
   * No video in some parts of Area5150 demo at max. speed. Run it at 4.77 or 7.16 MHz.
 
   * video in pause & credits screen could be improved. Screen is shifted to the right because the first 18 left characters appear repeated
-  
+
   * RGB 15 kHz video output . CGA video deformed at top part of screen in some resolutions (don't happen so often in TGA). The same happens in the original MiSTer core.
-  
+
   * YPbPr video output did not work on my setup.
-  
+
   * Real composite video output
+    * Credits screen not implemented
     * Center image from core through hblank delays
     * Hot-key to enable composite mode without OSD 
     * OSD background solid color to improve visualization (display green workaround)
     
       
+
 
 ### Parts from MiSTer core not implemented in DeMiSTify ports
 
@@ -54,7 +54,7 @@
 * SW/ROMS/*.rom  roms are adapted for serdrive (XT-IDE BIOS) usage
 * SW/   splash.txt, make_splash_ascii-hex.py, serdrive*   DeMiSTify splash screen and serdrive binaries
 * rtl/8088/eu_rom.v includes macro EMBED_8088_ROM to use fabric LEs instead of BRAM
-* rtl/KFPC-XT/HDL/KFPS2KB/KFPS2KB.sv includes many changes by kitune-san to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag)
+* rtl/KFPC-XT/HDL/KFPS2KB/KFPS2KB.sv includes many changes by kitune-san to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag). F12 key has been disabled  as it is used for deMiSTify and was sending a character that was interfering with the DOS applications.
 * PCXT.sv
   * All Mister framework modules changed by MiST modules
   * BIOS loader has some differences
@@ -63,7 +63,22 @@
 
 
 
+### MACROS defined in defs.v
 
+Not all boards can use all the sound cards and video modes with maximum memory, so there is a defs.v file in each board folder that defines with modules are included. 
+
+Comment // each line that apply or don't apply to your board.
+
+//define EMBED_8088_ROM		 // Embeds ROM in LEs. Define only for boards with not enough BRAM
+define NO_ADLIB							// Adlib sound 
+define NO_CMSOUND      			 // Game Blaster sound
+//define NO_CREDITS				     // Removes Credits screen. Define only for boards with not enough BRAM
+define NO_MDA							  // Removes MDA video	
+//define NO_CGA							// Removes CGA video	
+//define CGA_16							  // Defines CGA memory (13, 32, 64, 128). Define only one of them 	
+//define CGA_32							  // depending of the BRAM available for your board	
+//define CGA_64
+define CGA_128
 
 
 
