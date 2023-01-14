@@ -49,7 +49,7 @@
   - [x] C/MS: Monkey Island 1
   - [x] Speaker: Area5150, Cool Crooc
 
-- [ ] JOYSTICK
+- [x] JOYSTICK: Prince of Persia, Gods (speaker+joy)
 
 - [x] MOUSE: NC, Arkanoid
 

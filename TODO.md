@@ -67,9 +67,9 @@
 
 ### MACROS defined in defs.v
 
-Not all boards can use all the sound cards and video modes with maximum memory, so there is a defs.v file in each board folder that defines with modules are included. 
+Not all boards have the resources (BRAM, logic cells) to implement  all the sound cards and video modes with maximum memory, so there is a defs.v file in each board folder that defines witch modules are implemented.
 
-Comment // each line that apply or don't apply to your board.
+Comment with // each line that apply or don't apply to your board.
 
 //define EMBED_8088_ROM		 // Embeds ROM in LEs. Define for boards with not enough BRAM (16 M9K)
 define NO_ADLIB							// Adlib sound. Define for boards with not enough BRAM (4 M9K)
