@@ -2,9 +2,11 @@
 
 * Keyboard error controller message with Turbo mode. Please start BIOS with 4.77 MHz to avoid this error.
 
+* IBM5160 BIOS keyboard hungs if started at CPU speed 9.54 or higher
+
 * Video
 
-  * No video in some parts of Area5150 demo at max. speed. Run it at 4.77 or 7.16 MHz.
+  * Area5150 demo: Apart from the glitches present in the real Graphic Gremlin card, there is some black cuts in two demos at the beginning and no video in the squares demo at 4.77 MHz. Running at max. speed it is worst. Better results are seen at 7.16 MHz.
 
   * video in pause & credits screen could be improved. Screen is shifted to the right because the first 18 left characters appear repeated
 

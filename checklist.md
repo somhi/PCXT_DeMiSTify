@@ -18,46 +18,40 @@
 
 # Test core checklist
 
-- [ ] SPLASH screen
+- [x] SPLASH screen
 
-- [ ] CREDITS screen
+- [x] CREDITS screen
 
-- [ ] MODEL
+- [x] MODEL
 
-  - [ ] IBM PCXT
+  - [x] IBM PCXT
 
-  - [ ] TANDY
+  - [x] TANDY
 
-- [ ] BIOS
+- [x] BIOS
 
-  - [ ] Load different BIOS
-  - [ ] Diagnostic BIOS
+  - [x] Load different BIOS
+  - [x] Diagnostic BIOS. Errors: EGA, 8087, Floppy
 
 - [ ] VIDEO
 
-  - [ ] MDA
-    - [ ] Adplay
-  - [ ] CGA
-    - [ ] Demo Area5150
-    - [ ] Prince of Persia
-  - [ ] TANDY 32
-    - [ ] Prince of Persia
-  - [ ] TANDY 128
-    - [ ] Arkanoid
-    - [ ] GODS
-    - [ ] Another world
+  - [x] MDA: NC, Adplay, Diagnostic ROM
+  - [x] CGA: Prince of Persia
+  - [x] CGA: Demo Area5150 (better at 7.16 MHz)
+  - [x] TANDY 32: Prince of Persia
+  - [x] TANDY 128: Arkanoid, GODS, Another world
   - [ ] Composite real
 
-- [ ] AUDIO
+- [x] AUDIO
 
-  - [ ] ADLIB
-    - [ ] Prince of Persia, Cool Crooks
-  - [ ] TANDY
-    - [ ] Prince of Percia, Cool Crooks
-  - [ ] C/MS
-    - [ ] Monkey Island 1
+  - [x] ADLIB: Prince of Persia, Cool Crooc
+  - [x] TANDY: Prince of Persia, Cool Crooc, Manhunter
+  - [x] C/MS: Monkey Island 1
+  - [x] Speaker: Area5150, Cool Crooc
 
-- [ ] jOYSTICK
+- [ ] JOYSTICK
+
+- [x] MOUSE: NC, Arkanoid
 
   
 
