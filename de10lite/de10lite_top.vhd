@@ -202,7 +202,7 @@ ARDUINO_IO(6)	<= composite_output(1);		--OPTIONAL 2 PIN
 guest: COMPONENT PCXT
 	PORT map
 	(
-		CLOCK_27 => MAX10_CLK2_50,
+		CLOCK_27 => MAX10_CLK1_50,
 		RESET_N  => reset_n,
 		LED 	 => act_led,
 		-- clocks

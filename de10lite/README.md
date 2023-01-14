@@ -12,9 +12,11 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 * **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
 
-**Additional hardware required**:
+**Additional hardware required** (see pinout connections below):
 
-- PS/2 Keyboard connected to GPIO
+- PS/2 keyboard & mouse connected to GPIO: **I had serious problems with keyboard giving me lots of errors. It was related to GND wiring. Make sure to connect the PS2 GND to the Arduino headers GND.**
+- MicroSD card reader connected to GPIO
+- Sound interface (I2S or Delta-sigma) connected to GPIO
 
 
 
