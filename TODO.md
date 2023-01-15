@@ -72,6 +72,7 @@ Not all boards have the resources (BRAM, logic cells) to implement  all the soun
 Comment with // each line that apply or don't apply to your board.
 
 //define EMBED_8088_ROM		 // Embeds ROM in LEs. Define for boards with not enough BRAM (16 M9K)
+//define EMBED_CHAR_ROM_MDA  //Embeds ROM in LEs. Define for boards with not enough BRAM (4 M9K)
 define NO_ADLIB							// Adlib sound. Define for boards with not enough BRAM (4 M9K)
 define NO_CMSOUND      			 // Game Blaster sound
 //define NO_CREDITS			   // Remove Credits screen. Define for boards with not enough BRAM (10 M9K)

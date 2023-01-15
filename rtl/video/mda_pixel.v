@@ -38,7 +38,11 @@ module mda_pixel(
     wire[11:0] rom_addr;
 
     // Character ROM
+    `ifdef EMBED_CHAR_ROM_MDA
+    (* ramstyle = "logic" *) reg[7:0] char_rom[0:4095];
+    `else
     reg[7:0] char_rom[0:4095];
+    `endif    
     initial $readmemh("mda.hex", char_rom, 0, 4095);
 
 
