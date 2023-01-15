@@ -82,3 +82,8 @@ define NO_MDA							  // Removes MDA video. Define for boards with not enough BR
 //define CGA_32							  // depending of the BRAM available for your board	
 //define CGA_64
 define CGA_128							  // BRAM usage (128 M9K)
+
+specific macros for Cyclone V boards
+
+define MDA_CV
+define CGA_128_CV

@@ -195,11 +195,20 @@ module cga_composite(
 	reg [6:0] datainL = 0;
     wire composite_resync  = clk_14m3 && !clk_old;
 	 
+
+    `ifdef  CGA_128_CV
+	// serialize_comp_tx serialize_comp_tx_CV(
+	//     .tx_in({datainL,datainH}),
+	//     .tx_inclock(clk),
+	//     .tx_out(composite_out)
+    // );
+    `else
 	serialize_comp_tx serialize_comp_tx(
 	    .tx_in({datainL,datainH}),
 	    .tx_inclock(clk),
 	    .tx_out(composite_out)
     );
+    `endif
 	 
 	always @ (posedge clk) 
     begin
