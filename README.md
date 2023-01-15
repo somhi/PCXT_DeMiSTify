@@ -171,4 +171,50 @@ Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composi
 
 * Saving OSD configuration
 
-  
+
+
+
+## OSD Controls
+
+* F12 show/hide OSD 
+* Long F12 toggles VGA/RGB mode
+
+
+
+## Compile the project in Quartus:
+
+Project already has the Demistify firmware already generated so if you clone it recursively then you can open the project with Quartus:
+
+```sh
+git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
+
+#check comments on top of /[board target]/[board target]_top.vhd in case additional actions are needed
+
+#Load project in Quartus from /FPGAtarget/PCXT_[board target].qpf
+
+# where [board target] is deca, neptuno, uareloaded, atlas_cyc, sidi, ...
+```
+
+
+
+## Instructions to Full compile the project for a specific board:
+
+```sh
+git clone https://github.com/somhi/PCXT_DeMiSTify
+cd PCXT_DeMiSTify
+#Do a first make (will finish in error) but it will download missing submodules 
+make
+cd DeMiSTify
+#Create file site.mk in DeMiSTify folder 
+cp site.template site.mk
+#Edit site.mk and add your own PATHs to Quartus (Q18)
+gedit site.mk
+#Go back to root folder and do a make with [board target] (deca, de10lite, neptuno, uareloaded, sidi, sockit, atlas_cyc). If not specified it will compile for all targets.
+cd ..
+make BOARD=[board target]
+#when asked just accept default settings with Enter key
+```
+
+After that you can:
+
+* Load project in Quartus from /neptuno/PCXT_[board target].qpf
