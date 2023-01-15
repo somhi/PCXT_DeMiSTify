@@ -37,7 +37,7 @@ jobs:
       # 4 - Create a copy and tag with date
       - name: Create a copy and tag with date
         run: |
-          cp mist/output_files/PCXT_mist.rbf mist/output_files/PCXT_mist_${{ steps.date.outputs.date }}.rbf
+          sudo cp mist/output_files/PCXT_mist.rbf mist/output_files/PCXT_mist_${{ steps.date.outputs.date }}.rbf
 
       # 5 - Upload artifacts
       - name: Upload artifacts
