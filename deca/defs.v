@@ -2,6 +2,7 @@
 // (rename defs.v_production to defs.v)
 //
 `define EMBED_8088_ROM   //16 M9K
+//`define EMBED_CHAR_ROM_MDA	//  (4 M9K)
 //`define NO_ADLIB	 //4 M9K
 //`define NO_CMSOUND     //
 //`define NO_CREDITS     //10 M9K

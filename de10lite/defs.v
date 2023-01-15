@@ -1,4 +1,5 @@
 `define EMBED_8088_ROM
+//`define EMBED_CHAR_ROM_MDA	//  (4 M9K)
 //`define NO_COM2
 //`define NO_ADLIB
 //`define NO_CMSOUND
