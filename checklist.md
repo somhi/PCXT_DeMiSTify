@@ -2,7 +2,7 @@
 
 - [x] ATLAS cyc1000
 
-- [ ] DE10-lite
+- [x] DE10-lite
 
 - [x] DECA
 
@@ -10,11 +10,11 @@
 
 - [x] NeptUNO
 
-- [ ] SIDI
+- [x] SIDI
 
 - [ ] Sockit
 
-- [ ] UA reloaded
+- [x] UA reloaded
 
 # Test core checklist
 
