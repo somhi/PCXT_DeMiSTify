@@ -13,6 +13,7 @@ set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) rtl/8088/80
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/KFPS2KB/HDL/KFPS2KB_Shift_Register.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/KFPS2KB/HDL/KFPS2KB_Send_Data.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/KFPS2KB/HDL/KFPS2KB.sv"]
+set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/KFPS2KB/HDL/KFPS2KB_direct.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/KFPS2KB/HDL/Tandy_Scancode_Converter.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/KF8288/HDL/KF8288.sv"]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "rtl/KFPC-XT/HDL/KF8259/HDL/KF8259_Priority_Resolver.sv"]

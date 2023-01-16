@@ -51,39 +51,75 @@
   
 
 
-### Differences in Demistify ports
+### Differences in DeMiSTify ports
 
 * SW/ROMS/*.rom  roms are adapted for serdrive (XT-IDE BIOS) usage
 * SW/   splash.txt, make_splash_ascii-hex.py, serdrive*   DeMiSTify splash screen and serdrive binaries
-* rtl/8088/eu_rom.v includes macro EMBED_8088_ROM to use fabric LEs instead of BRAM
-* rtl/KFPC-XT/HDL/KFPS2KB/KFPS2KB.sv includes many changes by kitune-san to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag). F12 key has been disabled  as it is used for deMiSTify and was sending a character that was interfering with the DOS applications.
+* credits/msg  Credits for DeMiSTify have differences from MiSTer port
+* games/ This folder is linked in Readme to the MiSTer port
+* releases/  no releases included because it will grow the repository size too much
+* rtl/ 
+  * rtl/8088/eu_rom.v includes macro EMBED_8088_ROM option to use logic cells instead of BRAM
+  * rtl/KFPC-XT/HDL/KFPS2KB/KFPS2KB.sv version used for MiST/SiDi ports. Is nearly identical to MiSTer port except for that F12 key is disabled to not interfere with deMiSTify's OSD and F11 key is used for Pause&Credits screen. 
+  * rtl/KFPC-XT/HDL/KFPS2KB/KFPS2KB_direct.sv includes many changes by kitune-san to avoid problems with direct keyboard connection conflicting with DeMiSTify controller (error flag). F12 key has been disabled  as it is used for deMiSTify's OSD and was sending a character that was interfering with the DOS applications.
+  * rtl/KFPC-XT/HDL/Chipset.sv   Ports differences
+  * rtl/KFPC-XT/HDL/Peripherals.sv  has many changes. Includes lots of macro optionals which load parts of code depending on the definitions file (defs.v) of each board. Video memory modules instantiations are different and make use of Altera's IP to reduce to half BRAM consumption. No IDE, FDD, RTC modules used.
+
+* rtl/common/
+  * rtl/common/common.qip  commented out those modules not used in DeMiSTify ports. 
+  * rtl/common/msg.bin credits message file is different.
+
+* rtl/sound
+  * jt89/ added as submodule differs a litle bit from MiSTer version
+  * jtopl/ added as submodule differs a litle bit from MiSTer version
+  * jt89.qip file added to not modify the submodule folder
+  * sigma_delta_dac.v added
+
+* rtl/uart usign 16550 version because of serdrive not loading HDD images with 16750
+* rtl/uart2 includes 16750 version that is not used
+* rtl/video is quite different
+  * serialize_comt_tx*  is used for real composite video output
+  * vram_ip* video memory modules are different and make use of Altera's IP to reduce to half BRAM consumption
+
+* sys/ folder is a modified version for demistify ports but not currently used 
+* PCXT.sdc Constraints file is different
 * PCXT.sv
+  * Port signals totally different
+  * OSD organization has differences
   * All Mister framework modules changed by MiST modules
   * BIOS loader has some differences
-* Using UART port 1 for serdrive, and UART port 2 por serial mouse
-* Video is quite different  (rtl/video and PCXT.sv)
+  * Using UART port 1 for serdrive, and UART port 2 por serial mouse
+  * SDRAM_CLK phased is sent to SDRAM pin
+  * No IDE, FDD 
+  * Added Sigma-Delta module instantation
+  * Video part is quite different 
 
-
+* files.qip has some differences
 
 ### MACROS defined in defs.v
 
 Not all boards have the resources (BRAM, logic cells) to implement  all the sound cards and video modes with maximum memory, so there is a defs.v file in each board folder that defines witch modules are implemented.
 
-Comment with // each line that apply or don't apply to your board.
+```verilog
+// Comment with // each line that apply or don't apply to your board.
 
-//define EMBED_8088_ROM		 // Embeds ROM in LEs. Define for boards with not enough BRAM (16 M9K)
-//define EMBED_CHAR_ROM_MDA  //Embeds ROM in LEs. Define for boards with not enough BRAM (4 M9K)
-define NO_ADLIB							// Adlib sound. Define for boards with not enough BRAM (4 M9K)
-define NO_CMSOUND      			 // Game Blaster sound
-//define NO_CREDITS			   // Remove Credits screen. Define for boards with not enough BRAM (10 M9K)
-define NO_MDA							  // Removes MDA video. Define for boards with not enough BRAM (8 M9K)
-//define NO_CGA							// Removes CGA video	
-//define CGA_16							  // Defines CGA memory (13, 32, 64, 128). Define only one of them 	
-//define CGA_32							  // depending of the BRAM available for your board	
-//define CGA_64
-define CGA_128							  // BRAM usage (128 M9K)
+//`define EMBED_8088_ROM //Embeds ROM in LEs. For boards with not enough BRAM (16 M9K)
+//`define EMBED_CHAR_ROM_MDA  //Embeds ROM in LEs. For boards with not enough BRAM (4 M9K)
+`define NO_ADLIB		// Adlib sound. For boards with not enough BRAM (4/9 M9K)
+`define NO_CMSOUND      // Game Blaster sound
+//`define NO_CREDITS	// Remove Credits screen. For boards with not enough BRAM (10 M9K)
+`define NO_MDA			// Removes MDA video. For boards with not enough BRAM (8 M9K)
+//`define NO_CGA		// Removes CGA video	
+//`define CGA_16		// Defines CGA memory (13, 32, 64, 128). Define only one of them
+//`define CGA_32		// depending of the BRAM available for your board	
+//`define CGA_64
+`define CGA_128			// BRAM usage (128 M9K)
 
-specific macros for Cyclone V boards
+// Specific macros for Cyclone V boards
+`define MDA_CV			// MDA for Cyclone V boards
+`define CGA_128_CV 		// CGA for Cyclone V boards
 
-define MDA_CV
-define CGA_128_CV
+// Specific macros for MiST / SiDi boards
+`define MIST_SIDI		// Define if your board is MiST compatible
+```
+

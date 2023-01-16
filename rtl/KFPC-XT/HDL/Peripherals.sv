@@ -299,7 +299,7 @@ module PERIPHERALS #(
         .interrupt_to_cpu           (interrupt_to_cpu),
         .interrupt_request          ({interrupt_request[7:5],
                                         uart_interrupt,
-                                        uart2_interrupt & ~uart2_chip_select,   //kitune-san change to force IRQ go low every time accessing UART
+                                        uart2_interrupt & ~uart2_chip_select,   //kitune-san change to force IRQ go low every time accessing UART (solves mouse not working)
                                         interrupt_request[2],
                                         keybord_interrupt,
                                         timer_interrupt})
@@ -424,6 +424,8 @@ module PERIPHERALS #(
             prev_ps2_reset_n <= ps2_reset_n;
     end
 
+
+    `ifdef MIST_SIDI
     KFPS2KB u_KFPS2KB 
     (
         // Bus
@@ -441,6 +443,25 @@ module PERIPHERALS #(
         .clear_keycode              (clear_keycode),
         .pause_core                 (pause_core)
     );
+    `else 
+    KFPS2KB_direct u_KFPS2KB 
+    (
+        // Bus
+        .clock                      (clock),
+        .peripheral_clock           (peripheral_clock),
+        .reset                      (reset),
+
+        // PS/2 I/O
+        .device_clock               (ps2_clock | lock_recv_clock),
+        .device_data                (ps2_data),
+
+        // I/O
+        .irq                        (keybord_irq),
+        .keycode                    (keycode),
+        .clear_keycode              (clear_keycode),
+        .pause_core                 (pause_core)
+    );
+    `endif
 
     // Keybord reset
     KFPS2KB_Send_Data u_KFPS2KB_Send_Data 
@@ -476,9 +497,11 @@ module PERIPHERALS #(
         if (reset)
             ps2_clock_out = 1'b1;
         else
-            //ps2_clock_out = ~(keybord_irq | ~ps2_send_clock | ~ps2_reset_n);
-            ps2_clock_out = ps2_send_clock;			//kitune-san change for direct keyboard interface
-
+            `ifdef MIST_SIDI
+            ps2_clock_out = ~(keybord_irq | ~ps2_send_clock | ~ps2_reset_n);
+            `else 
+            ps2_clock_out = ps2_send_clock;		// kitune-san change for direct keyboard interface
+            `endif
     end
 
 

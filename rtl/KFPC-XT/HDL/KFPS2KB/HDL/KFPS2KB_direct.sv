@@ -4,7 +4,7 @@
 //
 // Written by kitune-san
 //
-module KFPS2KB #(
+module KFPS2KB_direct #(
     parameter over_time = 16'd1000
 ) (
     input   logic           clock,
@@ -24,6 +24,7 @@ module KFPS2KB #(
     //
     logic   [7:0]   register;
     logic           recieved_flag;
+    logic           recieved_error;
     logic           error_flag;
     logic           break_flag;
 
@@ -43,7 +44,7 @@ module KFPS2KB #(
 
         .register           (register),
         .recieved_flag      (recieved_flag),
-        .error_flag         (error_flag)
+        .error_flag         (recieved_error)
     );
 
     //
@@ -218,35 +219,41 @@ module KFPS2KB #(
             keycode     <= 8'h00;
             break_flag  <= 1'b0;
             pause_core  <= 1'b0;
+            error_flag  <= 1'b0;
         end
         else if (clear_keycode) begin
             irq         <= 1'b0;
             keycode     <= 8'h00;
             break_flag  <= 1'b0;
+            error_flag  <= 1'b0;
         end
-        else if (error_flag) begin
+        else if (recieved_error) begin
             // Error
-            irq         <= 1'b1;
+            irq         <= 1'b0;
             keycode     <= 8'hFF;
             break_flag  <= 1'b0;
+            error_flag  <= 1'b1;
         end
         else if (recieved_flag) begin
-            if (irq == 1'b1) begin
+            if ((irq == 1'b1) || (error_flag == 1'b1)) begin
                 // Error
-                irq         <= 1'b1;
+                irq         <= 1'b0;
                 keycode     <= 8'hFF;
                 break_flag  <= 1'b0;
+                error_flag  <= 1'b1;
             end
             else if (register == 8'hFA) begin
                 // ACK (ignore)
                 irq         <= 1'b0;
                 keycode     <= 8'h00;
                 break_flag  <= 1'b0;
+                error_flag  <= 1'b0;
             end
             else if (register == 8'hF0) begin
                 irq         <= 1'b0;
                 keycode     <= 8'h00;
                 break_flag  <= 1'b1;
+                error_flag  <= 1'b0;
             end
             else if (register == 8'h07) begin
                 // F12 -> Disabled to not interfere with DeMiSTify OSD
@@ -272,12 +279,14 @@ module KFPS2KB #(
                 irq         <= 1'b1;
                 keycode     <= scancode_converter(register) | (break_flag ? 8'h80 : 8'h00);
                 break_flag  <= 1'b0;
+                error_flag  <= 1'b0;
             end
         end
         else begin
-            irq         <= irq;
+            irq         <= irq | error_flag;
             keycode     <= keycode;
             break_flag  <= break_flag;
+            error_flag  <= error_flag;
         end
     end
 

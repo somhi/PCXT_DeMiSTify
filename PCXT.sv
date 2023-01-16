@@ -216,7 +216,11 @@ module PCXT
 
     // .PS2DIV(2000) value is adequate
 
+    `ifdef MIST_SIDI
+    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io
+    `else 
     user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000)) user_io 
+    `endif
 	(
 		.conf_str      ( CONF_STR       ),
 		.clk_sys       ( clk_chipset    ),
@@ -231,15 +235,17 @@ module PCXT
 		.buttons        ( buttons       ),
 		.scandoubler_disable ( forced_scandoubler ),
 
-		// .ps2_kbd_clk_i		(ps2_kbd_clk_out),
-		// .ps2_kbd_data_i		(ps2_kbd_data_out),
-		// .ps2_kbd_clk		    (ps2_kbd_clk_in),
-		// .ps2_kbd_data		(ps2_kbd_data_in),
+        `ifdef MIST_SIDI
+		.ps2_kbd_clk_i		(ps2_kbd_clk_out),
+		.ps2_kbd_data_i		(ps2_kbd_data_out),
+		.ps2_kbd_clk		(ps2_kbd_clk_in),
+		.ps2_kbd_data		(ps2_kbd_data_in),
 
-		// .ps2_mouse_clk_i		(ps2_mouse_clk_out),
-		// .ps2_mouse_data_i	(ps2_mouse_data_out),
-		// .ps2_mouse_clk		(ps2_mouse_clk_in),
-		// .ps2_mouse_data		(ps2_mouse_data_in),
+		.ps2_mouse_clk_i    (ps2_mouse_clk_out),
+		.ps2_mouse_data_i	(ps2_mouse_data_out),
+		.ps2_mouse_clk		(ps2_mouse_clk_in),
+		.ps2_mouse_data		(ps2_mouse_data_in),
+        `endif
 
 		.joystick_0(joy0),
 		.joystick_1(joy1),
@@ -247,18 +253,18 @@ module PCXT
 		.joystick_analog_1(joya1)
 	);
 
-
-    assign PS2K_CLK_OUT = ps2_kbd_clk_out;
-    assign PS2K_DAT_OUT = ps2_kbd_data_out;
+    `ifdef MIST_SIDI
+    `else 
+    assign PS2K_CLK_OUT     = ps2_kbd_clk_out;
+    assign PS2K_DAT_OUT     = ps2_kbd_data_out;
     assign ps2_kbd_clk_in   = PS2K_CLK_IN;
     assign ps2_kbd_data_in  = PS2K_DAT_IN; 
-
 
     assign PS2K_MOUSE_CLK_OUT = ps2_mouse_clk_out;
     assign PS2K_MOUSE_DAT_OUT = ps2_mouse_data_out;
     assign ps2_mouse_clk_in   = PS2K_MOUSE_CLK_IN;
     assign ps2_mouse_data_in  = PS2K_MOUSE_DAT_IN;
-
+    `endif
 
     data_io data_io 
 	(
@@ -760,7 +766,7 @@ module PCXT
                     ioctl_wait          <= 1'b1;
                     bios_write_wait_cnt <= bios_write_wait_cnt + 'h1;
 
-                    if (bios_write_wait_cnt != 'd40)
+                    if (bios_write_wait_cnt != 'd40)       //'h40 does not load BIOS
                         bios_load_state     <= 4'h03;
                     else
                         bios_load_state     <= 4'h01;
