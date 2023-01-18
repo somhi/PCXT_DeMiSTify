@@ -33,12 +33,12 @@ The [Graphics Gremlin project](https://github.com/schlae/graphics-gremlin) from 
 * Support for IBM PCXT 5160 and clones
 * Main memory 640Kb + 384Kb UMB memory
 * EMS memory up to 2Mb
-* Video modes: 
+* Video modes (VGA or RGB 15 kHz)
   * Tandy graphics with 128Kb of shared VRAM  (not available on all ports due to BRAM resources)
-  * CGA graphics 32kB VRAM (VGA or Composite)
+  * CGA graphics 32kB VRAM
   * MDA monochrome
-  * Composite real video output 
-* Audio: Adlib, Tandy, speaker
+  * Composite (real) video output 
+* Audio: Adlib, Tandy, Game Blaster, Speaker
 * Joystick support
 * Mouse support into COM2 serial port, this works like any Microsoft mouse... you just need a driver to configure it, like CTMOUSE 1.9 (available into hdd folder), with the command CTMOUSE /s2 
 
