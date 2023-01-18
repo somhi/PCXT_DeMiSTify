@@ -12,6 +12,8 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 * ADLIB sound not implemented due to lack of BRAM in this board.
 
+* C/MS Game Blaster sound not implemented (with it enabled there was hungs during BIOS load)
+
 * Credits screen not implemented due to lack of BRAM in this board. F11 pauses the core. If you press it, remember to press it again to continue the core execution.
 
 * CGA 32 kB implemented. Some Tandy games are now playable like Prince of Persia, Cool Crocks and Sierra's Manhunter.
