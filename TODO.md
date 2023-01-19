@@ -4,6 +4,15 @@
 
 * IBM5160 BIOS keyboard hungs if started at CPU speed 9.54 or higher
 
+* MiST and SiDi constraints need to be fully revised.  Constraints paths have been deliveratelly set incorrect as it has been found that it works better in this way (e.g. no beeps while typing with the IBM5160 rom). Each board constraints file located at DeMiSTfify/Board/*/constraints.sdc, identifies the paths of the guest module. 
+
+  * in MiST is defined as `set topmodule ""` but should be `set topmodule "guest|"`
+
+  * In SiDi is defined as  `set topmodule "guest|"`but should be `set topmodule "guest2|"`
+
+  
+  
+  
 * Video
 
   * Area5150 demo: Apart from the glitches present in the real Graphic Gremlin card, there is some black cuts in two demos at the beginning and no video in the squares demo at 4.77 MHz. Running at max. speed it is worst. Better results are seen at 7.16 MHz.

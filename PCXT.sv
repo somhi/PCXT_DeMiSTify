@@ -362,7 +362,25 @@ module PCXT
 
 	`endif
 
-    wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | splashscreen | bios_access_request;   //bios_access_request by kitune-san to supply ioctl_wait signal
+
+    `ifdef MIST_SIDI    //Reset from OSD did not work in some SiDi board. This counter increases OSD reset toogle time
+        reg        reset_OSD = 0;
+        reg [16:0] clr_addr  = 0;
+        always @(posedge CLK_50M) begin
+            if(~&clr_addr) clr_addr  <= clr_addr + 1'd1;
+            else           reset_OSD <= 0;
+        
+            if(status[0]) begin
+                clr_addr <= 0;
+                reset_OSD <= 1;
+            end
+        end
+
+        wire reset_wire = !RESET_N | reset_OSD | buttons[1] | !pll_locked | splashscreen | bios_access_request;   //bios_access_request by kitune-san to supply ioctl_wait signal
+    `else 
+        wire reset_wire = !RESET_N | status[0] | buttons[1] | !pll_locked | splashscreen | bios_access_request;   //bios_access_request by kitune-san to supply ioctl_wait signal
+    `endif
+
     wire reset_sdram_wire = !RESET_N | !pll_locked;
 
     //////////////////////////////////////////////////////////////////
