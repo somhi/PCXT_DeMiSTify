@@ -5,18 +5,6 @@ use ieee.numeric_std.all;
 library work;
 use work.demistify_config_pkg.all;
 
-
--- Make sure following lines uncommented exist into the PCXT_de10lite.qsf file
---
--- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ARDUINO_IO[12]
--- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[10]
--- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[12]
--- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[14]
--- set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to GPIO[16]
---
--- edit DeMiSTify/Board/de10lite/constraints.sdc and in second line make sure that ":\controlblock" is removed. Second line should be lite this:
--- create_generated_clock -name spiclk -source [get_ports {MAX10_CLK1_50}] -divide_by 16 [get_registers {substitute_mcu:controller|spi_controller:spi|sck}]
-
 -------------------------------------------------------------------------
 
 entity de10lite_top is

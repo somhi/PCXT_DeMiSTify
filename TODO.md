@@ -1,5 +1,7 @@
 ### BUGs and TODO list
 
+* In the last big update from MiSTer core, there seems to be some timing issues which could give issues with the keyboard beeping when pressing a key and eventually outputing a wrong character. It depends on the board though, so it is more accusated on de10lite than on Deca board for example.
+
 * Keyboard error controller message with Turbo mode. Please start BIOS with 4.77 MHz to avoid this error.
 
 * IBM5160 BIOS keyboard hungs if started at CPU speed 9.54 or higher
@@ -10,7 +12,6 @@
 
   * In SiDi is defined as  `set topmodule "guest|"`but should be `set topmodule "guest2|"`
 
-  
   
   
 * Video
