@@ -60,9 +60,7 @@ module sidi_top (
 
 wire  [7:0] r_aux, g_aux, b_aux;	
 
-PCXT guest2       //module name has been deliveratelly changed from guest to guest2 so in constraints.sdc file
-                  //set topmodule "guest|"    is set incorrectly but is has been proven that it works better in this way
-                  //TODO revise constraints for SiDi and MiST boards
+PCXT guest       //TODO revise constraints for MiST boards 
 (
    .CLOCK_27 	(CLOCK_27),
    .RESET_N    (1'b1),        //very important to pass this reset signal

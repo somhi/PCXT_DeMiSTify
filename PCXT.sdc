@@ -15,7 +15,7 @@ if {[info exists cyclonev] && ($cyclonev==1)} {
     create_generated_clock -name sdramclk -source [get_pins $CLOCK_CHIP] [get_ports $RAM_CLK]
 
     # status signal
-    set_false_path -from [get_registers {PCXT:guest|hps_io:hps_io|status[3] PCXT:guest|hps_io:hps_io|status[4] PCXT:guest|hps_io:hps_io|status[7]}]
+    set_false_path -from [get_registers [list ${topmodule}hps_io|status[3] ${topmodule}hps_io|status[4] ${topmodule}hps_io|status[7]]]
 
 } else {
 	set CLOCK_CORE    ${topmodule}pll|altpll_component|auto_generated|pll1|clk[0]
@@ -28,10 +28,17 @@ if {[info exists cyclonev] && ($cyclonev==1)} {
     create_generated_clock -name sdramclk -source ${topmodule}pll|altpll_component|auto_generated|pll1|clk[2] [get_ports $RAM_CLK]
 
     # status signal
-    set_false_path -from [get_registers {PCXT:guest|user_io:user_io|status[3] PCXT:guest|user_io:user_io|status[4] PCXT:guest|user_io:user_io|status[7]}]
+    set_false_path -from [get_registers [list ${topmodule}user_io|status[3] ${topmodule}user_io|status[4] ${topmodule}user_io|status[7]]]
 }
 
+
+if {[info exists mist] && ($mist==1)} {
+#uncommenting following line gives more timing setup delays in MiST cores
+#create_generated_clock -name clk_14_318 -source $CLOCK_VGA_CGA -divide_by 2 [get_pins $CLOCK_14_318]
+} else {
 create_generated_clock -name clk_14_318 -source $CLOCK_VGA_CGA -divide_by 2 [get_pins $CLOCK_14_318]
+}
+
 create_generated_clock -name clk_4_77 -source [get_pins $CLOCK_14_318] -divide_by 3 -duty_cycle 33 [get_pins $CLOCK_4_77]
 create_generated_clock -name peripheral_clock -source [get_pins $CLOCK_4_77] -divide_by 2 [get_pins $PCLK]
 
@@ -49,34 +56,34 @@ set_false_path -from [get_clocks $CLOCK_UART] -to [get_clocks $CLOCK_CHIP]
 # NOTE: If the system clock and video clock are synchronous, the following description is not necessary.
 set VIDEO_TO_SYSYEM_DELAY 10
 
-set_false_path -to [get_registers  {PCXT:guest|mda_mode_video_ff \
-                                    PCXT:guest|screen_mode_video_ff[*]}]
+set_false_path -to [get_registers  [list ${topmodule}mda_mode_video_ff \
+                                         ${topmodule}screen_mode_video_ff[*]]]
 
 
-set_max_delay -from [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|video_io_address[*]}] \
-              -to   [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|mda_io_address_1[*]   \
-                                    PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|cga_io_address_1[*]}] $VIDEO_TO_SYSYEM_DELAY
+set_max_delay -from [get_registers ${topmodule}u_CHIPSET|u_PERIPHERALS|video_io_address[*]] \
+              -to   [get_registers [list ${topmodule}u_CHIPSET|u_PERIPHERALS|mda_io_address_1[*]   \
+                                    ${topmodule}u_CHIPSET|u_PERIPHERALS|cga_io_address_1[*]]] $VIDEO_TO_SYSYEM_DELAY
 
-set_max_delay -from [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|video_io_data[*]}] \
-              -to   [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|mda_io_data_1[*]   \
-                                    PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|cga_io_data_1[*]}] $VIDEO_TO_SYSYEM_DELAY
+set_max_delay -from [get_registers ${topmodule}u_CHIPSET|u_PERIPHERALS|video_io_data[*]] \
+              -to   [get_registers [list ${topmodule}u_CHIPSET|u_PERIPHERALS|mda_io_data_1[*]   \
+                                    ${topmodule}u_CHIPSET|u_PERIPHERALS|cga_io_data_1[*]]] $VIDEO_TO_SYSYEM_DELAY
 
-set_max_delay -from [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|video_io_write_n}] \
-              -to   [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|mda_io_write_n_1   \
-                                    PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|cga_io_write_n_1}] $VIDEO_TO_SYSYEM_DELAY
+set_max_delay -from [get_registers ${topmodule}u_CHIPSET|u_PERIPHERALS|video_io_write_n] \
+              -to   [get_registers [list ${topmodule}u_CHIPSET|u_PERIPHERALS|mda_io_write_n_1   \
+                                    ${topmodule}u_CHIPSET|u_PERIPHERALS|cga_io_write_n_1]] $VIDEO_TO_SYSYEM_DELAY
 
-set_max_delay -from [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|video_io_read_n}] \
-              -to   [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|mda_io_read_n_1   \
-                                    PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|cga_io_read_n_1}] $VIDEO_TO_SYSYEM_DELAY
+set_max_delay -from [get_registers ${topmodule}u_CHIPSET|u_PERIPHERALS|video_io_read_n] \
+              -to   [get_registers [list ${topmodule}u_CHIPSET|u_PERIPHERALS|mda_io_read_n_1   \
+                                    ${topmodule}u_CHIPSET|u_PERIPHERALS|cga_io_read_n_1]] $VIDEO_TO_SYSYEM_DELAY
 
-set_max_delay -from [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|video_address_enable_n}] \
-              -to   [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|mda_address_enable_n_1   \
-                                    PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|cga_address_enable_n_1}] $VIDEO_TO_SYSYEM_DELAY
+set_max_delay -from [get_registers ${topmodule}u_CHIPSET|u_PERIPHERALS|video_address_enable_n] \
+              -to   [get_registers [list ${topmodule}u_CHIPSET|u_PERIPHERALS|mda_address_enable_n_1   \
+                                    ${topmodule}u_CHIPSET|u_PERIPHERALS|cga_address_enable_n_1]] $VIDEO_TO_SYSYEM_DELAY
 
-set_max_delay -to   [get_registers {PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|MDA_CRTC_DOUT_1[*] \
-                                    PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|MDA_CRTC_OE_1      \
-                                    PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|CGA_CRTC_DOUT_1[*] \
-                                    PCXT:guest|CHIPSET:u_CHIPSET|PERIPHERALS:u_PERIPHERALS|CGA_CRTC_OE_1}] $VIDEO_TO_SYSYEM_DELAY
+set_max_delay -to   [get_registers [list ${topmodule}u_CHIPSET|u_PERIPHERALS|MDA_CRTC_DOUT_1[*] \
+                                    ${topmodule}u_CHIPSET|u_PERIPHERALS|MDA_CRTC_OE_1      \
+                                    ${topmodule}u_CHIPSET|u_PERIPHERALS|CGA_CRTC_DOUT_1[*] \
+                                    ${topmodule}u_CHIPSET|u_PERIPHERALS|CGA_CRTC_OE_1]] $VIDEO_TO_SYSYEM_DELAY
 
 
 # SDRAM
