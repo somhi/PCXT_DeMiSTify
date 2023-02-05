@@ -78,9 +78,7 @@ wire [15:0] dac_l, dac_r;
 
 assign LED[7:1]='1;
 
-PCXT guest2       //module name has been deliveratelly changed from guest to guest2 so in constraints.sdc file
-                  //set topmodule "guest|"    is set incorrectly but is has been proven that it works better in this way
-                  //TODO revise constraints for SiDi and MiST boards
+PCXT guest       
 (
    .CLOCK_27 	(MAX10_CLK1_50),
    .RESET_N    (1'b1),        //very important to pass this reset signal
@@ -140,7 +138,7 @@ assign AUDIO_RESET_n    = RESET_DELAY_n;
 
 // AUDIO CODEC SPI CONFIG
 // I2S mode; fs = 48khz; MCLK = 24.567Mhz x 2
-AUDIO_SPI_CTL_RD u1 (
+AUDIO_SPI_CTL_RD AUDIO_SPI_CTL_RD_inst (
 	.iRESET_n	(RESET_DELAY_n  ), 	
 	.iCLK_50	   (MAX10_CLK1_50  ),  //50Mhz clock
 	.oCS_n		(AUDIO_SCL_SS_n ),  //SPI interface mode chip-select signal
@@ -149,7 +147,7 @@ AUDIO_SPI_CTL_RD u1 (
 	.iDOUT		(AUDIO_MISO_MFP4)   //SPI serial data input
 );
 
-audio_top audio_top  
+audio_top audio_i2s  
 (
 	.clk_50MHz (MAX10_CLK1_50),
 	.dac_MCLK  (i2sMck),

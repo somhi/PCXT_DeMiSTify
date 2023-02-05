@@ -12,7 +12,7 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 * **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
 
-**Now compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2)** (new location for 3 pins of old SDRAM modules). Otherwise see pinout below to connect everything through GPIOs.
+Compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2) (new location for 3 pins of old SDRAM modules). Otherwise see pinout below to connect everything through GPIOs.
 
 ## **Features:**
 
@@ -69,7 +69,7 @@ After that you can:
 
 ![pinout_deca](pinout_deca.png)
 
-Mouse, joystick, MIDI are not used in this core
+MIDI is not used in this core
 
 UART port is required to be used to load the OS through the serdrive app.
 
