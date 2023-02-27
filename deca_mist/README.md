@@ -10,7 +10,7 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 * **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
 
-Compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2) (new location for 3 pins of old SDRAM modules). 
+Compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2). 
 
 ## **Features:**
 
@@ -19,14 +19,14 @@ Compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2) 
 
 **Additional hardware required**:
 
+- MiST addon with AT91SAM7S256, USB Host Shield, SD card modules
 - SDRAM module
-  - Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2 ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca))
-  - Tested with a dual memory module v1.3 with 3 pins ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca) + [3pins](https://github.com/DECAfpga/DECA_board/blob/main/Sdram_mister_deca/README_3pins.md))
-- PS/2 Keyboard connected to GPIO
+  - Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2
+  - Tested with a dual memory module v1.3 with 3 pins
 
 ### Compile the project in Quartus:
 
-Project already has the DemiSTify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
+Project already has the DeMiSTify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
 
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
@@ -63,7 +63,7 @@ After that you can:
 
 ### Pinout connections:
 
-![pinout_deca](pinout_deca.png)
+![pinout_deca](../DeMiSTify/Board/deca_mist/pinout_deca.png)
 
 MIDI is not used in this core
 
