@@ -107,7 +107,6 @@ module PCXT
 		"OHI,CPU Speed,4.77MHz,7.16MHz,9.54MHz,PC/AT 3.5MHz;",
         //"OJK,Write Protect,None,A:,B:,A: & B:;",    
 		//
-        "S1,IMGVHD,Mount IDE:;",
 		"P1,BIOS;",
 		"P1F,ROM,PCXT BIOS:;",
 		"P1F,ROM,Tandy BIOS:;",
@@ -206,7 +205,6 @@ module PCXT
     wire pause_core;
 
     // Virtual HDD Bus
-    // TODO: Please connect to data_io
     wire        hdd_cmd_req;
     wire        hdd_dat_req;
     wire  [2:0] hdd_addr;
@@ -231,7 +229,7 @@ module PCXT
     // .PS2DIV(2000) value is adequate
 
     `ifdef MIST_SIDI
-    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io
+    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1), .FEATURES(32'h10) /* FEAT_IDE0_ATA */) user_io
     `else 
     user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000)) user_io 
     `endif
@@ -299,7 +297,7 @@ module PCXT
 		.ioctl_dout ( ioctl_data   ),
 	//  .ioctl_din  ( ioctl_din    )
 
-        .hdd_clk       ( clk_cpu      ),
+        .hdd_clk       ( clk_chipset  ),        //clk_cpu
         .hdd_cmd_req   ( hdd_cmd_req  ),
         .hdd_dat_req   ( hdd_dat_req  ),
     //    .hdd_cdda_req  ( hdd_cdda_req ),
