@@ -115,6 +115,15 @@ module PERIPHERALS #(
         output  logic           ems_b2,
         output  logic           ems_b3,
         output  logic           ems_b4,
+        // MMC interface
+        input   logic           use_mmc,
+        output  logic           mmc_clk,
+        input   logic           mmc_cmd_in,
+        output  logic           mmc_cmd_out,
+        output  logic           mmc_cmd_io,
+        input   logic           mmc_dat_in,
+        output  logic           mmc_dat_out,
+        output  logic           mmc_dat_io,
         //
         input   logic   [27:0]  clock_rate,
         // XTCTL DATA
@@ -138,7 +147,7 @@ module PERIPHERALS #(
     begin
         if (reset)
             prev_cpu_clock <= 1'b0;
-		  else
+        else
             prev_cpu_clock <= cpu_clock;
     end
 
@@ -215,7 +224,7 @@ module PERIPHERALS #(
     assign  ems_b2                  = (~iorq && ena_ems[1] && (address[19:14] == {ems_page_address, 2'b01})); // C4000h - D4000h - E4000h
     assign  ems_b3                  = (~iorq && ena_ems[2] && (address[19:14] == {ems_page_address, 2'b10})); // C8000h - D8000h - E8000h
     assign  ems_b4                  = (~iorq && ena_ems[3] && (address[19:14] == {ems_page_address, 2'b11})); // CC000h - DC000h - EC000h
-    //wire    ide0_chip_select_n      = ~(iorq && ~address_enable_n && ({address[15:4], 4'd0} == 16'h0300));
+    wire    ide0_chip_select_n      = ~(iorq && ~address_enable_n && ({address[15:4], 4'd0} == 16'h0300));
     //wire    floppy0_chip_select_n   = ~(~address_enable_n && (({address[15:2], 2'd0} == 16'h03F0) || ({address[15:1], 1'd0} == 16'h03F4) || ({address[15:0]} == 16'h03F7)));
 
     logic   [1:0]   ems_access_address;
@@ -1224,6 +1233,81 @@ end
 
 
     //
+    // XT2IDE
+    //
+    logic   [7:0]   xt2ide0_data_bus_out;
+    logic           ide0_cs1fx;
+    logic           ide0_cs3fx;
+    logic           ide0_io_read_n;
+    logic           ide0_io_write_n;
+    logic   [2:0]   ide0_address;
+    logic   [15:0]  ide0_data_bus_in;
+    logic   [15:0]  ide0_data_bus_out;
+
+    XT2IDE xt2ide0 (
+        .clock              (clock),
+        .reset              (reset),
+
+        .high_speed         (0),
+
+        .chip_select_n      (ide0_chip_select_n),
+        .io_read_n          (io_read_n),
+        .io_write_n         (io_write_n),
+
+        .address            (address[3:0]),
+        .data_bus_in        (internal_data_bus),
+        .data_bus_out       (xt2ide0_data_bus_out),
+
+        .ide_cs1fx          (ide0_cs1fx),
+        .ide_cs3fx          (ide0_cs3fx),
+        .ide_io_read_n      (ide0_io_read_n),
+        .ide_io_write_n     (ide0_io_write_n),
+
+        .ide_address        (ide0_address),
+        .ide_data_bus_in    (ide0_data_bus_in),
+        .ide_data_bus_out   (ide0_data_bus_out)
+    );
+
+
+    //
+    // XTIDE-MMC
+    //
+    logic [15:0]    mmcide_readdata;
+
+    KFMMC_IDE #(
+        .init_spi_clock_cycle               (8'd100),
+        .normal_spi_clock_cycle             (8'd100),
+        .timeout                            (32'h000FFFFF)
+    ) kfmmc_ide (
+        .clock              (clock),
+        .reset              (reset),
+
+        .ide_cs1fx_n        (ide0_cs1fx),
+        .ide_cs3fx_n        (ide0_cs3fx),
+        .ide_io_read_n      (ide0_io_read_n),
+        .ide_io_write_n     (ide0_io_write_n),
+
+        .ide_address        (ide0_address),
+        .ide_data_bus_in    (ide0_data_bus_out),
+        .ide_data_bus_out   (mmcide_readdata),
+
+        .device_master      (1'b1),     // set primary drive
+
+        .mmc_clk            (mmc_clk),
+        .mmc_cmd_in         (mmc_cmd_in),
+        .mmc_cmd_out        (mmc_cmd_out),
+        .mmc_cmd_io         (mmc_cmd_io),
+        .mmc_dat_in         (mmc_dat_in),
+        .mmc_dat_out        (mmc_dat_out),
+        .mmc_dat_io         (mmc_dat_io)
+    );
+
+    //assign ide0_data_bus_in = ~ide_ignore ? ide_readdata : mmcide_readdata;
+    assign ide0_data_bus_in = mmcide_readdata;
+
+
+
+    //
     // KFTVGA
     //
     
@@ -1368,6 +1452,11 @@ end
         begin
             data_bus_out_from_chipset <= 1'b1;
             data_bus_out <= joy_data;
+        end
+        else if ((~ide0_chip_select_n) && (~io_read_n))
+        begin
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= xt2ide0_data_bus_out;
         end
         else
         begin

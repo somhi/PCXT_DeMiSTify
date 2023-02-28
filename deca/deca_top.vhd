@@ -36,9 +36,15 @@ entity deca_top is
 		VGA_R  : out std_logic_vector(3 downto 0);
 		VGA_G  : out std_logic_vector(3 downto 0);
 		VGA_B  : out std_logic_vector(3 downto 0);
-		--COMPOSITE VIDEO
-		SPI_CS0_CLKBD 	: out std_logic;		--1 PIN
-		SPI_MOSI 		: out std_logic;		--OPTIONAL 2 PIN
+		--SECONDARY SD
+		SPI_MOSI 		: inout  std_logic;		--CMD
+		SPI_MISO_WSBD	: inout  std_logic;		--dat0
+		SPI_SCLK_DABD	: out 	 std_logic;		--sck
+		SPI_CS0_CLKBD 	: inout  std_logic;		--dat3
+		--SPI_CS1			: in	std_logic;		--CD
+		UART_RXD 		: inout std_logic;		--dat2
+		UART_TXD 		: inout std_logic;		--dat1
+
 		-- -- AUDIO
 		-- SIGMA_R : out std_logic;
 		-- SIGMA_L : out std_logic;
@@ -54,10 +60,9 @@ entity deca_top is
 		PS2_MOUSE_CLK    : inout std_logic;
 		PS2_MOUSE_DAT    : inout std_logic;
 		-- UART
-		UART_RXD : in std_logic;
-		UART_TXD : out std_logic;
-		SPI_CS1 : in std_logic;			--CTS
-		SPI_CS2 : out std_logic;		--RTS
+
+		--SPI_CS1 : in std_logic;			--CTS
+		--SPI_CS2 : out std_logic;		--RTS
 		-- JOYSTICK
 		JOY1_B2_P9 : in std_logic;
 		JOY1_B1_P6 : in std_logic;
@@ -271,6 +276,8 @@ architecture RTL of deca_top is
 
 	signal act_led : std_logic;
 
+	signal SDIO_DAT : STD_LOGIC_VECTOR(3 DOWNTO 0);
+
 begin
 
 
@@ -347,8 +354,8 @@ begin
 	VGA_VS      <= vga_vsync;
 
 	-- Composite video output
-	SPI_CS0_CLKBD  	<= composite_output(0);		--1 PIN
-	SPI_MOSI 		<= composite_output(1);		--OPTIONAL 2 PIN
+	--SPI_CS0_CLKBD  	<= composite_output(0);		--1 PIN
+	--SPI_MOSI 		<= composite_output(1);		--OPTIONAL 2 PIN
 
 	-- DECA AUDIO CODEC
 	
@@ -447,11 +454,11 @@ begin
 			SDRAM_CLK  => DRAM_CLK,
 			SDRAM_CKE  => DRAM_CKE,
 			--UART
-			UART_TX => UART_TXD,
-			UART_RX => UART_RXD,
+		--	UART_TX => UART_TXD,
+		--	UART_RX => UART_RXD,
 
-			UART_CTS  => SPI_CS1,
-			UART_RTS  => SPI_CS2,
+		--	UART_CTS  => SPI_CS1,
+		--	UART_RTS  => SPI_CS2,
 
 			--SPI
 --			SPI_SD_DI  => sd_miso,
@@ -490,10 +497,18 @@ begin
 			PS2K_MOUSE_CLK_IN => ps2_mouse_clk_in,
 			PS2K_MOUSE_DAT_IN => ps2_mouse_dat_in,
 			PS2K_MOUSE_CLK_OUT => ps2_mouse_clk_out,
-			PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out
+			PS2K_MOUSE_DAT_OUT => ps2_mouse_dat_out,
+
+			SDIO_CLK 			=> SPI_SCLK_DABD,
+			SDIO_DAT 			=> SDIO_DAT,
+			SDIO_CMD 			=> SPI_MOSI
 
 		);
 
+		SPI_MISO_WSBD	<= SDIO_DAT(0);		--dat0
+		UART_RXD 		<= SDIO_DAT(1);		--dat1
+		UART_TXD 		<= SDIO_DAT(2);		--dat2
+		SPI_CS0_CLKBD 	<= SDIO_DAT(3);		--dat3
 
 		-- Pass internal signals to external SPI interface
 		sd_clk <= spi_clk_int;

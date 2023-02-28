@@ -74,8 +74,17 @@ module PCXT
         input         PS2K_MOUSE_CLK_IN,
         input         PS2K_MOUSE_DAT_IN,
         output        PS2K_MOUSE_CLK_OUT,
-        output        PS2K_MOUSE_DAT_OUT
+        output        PS2K_MOUSE_DAT_OUT,
 
+        //SD-SPI
+        // output        SD_CS,
+        // output        SD_SCK,
+        // inout         SD_MOSI,
+        // inout         SD_MISO
+        //////////// SDIO ///////////
+        inout   [3:0] SDIO_DAT,
+        inout         SDIO_CMD,
+        output        SDIO_CLK
     );
 
     wire CLK_50M;
@@ -1017,6 +1026,14 @@ module PCXT
 		.uart_dsr_n                         (1'b0),		//(uart_dsr),
 		.uart_rts_n                         (UART_RTS),
 	//	.uart_dtr_n                         (uart_dtr),
+        .use_mmc                            (use_mmc),
+		.mmc_clk                            (mmc_clk),
+		.mmc_cmd_in                         (mmc_cmd_in),
+		.mmc_cmd_out                        (mmc_cmd_out),
+		.mmc_cmd_io                         (mmc_cmd_io),
+		.mmc_dat_in                         (mmc_dat_in),
+		.mmc_dat_out                        (mmc_dat_out),
+		.mmc_dat_io                         (mmc_dat_io),
 		.enable_sdram                       (1'b1),
 		.initilized_sdram                   (initilized_sdram),
 		.sdram_clock                        (clk_chipset),    //SDRAM_CLK phased is sent to SDRAM pin 
@@ -1262,6 +1279,51 @@ module PCXT
 
 	// UART1 connected to external cable to host for serdrive
 	// UART2 connected internally in Peripherals.sv for serial mouse
+
+
+    //
+    ///////////////////////   MMC     ///////////////////////
+    //
+    logic use_mmc;
+    logic mmc_clk;
+    logic mmc_cmd_in;
+    logic mmc_cmd_out;
+    logic mmc_cmd_io;
+    logic mmc_dat_in;
+    logic mmc_dat_out;
+    logic mmc_dat_io;
+
+    // always @(posedge clk_chipset)
+    //     if (reset)
+    //         use_mmc <= 1'b1; //status[21];
+    //     else
+    //         use_mmc <= use_mmc;
+
+    // assign  SD_SCK    = mmc_clk;
+
+    // assign  SD_MOSI    = (~mmc_cmd_io & ~mmc_cmd_out) ? 1'b0 : 1'bz;
+    // assign  mmc_cmd_in  = SD_MOSI;
+
+    // assign  SD_MISO = (~mmc_dat_io & ~mmc_dat_out) ? 1'b0 : 1'bz;
+    // assign  mmc_dat_in  = SD_MISO;
+
+    // assign SD_CS = 1'b0;
+
+    assign use_mmc = 1'b1;
+
+    assign  SDIO_CLK    = mmc_clk;
+
+    assign  SDIO_CMD    = (~mmc_cmd_io & ~mmc_cmd_out) ? 1'b0 : 1'bz;
+    assign  mmc_cmd_in  = SDIO_CMD;
+
+    assign  SDIO_DAT[0] = (~mmc_dat_io & ~mmc_dat_out) ? 1'b0 : 1'bz;
+    assign  mmc_dat_in  = SDIO_DAT[0];
+    // assign  SDIO_DAT[1] = 1'bz;
+    // assign  SDIO_DAT[2] = 1'bz;
+    // assign  SDIO_DAT[3] = 1'bz;
+    assign  SDIO_DAT[1] = 1'b1;
+    assign  SDIO_DAT[2] = 1'b1;
+    assign  SDIO_DAT[3] = 1'b1;        
 
     //
     ///////////////////////   VIDEO   ///////////////////////
