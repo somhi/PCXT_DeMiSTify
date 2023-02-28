@@ -294,8 +294,7 @@ set_global_assignment -name VERILOG_MACRO "DEMISTIFY_MIST=1"
 set_global_assignment -name SDC_FILE constraints.sdc
 set_global_assignment -name QIP_FILE top.qip
 set_global_assignment -name QIP_FILE ../files.qip
-set_global_assignment -name QIP_FILE ../mist-modules/mist_core.qip
-set_global_assignment -name VERILOG_FILE ../mist-modules/data_io.v
+set_global_assignment -name QIP_FILE ../mist-modules/mist.qip
 set_global_assignment -name PRE_FLOW_SCRIPT_FILE "quartus_sh:../build_id.tcl"
 
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top

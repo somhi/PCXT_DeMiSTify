@@ -107,6 +107,7 @@ module PCXT
 		"OHI,CPU Speed,4.77MHz,7.16MHz,9.54MHz,PC/AT 3.5MHz;",
         //"OJK,Write Protect,None,A:,B:,A: & B:;",    
 		//
+        "S1,IMGVHD,Mount IDE:;",
 		"P1,BIOS;",
 		"P1F,ROM,PCXT BIOS:;",
 		"P1F,ROM,Tandy BIOS:;",
@@ -204,6 +205,19 @@ module PCXT
     //wire std_hsyncwidth;
     wire pause_core;
 
+    // Virtual HDD Bus
+    // TODO: Please connect to data_io
+    wire        hdd_cmd_req;
+    wire        hdd_dat_req;
+    wire  [2:0] hdd_addr;
+    wire [15:0] hdd_data_out;
+    wire [15:0] hdd_data_in;
+    wire        hdd_wr;
+    wire        hdd_status_wr;
+    wire        hdd_data_wr;
+    wire        hdd_data_rd;
+
+
     always @(posedge CLK_VIDEO)
     begin
         //scale_video_ff          <= scale;
@@ -266,7 +280,8 @@ module PCXT
     assign ps2_mouse_data_in  = PS2K_MOUSE_DAT_IN;
     `endif
 
-    data_io data_io 
+//    data_io data_io 
+    data_io #(.ENABLE_IDE(1'b1)) data_io
 	(
 		.clk_sys    ( clk_chipset ),
 		.SPI_SCK    ( SPI_SCK ),
@@ -281,8 +296,22 @@ module PCXT
 		// ram interface
 		.ioctl_wr   ( ioctl_wr     ),
 		.ioctl_addr ( ioctl_addr   ),
-		.ioctl_dout ( ioctl_data   )
+		.ioctl_dout ( ioctl_data   ),
 	//  .ioctl_din  ( ioctl_din    )
+
+        .hdd_clk       ( clk_cpu      ),
+        .hdd_cmd_req   ( hdd_cmd_req  ),
+        .hdd_dat_req   ( hdd_dat_req  ),
+    //    .hdd_cdda_req  ( hdd_cdda_req ),
+    //    .hdd_cdda_wr   ( hdd_cdda_wr  ),
+        .hdd_status_wr ( hdd_status_wr),
+        .hdd_addr      ( hdd_addr     ),
+        .hdd_wr        ( hdd_wr       ),
+        .hdd_data_out  ( hdd_data_out ),
+        .hdd_data_in   ( hdd_data_in  ),
+        .hdd_data_rd   ( hdd_data_rd  ),
+        .hdd_data_wr   ( hdd_data_wr  )
+
 	);
 
     //
@@ -1036,6 +1065,15 @@ module PCXT
 		.ems_address                        (status[13:12]),
 		.bios_protect_flag                  (bios_protect_flag),
         .clock_rate                         (cur_rate),
+		.hdd_cmd_req                        (hdd_cmd_req),
+		.hdd_dat_req                        (hdd_dat_req),
+		.hdd_addr                           (hdd_addr),
+		.hdd_data_out                       (hdd_data_out),
+		.hdd_data_in                        (hdd_data_in),
+		.hdd_wr                             (hdd_wr),
+		.hdd_status_wr                      (hdd_status_wr),
+		.hdd_data_wr                        (hdd_data_wr),
+		.hdd_data_rd                        (hdd_data_rd),
 		.xtctl                              (xtctl),
 		.enable_a000h                       (a000h),
 		.wait_count_clk_en                  (~clk_cpu & clk_cpu_ff_2),

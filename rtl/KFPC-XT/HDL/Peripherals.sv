@@ -117,6 +117,16 @@ module PERIPHERALS #(
         output  logic           ems_b4,
         //
         input   logic   [27:0]  clock_rate,
+        // Virtual HDD Bus
+        output  logic           hdd_cmd_req,
+        output  logic           hdd_dat_req,
+        input   logic   [2:0]   hdd_addr,
+        input   logic   [15:0]  hdd_data_out,
+        output  logic   [15:0]  hdd_data_in,
+        input   logic           hdd_wr,
+        input   logic           hdd_status_wr,
+        input   logic           hdd_data_wr,
+        input   logic           hdd_data_rd,
         // XTCTL DATA
         output  logic   [7:0]   xtctl = 8'h00,
         output  logic           pause_core
@@ -215,7 +225,7 @@ module PERIPHERALS #(
     assign  ems_b2                  = (~iorq && ena_ems[1] && (address[19:14] == {ems_page_address, 2'b01})); // C4000h - D4000h - E4000h
     assign  ems_b3                  = (~iorq && ena_ems[2] && (address[19:14] == {ems_page_address, 2'b10})); // C8000h - D8000h - E8000h
     assign  ems_b4                  = (~iorq && ena_ems[3] && (address[19:14] == {ems_page_address, 2'b11})); // CC000h - DC000h - EC000h
-    //wire    ide0_chip_select_n      = ~(iorq && ~address_enable_n && ({address[15:4], 4'd0} == 16'h0300));
+    wire    ide0_chip_select_n      = ~(iorq && ~address_enable_n && ({address[15:4], 4'd0} == 16'h0300));
     //wire    floppy0_chip_select_n   = ~(~address_enable_n && (({address[15:2], 2'd0} == 16'h03F0) || ({address[15:1], 1'd0} == 16'h03F4) || ({address[15:0]} == 16'h03F7)));
 
     logic   [1:0]   ems_access_address;
@@ -1274,6 +1284,112 @@ end
 
 
     //
+    // XT2IDE
+    //
+    logic   [7:0]   xt2ide0_data_bus_out;
+    logic           ide0_cs1fx;
+    logic           ide0_cs3fx;
+    logic           ide0_io_read_n;
+    logic           ide0_io_write_n;
+    logic   [2:0]   ide0_address;
+    logic   [15:0]  ide0_data_bus_in;
+    logic   [15:0]  ide0_data_bus_out;
+
+    XT2IDE xt2ide0 (
+        .clock              (clock),
+        .reset              (reset),
+
+        .high_speed         (0),
+
+        .chip_select_n      (ide0_chip_select_n),
+        .io_read_n          (io_read_n),
+        .io_write_n         (io_write_n),
+
+        .address            (address[3:0]),
+        .data_bus_in        (internal_data_bus),
+        .data_bus_out       (xt2ide0_data_bus_out),
+
+        .ide_cs1fx          (ide0_cs1fx),
+        .ide_cs3fx          (ide0_cs3fx),
+        .ide_io_read_n      (ide0_io_read_n),
+        .ide_io_write_n     (ide0_io_write_n),
+
+        .ide_address        (ide0_address),
+        .ide_data_bus_in    (ide0_data_bus_in),
+        .ide_data_bus_out   (ide0_data_bus_out)
+    );
+
+
+    //
+    // IDE
+    //
+    logic           mgmt_ide0_cs;
+    logic [15:0]    mgmt_ide0_readdata;
+    logic           ide0_command_cs;
+    logic           ide0_control_cs;
+    logic           ide0_comd_ctrl_select;
+    logic           ide0_io_read;
+    logic           ide0_io_read_1;
+    logic           ide0_io_write;
+    logic           prev_ide0_io_read;
+    logic           prev_ide0_io_write;
+    logic [3:0]     ide0_address_1;
+    logic [15:0]    ide0_writedata;
+    logic [15:0]    ide_readdata;
+    logic           ide_ignore;
+
+    assign ide0_command_cs  = ~ide0_cs1fx;
+    assign ide0_control_cs  = ~ide0_cs3fx & &ide0_address[2:1];
+    assign ide0_io_read     = ~ide0_io_read_n  & (ide0_command_cs | ide0_control_cs);
+    assign ide0_io_write    = ~ide0_io_write_n & (ide0_command_cs | ide0_control_cs);
+
+    always_ff @(posedge clock)
+    begin
+        ide0_io_read_1          <= ide0_io_read;
+        prev_ide0_io_read       <= ide0_io_read_1;
+        prev_ide0_io_write      <= ide0_io_write;
+        ide0_address_1          <= ~ide0_control_cs ? {1'b0, ide0_address} : {1'b1, ide0_address};
+        ide0_writedata          <= ide0_data_bus_out;
+    end
+
+    wire ide0_read_edge     = ide0_io_read   & ~prev_ide0_io_read;
+    wire ide0_write_edge    = ~ide0_io_write & prev_ide0_io_write;
+
+    ide ide (
+        .clk                (clock),
+        .clk_en             (1'b1),
+        .reset              (reset),
+        .address_in         ((ide0_read_edge && ide0_address_1 == 4'hE) ? 3'd7 : ide0_address_1[2:0]),
+        .sel_secondary      (1'b0),
+        .data_in            (ide0_writedata),
+        .data_out           (ide0_data_bus_in),
+ //       .data_oe            (),
+        .rd                 (ide0_read_edge),
+        .hwr                (ide0_write_edge),
+        .lwr                (ide0_write_edge),
+        .sel_ide            (ide0_read_edge | ide0_write_edge),
+//        .intreq             (),
+        .intreq_ack         (1'b0),     // interrupt clear
+//        .nrdy               (),     // fifo is not ready for reading 
+        .hdd0_ena           (2'b10),     // enables Master & Slave drives on primary channel
+        .hdd1_ena           (2'b11),     // enables Master & Slave drives on secondary channel
+//        .fifo_rd            (),
+//        .fifo_wr            (),
+
+        // connection to the IO-Controller
+        .hdd_cmd_req        (hdd_cmd_req),
+        .hdd_dat_req        (hdd_dat_req),
+        .hdd_status_wr      (hdd_status_wr),
+        .hdd_addr           (hdd_addr),
+        .hdd_wr             (hdd_wr),
+        .hdd_data_in        (hdd_data_in),
+        .hdd_data_out       (hdd_data_out),
+        .hdd_data_rd        (hdd_data_rd),
+        .hdd_data_wr        (hdd_data_wr)
+    );
+
+
+    //
     // data_bus_out
     //
     
@@ -1368,6 +1484,11 @@ end
         begin
             data_bus_out_from_chipset <= 1'b1;
             data_bus_out <= joy_data;
+        end
+        else if ((~ide0_chip_select_n) && (~io_read_n))
+        begin
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= xt2ide0_data_bus_out;
         end
         else
         begin
