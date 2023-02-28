@@ -34,7 +34,7 @@ module PCXT
         output        SDRAM_CLK,
         output        SDRAM_CKE,
 
-        output        SPI_DO,
+        inout         SPI_DO,
         input         SPI_DI,
         input         SPI_SCK,
         input         SPI_SS2,
@@ -81,6 +81,7 @@ module PCXT
     wire CLK_50M;
     assign CLK_50M = CLOCK_27;
     assign LED =  ~ioctl_download;   //1'b1;
+    //assign LED =  reset_wire;
 
     ///////// Default values for ports not used in this core /////////
 
@@ -284,6 +285,7 @@ module PCXT
 		.clk_sys    ( clk_chipset ),
 		.SPI_SCK    ( SPI_SCK ),
 		.SPI_SS2    ( SPI_SS2 ),
+        .SPI_SS4    ( SPI_SS4 ),
 		.SPI_DI     ( SPI_DI  ),
 		.SPI_DO     ( SPI_DO  ),
 
