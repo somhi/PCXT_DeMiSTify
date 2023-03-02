@@ -1316,6 +1316,7 @@ end
 
         .ide_address        (ide0_address),
         .ide_data_bus_in    (ide0_data_bus_in),
+//        .ide_data_bus_in    ({ide0_data_bus_in[7:0], ide0_data_bus_in[15:8]}),
         .ide_data_bus_out   (ide0_data_bus_out)
     );
 
@@ -1350,6 +1351,7 @@ end
         prev_ide0_io_write      <= ide0_io_write;
         ide0_address_1          <= ~ide0_control_cs ? {1'b0, ide0_address} : {1'b1, ide0_address};
         ide0_writedata          <= ide0_data_bus_out;
+//        ide0_writedata          <= {ide0_data_bus_out[7:0], ide0_data_bus_out[15:8]};
     end
 
     wire ide0_read_edge     = ide0_io_read   & ~prev_ide0_io_read;

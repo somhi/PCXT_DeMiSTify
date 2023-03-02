@@ -81,7 +81,6 @@ module PCXT
     wire CLK_50M;
     assign CLK_50M = CLOCK_27;
     assign LED =  ~ioctl_download;   //1'b1;
-    //assign LED =  reset_wire;
 
     ///////// Default values for ports not used in this core /////////
 
@@ -299,7 +298,7 @@ module PCXT
 		.ioctl_dout ( ioctl_data   ),
 	//  .ioctl_din  ( ioctl_din    )
 
-        .hdd_clk       ( clk_chipset  ),        //clk_cpu
+        .hdd_clk       ( clk_chipset  ),        //clk_cpu    //clk_chipset  same as data_io and ide module
         .hdd_cmd_req   ( hdd_cmd_req  ),
         .hdd_dat_req   ( hdd_dat_req  ),
     //    .hdd_cdda_req  ( hdd_cdda_req ),
