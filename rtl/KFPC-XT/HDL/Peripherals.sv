@@ -1336,8 +1336,9 @@ end
     logic           prev_ide0_io_write;
     logic [3:0]     ide0_address_1;
     logic [15:0]    ide0_writedata;
-    logic [15:0]    ide_readdata;
-    logic           ide_ignore;
+    logic [15:0]    ide0_drive_out;
+    logic           ide0_read_edge;
+    logic           ide0_write_edge;
 
     assign ide0_command_cs  = ~ide0_cs1fx;
     assign ide0_control_cs  = ~ide0_cs3fx & &ide0_address[2:1];
@@ -1350,12 +1351,12 @@ end
         prev_ide0_io_read       <= ide0_io_read_1;
         prev_ide0_io_write      <= ide0_io_write;
         ide0_address_1          <= ~ide0_control_cs ? {1'b0, ide0_address} : {1'b1, ide0_address};
-        ide0_writedata          <= ide0_data_bus_out;
-//        ide0_writedata          <= {ide0_data_bus_out[7:0], ide0_data_bus_out[15:8]};
+//        ide0_writedata          <= ide0_data_bus_out;
+        ide0_writedata          <= {ide0_data_bus_out[7:0], ide0_data_bus_out[15:8]};
+        ide0_read_edge          <= ide0_io_read   & ~prev_ide0_io_read;
     end
 
-    wire ide0_read_edge     = ide0_io_read   & ~prev_ide0_io_read;
-    wire ide0_write_edge    = ~ide0_io_write & prev_ide0_io_write;
+    assign  ide0_write_edge = ~ide0_io_write & prev_ide0_io_write;
 
     ide ide (
         .clk                (clock),
@@ -1364,7 +1365,7 @@ end
         .address_in         ((ide0_read_edge && ide0_address_1 == 4'hE) ? 3'd7 : ide0_address_1[2:0]),
         .sel_secondary      (1'b0),
         .data_in            (ide0_writedata),
-        .data_out           (ide0_data_bus_in),
+        .data_out           (ide0_drive_out),
  //       .data_oe            (),
         .rd                 (ide0_read_edge),
         .hwr                (ide0_write_edge),
@@ -1373,8 +1374,8 @@ end
 //        .intreq             (),
         .intreq_ack         (1'b0),     // interrupt clear
 //        .nrdy               (),     // fifo is not ready for reading 
-        .hdd0_ena           (2'b10),     // enables Master & Slave drives on primary channel
-        .hdd1_ena           (2'b11),     // enables Master & Slave drives on secondary channel
+        .hdd0_ena           (2'b11),     // enables Master & Slave drives on primary channel
+        .hdd1_ena           (2'b00),     // enables Master & Slave drives on secondary channel
 //        .fifo_rd            (),
 //        .fifo_wr            (),
 
@@ -1389,6 +1390,16 @@ end
         .hdd_data_rd        (hdd_data_rd),
         .hdd_data_wr        (hdd_data_wr)
     );
+
+    always_ff @(posedge clock)
+    begin
+        if (reset)
+            ide0_data_bus_in <= 16'h0000;
+        else if (ide0_read_edge)
+            ide0_data_bus_in <= {ide0_drive_out[7:0], ide0_drive_out[15:8]};
+        else
+            ide0_data_bus_in <= ide0_data_bus_in;
+    end
 
 
     //
