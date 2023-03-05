@@ -1374,7 +1374,7 @@ end
 //        .intreq             (),
         .intreq_ack         (1'b0),     // interrupt clear
 //        .nrdy               (),     // fifo is not ready for reading 
-        .hdd0_ena           (2'b11),     // enables Master & Slave drives on primary channel
+        .hdd0_ena           (2'b01),     // enables Master & Slave drives on primary channel
         .hdd1_ena           (2'b00),     // enables Master & Slave drives on secondary channel
 //        .fifo_rd            (),
 //        .fifo_wr            (),
