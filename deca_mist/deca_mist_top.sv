@@ -72,8 +72,11 @@ module deca_mist_top (
    output [3:0]  VGA_B,
 
    //UART
-   input     UART_RXD,
-   output    UART_TXD
+   input     UART_RXD,        //DETO1
+   output    UART_TXD,        //DETO2
+   input     DETO3_JOY_MUX,   //CTS
+   output    DETO4            //RTS 
+
 );
 
 wire [7:0]  r_aux, g_aux, b_aux;	
@@ -120,7 +123,9 @@ PCXT guest
    .VGA_B		(b_aux),
 
    .UART_RX		(UART_RXD),	
-   .UART_TX		(UART_TXD)	
+   .UART_TX		(UART_TXD),
+   .UART_CTS   (DETO3_JOY_MUX),
+   .UART_RTS   (DETO4)	
 
 );
 
