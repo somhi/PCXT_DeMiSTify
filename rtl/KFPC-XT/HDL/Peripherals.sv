@@ -1370,7 +1370,8 @@ end
         .rd                 (ide0_read_edge),
         .hwr                (ide0_write_edge),
         .lwr                (ide0_write_edge),
-        .sel_ide            (ide0_read_edge | ide0_write_edge),
+//        .sel_ide            (ide0_read_edge | ide0_write_edge),
+        .sel_ide            (ide0_read_edge | (ide0_write_edge & !ide0_address_1[3])),
 //        .intreq             (),
         .intreq_ack         (1'b0),     // interrupt clear
 //        .nrdy               (),     // fifo is not ready for reading 
