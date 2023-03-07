@@ -1165,7 +1165,7 @@ end
         vram_ip_16  cga_vram   	// 16 kB  (Tandy games don't work)
         (
             .clock_a                  (clock),
-            .enable_a                 (~cga_chip_select_n_1),
+            .enable_a                 (cga_mem_select_1),
             .wren_a                   (~video_memory_write_n & memory_write_n),
             .address_a                (tandy_video ? video_ram_address : video_ram_address[13:0]),
             .data_a                   (video_ram_data),
@@ -1180,10 +1180,8 @@ end
 
     `elsif NO_CGA
 
-        // NO CGA IN ATLAS CYC1000  (only 66 M9K)
+        // NO CGA 
         // 32 Kb CGA represent 64 M9K alone
-        // NO CGA IN SIDI
-        // NO CGA IN MIST  (only 66 M9K)
 
     `else
 
