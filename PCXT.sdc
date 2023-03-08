@@ -92,6 +92,8 @@ set_input_delay -clock  { sdramclk } -min 3 [get_ports $RAM_IN]
 set_output_delay -clock { sdramclk } -max 2   [get_ports $RAM_OUT]
 set_output_delay -clock { sdramclk } -min 1.5 [get_ports $RAM_OUT]
 
+# sdramclk -> clk_chipset
+set_multicycle_path -from { sdramclk } -to [get_clocks ${topmodule}pll|altpll_component|auto_generated|pll1|clk[1]] -setup -end 2
 
 ################################
 
@@ -104,6 +106,9 @@ set_clock_groups -asynchronous -group [get_clocks $supportclk] -group [get_clock
 set_clock_groups -asynchronous -group [get_clocks spiclk] -group [get_clocks sdramclk]
 set_clock_groups -asynchronous -group [get_clocks $hostclk] -group [get_clocks sdramclk]
 set_clock_groups -asynchronous -group [get_clocks $supportclk] -group [get_clocks sdramclk]
+
+set_clock_groups -asynchronous -group [get_clocks ${topmodule}pll|*] -group [get_clocks ${topmodule}pllvideo|*]
+
 
 set_false_path -to ${FALSE_OUT}
 set_false_path -from ${FALSE_IN}
