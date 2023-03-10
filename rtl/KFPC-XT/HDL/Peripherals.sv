@@ -436,7 +436,7 @@ module PERIPHERALS #(
 
 
     `ifdef MIST_SIDI
-    KFPS2KB u_KFPS2KB 
+    KFPS2KB u_KFPS2KB               // original MiSTer module
     (
         // Bus
         .clock                      (clock),
@@ -454,7 +454,7 @@ module PERIPHERALS #(
         .pause_core                 (pause_core)
     );
     `else 
-    KFPS2KB_direct u_KFPS2KB 
+    KFPS2KB_direct u_KFPS2KB        //modified by kitune-san to avoid keyboard controller error  with DeMiSTified ports
     (
         // Bus
         .clock                      (clock),
