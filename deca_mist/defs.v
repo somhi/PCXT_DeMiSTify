@@ -7,8 +7,7 @@
 //`define NO_ADLIB	 //4 M9K
 //`define NO_CMSOUND     //
 //`define NO_CREDITS     //10 M9K
-//`define NO_MDA	 //8 M9K
-//`define NO_CGA
+//`define NO_CGA	//if not CGA, only MDA is available
 //`define CGA_16
 `define CGA_32			
 //`define CGA_64

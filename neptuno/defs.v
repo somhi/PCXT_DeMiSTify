@@ -3,8 +3,7 @@
 //`define NO_ADLIB
 //`define NO_CMSOUND
 //`define NO_CREDITS
-//`define NO_MDA
-//`define NO_CGA
+//`define NO_CGA	//if not CGA, only MDA is available
 //`define CGA_16
 //`define CGA_32	// 119 / 260 ( 65 % )	=>  86 / 260 ( 33 % )		
 //`define CGA_64	// 182 / 260

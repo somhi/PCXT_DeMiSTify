@@ -1082,15 +1082,15 @@ end
         vram_ip_128  cga_vram	// 128 kB
         (
             .clock_a                  (clock),
-            .enable_a                 (cga_mem_select_1 || video_mem_select_1),
+            .enable_a                 (mda_mem_select_1 | (cga_mem_select_1 || video_mem_select_1)),
             .wren_a                   (~video_memory_write_n & memory_write_n),
-            .address_a                (tandy_video ? video_mem_select_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
+            .address_a                (video_output ? video_ram_address[11:0] : tandy_video ? video_mem_select_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
             .data_a                   (video_ram_data),
             .q_a                      (cga_vram_cpu_dout),
-            .clock_b                  (clk_vga_cga),
-            .enable_b                 (CGA_VRAM_ENABLE),
+            .clock_b                  (video_output ? clk_vga_mda : clk_vga_cga),
+            .enable_b                 (MDA_VRAM_ENABLE | CGA_VRAM_ENABLE),
             .wren_b                   (1'b0),
-            .address_b                (tandy_video ? (grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : {tandy_page_data[2:0], CGA_VRAM_ADDR[13:0]} : CGA_VRAM_ADDR[13:0]),
+            .address_b                (video_output ? MDA_VRAM_ADDR[11:0] : tandy_video ? (grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : {tandy_page_data[2:0], CGA_VRAM_ADDR[13:0]} : CGA_VRAM_ADDR[13:0]),
             .data_b                   (8'h0),
             .q_b                      (CGA_VRAM_DOUT)
         );
@@ -1100,15 +1100,15 @@ end
         vram_ip_128_CV  cga_vram	// 128 kB
         (
             .clock_a                  (clock),
-            .enable_a                 (cga_mem_select_1 || video_mem_select_1),
+            .enable_a                 (mda_mem_select_1 | (cga_mem_select_1 || video_mem_select_1)),
             .wren_a                   (~video_memory_write_n & memory_write_n),
-            .address_a                (tandy_video ? video_mem_select_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
+            .address_a                (video_output ? video_ram_address[11:0] : tandy_video ? video_mem_select_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
             .data_a                   (video_ram_data),
             .q_a                      (cga_vram_cpu_dout),
-            .clock_b                  (clk_vga_cga),
-            .enable_b                 (CGA_VRAM_ENABLE),
+            .clock_b                  (video_output ? clk_vga_mda : clk_vga_cga),
+            .enable_b                 (MDA_VRAM_ENABLE | CGA_VRAM_ENABLE),
             .wren_b                   (1'b0),
-            .address_b                (tandy_video ? (grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : {tandy_page_data[2:0], CGA_VRAM_ADDR[13:0]} : CGA_VRAM_ADDR[13:0]),
+            .address_b                (video_output ? MDA_VRAM_ADDR[11:0] : tandy_video ? (grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : {tandy_page_data[2:0], CGA_VRAM_ADDR[13:0]} : CGA_VRAM_ADDR[13:0]),
             .data_b                   (8'h0),
             .q_b                      (CGA_VRAM_DOUT)
         );
@@ -1118,15 +1118,15 @@ end
         vram_ip_64  cga_vram	// 64 kB     Improves arkanoid and Gods video output, but then Prince does not display well
         (
             .clock_a                  (clock),
-            .enable_a                 (cga_mem_select_1 || video_mem_select_1),
+            .enable_a                 (mda_mem_select_1 | (cga_mem_select_1 || video_mem_select_1)),
             .wren_a                   (~video_memory_write_n & memory_write_n),
-            .address_a                (tandy_video ? video_mem_select_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
+            .address_a                (video_output ? video_ram_address[11:0] : tandy_video ? video_mem_select_1 ? video_ram_address : tandy_page_data[3] ? {tandy_page_data[5:3], video_ram_address[13:0]} : {tandy_page_data[5:4], video_ram_address[14:0]} : video_ram_address[13:0]),
             .data_a                   (video_ram_data),
             .q_a                      (cga_vram_cpu_dout),
-            .clock_b                  (clk_vga_cga),
-            .enable_b                 (CGA_VRAM_ENABLE),
+            .clock_b                  (video_output ? clk_vga_mda : clk_vga_cga),
+            .enable_b                 (MDA_VRAM_ENABLE | CGA_VRAM_ENABLE),
             .wren_b                   (1'b0),
-            .address_b                (tandy_video ? (grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : {tandy_page_data[2:0], CGA_VRAM_ADDR[13:0]} : CGA_VRAM_ADDR[13:0]),
+            .address_b                (video_output ? MDA_VRAM_ADDR[11:0] : tandy_video ? (grph_mode & hres_mode) ? {tandy_page_data[2:1], CGA_VRAM_ADDR[14:0]} : {tandy_page_data[2:0], CGA_VRAM_ADDR[13:0]} : CGA_VRAM_ADDR[13:0]),
             .data_b                   (8'h0),
             .q_b                      (CGA_VRAM_DOUT)
         );
@@ -1136,16 +1136,16 @@ end
     `elsif CGA_32
 
         vram_ip_32	cga_vram (
-            .clock_a                  ( clock ),
-            .enable_a                 (cga_mem_select_1),
+            .clock_a                  (clock),
+            .enable_a                 (mda_mem_select_1 | cga_mem_select_1),
             .wren_a                   (~video_memory_write_n & memory_write_n),
-            .address_a                (tandy_video ? video_ram_address : video_ram_address[13:0]),
+            .address_a                (video_output ? video_ram_address[11:0] : tandy_video ? video_ram_address : video_ram_address[13:0]),
             .data_a                   (video_ram_data),
             .q_a                      (cga_vram_cpu_dout),
-            .clock_b                  (clk_vga_cga),
-            .enable_b                 (CGA_VRAM_ENABLE),
+            .clock_b                  (video_output ? clk_vga_mda : clk_vga_cga),
+            .enable_b                 (MDA_VRAM_ENABLE | CGA_VRAM_ENABLE),
             .wren_b                   (1'b0),
-            .address_b                ((tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
+            .address_b                (video_output ? MDA_VRAM_ADDR[11:0] : (tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
             .data_b                   (8'h0),
             .q_b                      (CGA_VRAM_DOUT)
         );
@@ -1155,15 +1155,15 @@ end
         vram_ip_16  cga_vram   	// 16 kB  (Tandy games don't work)
         (
             .clock_a                  (clock),
-            .enable_a                 (cga_mem_select_1),
+            .enable_a                 (mda_mem_select_1 | cga_mem_select_1),
             .wren_a                   (~video_memory_write_n & memory_write_n),
-            .address_a                (tandy_video ? video_ram_address : video_ram_address[13:0]),
+            .address_a                (video_output ? video_ram_address[11:0] : tandy_video ? video_ram_address : video_ram_address[13:0]),
             .data_a                   (video_ram_data),
             .q_a                      (cga_vram_cpu_dout),
-            .clock_b                  (clk_vga_cga),
-            .enable_b                 (CGA_VRAM_ENABLE),
+            .clock_b                  (video_output ? clk_vga_mda : clk_vga_cga),
+            .enable_b                 (MDA_VRAM_ENABLE | CGA_VRAM_ENABLE),
             .wren_b                   (1'b0),
-            .address_b                ((tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
+            .address_b                (video_output ? MDA_VRAM_ADDR[11:0] : (tandy_video & grph_mode & hres_mode) ? CGA_VRAM_ADDR[14:0] : CGA_VRAM_ADDR[13:0]),
             .data_b                   (8'h0),
             .q_b                      (CGA_VRAM_DOUT)
         );
@@ -1178,13 +1178,16 @@ end
     `endif
 
 
-    `ifdef NO_MDA
+    assign mda_vram_cpu_dout = cga_vram_cpu_dout;
+    assign MDA_VRAM_DOUT = CGA_VRAM_DOUT;
 
-        // NO MDA
 
-    `elsif MDA_CV
+    `ifdef NO_CGA       
 
-        vram_ip_4_CV mda_vram   //4 kB
+        // If not CGA then enables only a 4k MDA VRAM. 
+        // When CGA is enabled it shares video RAM with MDA
+
+        vram_ip_4 mda_vram       //4 kB
         (
             .clock_a                  (clock),
             .enable_a                 (mda_mem_select_1),
@@ -1200,23 +1203,8 @@ end
             .q_b                      (MDA_VRAM_DOUT)
         );
 
-    `else
-
-        vram_ip_4 mda_vram   //4 kB
-        (
-            .clock_a                  (clock),
-            .enable_a                 (mda_mem_select_1),
-            .wren_a                   (~video_memory_write_n),
-            .address_a                (video_ram_address[11:0]),
-            .data_a                   (video_ram_data),
-            .q_a                      (mda_vram_cpu_dout),
-            .clock_b                  (clk_vga_mda),
-            .enable_b                 (MDA_VRAM_ENABLE),
-            .wren_b                   (1'b0),
-            .address_b                (MDA_VRAM_ADDR[11:0]),
-            .data_b                   (8'h0),
-            .q_b                      (MDA_VRAM_DOUT)
-        );
+    //  `ifdef MDA_CV     
+    //  vram_ip_4_CV mda_vram    //4 kB    
 
     `endif
 

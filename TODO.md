@@ -118,16 +118,14 @@ Not all boards have the resources (BRAM, logic cells) to implement  all the soun
 `define NO_ADLIB		// Adlib sound. For boards with not enough BRAM (4/9 M9K)
 `define NO_CMSOUND      // Game Blaster sound
 //`define NO_CREDITS	// Remove Credits screen. For boards with not enough BRAM (10 M9K)
-`define NO_MDA			// Removes MDA video. For boards with not enough BRAM (8 M9K)
-//`define NO_CGA		// Removes CGA video	
+//`define NO_CGA		// Removes CGA video and enables only MDA output	
 //`define CGA_16		// Defines CGA memory (13, 32, 64, 128). Define only one of them
 //`define CGA_32		// depending of the BRAM available for your board	
 //`define CGA_64
 `define CGA_128			// BRAM usage (128 M9K)
 
 // Specific macros for Cyclone V boards
-`define MDA_CV			// MDA for Cyclone V boards
-`define CGA_128_CV 		// CGA for Cyclone V boards
+`define CGA_128_CV 		// CGA for Cyclone V boards, enables MDA video also
 
 // Specific macros for MiST / SiDi boards
 `define MIST_SIDI		// Define if your board is MiST compatible
