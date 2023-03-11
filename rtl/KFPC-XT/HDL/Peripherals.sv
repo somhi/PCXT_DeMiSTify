@@ -425,8 +425,7 @@ module PERIPHERALS #(
     end
 
 
-    `ifdef MIST_SIDI
-    KFPS2KB u_KFPS2KB 
+    KFPS2KB u_KFPS2KB               
     (
         // Bus
         .clock                      (clock),
@@ -440,46 +439,9 @@ module PERIPHERALS #(
         // I/O
         .irq                        (keybord_irq),
         .keycode                    (keycode),
+        .reset_keyboard             (~prev_ps2_reset_n & ps2_reset_n),
         .clear_keycode              (clear_keycode),
         .pause_core                 (pause_core)
-    );
-    `else 
-    KFPS2KB_direct u_KFPS2KB 
-    (
-        // Bus
-        .clock                      (clock),
-        .peripheral_clock           (peripheral_clock),
-        .reset                      (reset),
-
-        // PS/2 I/O
-        .device_clock               (ps2_clock | lock_recv_clock),
-        .device_data                (ps2_data),
-
-        // I/O
-        .irq                        (keybord_irq),
-        .keycode                    (keycode),
-        .clear_keycode              (clear_keycode),
-        .pause_core                 (pause_core)
-    );
-    `endif
-
-    // Keybord reset
-    KFPS2KB_Send_Data u_KFPS2KB_Send_Data 
-    (
-        // Bus
-        .clock                      (clock),
-        .peripheral_clock           (peripheral_clock),
-        .reset                      (reset),
-
-        // PS/2 I/O
-        .device_clock               (ps2_clock),
-        .device_clock_out           (ps2_send_clock),
-        .device_data_out            (ps2_data_out),
-        .sending_data_flag          (lock_recv_clock),
-
-        // I/O
-        .send_request               (~prev_ps2_reset_n & ps2_reset_n),
-        .send_data                  (8'hFF)
     );
 
     // Convert Tandy scancode
@@ -492,18 +454,9 @@ module PERIPHERALS #(
         .convert_data               (tandy_keycode)
     );
 
-    always_ff @(posedge clock, posedge reset)
-    begin
-        if (reset)
-            ps2_clock_out = 1'b1;
-        else
-            `ifdef MIST_SIDI
-            ps2_clock_out = ~(keybord_irq | ~ps2_send_clock | ~ps2_reset_n);
-            `else 
-            ps2_clock_out = ps2_send_clock;		// kitune-san change for direct keyboard interface
-            `endif
-    end
-
+    // No need to send any command to the PS2 keyboard, answer to reset is created locally
+    assign ps2_clock_out = 1'b1;
+    assign ps2_data_out = 1'b1;
 
     wire [7:0] jtopl2_dout;
 
