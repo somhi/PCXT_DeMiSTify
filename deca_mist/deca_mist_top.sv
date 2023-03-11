@@ -52,10 +52,10 @@ module deca_mist_top (
    //output 	 AUDIO_R, // sigma-delta DAC output right
 
    // Audio DAC DECA
-	output wire i2sMck,			//AUDIO_MCLK
-	output wire i2sSck,			//AUDIO_BCLK
-	output wire i2sLr,			//AUDIO_WCLK
-	output wire i2sD,			//AUDIO_DIN_MFP1
+	output wire I2S_MCK,			//AUDIO_MCLK
+	output wire I2S_SCK,			//AUDIO_BCLK
+	output wire I2S_LR,			//AUDIO_WCLK
+	output wire I2S_D,			//AUDIO_DIN_MFP1
 	inout  wire	AUDIO_GPIO_MFP5,
 	input  wire	AUDIO_MISO_MFP4,
 	inout  wire	AUDIO_RESET_n,
@@ -158,10 +158,10 @@ AUDIO_SPI_CTL_RD AUDIO_SPI_CTL_RD_inst (
 audio_top audio_i2s  
 (
 	.clk_50MHz (MAX10_CLK1_50),
-	.dac_MCLK  (i2sMck),
-	.dac_LRCK  (i2sLr),
-	.dac_SCLK  (i2sSck),
-	.dac_SDIN  (i2sD),
+	.dac_MCLK  (I2S_MCK),
+	.dac_LRCK  (I2S_LR),
+	.dac_SCLK  (I2S_SCK),
+	.dac_SDIN  (I2S_D),
 	.L_data    (dac_l),
 	.R_data    (dac_r)
 );
