@@ -17,6 +17,7 @@ module KFPS2KB #(
     output  logic           irq,
     output  logic   [7:0]   keycode,
     input   logic           clear_keycode,
+    input   logic           reset_keyboard,
     output  reg             pause_core
 );
     //
@@ -218,6 +219,11 @@ module KFPS2KB #(
             keycode     <= 8'h00;
             break_flag  <= 1'b0;
             pause_core  <= 1'b0;
+        end
+        else if (reset_keyboard) begin
+            irq         <= 1'b1;
+            keycode     <= 8'hAA;
+            break_flag  <= 1'b0;
         end
         else if (clear_keycode) begin
             irq         <= 1'b0;
