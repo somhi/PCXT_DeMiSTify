@@ -38,11 +38,12 @@ module sidi_top (
    output 	 SDRAM_CKE, // SDRAM Clock Enable
   
    // SPI interface to arm io controller
-   output 	 SPI_DO,
+   inout 	 SPI_DO,
    input 	 SPI_DI,
    input 	 SPI_SCK,
    input 	 SPI_SS2,
    input 	 SPI_SS3,
+   input 	 SPI_SS4,
    input 	 CONF_DATA0, 
 
    output 	 AUDIO_L, // sigma-delta DAC output left
@@ -83,7 +84,7 @@ PCXT guest       //TODO revise constraints for MiST boards
    .SPI_SCK		(SPI_SCK),
    .SPI_SS2		(SPI_SS2),
    .SPI_SS3		(SPI_SS3),
-// .SPI_SS4		(SPI_SS4),
+   .SPI_SS4		(SPI_SS4),
    .CONF_DATA0	(CONF_DATA0),
 
    .AUDIO_L  	(AUDIO_L),

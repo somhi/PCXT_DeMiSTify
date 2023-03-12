@@ -62,7 +62,15 @@ NOTE: If you leave the BIOS files into the root of the SD card with the followin
 
 ## ROM Instructions
 
-ROMs should be provided initially from the BIOS section of the OSD menu, then it is only necessary to indicate the computer model and reset, on subsequent boot of the core, it is no longer necessary to provide them, unless we want to use others. Original and copyrighted ROMs can be generated on the fly using the python scripts available in the SW folder of this repository:
+ROMs should be provided initially from the BIOS section of the OSD menu, then it is only necessary to indicate the computer model and reset, on subsequent boot of the core, it is no longer necessary to provide them, unless we want to use others. Original and copyrighted ROMs can be generated on the fly using the python scripts available in the SW folder of this repository. 
+
+Roms in SW folder correspond to following uses:
+
+* SW/ROMs  are used for ports with HD IDE implementation. If you want to use serdrive for loading floppies you need to press the ALT key during boot.
+* SW/ROMs/XT-IDE_COM are used for ports using serdrive. No need to press ALT key to load images from serial cable.
+* SW/ROMs/BASICA  updated with the "Full Operation Mode" option enabled, it is now compatible with the BASICA application and some other Tandy 1000 software that might be incompatible with this mode disabled. Thanks akeley for investigating this problem.
+
+Scripts incorporated to create the BIOSes:
 
 * `make_rom_with_ibm5160.py`: A valid ROM is created for the PCXT model (pcxt.rom) based on the original IBM 5160 ROM, requires the XTIDE BIOS at address EC00h to work with HD images.
 * `make_rom_with_jukost.py`: A valid ROM is created for the PCXT model (pcxt.rom) based on the original Juko ST ROM, and with the XTIDE BIOS embedded at address F000h.

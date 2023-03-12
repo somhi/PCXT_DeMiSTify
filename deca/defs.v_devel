@@ -8,7 +8,7 @@
 `define NO_CREDITS
 //`define NO_CGA		//if not CGA, only MDA is available
 //`define CGA_16
-`define CGA_32			
+//`define CGA_32			
 //`define CGA_64
-//`define CGA_128		//M9Ks  178 / 182  ( 98 % )  with NO_CREDITS enabled
+`define CGA_128			//M9Ks  178 / 182  ( 98 % )  with NO_CREDITS enabled
 

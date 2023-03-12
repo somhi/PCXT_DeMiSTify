@@ -21,6 +21,8 @@
 module deca_mist_top (
    input  	 MAX10_CLK1_50,
 
+   input [1:0]    KEY,
+   
 	// LED outputs
    output [7:0]   LED, // LED Yellow
 	
@@ -38,21 +40,22 @@ module deca_mist_top (
    output 	      DRAM_CKE, // SDRAM Clock Enable
 
    // SPI interface to arm io controller
-   output 	 SPI_MISO_WSBD, //SPI_DO,
+   inout 	 SPI_MISO_WSBD, //SPI_DO,
    input 	 SPI_MOSI,      //SPI_DI,
    input 	 SPI_SCLK_DABD, //SPI_SCK,
-   input 	 SPI_CS2,       //SPI_SS2,
-   input 	 SPI_CS0_CLKBD, //SPI_SS3,
-   input 	 SPI_CS1,       //CONF_DATA0, 
+   input 	 SPI_CS2,       //SPI_SS2,    (FPGA)
+   input 	 SPI_CS0_CLKBD, //SPI_SS3,    (OSD)
+   input 	 SPI_CS1,       //CONF_DATA0, (USER_IO)
+   input 	 SPI_SS4,       //SPI_SS4,    (SD DIRECT)
 
    //output 	 AUDIO_L, // sigma-delta DAC output left
    //output 	 AUDIO_R, // sigma-delta DAC output right
 
    // Audio DAC DECA
-	output wire i2sMck,			//AUDIO_MCLK
-	output wire i2sSck,			//AUDIO_BCLK
-	output wire i2sLr,			//AUDIO_WCLK
-	output wire i2sD,			//AUDIO_DIN_MFP1
+	output wire I2S_MCK,			//AUDIO_MCLK
+	output wire I2S_SCK,			//AUDIO_BCLK
+	output wire I2S_LR,			//AUDIO_WCLK
+	output wire I2S_D,			//AUDIO_DIN_MFP1
 	inout  wire	AUDIO_GPIO_MFP5,
 	input  wire	AUDIO_MISO_MFP4,
 	inout  wire	AUDIO_RESET_n,
@@ -69,8 +72,11 @@ module deca_mist_top (
    output [3:0]  VGA_B,
 
    //UART
-   input     UART_RXD,
-   output    UART_TXD
+   input     UART_RXD,        //DETO1
+   output    UART_TXD,        //DETO2
+   input     DETO3_JOY_MUX,   //CTS
+   output    DETO4            //RTS 
+
 );
 
 wire [7:0]  r_aux, g_aux, b_aux;	
@@ -81,7 +87,7 @@ assign LED[7:1]='1;
 PCXT guest       
 (
    .CLOCK_27 	(MAX10_CLK1_50),
-   .RESET_N    (1'b1),        //very important to pass this reset signal
+   .RESET_N    (KEY[0]),        //1'b1 very important to pass this reset signal
    .LED      	(~LED[0]),
 
    .SDRAM_DQ	(DRAM_DQ),	
@@ -101,7 +107,7 @@ PCXT guest
    .SPI_SCK		(SPI_SCLK_DABD),
    .SPI_SS2		(SPI_CS2),
    .SPI_SS3		(SPI_CS0_CLKBD),
-// .SPI_SS4		(SPI_SS4),
+   .SPI_SS4		(SPI_SS4),
    .CONF_DATA0	(SPI_CS1),
 
 // .AUDIO_L  	(AUDIO_L),
@@ -117,7 +123,9 @@ PCXT guest
    .VGA_B		(b_aux),
 
    .UART_RX		(UART_RXD),	
-   .UART_TX		(UART_TXD)	
+   .UART_TX		(UART_TXD),
+   .UART_CTS   (DETO3_JOY_MUX),
+   .UART_RTS   (DETO4)	
 
 );
 
@@ -150,10 +158,10 @@ AUDIO_SPI_CTL_RD AUDIO_SPI_CTL_RD_inst (
 audio_top audio_i2s  
 (
 	.clk_50MHz (MAX10_CLK1_50),
-	.dac_MCLK  (i2sMck),
-	.dac_LRCK  (i2sLr),
-	.dac_SCLK  (i2sSck),
-	.dac_SDIN  (i2sD),
+	.dac_MCLK  (I2S_MCK),
+	.dac_LRCK  (I2S_LR),
+	.dac_SCLK  (I2S_SCK),
+	.dac_SDIN  (I2S_D),
 	.L_data    (dac_l),
 	.R_data    (dac_r)
 );

@@ -34,7 +34,11 @@ module PCXT
         output        SDRAM_CLK,
         output        SDRAM_CKE,
 
+    	`ifdef MIST_SIDI
+        inout         SPI_DO,
+    	`else 
         output        SPI_DO,
+    	`endif
         input         SPI_DI,
         input         SPI_SCK,
         input         SPI_SS2,
@@ -204,6 +208,18 @@ module PCXT
     //wire std_hsyncwidth;
     wire pause_core;
 
+    // Virtual HDD Bus
+    wire        hdd_cmd_req;
+    wire        hdd_dat_req;
+    wire  [2:0] hdd_addr;
+    wire [15:0] hdd_data_out;
+    wire [15:0] hdd_data_in;
+    wire        hdd_wr;
+    wire        hdd_status_wr;
+    wire        hdd_data_wr;
+    wire        hdd_data_rd;
+
+
     always @(posedge CLK_VIDEO)
     begin
         //scale_video_ff          <= scale;
@@ -217,7 +233,7 @@ module PCXT
     // .PS2DIV(2000) value is adequate
 
     `ifdef MIST_SIDI
-    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1)) user_io
+    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1), .FEATURES(32'h10) /* FEAT_IDE0_ATA */) user_io
     `else 
     user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000)) user_io 
     `endif
@@ -266,11 +282,13 @@ module PCXT
     assign ps2_mouse_data_in  = PS2K_MOUSE_DAT_IN;
     `endif
 
-    data_io data_io 
+//    data_io data_io 
+    data_io #(.ENABLE_IDE(1'b1)) data_io
 	(
 		.clk_sys    ( clk_chipset ),
 		.SPI_SCK    ( SPI_SCK ),
 		.SPI_SS2    ( SPI_SS2 ),
+        .SPI_SS4    ( SPI_SS4 ),
 		.SPI_DI     ( SPI_DI  ),
 		.SPI_DO     ( SPI_DO  ),
 
@@ -281,8 +299,22 @@ module PCXT
 		// ram interface
 		.ioctl_wr   ( ioctl_wr     ),
 		.ioctl_addr ( ioctl_addr   ),
-		.ioctl_dout ( ioctl_data   )
+		.ioctl_dout ( ioctl_data   ),
 	//  .ioctl_din  ( ioctl_din    )
+
+        .hdd_clk       ( clk_chipset  ),        //clk_cpu    //clk_chipset  same as data_io and ide module
+        .hdd_cmd_req   ( hdd_cmd_req  ),
+        .hdd_dat_req   ( hdd_dat_req  ),
+    //  .hdd_cdda_req  ( hdd_cdda_req ),
+    //  .hdd_cdda_wr   ( hdd_cdda_wr  ),
+        .hdd_status_wr ( hdd_status_wr),
+        .hdd_addr      ( hdd_addr     ),
+        .hdd_wr        ( hdd_wr       ),
+        .hdd_data_out  ( hdd_data_out ),
+        .hdd_data_in   ( hdd_data_in  ),
+        .hdd_data_rd   ( hdd_data_rd  ),
+        .hdd_data_wr   ( hdd_data_wr  )
+
 	);
 
     //
@@ -1036,6 +1068,15 @@ module PCXT
 		.ems_address                        (status[13:12]),
 		.bios_protect_flag                  (bios_protect_flag),
         .clock_rate                         (cur_rate),
+		.hdd_cmd_req                        (hdd_cmd_req),
+		.hdd_dat_req                        (hdd_dat_req),
+		.hdd_addr                           (hdd_addr),
+		.hdd_data_out                       (hdd_data_out),
+		.hdd_data_in                        (hdd_data_in),
+		.hdd_wr                             (hdd_wr),
+		.hdd_status_wr                      (hdd_status_wr),
+		.hdd_data_wr                        (hdd_data_wr),
+		.hdd_data_rd                        (hdd_data_rd),
 		.xtctl                              (xtctl),
 		.enable_a000h                       (a000h),
 		.wait_count_clk_en                  (~clk_cpu & clk_cpu_ff_2),

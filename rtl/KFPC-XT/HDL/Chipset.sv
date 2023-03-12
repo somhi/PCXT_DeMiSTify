@@ -146,6 +146,16 @@ module CHIPSET (
         input  logic    [1:0]   bios_protect_flag,
         //
         input   logic   [27:0]  clock_rate,
+        // Virtual HDD Bus
+        output  logic           hdd_cmd_req,
+        output  logic           hdd_dat_req,
+        input   logic   [2:0]   hdd_addr,
+        input   logic   [15:0]  hdd_data_out,
+        output  logic   [15:0]  hdd_data_in,
+        input   logic           hdd_wr,
+        input   logic           hdd_status_wr,
+        input   logic           hdd_data_wr,
+        input   logic           hdd_data_rd,
         // XTCTL DATA
         output  logic   [7:0]   xtctl,
         // Optional flags
@@ -364,6 +374,15 @@ module CHIPSET (
         .ems_b3                            (ems_b3),
         .ems_b4                            (ems_b4),
         .clock_rate                         (clock_rate),
+        .hdd_cmd_req                        (hdd_cmd_req),
+        .hdd_dat_req                        (hdd_dat_req),
+        .hdd_addr                           (hdd_addr),
+        .hdd_data_out                       (hdd_data_out),
+        .hdd_data_in                        (hdd_data_in),
+        .hdd_wr                             (hdd_wr),
+        .hdd_status_wr                      (hdd_status_wr),
+        .hdd_data_wr                        (hdd_data_wr),
+        .hdd_data_rd                        (hdd_data_rd),
         .xtctl                              (xtctl),
         .pause_core                         (pause_core)
     );
