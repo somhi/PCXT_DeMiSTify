@@ -449,10 +449,15 @@ module PERIPHERALS #(
         // I/O
         .irq                        (keybord_irq),
         .keycode                    (keycode),
-        .reset_keyboard             (~prev_ps2_reset_n & ps2_reset_n),
+        .reset_keyboard             (~prev_ps2_reset_n & ps2_reset_n),    
         .clear_keycode              (clear_keycode),
         .pause_core                 (pause_core)
     );
+
+    //Local AA response is generated with signal reset_keyboard in KFPS2KB_direct module
+    //The purpose of this, together with the u_KFPS2KB_Send_Data is to send reset to the real PS2 keyboard, 
+    //which will answer with "AA" itself. So the local generation is redundant.  
+    //Without local AA response MiST is getting message errors in YUKO ST and deMiSTified ports also with speeds > 4.77 MHz.
 
     // Keybord reset
     KFPS2KB_Send_Data u_KFPS2KB_Send_Data 

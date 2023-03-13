@@ -4,22 +4,18 @@
 
 Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
+
+
+### MiST firmware
+
+Compile the latest firmware from [mist-devel](https://github.com/mist-devel/mist-firmware) if the available binary has been built before 09/03/23.
+
 ### STATUS
 
-* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable. Unfortunately MiST board does not has an easy wat to connect to the UART pins.
-* MDA not implemented due to lack of BRAM in this board.
+* **IDE HD image can now be used in MiST ports**. Just add an image file named **PCXT.HD0** at the root of the SD card. Not all geometries are accepted. It should work with PCem standard geometries.
+* UART port needs to be used to load floppy images through the serdrive app using a USB Serial cable. Press ALT key during XT-IDE boot process to anable the IDE COM detection.
 * Credits screen not implemented due to lack of BRAM in this board. F11 pauses the core. If you press it, remember to press it again to continue the core execution.
-* Adlib sound not implemented due to lack of BRAM in this board.
-* Game Blaster sound (C/MS) not implemented due to lack of LEs
 * CGA 32 kB implemented. Some Tandy games are now playable like Prince of Persia, Cool Crocks and Sierra's Manhunter.
-* ~~CGA not implemented due to lack of BRAM in this board.~~~~Open OSD with F12 key. Go to Video and change CGA to MDA output. The Splash screen should appear. Then Load XT BIOS ROM (and EC00 XT-IDE 16 kB if not included in the main BIOS) and Reset from OSD.~~
-
-Notes about ROMs:
-
-- ROMs working with MDA video: (IBM5160, Yuko ST and pcxt31 work), (Tandy, micro8088, full XTIDE BIOS do not work).
-- If you load a BIOS that does not work with MDA you may need to power cycle the board.
-
-
 
 ### Compile the project in Quartus:
 
@@ -30,6 +26,4 @@ git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
 
 #Load project in Quartus from /mist/PCXT_mist.qpf
 ```
-
-
 

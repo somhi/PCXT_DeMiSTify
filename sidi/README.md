@@ -6,9 +6,15 @@
 
 Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
+### MiST firmware
+
+Compile the latest firmware from [mist-devel](https://github.com/mist-devel/mist-firmware) if the available binary has been built before 09/03/23.
+
 ### STATUS
 
-* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
+* **IDE HD image can now be used in MiST ports**. Just add an image file named **PCXT.HD0** at the root of the SD card. Not all geometries are accepted. It should work with PCem standard geometries.
+
+* UART port needs to be used to load floppy images through the serdrive app using a USB Serial cable. Press ALT key during XT-IDE boot process to anable the IDE COM detection.
 
 * ADLIB sound not implemented due to lack of BRAM in this board.
 
