@@ -36,7 +36,7 @@ if {[info exists mist] && ($mist==1)} {
 #uncommenting following line gives more timing setup delays in MiST cores
 #create_generated_clock -name clk_14_318 -source $CLOCK_VGA_CGA -divide_by 2 [get_pins $CLOCK_14_318]
 } else {
-create_generated_clock -name clk_14_318 -source $CLOCK_VGA_CGA -divide_by 2 [get_pins $CLOCK_14_318]
+#create_generated_clock -name clk_14_318 -source $CLOCK_VGA_CGA -divide_by 2 [get_pins $CLOCK_14_318]
 }
 
 create_generated_clock -name clk_4_77 -source [get_pins $CLOCK_14_318] -divide_by 3 -duty_cycle 33 [get_pins $CLOCK_4_77]
