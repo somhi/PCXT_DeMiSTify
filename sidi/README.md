@@ -1,4 +1,4 @@
-# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify)  - SiDi port
+# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT) - SiDi port
 
 07/07/22 SiDi port by @somhi from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
 

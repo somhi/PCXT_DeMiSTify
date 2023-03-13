@@ -148,7 +148,7 @@ module PERIPHERALS #(
     begin
         if (reset)
             prev_cpu_clock <= 1'b0;
-		  else
+        else
             prev_cpu_clock <= cpu_clock;
     end
 
@@ -478,15 +478,6 @@ module PERIPHERALS #(
         .send_data                  (8'hFF)
     );
 
-    always_ff @(posedge clock, posedge reset)
-    begin
-        if (reset)
-            ps2_clock_out = 1'b1;
-        else
-            ps2_clock_out = ps2_send_clock;		// kitune-san change for direct keyboard interface
-    end
-
-
     // Convert Tandy scancode
     Tandy_Scancode_Converter u_Tandy_Scancode_Converter 
     (
@@ -496,6 +487,14 @@ module PERIPHERALS #(
         .keybord_irq                (keybord_irq),
         .convert_data               (tandy_keycode)
     );
+
+    always_ff @(posedge clock, posedge reset)
+    begin
+        if (reset)
+            ps2_clock_out = 1'b1;
+        else
+            ps2_clock_out = ps2_send_clock;		// kitune-san change for direct keyboard interface
+    end
 
 
     wire [7:0] jtopl2_dout;
@@ -1202,54 +1201,6 @@ end
     `endif
 
 
-    //
-    // KFTVGA
-    //
-    
-    // logic   [7:0]   tvga_data_bus_out;
-
-    // KFTVGA u_KFTVGA (
-    //     // Bus
-    //     .clock                      (clock),
-    //     .reset                      (reset),
-    //     .chip_select_n              (tvga_chip_select_n),
-    //     .read_enable_n              (memory_read_n),
-    //     .write_enable_n             (memory_write_n),
-    //     .address                    (address[13:0]),
-    //     .data_bus_in                (internal_data_bus),
-    //     .data_bus_out               (tvga_data_bus_out),
-
-    //     // I/O
-    //     .video_clock                (video_clock),
-    //     .video_reset                (video_reset),
-    //     .video_h_sync               (video_h_sync),
-    //     .video_v_sync               (video_v_sync),
-    //     .video_r                    (video_r),
-    //     .video_g                    (video_g),
-    //     .video_b                    (video_b)
-    // );
-
-    
-
-    //
-    // Joysticks
-    //
-
-    logic [7:0] joy_data;
-
-    tandy_pcjr_joy joysticks
-    (
-        .clk                       (clock),
-        .reset                     (reset),
-        .en                        (joystick_select && ~io_write_n),
-        .clk_select                (clk_select),
-        .joy_opts                  (joy_opts),
-        .joy0                      (joy0),
-        .joy1                      (joy1),
-        .joya0                     (joya0),
-        .joya1                     (joya1),
-        .d_out                     (joy_data)
-    );
 
 
     //
@@ -1285,7 +1236,6 @@ end
 
         .ide_address        (ide0_address),
         .ide_data_bus_in    (ide0_data_bus_in),
-//        .ide_data_bus_in    ({ide0_data_bus_in[7:0], ide0_data_bus_in[15:8]}),
         .ide_data_bus_out   (ide0_data_bus_out)
     );
 
@@ -1320,7 +1270,6 @@ end
         prev_ide0_io_read       <= ide0_io_read_1;
         prev_ide0_io_write      <= ide0_io_write;
         ide0_address_1          <= ~ide0_control_cs ? {1'b0, ide0_address} : {1'b1, ide0_address};
-//        ide0_writedata          <= ide0_data_bus_out;
         ide0_writedata          <= {ide0_data_bus_out[7:0], ide0_data_bus_out[15:8]};
         ide0_read_edge          <= ide0_io_read   & ~prev_ide0_io_read;
     end
@@ -1335,19 +1284,19 @@ end
         .sel_secondary      (1'b0),
         .data_in            (ide0_writedata),
         .data_out           (ide0_drive_out),
- //       .data_oe            (),
+ //     .data_oe            (),
         .rd                 (ide0_read_edge),
         .hwr                (ide0_write_edge),
         .lwr                (ide0_write_edge),
-//        .sel_ide            (ide0_read_edge | ide0_write_edge),
+//      .sel_ide            (ide0_read_edge | ide0_write_edge),
         .sel_ide            (ide0_read_edge | (ide0_write_edge & !ide0_address_1[3])),
-//        .intreq             (),
+//      .intreq             (),
         .intreq_ack         (1'b0),     // interrupt clear
-//        .nrdy               (),     // fifo is not ready for reading 
+//      .nrdy               (),     // fifo is not ready for reading 
         .hdd0_ena           (2'b01),     // enables Master & Slave drives on primary channel
         .hdd1_ena           (2'b00),     // enables Master & Slave drives on secondary channel
-//        .fifo_rd            (),
-//        .fifo_wr            (),
+//      .fifo_rd            (),
+//      .fifo_wr            (),
 
         // connection to the IO-Controller
         .hdd_cmd_req        (hdd_cmd_req),
@@ -1370,6 +1319,27 @@ end
         else
             ide0_data_bus_in <= ide0_data_bus_in;
     end
+
+
+    //
+    // Joysticks
+    //
+
+    logic [7:0] joy_data;
+
+    tandy_pcjr_joy joysticks
+    (
+        .clk                       (clock),
+        .reset                     (reset),
+        .en                        (joystick_select && ~io_write_n),
+        .clk_select                (clk_select),
+        .joy_opts                  (joy_opts),
+        .joy0                      (joy0),
+        .joy1                      (joy1),
+        .joya0                     (joya0),
+        .joya1                     (joya1),
+        .d_out                     (joy_data)
+    );
 
 
     //

@@ -1,6 +1,6 @@
-# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify) - Deca MiST port
+# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  - Deca MiST port
 
-02/02/23 Deca MiST port DeMiSTified by @somhi from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
+02/02/23 Deca MiST port by @somhi from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
 
 Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
@@ -25,7 +25,7 @@ Note: in case the  SPI bus is noisy it may help adding -DSD_NO_DIRECT_MODE to th
 
 **Additional hardware required**:
 
-- MiST addon with AT91SAM7S256, USB Host Shield, SD card modules
+- [MiST addon](https://github.com/somhi/MiSTdon) with AT91SAM7S256, USB Host Shield, SD card modules
 - SDRAM module
   - Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2
   - Tested with a dual memory module v1.3 with 3 pins
@@ -41,8 +41,6 @@ git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
 
 #Load project in Quartus from /deca_mist/PCXT_deca_mist.qpf
 ```
-
-
 
 ### Instructions to compile the project for a specific board:
 
