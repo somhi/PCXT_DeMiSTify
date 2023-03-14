@@ -43,7 +43,11 @@ module UM6845R
 	output           CURSOR,
 
 	output    [13:0] MA,
-	output     [4:0] RA
+	output     [4:0] RA,
+	// signals to adjust the phantom lines and start of video output (left colums)
+	input 			tandy_16_gfx,
+	input  			composite_on,
+	input 			color
 );
 
 parameter H_TOTAL = 0;
@@ -58,6 +62,8 @@ parameter V_MAXSCAN = 0;
 parameter C_START = 0;
 parameter C_END = 0;
 
+reg [12:0] hde_del;
+
 /* verilator lint_off WIDTH */
 
 assign FIELD = ~field & interlace[0];
@@ -67,7 +73,12 @@ assign RA = line | (field & interlace[0]);
 
 assign DE = de[R8_skew & ~{2{CRTC_TYPE}}];
 
-assign hblank = ~hde;
+//assign hblank = ~hde;
+assign hblank = tandy_16_gfx ? 	(color? ~hde_del[7] : ~hde_del[9]) : 	//tandy      
+				composite_on ? 	(color? ~hde_del[5] : ~hde_del[7]) :	//composite
+			   					(color? ~hde_del[3] : ~hde_del[5]);     //cga
+//video_monochrome_converter in MiSTer alters the start of video, hence the color selection above
+
 assign vblank = ~vde;
 assign line_reset = hcc_last;
 
@@ -233,7 +244,7 @@ wire hsync_on = hcc == R2_h_sync_pos && R3_h_sync_width != 0;
 wire hsync_off = (hsc == R3_h_sync_width) || (CRTC_TYPE && R3_h_sync_width == 0);
 
 always @(posedge CLOCK) begin
-
+	hde_del <= {hde_del[11], hde_del[10], hde_del[9], hde_del[8], hde_del[7], hde_del[6], hde_del[5], hde_del[4], hde_del[3], hde_del[2], hde_del[1], hde_del[0], hde};		  	  
 	if(~nRESET) begin
 		hsc    <= 0;
 		hde    <= 0;

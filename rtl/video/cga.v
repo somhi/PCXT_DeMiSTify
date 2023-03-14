@@ -291,7 +291,11 @@ module cga(
         .CURSOR(cursor),
         
         .MA(crtc_addr),
-        .RA(row_addr)
+        .RA(row_addr),
+        // signals to adjust the phantom lines and start of video output (left colums)
+    	.tandy_16_gfx(tandy_16_mode & grph_mode & hres_mode),
+        .composite_on(composite_on),
+    	.color(color)
 	 );
 
 
