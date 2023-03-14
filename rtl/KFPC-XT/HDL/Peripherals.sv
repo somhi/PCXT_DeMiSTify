@@ -501,7 +501,7 @@ module PERIPHERALS #(
         .sending_data_flag          (lock_recv_clock),
 
         // I/O
-        .send_request               (~prev_ps2_reset_n & ps2_reset_n),
+        .send_request               (1'b0),     // Disabled
         .send_data                  (8'hFF)
     );
 

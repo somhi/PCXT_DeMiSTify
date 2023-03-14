@@ -27,6 +27,9 @@ module KFPS2KB #(
     logic           recieved_flag;
     logic           error_flag;
     logic           break_flag;
+    logic           hold_reset_keyboard;
+    logic   [15:0]  delay_output_aa_count;
+    logic           output_aa;
 
 
     //
@@ -46,6 +49,35 @@ module KFPS2KB #(
         .recieved_flag      (recieved_flag),
         .error_flag         (error_flag)
     );
+
+
+    // Some BIOS reset the interrupt mask and then reset the variable for interrupt acknowledgement.
+    // Therefore, a delay is placed between the keyboard reset being entered and the AA being responded to.
+    assign  output_aa   = (hold_reset_keyboard) & (~|delay_output_aa_count);
+
+    always_ff @(posedge clock, posedge reset) begin
+        if (reset) begin
+            delay_output_aa_count   <= 16'h0000;
+            hold_reset_keyboard     <= 1'b0;
+        end
+        else if (reset_keyboard) begin
+            delay_output_aa_count   <= 16'h1000;
+            hold_reset_keyboard     <= 1'b1;
+        end
+        else if (output_aa) begin
+            delay_output_aa_count   <= 16'h0000;
+            hold_reset_keyboard     <= 1'b0;
+        end
+        else if ((hold_reset_keyboard) && (~clear_keycode)) begin
+            delay_output_aa_count   <= delay_output_aa_count - 16'h0001;
+            hold_reset_keyboard     <= hold_reset_keyboard;
+        end
+        else begin
+            delay_output_aa_count   <= delay_output_aa_count;
+            hold_reset_keyboard     <= hold_reset_keyboard;
+        end
+    end
+
 
     //
     // Scancode converter (2 -> 1)
@@ -220,14 +252,14 @@ module KFPS2KB #(
             break_flag  <= 1'b0;
             pause_core  <= 1'b0;
         end
-        else if (reset_keyboard) begin
-            irq         <= 1'b1;
-            keycode     <= 8'hAA;
-            break_flag  <= 1'b0;
-        end
         else if (clear_keycode) begin
             irq         <= 1'b0;
             keycode     <= 8'h00;
+            break_flag  <= 1'b0;
+        end
+        else if (output_aa) begin
+            irq         <= 1'b1;
+            keycode     <= 8'hAA;
             break_flag  <= 1'b0;
         end
         else if (error_flag) begin
