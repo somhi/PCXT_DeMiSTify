@@ -157,6 +157,34 @@ module mda(
         end
     end
 
+    // CRT controller (UM6845R compatible)
+    // UM6845R crtc (
+    //     .CLOCK(clk),
+    //     .CLKEN(crtc_clk), 
+    //     // .nCLKEN(),
+    //     .nRESET(1'b1),
+    //     .CRTC_TYPE(1'b1),
+        
+    //     .ENABLE(1'b1),
+    //     .nCS(~crtc_cs),
+    //     .R_nW(bus_iow_synced_l),
+    //     .RS(bus_a[0]),
+    //     .DI(bus_d),
+    //     .DO(bus_out_crtc),
+        
+    //     .hblank(hblank),
+    //     .vblank(vblank),
+        
+    //     .VSYNC(vsync_l),
+    //     .HSYNC(hsync_int),
+    //     .DE(display_enable),
+    //     // .FIELD(),
+    //     .CURSOR(cursor),
+        
+    //     .MA(crtc_addr),
+    //     .RA(row_addr)
+	//  );
+
     // CRT controller (MC6845 compatible)
     crtc6845 crtc (
         .clk(clk),

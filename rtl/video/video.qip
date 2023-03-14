@@ -5,6 +5,7 @@ set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) mda_att
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) mda.v ]
 #set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) vram.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) crtc6845.v ]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) UM6845R.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) cga_vram.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) cga_vgaport.v ]
 set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) cga_sequencer.v ]

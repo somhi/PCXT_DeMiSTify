@@ -281,9 +281,13 @@ module PCXT
     assign ps2_mouse_clk_in   = PS2K_MOUSE_CLK_IN;
     assign ps2_mouse_data_in  = PS2K_MOUSE_DAT_IN;
     `endif
+    
 
-//    data_io data_io 
+    `ifdef MIST_SIDI
     data_io #(.ENABLE_IDE(1'b1)) data_io
+    `else 
+    data_io data_io 
+    `endif
 	(
 		.clk_sys    ( clk_chipset ),
 		.SPI_SCK    ( SPI_SCK ),
