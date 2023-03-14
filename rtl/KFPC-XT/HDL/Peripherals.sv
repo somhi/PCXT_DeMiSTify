@@ -435,6 +435,9 @@ module PERIPHERALS #(
     end
 
 
+    //Local AA response is generated with signal reset_keyboard in KFPS2KB modules
+    //Without local AA response MiST is getting message errors in YUKO ST and deMiSTified ports also with speeds > 4.77 MHz.
+
     `ifdef MIST_SIDI
     
     KFPS2KB u_KFPS2KB 
@@ -455,10 +458,6 @@ module PERIPHERALS #(
         .clear_keycode              (clear_keycode),
         .pause_core                 (pause_core)
     );
-
-    // No need to send any command to the PS2 keyboard, answer to reset is created locally
-    assign ps2_clock_out = 1'b1;
-    assign ps2_data_out = 1'b1;
 
     `else 
 
@@ -481,39 +480,11 @@ module PERIPHERALS #(
         .pause_core                 (pause_core)
     );
 
-    //Local AA response is generated with signal reset_keyboard in KFPS2KB_direct module
-    //The purpose of this, together with the u_KFPS2KB_Send_Data is to send reset to the real PS2 keyboard, 
-    //which will answer with "AA" itself. So the local generation is redundant.  
-    //Without local AA response MiST is getting message errors in YUKO ST and deMiSTified ports also with speeds > 4.77 MHz.
-
-    // Keybord reset
-    KFPS2KB_Send_Data u_KFPS2KB_Send_Data 
-    (
-        // Bus
-        .clock                      (clock),
-        .peripheral_clock           (peripheral_clock),
-        .reset                      (reset),
-
-        // PS/2 I/O
-        .device_clock               (ps2_clock),
-        .device_clock_out           (ps2_send_clock),
-        .device_data_out            (ps2_data_out),
-        .sending_data_flag          (lock_recv_clock),
-
-        // I/O
-        .send_request               (1'b0),     // Disabled
-        .send_data                  (8'hFF)
-    );
-
-    always_ff @(posedge clock, posedge reset)
-    begin
-        if (reset)
-            ps2_clock_out = 1'b1;
-        else
-            ps2_clock_out = ps2_send_clock;		// kitune-san change for direct keyboard interface
-    end
-
     `endif
+
+    // No need to send any command to the PS2 keyboard, answer to reset is created locally
+    assign ps2_clock_out = 1'b1;
+    assign ps2_data_out = 1'b1;
 
     // Convert Tandy scancode
     Tandy_Scancode_Converter u_Tandy_Scancode_Converter 
