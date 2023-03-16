@@ -32,9 +32,6 @@ create_generated_clock -name peripheral_clock -source [get_pins $CLOCK_4_77] -di
 # SPLASH
 set_false_path -to [get_registers {PCXT:guest|splash_off}]
 
-# AUDIO
-set_false_path -to [get_registers {PCXT:guest|clk_cpu_ff_1 PCXT:guest|pclk_ff_1 PCXT:guest|clk_opl2_ff_1}]
-
 # UART
 set_false_path -from [get_clocks $CLOCK_CHIP] -to [get_clocks $CLOCK_UART]
 set_false_path -from [get_clocks $CLOCK_UART] -to [get_clocks $CLOCK_CHIP]

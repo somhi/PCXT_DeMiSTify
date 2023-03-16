@@ -5,7 +5,8 @@
 // Based on KFPC-XT written by @kitune-san
 //
 module PERIPHERALS #(
-        parameter ps2_over_time = 16'd1000
+        parameter ps2_over_time = 16'd1000,
+		parameter clk_rate = 28'd50000000
     ) (
         input   logic           clock,
         input   logic           clk_sys,
@@ -83,7 +84,6 @@ module PERIPHERALS #(
         input   logic   [15:0]  joya0,
         input   logic   [15:0]  joya1,
         // JTOPL
-        input   logic           clk_en_opl2,
         output  logic   [15:0]  jtopl2_snd_e,
         input   logic   [1:0]   opl2_io,
         // C/MS Audio
@@ -115,8 +115,6 @@ module PERIPHERALS #(
         output  logic           ems_b2,
         output  logic           ems_b3,
         output  logic           ems_b4,
-        //
-        input   logic   [27:0]  clock_rate,
         // Virtual HDD Bus
         output  logic           hdd_cmd_req,
         output  logic           hdd_dat_req,
@@ -472,10 +470,22 @@ module PERIPHERALS #(
 
     wire [7:0] jtopl2_dout;
 
+    reg clk_en_opl2;
+    always @(posedge clock) begin
+        reg [27:0] sum = 0;
+
+        clk_en_opl2 <= 0;
+        sum = sum + 28'd3579545;
+        if(sum >= clk_rate) begin
+            sum = sum - clk_rate;
+            clk_en_opl2 <= 1;
+        end
+    end
 
 `ifdef NO_ADLIB
     // NO ADLIB SOUND
 `else
+
     jtopl2 jtopl2_inst
     (
         .rst(reset),
@@ -508,18 +518,15 @@ module PERIPHERALS #(
 	 
 //------------------------------------------------------------------------------
 
-reg [27:0] clk_rate;
-always @(posedge clock) clk_rate <= clock_rate;
-
 reg ce_1us;
 always @(posedge clock) begin
 	reg [27:0] sum = 0;
 
-	ce_1us = 0;
+	ce_1us <= 0;
 	sum = sum + 28'd1000000;
 	if(sum >= clk_rate) begin
 		sum = sum - clk_rate;
-		ce_1us = 1;
+		ce_1us <= 1;
 	end
 end	 
 	 
@@ -537,11 +544,11 @@ end
     always @(posedge clock) begin
 	    reg [27:0] sum = 0;
 
-	    ce_saa = 0;
+	    ce_saa <= 0;
 	    sum = sum + 28'd7159090;
 	    if(sum >= clk_rate) begin
 		    sum = sum - clk_rate;
-		    ce_saa = 1;
+		    ce_saa <= 1;
 	    end
     end
 

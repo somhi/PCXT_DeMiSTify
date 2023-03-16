@@ -339,11 +339,11 @@ module PCXT
     wire clk_4_77;
     wire clk_cpu;
     wire pclk;
-    wire clk_opl2;
     wire clk_chipset;
     wire peripheral_clock;
     wire clk_uart;
 
+    localparam [27:0] cur_rate = 28'd50000000; // clk_chipset freq
 
 	`ifdef DEMISTIFY_SOCKIT		/////  SOCKIT BOARD with Cyclone V   /////
 
@@ -366,7 +366,6 @@ module PCXT
 			.rst(0),
 			.outclk_0(clk_28_636),		//28.636                CLOCK_VGA_CGA
 			.outclk_1(clk_56_875),		//56.875 -> 57.272      CLOCK_VGA_MDA
-			.outclk_2(clk_opl2),		//3.58                  CLOCK_OPL
 			.locked()
 		);
 
@@ -380,7 +379,6 @@ module PCXT
 			.c1(clk_chipset),		//50                            CLOCK_CHIP
 			.c2(SDRAM_CLK),			//50 -2ns
 			.c3(clk_uart),			//14.7456 MHz                   CLOCK_UART
-			.c4(clk_opl2),			//3.575  (3.58 not possible)    CLOCK_OPL
 			.locked(pll_locked)
 		);
 
@@ -402,10 +400,10 @@ module PCXT
     `ifdef MIST_SIDI    //Reset from OSD did not work in some SiDi board. This counter increases OSD reset toogle time
         reg        reset_OSD = 0;
         reg [16:0] clr_addr  = 0;
-        always @(posedge CLK_50M) begin
+        always @(posedge clk_chipset) begin
             if(~&clr_addr) clr_addr  <= clr_addr + 1'd1;
             else           reset_OSD <= 0;
-        
+
             if(status[0]) begin
                 clr_addr <= 0;
                 reset_OSD <= 1;
@@ -421,7 +419,7 @@ module PCXT
 
     //////////////////////////////////////////////////////////////////
 
-
+    // TODO: messy, use a single clock domain at least
     always @(posedge clk_28_636)
         clk_14_318 <= ~clk_14_318; 	// 14.318Mhz
 
@@ -453,9 +451,6 @@ module PCXT
 
     always @(posedge clk_4_77)
         peripheral_clock <= ~peripheral_clock; // 2.385Mhz
-
-    reg [27:0] cur_rate;
-    always @(posedge CLK_50M) cur_rate <= 30000000;
 
     //////////////////////////////////////////////////////////////////
 
@@ -554,19 +549,6 @@ module PCXT
         end
     end
 
-    logic   clk_opl2_ff_1;
-    logic   clk_opl2_ff_2;
-    logic   clk_opl2_ff_3;
-    logic   cen_opl2;
-
-    always @(posedge clk_chipset)
-    begin
-        clk_opl2_ff_1 <= clk_opl2;
-        clk_opl2_ff_2 <= clk_opl2_ff_1;
-        clk_opl2_ff_3 <= clk_opl2_ff_2;
-        cen_opl2 <= clk_opl2_ff_2 & ~clk_opl2_ff_3;
-    end
-
     //////////////////////////////////////////////////////////////////
 
     logic reset = 1'b1;
@@ -574,7 +556,7 @@ module PCXT
     logic reset_sdram = 1'b1;
     logic [15:0] reset_sdram_count = 16'h0000;
 
-    always @(posedge CLK_50M, posedge reset_wire)
+    always @(posedge clk_chipset, posedge reset_wire)
     begin
         if (reset_wire)
         begin
@@ -643,7 +625,7 @@ module PCXT
         end
     end
 
-    always @(posedge CLK_50M, posedge reset_sdram_wire)
+    always @(posedge clk_chipset, posedge reset_sdram_wire)
     begin
         if (reset_sdram_wire)
         begin
@@ -948,7 +930,7 @@ module PCXT
             cpu_address <= cpu_address;
     end
 
-    CHIPSET u_CHIPSET 
+    CHIPSET #(.clk_rate(cur_rate)) u_CHIPSET
 	(
 		.clock                              (clk_chipset),
 		.cpu_clock                          (clk_cpu),
@@ -1033,7 +1015,6 @@ module PCXT
 		.joy1                               (status[28] ? joy0 : joy1),
 		.joya0                              (status[28] ? joya1[15:0] : joya0[15:0]),
 		.joya1                              (status[28] ? joya0[15:0] : joya1[15:0]),
-		.clk_en_opl2                        (cen_opl2),           // clk_en_opl2
 		.jtopl2_snd_e                       (jtopl2_snd_e),
 		.tandy_snd_e                        (tandy_snd_e),
 		.opl2_io                            (xtctl[4] ? 2'b10 : status[41:40]),
@@ -1071,7 +1052,6 @@ module PCXT
 		.ems_enabled                        (~status[11]),
 		.ems_address                        (status[13:12]),
 		.bios_protect_flag                  (bios_protect_flag),
-        .clock_rate                         (cur_rate),
 		.hdd_cmd_req                        (hdd_cmd_req),
 		.hdd_dat_req                        (hdd_dat_req),
 		.hdd_addr                           (hdd_addr),
@@ -1154,51 +1134,16 @@ module PCXT
     // );
 
     wire [15:0] cms_l_snd_e;
-    wire [16:0] cms_l_snd;
+    wire [16:0] cms_l_snd = {cms_l_snd_e[15],cms_l_snd_e};
     wire [15:0] cms_r_snd_e;
-    wire [16:0] cms_r_snd;
+    wire [16:0] cms_r_snd = {cms_l_snd_e[15],cms_l_snd_e};
 	 
     wire [15:0] jtopl2_snd_e;
-    wire [16:0] jtopl2_snd;
+    wire [16:0] jtopl2_snd = {jtopl2_snd_e[15], jtopl2_snd_e};
     wire [10:0] tandy_snd_e;
-    wire [16:0] tandy_snd;
-    reg  [16:0] spk_vol;
+    wire [16:0] tandy_snd = {{{2{tandy_snd_e[10]}}, {4{tandy_snd_e[10]}}, tandy_snd_e} << status[35:34], 2'b00};
+    wire [16:0] spk_vol =  {2'b00, {3'b000,~speaker_out} << status[33:32], 11'd0};
     wire        speaker_out;
-
-    always @(posedge CLK_50M)		//CLK_AUDIO
-    begin
-        reg [15:0] oldj_0, oldj_1;
-        reg [15:0] oldcl_0, oldcl_1;
-        reg [15:0] oldcr_0, oldcr_1;
-        reg [10:0] oldt_0, oldt_1;
-
-        oldj_0 <= jtopl2_snd_e;
-        oldj_1 <= oldj_0;
-        if(oldj_0 == oldj_1)
-            jtopl2_snd <= {oldj_1[15],oldj_1};
-				
-        oldcl_0 <= cms_l_snd_e;
-        oldcl_1 <= oldcl_0;
-        if(oldcl_0 == oldcl_1)
-            cms_l_snd <= {oldcl_1[15],oldcl_1};
-				
-        oldcr_0 <= cms_r_snd_e;
-        oldcr_1 <= oldcr_0;
-        if(oldcr_0 == oldcr_1)
-            cms_r_snd <= {oldcr_1[15],oldcr_1};
-				
-        oldj_0 <= jtopl2_snd_e;
-        oldj_1 <= oldj_0;
-        if(oldj_0 == oldj_1)
-            jtopl2_snd <= {oldj_1[15],oldj_1};
-				
-        oldt_0 <= -tandy_snd_e;
-        oldt_1 <= oldt_0;
-        if(oldt_0 == oldt_1)				
-            tandy_snd <= {{{2{oldt_1[10]}}, {4{oldt_1[10]}}, oldt_1} << status[35:34], 2'b00};
-				
-        spk_vol <= {2'b00, {3'b000,~speaker_out} << status[33:32], 11'd0};
-    end
 
     localparam [3:0] comp_f1 = 4;
     localparam [3:0] comp_a1 = 2;
@@ -1224,7 +1169,7 @@ module PCXT
 
     reg [15:0] cmp_l;
     reg [15:0] out_l;
-    always @(posedge CLK_50M)		//CLK_AUDIO
+    always @(posedge clk_chipset)
     begin
         reg [16:0] tmp_l;
 
@@ -1238,7 +1183,7 @@ module PCXT
 	 
     reg [15:0] cmp_r;
     reg [15:0] out_r;
-    always @(posedge CLK_50M)
+    always @(posedge clk_chipset)
     begin
         reg [16:0] tmp_r;
 
@@ -1257,7 +1202,7 @@ module PCXT
 
     sigma_delta_dac sigma_delta_dac 
 	(
-		.clk      ( CLK_50M     ),      // bus clock
+		.clk      ( clk_chipset ),      // bus clock
 		.ldatasum ( pause_core ? 1'b0 : status[37:36] ? cmp_l : out_l ),      // left channel data		(ok1) sndmix >> 1 bad, (ok2) sndmix >> 2 ok
 		.rdatasum ( pause_core ? 1'b0 : status[37:36] ? cmp_r : out_r ),      // right channel data		sndmix_pcm >> 1 bad, sndmix_pcm >> 2 bad
 		.left     ( AUDIO_L     ),      // left bitstream output

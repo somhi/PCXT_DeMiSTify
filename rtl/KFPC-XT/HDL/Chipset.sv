@@ -4,7 +4,9 @@
 //
 // Based on KFPC-XT written by @kitune-san
 //
-module CHIPSET (
+module CHIPSET #(
+        parameter clk_rate = 28'd50000000)
+        (
         input   logic           clock,
         input   logic           cpu_clock,
         input   logic           clk_sys,
@@ -100,7 +102,6 @@ module CHIPSET (
         input   logic   [15:0]  joya0,
         input   logic   [15:0]  joya1,
         // JTOPL
-        input   logic           clk_en_opl2,
         output  logic   [15:0]  jtopl2_snd_e,
         input   logic   [1:0]   opl2_io,
         // C/MS Audio
@@ -274,7 +275,7 @@ module CHIPSET (
         .terminal_count_n                   (terminal_count_n)
     );
 
-    PERIPHERALS u_PERIPHERALS 
+    PERIPHERALS #(.clk_rate(clk_rate)) u_PERIPHERALS 
     (
         .clock                              (clock),
         .clk_sys                            (clk_sys),
@@ -347,7 +348,6 @@ module CHIPSET (
         .joya1                              (joya1),
         .ps2_clock_out                      (ps2_clock_out),
         .ps2_data_out                       (ps2_data_out),
-        .clk_en_opl2                        (clk_en_opl2),
         .jtopl2_snd_e                       (jtopl2_snd_e),
         .opl2_io                            (opl2_io),
         .cms_en                             (cms_en),
@@ -373,7 +373,6 @@ module CHIPSET (
         .ems_b2                            (ems_b2),
         .ems_b3                            (ems_b3),
         .ems_b4                            (ems_b4),
-        .clock_rate                         (clock_rate),
         .hdd_cmd_req                        (hdd_cmd_req),
         .hdd_dat_req                        (hdd_dat_req),
         .hdd_addr                           (hdd_addr),
