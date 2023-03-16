@@ -188,6 +188,8 @@ architecture RTL of sockit_top is
 
 	signal RESET_DELAY_n : std_logic;
 
+	signal clk_chipset : std_logic;
+
 begin
 
 
@@ -261,7 +263,7 @@ begin
 	--   CLK_Freq => CLK_Freq,
 	-- )
 	port map (
-	  iCLK 		=> FPGA_CLK1_50,
+	  iCLK 		=> clk_chipset,
 	  iRST_N 	=> RESET_DELAY_n,
 	  oI2C_SCLK => AUD_I2C_SCLK,
 	  oI2C_SDAT => AUD_I2C_SDAT
@@ -269,7 +271,7 @@ begin
   
 	audio_i2s: entity work.audio_top
 	port map(
-		clk_50MHz => FPGA_CLK1_50,
+		clk_50MHz => clk_chipset,
 		dac_MCLK  => AUD_XCK,
 		dac_LRCK  => AUD_DACLRCK,
 		dac_SCLK  => AUD_BCLK,
@@ -316,6 +318,7 @@ begin
 			SPI_SS3 => spi_ss3,
 			SPI_SS4 => spi_ss4,
 			CONF_DATA0 => conf_data0,
+
 			--VGA
 			VGA_HS  => vga_hsync,
 			VGA_VS  => vga_vsync,
@@ -324,9 +327,11 @@ begin
 			VGA_B   => vga_blue,
 			CLK_VIDEO   => vga_clk_x,
 			VGA_DE  => vga_de,
+
 			--AUDIO
 			DAC_L   => dac_l,
 			DAC_R   => dac_r,
+			CLK_CHIPSET => clk_chipset,
 
 			PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 			PS2K_DAT_IN => ps2_keyboard_dat_in,
@@ -372,13 +377,6 @@ begin
 				-- PS/2 signals
 				ps2k_clk_in  => ps2_keyboard_clk_in,
 				ps2k_dat_in  => ps2_keyboard_dat_in,
-				-- ps2k_clk_out => ps2_keyboard_clk_out,
-				-- ps2k_dat_out => ps2_keyboard_dat_out,
-
-				-- ps2m_clk_in  => ps2_mouse_clk_in,
-				-- ps2m_dat_in  => ps2_mouse_dat_in,
-				-- ps2m_clk_out => ps2_mouse_clk_out,
-				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
 				buttons => (0 => KEY(0), 1 => KEY(1), others => '1'),    -- 0 = opens OSD

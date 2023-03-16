@@ -6,7 +6,7 @@
 
 - [x] DECA
 
-- [ ] MiST
+- [x] MiST
 
 - [x] NeptUNO
 
@@ -17,6 +17,8 @@
 - [x] UA reloaded
 
 # Test core checklist
+
+NOTE: NOT TESTED EVERYTHING WITH ALL BOARDS
 
 - [x] SPLASH screen
 
@@ -39,7 +41,7 @@
   - [x] CGA: Prince of Persia
   - [x] CGA: Demo Area5150 (better at 7.16 MHz)
   - [x] TANDY 32: Prince of Persia
-  - [x] TANDY 128: Arkanoid, GODS, Another world
+  - [x] TANDY 128: Arkanoid, GODS (install speaker+joy), Another world (config no sound)
   - [ ] Composite real
 
 - [x] AUDIO

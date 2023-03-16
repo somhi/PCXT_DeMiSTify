@@ -271,6 +271,8 @@ architecture RTL of deca_top is
 
 	signal act_led : std_logic;
 
+	signal clk_chipset : std_logic;
+
 begin
 
 
@@ -362,7 +364,7 @@ begin
 	AUDIO_SPI_CTL_RD_inst : AUDIO_SPI_CTL_RD
 	port map(
 		iRESET_n => RESET_DELAY_n,
-		iCLK_50  => MAX10_CLK1_50,
+		iCLK_50  => clk_chipset,
 		oCS_n    => AUDIO_SCL_SS_n,
 		oSCLK    => AUDIO_SCLK_MFP3,
 		oDIN     => AUDIO_SDA_MOSI,
@@ -372,7 +374,7 @@ begin
 	-- AUDIO CODEC
 	audio_i2s : entity work.audio_top
 		port map(
-			clk_50MHz => MAX10_CLK1_50,
+			clk_50MHz => clk_chipset,
 			dac_MCLK  => i2s_Mck_o,
 			dac_LRCK  => i2s_Lr_o,
 			dac_SCLK  => i2s_Sck_o,
@@ -389,43 +391,6 @@ begin
 	I2S_LR  <= i2s_Lr_o;
 	I2S_D   <= i2s_D_o;
 
-
-
-	-- DECA HDMI
-
-	-- -- HDMI CONFIG    
-	-- I2C_HDMI_Config_inst : I2C_HDMI_Config
-	-- port map(
-	-- 	iCLK        => MAX10_CLK1_50,
-	-- 	iRST_N      => reset_n, --reset_n, KEY(0)
-	-- 	I2C_SCLK    => HDMI_I2C_SCL,
-	-- 	I2C_SDAT    => HDMI_I2C_SDA,
-	-- 	HDMI_TX_INT => HDMI_TX_INT
-	-- );
-
-	-- -- PLL2
-	-- pll2_inst : pll2
-	-- port map (
-	--	inclk0		=> MAX10_CLK1_50,
-	--	c0			=> vga_clk,		
-	--	locked		=> open
-	-- );
-
-	-- --  HDMI VIDEO   
-	-- HDMI_TX_CLK <= vga_clk;
-	-- HDMI_TX_DE  <= vga_de;
-	-- HDMI_TX_HS  <= vga_x_hs;
-	-- HDMI_TX_VS  <= vga_x_vs;
-	-- HDMI_TX_D   <= vga_x_r & vga_x_r(4 downto 3) & vga_x_g & vga_x_g(4 downto 3) & vga_x_b & vga_x_b(4 downto 3);
-	-- --HDMI_TX_HS  <= vga_hsync;
-	-- --HDMI_TX_VS  <= vga_vsync;
-	-- --HDMI_TX_D   <= vga_red(7 downto 2)&vga_red(7 downto 6)&vga_green(7 downto 2)&vga_green(7 downto 6)&vga_blue(7 downto 2)&vga_blue(7 downto 6);
-
-	-- --  HDMI AUDIO   
-	-- HDMI_MCLK   <= i2s_Mck_o;
-	-- HDMI_SCLK   <= i2s_Sck_o; -- lr*2*16
-	-- HDMI_LRCLK  <= i2s_Lr_o;
-	-- HDMI_I2S(0) <= i2s_D_o;
 
 
 	guest : component PCXT
@@ -471,16 +436,10 @@ begin
 
 			COMPOSITE_OUT => composite_output,
 
-				-- VGA_DE => vga_de,
-				-- CLK_VIDEO   => vga_clk
-				-- vga_x_r   => vga_x_r,
-				-- vga_x_g   => vga_x_g,
-				-- vga_x_b   => vga_x_b,
-				-- vga_x_hs  => vga_x_hs,
-				-- vga_x_vs  => vga_x_vs,
 			--AUDIO
 			DAC_L   => dac_l,
 			DAC_R   => dac_r,
+			CLK_CHIPSET => clk_chipset,
 
 			PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 			PS2K_DAT_IN => ps2_keyboard_dat_in,
@@ -526,13 +485,6 @@ begin
 				-- PS/2 signals
 				ps2k_clk_in  => ps2_keyboard_clk_in,
 				ps2k_dat_in  => ps2_keyboard_dat_in,
-				-- ps2k_clk_out => ps2_keyboard_clk_out,
-				-- ps2k_dat_out => ps2_keyboard_dat_out,
-
-				-- ps2m_clk_in  => ps2_mouse_clk_in,
-				-- ps2m_dat_in  => ps2_mouse_dat_in,
-				-- ps2m_clk_out => ps2_mouse_clk_out,
-				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
 				buttons => (0 => KEY(1), others => '1'),	-- 0 = opens OSD

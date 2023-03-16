@@ -1,5 +1,5 @@
 find output_files/ -type f \( ! -iname "*.sof" ! -iname "*.svf" ! -iname "*.flow.rpt" ! -iname "*.sta.rpt" \) -delete
-rm -f output_files/PCXT_deca_pof.svf
+rm -f output_files/*pof.svf
 #find output_files/  -type f -not -name '*.sof' -delete
 find software/spl_bsp/ -type f -not -name '*.bin' -delete
 #rm -rf output_files

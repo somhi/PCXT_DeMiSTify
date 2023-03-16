@@ -81,6 +81,7 @@ module deca_mist_top (
 
 wire [7:0]  r_aux, g_aux, b_aux;	
 wire [15:0] dac_l, dac_r;
+wire clk_chipset;
 
 assign LED[7:1]='1;
 
@@ -115,6 +116,7 @@ PCXT guest
 
    .DAC_L      (dac_l),
    .DAC_R      (dac_r),
+   .CLK_CHIPSET(clk_chipset),
 
    .VGA_HS		(VGA_HS),
    .VGA_VS		(VGA_VS),
@@ -148,7 +150,7 @@ assign AUDIO_RESET_n    = RESET_DELAY_n;
 // I2S mode; fs = 48khz; MCLK = 24.567Mhz x 2
 AUDIO_SPI_CTL_RD AUDIO_SPI_CTL_RD_inst (
 	.iRESET_n	(RESET_DELAY_n  ), 	
-	.iCLK_50	   (MAX10_CLK1_50  ),  //50Mhz clock
+	.iCLK_50	   (clk_chipset    ),  
 	.oCS_n		(AUDIO_SCL_SS_n ),  //SPI interface mode chip-select signal
 	.oSCLK		(AUDIO_SCLK_MFP3),  //SPI serial clock
 	.oDIN		   (AUDIO_SDA_MOSI ),  //SPI Serial data output
@@ -157,7 +159,7 @@ AUDIO_SPI_CTL_RD AUDIO_SPI_CTL_RD_inst (
 
 audio_top audio_i2s  
 (
-	.clk_50MHz (MAX10_CLK1_50),
+	.clk_50MHz (clk_chipset),
 	.dac_MCLK  (I2S_MCK),
 	.dac_LRCK  (I2S_LR),
 	.dac_SCLK  (I2S_SCK),

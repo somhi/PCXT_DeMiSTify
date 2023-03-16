@@ -213,6 +213,8 @@ architecture RTL of atlas_top is
 	signal PS2clock 	:  std_logic; 
 	signal clk48	    :  std_logic; 
 
+	signal clk_chipset  : std_logic;
+
 begin
 
 
@@ -311,7 +313,7 @@ begin
 	-- -- I2S audio
 	-- audio_i2s: audio_top
 	-- port map(
-	-- 	clk_50MHz => CLK50M,
+	-- 	clk_50MHz => clk_chipset,
 	-- 	dac_MCLK  => I2S_MCLK,
 	-- 	dac_LRCK  => PI_MOSI_I2S_LRCLK,
 	-- 	dac_SCLK  => PI_MISO_I2S_BCLK,
@@ -357,138 +359,6 @@ begin
 	);
 
 
-	-- BEGIN HDMI ATLAS -------------------   
-	PINS_HDMI_VGA_2 : if ATLAS_CYC_VGA = 0 generate -- HDMI TDMS
-
-		clock_vga_s <= vga_clk;
-		clock_dvi_s <= hdmi_clk;
-
-		-- HDMI AUDIO
-		--sound_hdmi_l_s <= dac_l;
-		--sound_hdmi_r_s <= dac_r;
-		-- sound_hdmi_l_s <= '0' & std_logic_vector(dac_l(15 downto 1));
-		-- sound_hdmi_r_s <= '0' & std_logic_vector(dac_r(15 downto 1));
-		sound_hdmi_l_s <= std_logic_vector(dac_l);
-		sound_hdmi_r_s <= std_logic_vector(dac_r);
-
-		------------------------------------------------------------------------------------------------------
-		-- JUST LEAVE ONE HDMI WRAPPER (1/2/3) UNCOMMENTED                                                  --
-		-- SELECT PROJECT FILES FOR HDMI WRAPPER (1/2/3) AT DeMiSTify/Board/atlas_cyc/atlas_cyc_support.tcl --
-		------------------------------------------------------------------------------------------------------
-
-		---- BEGIN HDMI 1 NO SOUND (MULTICPM / Next186) 
-
-		TMDS(6) <= '0';
-		TMDS(4) <= '0';
-		TMDS(2) <= '0';
-		TMDS(0) <= '0';
-
-		inst_hdmi : entity work.hdmi
-			port map(
-				-- clocks
-				CLK_PIXEL_I => clock_vga_s,
-				CLK_DVI_I   => clock_dvi_s,
-				--components
-				R_I        => vga_x_r & vga_x_r(4 downto 3),
-				G_I        => vga_x_g & vga_x_g(4 downto 3),
-				B_I        => vga_x_b & vga_x_b(4 downto 3),
-				BLANK_I    => vga_blank,
-				HSYNC_I    => vga_x_hs,
-				VSYNC_I    => vga_x_vs,
-				TMDS_D0_O  => TMDS(3),
-				TMDS_D1_O  => TMDS(5),
-				TMDS_D2_O  => TMDS(7),
-				TMDS_CLK_O => TMDS(1)
-			);
-
-		---- END HDMI 1 
-
-
-		----  BEGIN HDMI 2 (MSX)  
-
-		-- hdmi: entity work.hdmi
-		-- generic map (
-		-- 	FREQ	=> 35480000,	-- pixel clock frequency 
-		-- 	CTS		=> 35480,		-- CTS = Freq(pixclk) * N / (128 * Fs)
-		-- 	-- FREQ	=> 28630000,	-- pixel clock frequency 
-		-- 	-- CTS	=> 28630,		-- CTS = Freq(pixclk) * N / (128 * Fs)
-		-- 	FS		=> 48000,		-- audio sample rate - should be 32000, 41000 or 48000 = 48KHz
-		-- 	N		=> 6144			-- N = 128 * Fs /1000,  128 * Fs /1500 <= N <= 128 * Fs /300 (Check HDMI spec 7.2 for details)
-		-- ) 
-		-- port map (
-		-- 	I_CLK_PIXEL		=> clock_vga_s,
-		-- 	I_R				=> vga_x_r & vga_x_r(4 downto 3),
-		-- 	I_G				=> vga_x_g & vga_x_g(4 downto 3),
-		-- 	I_B				=> vga_x_b & vga_x_b(4 downto 3),
-		-- 	I_BLANK			=> vga_blank,
-		-- 	I_HSYNC			=> vga_x_hs,
-		-- 	I_VSYNC			=> vga_x_vs,
-		-- 	-- PCM audio
-		-- 	I_AUDIO_ENABLE	=> '1',
-		-- 	I_AUDIO_PCM_L 	=> sound_hdmi_l_s,
-		-- 	I_AUDIO_PCM_R	=> sound_hdmi_r_s,
-		-- 	-- TMDS parallel pixel synchronous outputs (serialize LSB first)
-		-- 	O_RED			=> tdms_r_s,
-		-- 	O_GREEN			=> tdms_g_s,
-		-- 	O_BLUE			=> tdms_b_s
-		-- );
-
-		-- hdmio: entity work.hdmi_out_altera
-		-- port map (
-		-- 	clock_pixel_i		=> clock_vga_s,
-		-- 	clock_tdms_i		=> clock_dvi_s,
-		-- 	red_i				=> tdms_r_s,
-		-- 	green_i				=> tdms_g_s,
-		-- 	blue_i				=> tdms_b_s,
-		-- 	tmds_out_p			=> tdms_p_s,
-		-- 	tmds_out_n			=> tdms_n_s
-		-- );
-
-		-- TMDS(7)	<= tdms_p_s(2);	-- 2+		
-		-- TMDS(6)	<= tdms_n_s(2);	-- 2-		
-		-- TMDS(5)	<= tdms_p_s(1);	-- 1+			
-		-- TMDS(4)	<= tdms_n_s(1);	-- 1-		
-		-- TMDS(3)	<= tdms_p_s(0);	-- 0+		
-		-- TMDS(2)	<= tdms_n_s(0);	-- 0-	
-		-- TMDS(1)	<= tdms_p_s(3);	-- CLK+	
-		-- TMDS(0)	<= tdms_n_s(3);	-- CLK-
-
-		---- END HDMI 2 
-
-
-		---- BEGIN HDMI 3 (ATARI)    ok PAL, AUDIO 32k, 41k, 48k IS NOT GOOD, NTSC NOT TESTED
-
-		-- inst_dvid: entity work.hdmi
-		-- generic map (
-		-- 	FREQ	=> 35480000,	-- pixel clock frequency 
-		-- 	CTS		=> 35480,		-- CTS = Freq(pixclk) * N / (128 * Fs)
-		-- 	FS		=> 41000,		-- audio sample rate - should be 32000, 41000 or 48000 = 48KHz
-		-- 	N		=> 6144			-- N = 128 * Fs /1000,  128 * Fs /1500 <= N <= 128 * Fs /300 (Check HDMI spec 7.2 for details)
-		-- ) 
-		-- port map(
-		-- 	I_CLK_VGA	=> clock_vga_s,
-		-- 	I_CLK_TMDS	=> clock_dvi_s,
-		-- 	I_HSYNC		=> vga_x_hs,
-		-- 	I_VSYNC		=> vga_x_vs,
-		-- 	I_BLANK		=> vga_blank,
-		-- 	I_RED		=> vga_x_r & vga_x_r(4 downto 3),
-		-- 	I_GREEN		=> vga_x_g & vga_x_g(4 downto 3),
-		-- 	I_BLUE		=> vga_x_b & vga_x_b(4 downto 3),
-		-- 	I_AUDIO_PCM_L 	=> sound_hdmi_l_s,
-		-- 	I_AUDIO_PCM_R	=> sound_hdmi_r_s,
-		-- 	O_TMDS			=> TMDS
-		-- );
-
-		---- END HDMI 3 
-
-
-		---- END HDMI PAL ATLAS 
-
-	end generate PINS_HDMI_VGA_2;
-	
-	-- END HDMI ATLAS -------------------
-
-
 	guest : component PCXT
 		port map(
 			CLOCK_27 => CLK12M,
@@ -531,17 +401,11 @@ begin
 
 			COMPOSITE_OUT => composite_output,
 
-				-- VGA_BLANK => vga_blank,
-				-- VGA_CLK   => vga_clk,
-				-- HDMI_CLK  => hdmi_clk,
-				-- vga_x_r   => vga_x_r,
-				-- vga_x_g   => vga_x_g,
-				-- vga_x_b   => vga_x_b,
-				-- vga_x_hs  => vga_x_hs,
-				-- vga_x_vs  => vga_x_vs,
 			--AUDIO
 			DAC_L   => dac_l,
 			DAC_R   => dac_r,
+			CLK_CHIPSET => clk_chipset,
+
 			AUDIO_L => SIGMA_L,
 			AUDIO_R => SIGMA_R,
 

@@ -193,6 +193,8 @@ architecture RTL of neptuno_top is
 	
 	signal sram_we_x : std_logic;
 
+	signal clk_chipset : std_logic;
+
 begin
 
 	-- -- SRAM
@@ -237,7 +239,7 @@ begin
 	-- I2S audio
 	audio_i2s : entity work.audio_top
 		port map(
-			clk_50MHz => CLOCK_50_I,
+			clk_50MHz => clk_chipset,
 			dac_MCLK  => I2S_MCLK,
 			dac_LRCK  => I2S_LRCLK,
 			dac_SCLK  => I2S_BCLK,
@@ -319,6 +321,8 @@ begin
 			--AUDIO
 			DAC_L   => dac_l,
 			DAC_R   => dac_r,
+			CLK_CHIPSET => clk_chipset,
+
 			AUDIO_L => SIGMA_L,
 			AUDIO_R => SIGMA_R,
 
@@ -366,13 +370,6 @@ begin
 				-- PS/2 signals
 				ps2k_clk_in  => ps2_keyboard_clk_in,
 				ps2k_dat_in  => ps2_keyboard_dat_in,
-				-- ps2k_clk_out => ps2_keyboard_clk_out,
-				-- ps2k_dat_out => ps2_keyboard_dat_out,
-
-				-- ps2m_clk_in  => ps2_mouse_clk_in,
-				-- ps2m_dat_in  => ps2_mouse_dat_in,
-				-- ps2m_clk_out => ps2_mouse_clk_out,
-				-- ps2m_dat_out => ps2_mouse_dat_out,
 
 				-- Buttons
 				buttons => (0 => KEY(1), others => '1'),	-- 0 = opens OSD

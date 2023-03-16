@@ -60,16 +60,15 @@ module PCXT
         output        AUDIO_L,
         output        AUDIO_R,
 
-	`ifdef DEMISTIFY
+	`ifdef DEMISTIFY_PARALLEL_AUDIO
         output [15:0]  DAC_L,
         output [15:0]  DAC_R,
-	`endif
 
-        input         UART_RX,
-        output        UART_TX,
-        input		  UART_CTS,
-        output 		  UART_RTS,
+        output         CLK_CHIPSET,
+    `endif
 
+    `ifdef MIST_SIDI
+    `else         
         input         PS2K_CLK_IN,
         input         PS2K_DAT_IN,
         output        PS2K_CLK_OUT,
@@ -78,8 +77,13 @@ module PCXT
         input         PS2K_MOUSE_CLK_IN,
         input         PS2K_MOUSE_DAT_IN,
         output        PS2K_MOUSE_CLK_OUT,
-        output        PS2K_MOUSE_DAT_OUT
+        output        PS2K_MOUSE_DAT_OUT,        
+	`endif
 
+        input		  UART_CTS,
+        output 		  UART_RTS,
+        input         UART_RX,
+        output        UART_TX
     );
 
     wire CLK_50M;
@@ -1110,29 +1114,6 @@ module PCXT
     ////////////////////////////  AUDIO  ///////////////////////////////////
     //
 
-    //wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (speaker_out << 15) + {tandy_snd_e, 6'd0}; // signed mixer
-    //wire [16:0]sndmix = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 1) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 1
-    //wire [16:0]sndmix = (({1'b0, jtopl2_snd_e}) ) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // bad
-    //wire [16:0]sndmix_pcm = (({jtopl2_snd_e[15], jtopl2_snd_e}) << 2) + (~speaker_out << 15) + {tandy_snd_e, 9'd0}; // not bad
-
-    // wire speaker_out;
-    // wire  [7:0] tandy_snd_e;
-    // wire [15:0] jtopl2_snd_e;
-    // wire [16:0]sndmix = ({jtopl2_snd_e[15], jtopl2_snd_e}) + (~speaker_out << 14) + ({tandy_snd_e, 9'd0}); // ok 2
-
-    // `ifdef DEMISTIFY
-    // assign DAC_R = sndmix >> 1;
-    // assign DAC_L = sndmix >> 1;
-    // `endif
-
-    // sigma_delta_dac sigma_delta_dac (
-    // 	.clk      ( CLK_50M     ),      // bus clock
-    // 	.ldatasum ( sndmix >> 2 ),      // left channel data		(ok1) sndmix >> 1 bad, (ok2) sndmix >> 2 ok
-    // 	.rdatasum ( sndmix >> 2 ),      // right channel data		sndmix_pcm >> 1 bad, sndmix_pcm >> 2 bad
-    // 	.left     ( AUDIO_L     ),      // left bitstream output
-    // 	.right    ( AUDIO_R     )       // right bitsteam output
-    // );
-
     wire [15:0] cms_l_snd_e;
     wire [16:0] cms_l_snd = {cms_l_snd_e[15],cms_l_snd_e};
     wire [15:0] cms_r_snd_e;
@@ -1195,9 +1176,11 @@ module PCXT
         cmp_r <= compr(out_r);
     end
 
-	`ifdef DEMISTIFY	//needed for not getting error in Quartus compilation for MiST board
+	`ifdef DEMISTIFY_PARALLEL_AUDIO	//needed for not getting error in Quartus compilation for MiST board
 		assign DAC_L =  pause_core ? 1'b0 : status[37:36] ? cmp_l : out_l;
 		assign DAC_R =  pause_core ? 1'b0 : status[37:36] ? cmp_r : out_r;
+
+        assign CLK_CHIPSET = clk_chipset;
 	`endif
 
     sigma_delta_dac sigma_delta_dac 

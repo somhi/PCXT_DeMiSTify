@@ -5,16 +5,6 @@ use ieee.numeric_std.all;
 library work;
 use work.demistify_config_pkg.all;
 
--- -----------------------------------------------------------------------
-
--- add following in Neptuno_pins.tcl in demistify/board/neptuno
-
--- #  UART   
--- set_location_assignment PIN_C3 -to UART_RXD
--- set_location_assignment PIN_A3 -to UART_TXD
-
--- -----------------------------------------------------------------------
-
 
 entity uareloaded_top is
 	port
@@ -134,6 +124,8 @@ architecture RTL of uareloaded_top is
 signal vga_clk_o :  std_logic;
 signal vga_blank_o  :  std_logic;
 
+signal clk_chipset : std_logic;
+
 begin
 
 
@@ -185,7 +177,7 @@ VGA_CLOCK	 <=vga_clk_o;
 ---- I2S out
 audio_i2s : entity work.audio_top
 port map(
-     clk_50MHz => clock_50,
+     clk_50MHz => clk_chipset,
 	  dac_MCLK  => MCLK,
 	  dac_SCLK  => SCLK,
 	  dac_SDIN  => SDIN,
@@ -239,6 +231,8 @@ guest: COMPONENT  PCXT
 	--AUDIO
 	DAC_L   => dac_l,
 	DAC_R   => dac_r,
+	CLK_CHIPSET => clk_chipset,
+
 	AUDIO_L => SIGMA_L,
 	AUDIO_R => SIGMA_R,
 
@@ -286,13 +280,6 @@ controller : entity work.substitute_mcu
 		-- PS/2 signals
 		ps2k_clk_in => ps2_keyboard_clk_in,
 		ps2k_dat_in => ps2_keyboard_dat_in,
-		-- ps2k_clk_out => ps2_keyboard_clk_out,
-		-- ps2k_dat_out => ps2_keyboard_dat_out,
-		
-		-- ps2m_clk_in => ps2_mouse_clk_in,
-		-- ps2m_dat_in => ps2_mouse_dat_in,
-		-- ps2m_clk_out => ps2_mouse_clk_out,
-		-- ps2m_dat_out => ps2_mouse_dat_out,
 
 		-- Buttons
 		buttons => (others=>'1'),
