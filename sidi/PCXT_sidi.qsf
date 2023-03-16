@@ -131,6 +131,7 @@ set_location_assignment PIN_R1 -to SPI_DI
 set_location_assignment PIN_T3 -to SPI_SCK
 set_location_assignment PIN_T4 -to SPI_SS2
 set_location_assignment PIN_G15 -to SPI_SS3
+set_location_assignment PIN_G16 -to SPI_SS4
 set_location_assignment PIN_H2 -to CONF_DATA0
 set_location_assignment PIN_B14 -to SDRAM_A[0]
 set_location_assignment PIN_C14 -to SDRAM_A[1]
@@ -174,7 +175,10 @@ set_location_assignment PIN_R4 -to SDRAM_CLK
 set_location_assignment PIN_P1 -to TAPE_IN
 set_location_assignment PIN_B1 -to UART_RXD
 set_location_assignment PIN_D1 -to UART_TXD
-set_location_assignment PLL_1 -to "pll:pll|altpll:altpll_component"
+
+#set_location_assignment PLL_1 -to guest|pll|altpll_component
+set_location_assignment PLL_1 -to guest|pll|altpll_component|auto_generated|pll1
+
 set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_DQ[*]
 set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_A[*]
 set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_BA[0]
@@ -206,9 +210,14 @@ set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to VGA_VS
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to AUDIO_L
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to AUDIO_R
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SPI_DO
-set_global_assignment -name SDC_FILE ../DeMiSTify/Board/sidi/constraints.sdc
+
+
+#=====================================================================
+
 set_global_assignment -name VERILOG_MACRO "DEMISTIFY_SIDI=1"
 set_global_assignment -name VERILOG_MACRO "DEMISTIFY=1"
+
+set_global_assignment -name SDC_FILE constraints.sdc
 set_global_assignment -name QIP_FILE top.qip
 set_global_assignment -name QIP_FILE ../files.qip
 set_global_assignment -name QIP_FILE "../mist-modules/mist.qip"
@@ -218,4 +227,7 @@ set_global_assignment -name AUTO_RAM_TO_LCELL_CONVERSION ON
 
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
