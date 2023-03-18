@@ -32,6 +32,9 @@ create_generated_clock -name peripheral_clock -source [get_pins $CLOCK_4_77] -di
 # SPLASH
 set_false_path -to [get_registers {PCXT:guest|splash_off}]
 
+# i2sclk moved from constrainst.sdc
+create_generated_clock -name i2sclk -source $CLOCK_CHIP -divide_by 32 [get_registers {audio_top:audio_i2s|tcount[4]}]
+
 # UART
 set_false_path -from [get_clocks $CLOCK_CHIP] -to [get_clocks $CLOCK_UART]
 set_false_path -from [get_clocks $CLOCK_UART] -to [get_clocks $CLOCK_CHIP]
