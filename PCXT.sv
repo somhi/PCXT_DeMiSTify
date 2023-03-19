@@ -67,8 +67,7 @@ module PCXT
         output         CLK_CHIPSET,
     `endif
 
-    `ifdef MIST_SIDI
-    `else         
+    `ifndef MIST_SIDI
         input         PS2K_CLK_IN,
         input         PS2K_DAT_IN,
         output        PS2K_CLK_OUT,
@@ -91,10 +90,8 @@ module PCXT
     assign LED =  ~ioctl_download;   //1'b1;
 
     ///////// Default values for ports not used in this core /////////
-
     //assign {SRAM_Q, SRAM_A, SRAM_WE} = 'Z;
     //assign SRAM_Q[15:8] = 8'bZZZZZZZZ;
-    //assign {SDRAM_DQ, SDRAM_A, SDRAM_BA, SDRAM_CLK, SDRAM_CKE, SDRAM_DQML, SDRAM_DQMH, SDRAM_nWE, SDRAM_nCAS, SDRAM_nRAS, SDRAM_nCS} = 'Z;
 
     //
     ///////////////////////   MiST FRAMEWORK   ///////////////////////
@@ -138,6 +135,7 @@ module PCXT
 		"P3Oh,Composite Blending,No,Yes;",
 		"P3Oi,Composite (DB15 green),Off,On;",
 		"P3Ol,VGA+Compos(1pin no.osd),Off,On;",
+        "P3Og,EXPER.YPbPr,Off,On;",
 		//
 		"P4,Hardware;",
 		"P4OB,Lo-tech 2MB EMS,Enabled,Disabled;",
@@ -152,8 +150,7 @@ module PCXT
 		//
 		"P5,Debug;",
 //      "P5Oq,Comp. simulated (WIP),Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
-		"P5Og,EXPER.YPbPr,Off,On;",
-        "P5OLM,UART Speed,1200..115200bps,115200..921600bps;",
+        "P5OLM,UART signal,clk_uart,clk_uart_en;",
 //		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
 //		"P5Ok,DEBUG.OSD disable,No,Yes;",
 		//
@@ -860,6 +857,14 @@ module PCXT
 
     end
 
+
+    `ifdef MIST_SIDI
+
+    assign device_clock = ps2_kbd_clk_in;
+    assign device_data  = ps2_kbd_data_in;
+
+    `else
+
     //
     // Input F/F PS2_CLK
     //
@@ -900,6 +905,8 @@ module PCXT
             device_data    <= device_data_ff;
         end
     end
+
+    `endif
 
 
     wire [7:0] data_bus;
