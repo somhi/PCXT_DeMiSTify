@@ -11,7 +11,10 @@
 #undef CONFIG_WITHOUT_FILESYSTEM
 
 /* PS/2 Mouse support */
+/* PS/2 Mouse support */
 #undef PS2_MOUSE
+#undef PS2_MOUSE_WHEEL /* Attempt to initialise the mouse in 4-byte (wheel) mode */
+#undef PS2_MOUSE_USERIO /* Do we need to send the mouse data to the core (not needed if the core can interpret PS/2 wires directly. */
 #undef PS2_WRITE /* Needed to initialise the mouse and put it in wheel mode */
 
 /* CDROM support - used by the TurboGrafx core */
@@ -22,6 +25,11 @@ more obvious application of disk images on computer cores.  If not defined
 here, the number of units defaults to 4. */
 #undef CONFIG_DISKIMG
 #undef CONFIG_DISKIMG_UNITS 2
+
+/* IDE emulation */
+#define CONFIG_IDE
+#define CONFIG_IDE_UNITS 2
+#define CONFIG_IDE_PC_HD
 
 /* Speed up file operations by "bookmarking" the file.
    (Undef to disable, or set to the number of desired bookmarks - a reasonable
@@ -51,11 +59,21 @@ here, the number of units defaults to 4. */
 #undef CONFIG_SETTINGS
 #undef CONFIG_SETTINGS_FILENAME "PCXT    CFG"
 
+/* Do we support the Real Time Clock (if available)? */
+#undef CONFIG_RTC
+
 /* Support for 64-bit status word.  Adds around 200 bytes to the firmware size. */
 #define CONFIG_STATUSWORD_64BIT
 
 /* Automatically close OSD on toggle menu items (generally reset) */
 #define CONFIG_AUTOCLOSE_OSD
+
+/* Is this an arcade core with .ARC file support? */
+#undef CONFIG_ARCFILE
+
+/* If this is defined, DeMiSTify will look for a file called "15KHZ.CFG", and if found,
+disable the scandoubler. */
+#undef CONFIG_AUTOSCANDOUBLER
 
 #endif
 
