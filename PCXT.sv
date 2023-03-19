@@ -112,7 +112,9 @@ module PCXT
 		"OHI,CPU Speed,4.77MHz,7.16MHz,9.54MHz,PC/AT 3.5MHz;",
         //"OJK,Write Protect,None,A:,B:,A: & B:;",    
 		//
+        `ifndef MIST_SIDI
 		"S0,IMGVHD,Mount IDE:;",
+        `endif
 		"P1,BIOS;",
 		"P1F,ROM,PCXT BIOS:;",
 		"P1F,ROM,Tandy BIOS:;",
