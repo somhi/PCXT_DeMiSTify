@@ -111,6 +111,7 @@ module PCXT
 		"OHI,CPU Speed,4.77MHz,7.16MHz,9.54MHz,PC/AT 3.5MHz;",
         //"OJK,Write Protect,None,A:,B:,A: & B:;",    
 		//
+		"S0,IMGVHD,Mount IDE:;",
 		"P1,BIOS;",
 		"P1F,ROM,PCXT BIOS:;",
 		"P1F,ROM,Tandy BIOS:;",
@@ -283,11 +284,11 @@ module PCXT
     `endif
     
 
-    `ifdef MIST_SIDI
+//    `ifdef MIST_SIDI
     data_io #(.ENABLE_IDE(1'b1)) data_io
-    `else 
-    data_io data_io 
-    `endif
+//    `else 
+//    data_io data_io 
+//    `endif
 	(
 		.clk_sys    ( clk_chipset ),
 		.SPI_SCK    ( SPI_SCK ),
