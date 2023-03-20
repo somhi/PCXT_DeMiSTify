@@ -1,6 +1,6 @@
 # files inherited from the guest core:
 files.qip
-mist-modules/mist.qip
+mist.qip
 
 # The controller module
 DeMiSTify/controller/controller.qip

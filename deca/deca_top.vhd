@@ -419,7 +419,7 @@ begin
 			UART_RTS  => SPI_CS2,
 
 			--SPI
---			SPI_SD_DI  => sd_miso,
+			SPI_DO_IN  => sd_miso,
 			SPI_DO     => spi_fromguest,
 			SPI_DI     => spi_toguest,
 			SPI_SCK    => spi_clk_int,

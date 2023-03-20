@@ -67,7 +67,7 @@ constant demistify_serialdebug : std_logic := '0';
 			SPI_DO			:	 OUT STD_LOGIC;
 	-- 		We can't do bi-directional signals here, so we need separate in and out signals.
 	--		If the guest core uses direct mode for ROM upload it will need to be adapted.
-	--		SPI_SD_DI		:	 IN STD_LOGIC;
+			SPI_DO_IN		:	 IN STD_LOGIC;
 			SPI_DI			:	 IN STD_LOGIC;
 			SPI_SCK			:	 IN STD_LOGIC;
 			SPI_SS2			:	 IN STD_LOGIC;

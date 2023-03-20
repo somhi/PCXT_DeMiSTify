@@ -34,11 +34,10 @@ module PCXT
         output        SDRAM_CLK,
         output        SDRAM_CKE,
 
-    	`ifdef MIST_SIDI
-        inout         SPI_DO,
-    	`else 
-        output        SPI_DO,
+    	`ifndef MIST_SIDI
+        input         SPI_DO_IN,
     	`endif
+        inout         SPI_DO,
         input         SPI_DI,
         input         SPI_SCK,
         input         SPI_SS2,
@@ -287,11 +286,7 @@ module PCXT
     `endif
     
 
-//    `ifdef MIST_SIDI
     data_io #(.ENABLE_IDE(1'b1)) data_io
-//    `else 
-//    data_io data_io 
-//    `endif
 	(
 		.clk_sys    ( clk_chipset ),
 		.SPI_SCK    ( SPI_SCK ),
@@ -299,6 +294,9 @@ module PCXT
         .SPI_SS4    ( SPI_SS4 ),
 		.SPI_DI     ( SPI_DI  ),
 		.SPI_DO     ( SPI_DO  ),
+        `ifndef MIST_SIDI
+        .SPI_DO_IN     ( SPI_DO_IN    ),
+        `endif        
 
 		.ioctl_download ( ioctl_download ),
 	//  .ioctl_upload   ( upload_active  ),
