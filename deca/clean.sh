@@ -1,3 +1,4 @@
+find ../firmware/ -type f \( ! -iname "config.h" ! -iname "overrides.c" ! -iname "*.vhd" \) -delete
 find output_files/ -type f \( ! -iname "*.sof" ! -iname "*.svf" ! -iname "*.flow.rpt" ! -iname "*.sta.rpt" \) -delete
 rm -f output_files/PCXT_deca_pof.svf
 #find output_files/  -type f -not -name '*.sof' -delete
