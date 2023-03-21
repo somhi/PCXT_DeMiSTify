@@ -42,28 +42,7 @@ git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
 #Load project in Quartus from /deca_mist/PCXT_deca_mist.qpf
 ```
 
-### Instructions to compile the project for a specific board:
 
-```sh
-git clone https://github.com/somhi/PCXT_DeMiSTify
-cd PCXT_DeMiSTify
-#Do a first make (will finish in error) but it will download missing submodules 
-make
-cd DeMiSTify
-#Create file site.mk in DeMiSTify folder 
-cp site.template site.mk
-#Edit site.mk and add your own PATHs to Quartus (Q18)
-gedit site.mk
-#Go back to root folder and do a make with board target (deca, deca_mist, neptuno, uareloaded, atlas_cyc). If not specified it will compile for all targets.
-cd ..
-make BOARD=deca_mist
-#when asked just accept default settings with Enter key
-```
-
-After that you can:
-
-* Flash bitstream directly from [command line](https://github.com/DECAfpga/DECA_binaries#flash-bitstream-to-fgpa-with-quartus)
-* Load project in Quartus from /deca_mist/PCXT_deca_mist.qpf
 
 ### Pinout connections:
 

@@ -4,5 +4,6 @@ set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) pll.qip]
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) pllvideo.qip]
 set_global_assignment -name QIP_FILE [file join $::quartus(qip_path) pll2/pll2.qip]
 set_global_assignment -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "KFSDRAM.sv"]
+set_global_assignment -name VERILOG_FILE [file join $::quartus(qip_path) ../rtl/common/data_io.v]
 
 
