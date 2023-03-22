@@ -34,7 +34,7 @@ here, the number of units defaults to 4. */
 /* Speed up file operations by "bookmarking" the file.
    (Undef to disable, or set to the number of desired bookmarks - a reasonable
    range would be between 4 and 16 */
-#define CONFIG_FILEBOOKMARKS 6
+#define CONFIG_FILEBOOKMARKS 16
 
 /* Keyboard-based Joystick emulation */
 #define CONFIG_JOYKEYS
