@@ -18,7 +18,7 @@
 #
 # Quartus Prime
 # Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
-# Date created = 19:14:25  March 21, 2023
+# Date created = 22:42:00  March 23, 2023
 #
 # -------------------------------------------------------------------------- #
 #
@@ -40,7 +40,7 @@ set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name DEVICE 10M50DAF484C6GES
 set_global_assignment -name TOP_LEVEL_ENTITY deca_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 17.1.0
-set_global_assignment -name PROJECT_CREATION_TIME_DATE "19:14:25  MARCH 21, 2023"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "22:42:00  MARCH 23, 2023"
 set_global_assignment -name LAST_QUARTUS_VERSION "17.1.0 Lite Edition"
 set_global_assignment -name AUTO_MERGE_PLLS OFF
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
@@ -134,7 +134,6 @@ set_location_assignment PIN_J9 -to JOY1_DOWN
 set_location_assignment PIN_F4 -to JOY1_LEFT
 set_location_assignment PIN_F5 -to JOY1_RIGHT
 set_location_assignment PIN_K5 -to JOYX_SEL_O
-set_location_assignment PIN_V17 -to DETO3_JOY_MUX
 set_instance_assignment -name IO_STANDARD "2.5 V" -to JOY1_B2_P9
 set_instance_assignment -name IO_STANDARD "2.5 V" -to JOY1_B1_P6
 set_instance_assignment -name IO_STANDARD "2.5 V" -to JOY1_UP
@@ -157,6 +156,7 @@ set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to JOY1_RIGHT
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to JOYX_SEL_O
 set_location_assignment PIN_W9 -to DETO1_PMOD2_6
 set_location_assignment PIN_W5 -to DETO2_PMOD2_7
+set_location_assignment PIN_V17 -to DETO3_JOY_MUX
 set_location_assignment PIN_Y11 -to DETO4
 set_location_assignment PIN_R14 -to I2S_SCK
 set_instance_assignment -name IO_STANDARD "1.5 V" -to I2S_SCK
@@ -461,7 +461,7 @@ set_global_assignment -name VERILOG_MACRO "DEMISTIFY_DECA=1"
 set_global_assignment -name VERILOG_MACRO "DEMISTIFY=1"
 set_global_assignment -name QIP_FILE top.qip
 set_global_assignment -name QIP_FILE ../files.qip
-set_global_assignment -name QIP_FILE ../mist.qip
+set_global_assignment -name QIP_FILE "../mist-modules/mist.qip"
 set_global_assignment -name QIP_FILE ../DeMiSTify/controller/controller.qip
 set_global_assignment -name VHDL_FILE ../demistify_config_pkg.vhd
 set_global_assignment -name VHDL_FILE ../firmware/controller_rom1_byte.vhd

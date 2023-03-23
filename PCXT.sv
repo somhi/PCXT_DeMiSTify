@@ -34,9 +34,6 @@ module PCXT
         output        SDRAM_CLK,
         output        SDRAM_CKE,
 
-    	`ifndef MIST_SIDI
-        input         SPI_DO_IN,
-    	`endif
         inout         SPI_DO,
         input         SPI_DI,
         input         SPI_SCK,
@@ -298,10 +295,7 @@ module PCXT
 		.SPI_SS2    ( SPI_SS2 ),
         .SPI_SS4    ( SPI_SS4 ),
 		.SPI_DI     ( SPI_DI  ),
-		.SPI_DO     ( SPI_DO  ),
-        `ifndef MIST_SIDI
-        .SPI_DO_IN     ( SPI_DO_IN    ),
-        `endif        
+		.SPI_DO     ( SPI_DO  ),    
 
 		.ioctl_download ( ioctl_download ),
 	//  .ioctl_upload   ( upload_active  ),
