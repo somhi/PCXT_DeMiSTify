@@ -5,6 +5,7 @@ use ieee.numeric_std.all;
 library work;
 use work.demistify_config_pkg.all;
 
+--------------------------------------------------
 
 entity uareloaded_top is
 	port
@@ -75,6 +76,7 @@ architecture RTL of uareloaded_top is
 --	signal sd_miso : std_logic;
 	
 -- internal SPI signals
+	signal spi_do 	     : std_logic;	
 	signal spi_toguest : std_logic;
 	signal spi_fromguest : std_logic;
 	signal spi_ss2 : std_logic;
@@ -211,7 +213,7 @@ guest: COMPONENT  PCXT
 	UART_TX  => UART_TXD,
 	UART_RX  => UART_RXD,	
 	--SPI
-	SPI_DO => spi_fromguest,
+	SPI_DO     => spi_do,
 	SPI_DI => spi_toguest,
 	SPI_SCK => spi_clk_int,
 	SPI_SS2 => spi_ss2,
@@ -251,7 +253,9 @@ guest: COMPONENT  PCXT
 
 -- Pass internal signals to external SPI interface
 sd_sck <= spi_clk_int;
-
+spi_do <= SD_MISO when spi_ss4='0' else 'Z'; -- to guest
+spi_fromguest <= spi_do;  -- to control CPU
+		
 controller : entity work.substitute_mcu
 	generic map (
 		sysclk_frequency => 500,

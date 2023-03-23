@@ -89,6 +89,7 @@ architecture RTL of sockit_top is
 	signal sd_miso : std_logic;
 
 	-- internal SPI signals
+	signal spi_do 	     : std_logic;		
 	signal spi_toguest   : std_logic;
 	signal spi_fromguest : std_logic;
 	signal spi_ss2       : std_logic;
@@ -310,8 +311,7 @@ begin
 			UART_RTS  => DETO2,		--UART_RTS
 
 			--SPI
---			SPI_SD_DI  => sd_miso,
-			SPI_DO  => spi_fromguest,
+			SPI_DO     => spi_do,
 			SPI_DI  => spi_toguest,
 			SPI_SCK => spi_clk_int,
 			SPI_SS2 => spi_ss2,
@@ -348,7 +348,9 @@ begin
 
 		-- Pass internal signals to external SPI interface
 		sd_clk <= spi_clk_int;
-
+		spi_do <= sd_miso when spi_ss4='0' else 'Z'; -- to guest
+		spi_fromguest <= spi_do;  -- to control CPU
+		
 		controller : entity work.substitute_mcu
 			generic map(
 				sysclk_frequency => 500,
