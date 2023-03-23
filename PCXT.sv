@@ -104,7 +104,7 @@ module PCXT
 
 	`include "build_id.v"
 
-    //NOTE: Too many entries will hung the OSD when entering a submenu
+    //CAUTION: Too many entries will hung the OSD when entering a submenu (CONF_STR < 1024 bytes)
     parameter CONF_STR = {		// options order: 0,1,2,...
 		"PCXT;;",
 		"O3,Model,IBM PCXT,Tandy 1000;",
@@ -150,17 +150,19 @@ module PCXT
 		//
 		"T0,Reset;",
 		//
+        `ifdef DEBUG2
 		"P5,Debug;",
-//      "P5Oq,Comp. simulated (WIP),Off,On;",  //[52] -> "P2o8,Composite video,Off,On;",
-        "P5OLM,UART signal,clk_uart,clk_uart_en;",
-//		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",
-//		"P5Ok,DEBUG.OSD disable,No,Yes;",
+//      "P5Oq,Comp. simulated (WIP),Off,On;",           //[52] -> "P2o8,Composite video,Off,On;",
+        "P5OLM,UART signal,clk_uart,clk_uart_en;",      //[22:21] 
+//		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",        //[45]
+//		"P5Ok,DEBUG.OSD disable,No,Yes;",               //[46]
+        `endif
 		//
 		"V,v",`BUILD_DATE
 	};
 
     wire forced_scandoubler;
-    wire  [1:0] buttons;
+    wire [1:0] buttons;
     wire [63:0] status;
     wire [7:0]  xtctl;
 
@@ -199,8 +201,11 @@ module PCXT
     wire composite_on = status[44];
     wire vga_composite = status[47];
 	//debug
+    `ifdef DEBUG2
     wire display_mode_disable = status[45];
     wire osd_disable = status[46];
+    `endif
+
 
     //reg [1:0]   scale_video_ff;
     reg         mda_mode_video_ff;
@@ -1037,7 +1042,11 @@ module PCXT
 		.tandy_bios_flag                    (tandy_bios_flag),
 	//	.tandy_16_gfx                       (tandy_16_gfx),
 	//	.tandy_color_16                     (tandy_color_16),
-		.clk_uart                           ((status[22:21] == 2'b00) ? clk_uart : clk_uart_en),
+        `ifdef DEBUG2
+        .clk_uart                           ((status[22:21] == 2'b00) ? clk_uart : clk_uart_en),
+        `else
+        .clk_uart                           (clk_uart),
+        `endif
 		.clk_uart2                          (clk_uart2_en),
 		.uart_rx                            (UART_RX),
 		.uart_tx                            (UART_TX),
@@ -1292,13 +1301,20 @@ module PCXT
 		.B_OUT(baux)
 	);
 
+
+    `ifdef DEBUG2
     assign raux2 = display_mode_disable ? r_in : raux[7:2];
     assign gaux2 = display_mode_disable ? g_in : gaux[7:2];
     assign baux2 = display_mode_disable ? b_in : baux[7:2];
-
     // assign raux2 = display_mode_disable ? r_in : pre2x_r[7:2];
     // assign gaux2 = display_mode_disable ? g_in : pre2x_g[7:2];
     // assign baux2 = display_mode_disable ? b_in : pre2x_b[7:2];
+    `else
+    assign raux2 = raux[7:2];
+    assign gaux2 = gaux[7:2];
+    assign baux2 = baux[7:2];
+    `endif
+
 
     mist_video #( .SD_HCNT_WIDTH(10) ) mist_video    //.OSD_COLOR(3'd5),
 	(
@@ -1341,29 +1357,38 @@ module PCXT
 		.VGA_HS      ( vga_hs_o   )
 	);
 
+
+    `ifdef DEBUG2
     assign raux4  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
     assign gaux4  = osd_disable ? {gaux2,gaux2[1:0]} : {gaux3,gaux3[1:0]};
     assign baux4  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
+    `else
+    assign raux4  = {raux3,raux3[1:0]};
+    assign gaux4  = {gaux3,gaux3[1:0]};
+    assign baux4  = {baux3,baux3[1:0]};
+    `endif
 
     assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
 
-
     `ifdef NO_CREDITS
-    
     assign VGA_R = composite_on ?                        8'd0 : raux4;
     assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
     assign VGA_B = composite_on ?                        8'd0 : baux4;
-
     `else
-
     assign VGA_R = pause_core ? pre2x_r : composite_on ?                        8'd0 : raux4;
     assign VGA_G = pause_core ? pre2x_g : composite_on ?  {comp_video,comp_video[0]} : gaux4;
     assign VGA_B = pause_core ? pre2x_b : composite_on ?                        8'd0 : baux4;
-
     `endif
 
+
+    `ifdef DEBUG2
     assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;
     assign VGA_HS = osd_disable ? ~vga_hs : ~vga_hs_o;
+    `else
+    assign VGA_VS = ~vga_vs_o;
+    assign VGA_HS = ~vga_hs_o;
+    `endif
+
 
     assign VGA_DE = ~(HBlank | VBlank);
 
@@ -1395,13 +1420,10 @@ module PCXT
     `ifdef NO_CREDITS
     // NO CREDITS
     `else
-
     // JTFRAME CREDITS.  
     // **********SIGNALS to be updated ************
-
     //wire LHBL = border_video_ff ? HBlank_fixed : HBlank_VGA;
     //wire LVBL = border_video_ff ? std_hsyncwidth ? VGA_VBlank_border : ~VSync : VBlank;
-
     //wire       pre2x_LHBL, pre2x_LVBL;
     wire [7:0] pre2x_r, pre2x_g, pre2x_b;
 

@@ -8,3 +8,4 @@
 //`define CGA_32	// 119 / 260 ( 65 % )	=>  86 / 260 ( 33 % )		
 //`define CGA_64	// 182 / 260
 `define CGA_128		// 299 / 260            =>  178 / 260 ( 68 % )
+//`define DEBUG2		//Show Debug menu in OSD

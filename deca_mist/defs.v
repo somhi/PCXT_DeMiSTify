@@ -12,4 +12,4 @@
 //`define CGA_32			
 //`define CGA_64
 `define CGA_128		//M9Ks  178 / 182  with NO_CREDITS
-						
+//`define DEBUG2		//Show Debug menu in OSD

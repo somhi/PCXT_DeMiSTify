@@ -9,3 +9,4 @@
 `define CGA_32		//M9Ks  / 66 ( 83 % )
 //`define CGA_64
 //`define CGA_128
+//`define DEBUG2		//Show Debug menu in OSD

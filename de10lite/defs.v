@@ -10,4 +10,4 @@
 //`define CGA_64
 `define CGA_128			// 176/182 with EMBED_8088_ROM
 				// 177/182 with NO_CREDITS
-
+//`define DEBUG2		//Show Debug menu in OSD

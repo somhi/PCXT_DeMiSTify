@@ -129,5 +129,10 @@ Not all boards have the resources (BRAM, logic cells) to implement  all the soun
 
 // Specific macros for MiST / SiDi boards
 `define MIST_SIDI		// Define if your board is MiST compatible
+
+// DEBUG macros
+`define DEBUG2		// Define if want to show DEBUG menu in OSD
+
+
 ```
 

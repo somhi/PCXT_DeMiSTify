@@ -9,3 +9,4 @@
 //`define CGA_64
 //`define CGA_128
 `define CGA_128_CV	//MDA is implemented in CGA VRAM
+//`define DEBUG2		//Show Debug menu in OSD

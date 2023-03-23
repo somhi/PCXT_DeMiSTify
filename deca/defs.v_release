@@ -11,4 +11,5 @@
 //`define CGA_32			
 //`define CGA_64
 `define CGA_128		//M9Ks  177 / 182  
+//`define DEBUG2		//Show Debug menu in OSD
 						

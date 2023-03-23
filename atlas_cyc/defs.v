@@ -8,3 +8,4 @@
 `define CGA_32		//M9Ks 61 / 66 ( 83 % ) with EMBED_8088_ROM, NO_ADLIB, NO_CMSOUND, NO_CREDITS   
 //`define CGA_64
 //`define CGA_128
+//`define DEBUG2		//Show Debug menu in OSD
