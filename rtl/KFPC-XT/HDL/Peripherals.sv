@@ -115,16 +115,12 @@ module PERIPHERALS #(
         output  logic           ems_b2,
         output  logic           ems_b3,
         output  logic           ems_b4,
-        // Virtual HDD Bus
-        output  logic           hdd_cmd_req,
-        output  logic           hdd_dat_req,
-        input   logic   [2:0]   hdd_addr,
-        input   logic   [15:0]  hdd_data_out,
-        output  logic   [15:0]  hdd_data_in,
-        input   logic           hdd_wr,
-        input   logic           hdd_status_wr,
-        input   logic           hdd_data_wr,
-        input   logic           hdd_data_rd,
+        // Primary IDE Bus
+        output  logic    [3:0]  ide0_addr,
+        output  reg     [15:0]  ide0_writedata,
+        input   logic   [15:0]  ide0_readdata,
+        output  logic           ide0_read,
+        output  logic           ide0_write,
         // XTCTL DATA
         output  logic   [7:0]   xtctl = 8'h00,
         output  logic           pause_core
@@ -1234,7 +1230,6 @@ end
     logic           prev_ide0_io_read;
     logic           prev_ide0_io_write;
     logic [3:0]     ide0_address_1;
-    logic [15:0]    ide0_writedata;
     logic [15:0]    ide0_drive_out;
     logic           ide0_read_edge;
     logic           ide0_write_edge;
@@ -1256,39 +1251,10 @@ end
 
     assign  ide0_write_edge = ~ide0_io_write & prev_ide0_io_write;
 
-    ide ide (
-        .clk                (clock),
-        .clk_en             (1'b1),
-        .reset              (reset),
-        .address_in         ((ide0_read_edge && ide0_address_1 == 4'hE) ? 3'd7 : ide0_address_1[2:0]),
-        .sel_secondary      (1'b0),
-        .data_in            (ide0_writedata),
-        .data_out           (ide0_drive_out),
- //     .data_oe            (),
-        .rd                 (ide0_read_edge),
-        .hwr                (ide0_write_edge),
-        .lwr                (ide0_write_edge),
-//      .sel_ide            (ide0_read_edge | ide0_write_edge),
-        .sel_ide            (ide0_read_edge | (ide0_write_edge & !ide0_address_1[3])),
-//      .intreq             (),
-        .intreq_ack         (1'b0),     // interrupt clear
-//      .nrdy               (),     // fifo is not ready for reading 
-        .hdd0_ena           (2'b01),     // enables Master & Slave drives on primary channel
-        .hdd1_ena           (2'b00),     // enables Master & Slave drives on secondary channel
-//      .fifo_rd            (),
-//      .fifo_wr            (),
-
-        // connection to the IO-Controller
-        .hdd_cmd_req        (hdd_cmd_req),
-        .hdd_dat_req        (hdd_dat_req),
-        .hdd_status_wr      (hdd_status_wr),
-        .hdd_addr           (hdd_addr),
-        .hdd_wr             (hdd_wr),
-        .hdd_data_in        (hdd_data_in),
-        .hdd_data_out       (hdd_data_out),
-        .hdd_data_rd        (hdd_data_rd),
-        .hdd_data_wr        (hdd_data_wr)
-    );
+    assign  ide0_addr = ide0_address_1;
+    assign  ide0_read = ide0_read_edge;
+    assign  ide0_write = ide0_write_edge;
+    assign  ide0_drive_out = ide0_readdata;
 
     always_ff @(posedge clock)
     begin
@@ -1299,7 +1265,6 @@ end
         else
             ide0_data_bus_in <= ide0_data_bus_in;
     end
-
 
     //
     // Joysticks

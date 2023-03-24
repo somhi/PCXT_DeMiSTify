@@ -223,7 +223,13 @@ module PCXT
     wire        hdd_status_wr;
     wire        hdd_data_wr;
     wire        hdd_data_rd;
+    wire  [1:0] hdd0_ena;
 
+    wire  [3:0] ide0_addr;
+    wire [15:0] ide0_writedata;
+    wire [15:0] ide0_readdata;
+    wire        ide0_read;
+    wire        ide0_write;
 
     always @(posedge CLK_VIDEO)
     begin
@@ -238,7 +244,7 @@ module PCXT
     // .PS2DIV(2000) value is adequate
 
     `ifdef MIST_SIDI
-    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1), .FEATURES(32'h10) /* FEAT_IDE0_ATA */) user_io
+    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1), .FEATURES(32'h50) /* FEAT_IDE0_ATA | FEAT_IDE1_ATA*/) user_io
     `else 
     user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000)) user_io 
     `endif
@@ -318,10 +324,42 @@ module PCXT
         .hdd_data_out  ( hdd_data_out ),
         .hdd_data_in   ( hdd_data_in  ),
         .hdd_data_rd   ( hdd_data_rd  ),
-        .hdd_data_wr   ( hdd_data_wr  )
-
+        .hdd_data_wr   ( hdd_data_wr  ),
+        .hdd0_ena      ( hdd0_ena     )
 	);
 
+    ide ide (
+        .clk           ( clk_chipset ),
+        .clk_en        ( 1'b1 ),
+        .reset         ( reset ),
+        .address_in    ( (ide0_read && ide0_addr == 4'hE) ? 3'd7 : ide0_addr[2:0] ),
+        .sel_secondary ( 1'b0 ),
+        .data_in       ( ide0_writedata  ),
+        .data_out      ( ide0_readdata   ),
+ //     .data_oe       ( ),
+        .rd            ( ide0_read  ),
+        .hwr           ( ide0_write ),
+        .lwr           ( ide0_write ),
+        .sel_ide       ( ide0_read | (ide0_write & !ide0_addr[3]) ),
+//      .intreq        ( ),
+        .intreq_ack    ( 1'b0 ),     // interrupt clear
+//      .nrdy          ( ),          // fifo is not ready for reading 
+        .hdd0_ena      ( hdd0_ena ), // enables Master & Slave drives on primary channel
+        .hdd1_ena      ( 2'b00 ),    // enables Master & Slave drives on secondary channel
+//      .fifo_rd       ( ),
+//      .fifo_wr       ( ),
+
+        // connection to the IO-Controller
+        .hdd_cmd_req   ( hdd_cmd_req ),
+        .hdd_dat_req   ( hdd_dat_req ),
+        .hdd_status_wr ( hdd_status_wr ),
+        .hdd_addr      ( hdd_addr ),
+        .hdd_wr        ( hdd_wr ),
+        .hdd_data_in   ( hdd_data_in ),
+        .hdd_data_out  ( hdd_data_out ),
+        .hdd_data_rd   ( hdd_data_rd ),
+        .hdd_data_wr   ( hdd_data_wr )
+    );
     //
     ///////////////////////   CLOCKS   /////////////////////////////
     //
@@ -1067,15 +1105,11 @@ module PCXT
 		.ems_enabled                        (~status[11]),
 		.ems_address                        (status[13:12]),
 		.bios_protect_flag                  (bios_protect_flag),
-		.hdd_cmd_req                        (hdd_cmd_req),
-		.hdd_dat_req                        (hdd_dat_req),
-		.hdd_addr                           (hdd_addr),
-		.hdd_data_out                       (hdd_data_out),
-		.hdd_data_in                        (hdd_data_in),
-		.hdd_wr                             (hdd_wr),
-		.hdd_status_wr                      (hdd_status_wr),
-		.hdd_data_wr                        (hdd_data_wr),
-		.hdd_data_rd                        (hdd_data_rd),
+		.ide0_addr                          (ide0_addr),
+		.ide0_writedata                     (ide0_writedata),
+		.ide0_readdata                      (ide0_readdata),
+		.ide0_read                          (ide0_read),
+		.ide0_write                         (ide0_write),
 		.xtctl                              (xtctl),
 		.enable_a000h                       (a000h),
 		.wait_count_clk_en                  (~clk_cpu & clk_cpu_ff_2),
