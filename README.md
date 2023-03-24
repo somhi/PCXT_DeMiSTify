@@ -182,6 +182,14 @@ The floppy disk image is recognised by XTIDE as B: in all BIOSes except JukoST, 
 
 
 
+## MACROS defined in defs.v
+
+Not all boards have the resources (BRAM, logic cells) to implement  all the sound cards and video modes with maximum memory, so there is a defs.v file in each board folder that defines witch modules are implemented.
+
+You can edit this file prior to compile the core to test different configurations of the core. If there is not enough resources Quartus will tell you.
+
+
+
 ## **Composite real CGA video output** 
 
 CGA mode has available composite video output through:

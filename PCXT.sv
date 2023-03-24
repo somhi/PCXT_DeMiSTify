@@ -56,7 +56,7 @@ module PCXT
         output        AUDIO_L,
         output        AUDIO_R,
 
-	`ifdef DEMISTIFY_PARALLEL_AUDIO
+	`ifdef DEMISTIFY
         output [15:0]  DAC_L,
         output [15:0]  DAC_R,
 
@@ -1221,7 +1221,7 @@ module PCXT
         cmp_r <= compr(out_r);
     end
 
-	`ifdef DEMISTIFY_PARALLEL_AUDIO	//needed for not getting error in Quartus compilation for MiST board
+	`ifdef DEMISTIFY	//needed for not getting error in Quartus compilation for MiST board
 		assign DAC_L =  pause_core ? 1'b0 : status[37:36] ? cmp_l : out_l;
 		assign DAC_R =  pause_core ? 1'b0 : status[37:36] ? cmp_r : out_r;
 

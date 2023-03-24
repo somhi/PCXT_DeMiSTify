@@ -62,7 +62,6 @@ architecture RTL of de10lite_top is
 --	signal pll_locked : std_logic;
 
 -- SPI signals
-
 	signal sd_clk : std_logic;
 	signal sd_cs : std_logic;
 	signal sd_mosi : std_logic;
@@ -115,7 +114,6 @@ architecture RTL of de10lite_top is
 	alias sigma_r : std_logic is GPIO(20);
 	
 -- IO
-
 	signal joya : std_logic_vector(6 downto 0);
 	signal joyb : std_logic_vector(6 downto 0);
 	signal joyc : std_logic_vector(6 downto 0);
@@ -127,8 +125,6 @@ architecture RTL of de10lite_top is
 	signal uart_rts : std_logic;
 
 	signal act_led : std_logic;
-
-
 
 begin
 
@@ -156,7 +152,6 @@ ARDUINO_IO(2) <= 'Z';
 uart_cts <= ARDUINO_IO(2);
 
 -- External devices tied to GPIOs
-
 ps2_mouse_dat_in <=ps2_mouse_dat;
 ps2_mouse_dat    <= '0' when ps2_mouse_dat_out='0' else 'Z';
 ps2_mouse_clk_in <=ps2_mouse_clk;
@@ -274,13 +269,6 @@ controller : entity work.substitute_mcu
 		-- PS/2 signals
 		ps2k_clk_in => ps2_keyboard_clk_in,
 		ps2k_dat_in => ps2_keyboard_dat_in,
-		--ps2k_clk_out => ps2_keyboard_clk_out,
-		--ps2k_dat_out => ps2_keyboard_dat_out,
-
-		--ps2m_clk_in => ps2_mouse_clk_in,
-		--ps2m_dat_in => ps2_mouse_dat_in,
-		--ps2m_clk_out => ps2_mouse_clk_out,
-		--ps2m_dat_out => ps2_mouse_dat_out,
 
 		-- Buttons
 		buttons => (0=>KEY(1), others=>'1'),    -- 0 = opens OSD

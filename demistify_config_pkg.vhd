@@ -62,8 +62,6 @@ constant demistify_serialdebug : std_logic := '0';
 			UART_CTS  		:	IN STD_LOGIC := '1';
 			UART_RTS  		:	OUT STD_LOGIC;
 
-			CLK_CHIPSET		:	OUT STD_LOGIC;			
-
 			SPI_DO			:	 INOUT STD_LOGIC;
 			SPI_DI			:	 IN STD_LOGIC;
 			SPI_SCK			:	 IN STD_LOGIC;
@@ -86,6 +84,7 @@ constant demistify_serialdebug : std_logic := '0';
 			AUDIO_R  		: 	OUT STD_LOGIC;
 			DAC_L			: 	OUT SIGNED(15 DOWNTO 0);
 			DAC_R			: 	OUT SIGNED(15 DOWNTO 0);
+			CLK_CHIPSET		:	OUT STD_LOGIC;			
 
 			PS2K_CLK_IN 	: IN STD_LOGIC;
 			PS2K_DAT_IN	 	: IN STD_LOGIC;

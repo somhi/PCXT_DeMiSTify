@@ -1,14 +1,52 @@
-// DEVELOPER DEFINITIONS
-// (rename defs.v_devel to defs.v)
+////////////////////////////////////   MACROS DEFINITIONS  /////////////////////////////////////////
 //
-//`define EMBED_8088_ROM
-//`define EMBED_CHAR_ROM_MDA	//  (4 M9K)
-//`define NO_ADLIB
-//`define NO_CMSOUND
-`define NO_CREDITS
-//`define NO_CGA		//if not CGA, only MDA is available
-//`define CGA_16
-`define CGA_32			
-//`define CGA_64
-//`define CGA_128			//M9Ks  174 / 182  ( 100 % )  with NO_CREDITS
-//`define DEBUG2			//Show Debug menu in OSD
+// Not all boards have the resources (BRAM (M9K), logic cells) to implement  all the sound cards 
+// and video modes with maximum memory, so there is a defs.v file in each board folder that 
+// defines witch modules are implemented in the board.
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Comment with // each `define line that apply or doesn't apply to your board.
+
+// RELEASE MACROS		[M9Ks  175 / 182  with NO_CREDITS and EMBED_8088_ROM]
+//`define EMBED_8088_ROM  	// (16 M9K)
+//`define NO_CREDITS		// (10 M9K) Remove Credits screen. For boards with not enough BRAM 
+//`define CGA_128		// (128 M9K)   
+
+// DEVELOPMENT MACROS
+`define NO_CREDITS	// (10 M9K) Remove Credits screen. For boards with not enough BRAM 
+`define CGA_32		// (32 M9K)	
+`define DEBUG2		// Define if want to show DEBUG menu in OSD
+
+/////////////////////////////////   COMPLETE LIST OF MACROS   //////////////////////////////////////
+
+////// MiST / SiDi & compatible boards specific macros //////
+//`define MIST_SIDI		// Define if your board is MiST compatible
+
+////// EMBED ROMs into Logic Cells to free BRAM resources needed for video and audio //////
+//`define EMBED_8088_ROM        // (16 M9K)
+//`define EMBED_CHAR_ROM_MDA  	// (4 M9K)
+
+////// AUDIO //////
+//`define NO_ADLIB     		// Adlib. (4/9 M9K) 
+//`define NO_CMSOUND   		// Game Blaster. For board with not enough Logic cells
+
+////// CREDITS screen //////
+//`define NO_CREDITS	// (10 M9K) Remove Credits screen. 
+
+////// VIDEO CGA memory assigned //////
+// Defines CGA memory (16, 32, 64, 128) depending of the BRAM available for your board	
+// Define only one of the following macros:
+//`define NO_CGA		// if defined NO_CGA Removes CGA video and enables only MDA output	
+//`define CGA_16		// (16 M9K)
+//`define CGA_32		// (32 M9K)	
+//`define CGA_64		// (64 M9K)  64 MB does not seem to have any improvement over 32 MB
+//`define CGA_128		// (128 M9K) 
+//`define CGA_128_CV 		// (128 M9K) CGA for CYCLONE V boards, enables MDA video also
+
+////// DEBUG information //////
+//`define DEBUG2		// Define if you want to show DEBUG menu in OSD
+
+
+
+
