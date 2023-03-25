@@ -700,6 +700,9 @@ end
     wire uart2_tx;
     wire rts_n;
 	 
+    `ifdef NO_UART1
+        // UART 1 DISABLED (SERDRIVE)
+    `else
     uart uart1
     (
         .clk               (clock),
@@ -724,7 +727,7 @@ end
 
         .irq               (uart_irq)
     );
-	 
+    `endif
 
     uart uart2
     (
@@ -913,6 +916,9 @@ end
 
     wire intensity;
 
+	`ifdef NO_MDA	
+        // NO MDA VIDEO
+    `else
 
     mda_vgaport vga_mda 
     (
@@ -948,6 +954,8 @@ end
         .video                      (video_mda),
         .de_o                       (de_o_mda)
     );
+
+    `endif
 
     always_ff @(posedge clock)
     begin
@@ -1040,7 +1048,9 @@ end
 
 
     defparam cga1.BLINK_MAX = 24'd4772727;
+	`ifndef NO_MDA	
     defparam mda1.BLINK_MAX = 24'd9100000;
+    `endif
     wire [7:0] cga_vram_cpu_dout;
     wire [7:0] mda_vram_cpu_dout;
 
@@ -1103,7 +1113,8 @@ end
 
     `elsif CGA_32
 
-        vram_ip_32	cga_vram (
+        vram_ip_32	cga_vram    // 32 kB 
+        (
             .clock_a                  (clock),
             .enable_a                 (mda_mem_select_1 | cga_mem_select_1),
             .wren_a                   (~video_memory_write_n & memory_write_n),
@@ -1120,7 +1131,7 @@ end
 
     `elsif CGA_16
 
-        vram_ip_16  cga_vram   	// 16 kB  (Tandy games don't work)
+        vram_ip_16  cga_vram   	// 16 kB  (CGA games Ok, but Tandy games won't work)
         (
             .clock_a                  (clock),
             .enable_a                 (mda_mem_select_1 | cga_mem_select_1),

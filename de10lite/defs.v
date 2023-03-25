@@ -44,6 +44,12 @@
 //`define CGA_128		// (128 M9K) 
 //`define CGA_128_CV 		// (128 M9K) CGA for CYCLONE V boards, enables MDA video also
 
+////// VIDEO MDA //////
+//`define NO_MDA		// if defined, MDA video output is disabled
+
+////// UART 1  //////
+//`define NO_UART1		// (2 M9K) 
+
 ////// DEBUG information //////
 //`define DEBUG2		// Define if you want to show DEBUG menu in OSD
 

@@ -86,7 +86,7 @@ NOTE: If you leave the BIOS files into the root of the SD card with the followin
 ## Quick Start (MiST ports)
 
 * Download and uncompress [hd_image.zip](https://github.com/MiSTer-devel/PCXT_MiSTer/raw/main/games/PCXT/hd_image.zip)  on your host system. It contains a [freedos](http://www.freedos.org/ ) image
-* Prepare an SD card for your FPGA with the previous image file at root and renamed to PCXT.HD0. Create also a PCXT folder containing all the BIOSes  (see ROM instructions below)
+* Prepare an SD card for your FPGA with the previous image file at root renamed to PCXT.HD0. Create also a PCXT folder containing all the BIOSes  (see ROM instructions below). Secondary IDE disk will be loaded if PCXT.HD1 file is present.
 * Press F12 on your keyboard to access the OSD and select options:
   * Model: IBM PCXT
   * CPU Speed: 4.77MHz for better compatibility (PC/AT 3.5MHz for max. speed)

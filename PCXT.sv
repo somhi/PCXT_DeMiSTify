@@ -427,9 +427,6 @@ module PCXT
 			.areset(1'b0),
 			.c0(clk_28_636),		//28.636 -> 28.636      CLOCK_VGA_CGA
 			.c1(clk_56_875),		//56.875 -> 57.272      CLOCK_VGA_MDA
-		//	.c2(clk_uart2),			//1.8432 ->  1.842
-		//	.c3(),
-		//	.c4(),
 			.locked()
 		);
 
