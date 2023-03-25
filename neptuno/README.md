@@ -8,13 +8,10 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### STATUS
 
-* CGA VRAM with 128 kB for all Tandy games now available.
+* CGA VRAM with 128 kB for all Tandy games.
 
 
-* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
-  * **Current binary file uses Rx/Tx from the Edge connector, so either and Edge addon is required or the core must me resintesized to expose the Rx/Tx pins in the PS2 mouse port.**
-
-
+* Check file defs.v to verify and check disabled options. 
 
 ### Compile the project in Quartus:
 

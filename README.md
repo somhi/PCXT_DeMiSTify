@@ -4,23 +4,24 @@ MiST and DeMiSTified ports by [@somhi](https://github.com/somhi) from original P
 
 Follow discussion and evolution of the core at [MiSTerFPGA forum](https://misterfpga.org/viewforum.php?f=40) and [MiST Atari-forum](https://atari-forum.com/viewtopic.php?t=42465).
 
-This is a general Readme. Check specific Readme in each board folder. See list of ported platforms below.
+This is a general Readme for all targets. Check also Readme in each board folder. 
 
 **Status of the ports** 
 
-* Read specific BOARD limitations on each board folder's readme
+* Now with IDE support HD images can be loaded from SD card.
+* Read specific BOARD limitations on each board folder's Readme.
 * Read [Bugs / TODO / changes list with respect to the MiSTer port](TODO.md)
 
 ## **FPGA platforms**
 
-**MiST**
+**MiST ports** 
 
 * Altera Cyclone III:  MiST, MiSTica
 * Altera Cyclone IV: SiDi (ManuFerHi EP4CE22)
 
 * Altera Max 10: Arrow Terasic DECA + [MiSTdon](https://github.com/somhi/MiSTdon)
 
-**DeMiSTify**
+**DeMiSTify ports**
 
 * Altera Max 10: Terasic DE10-lite, Arrow Terasic DECA
 
@@ -49,69 +50,66 @@ The [Graphics Gremlin project](https://github.com/schlae/graphics-gremlin) from 
 ## Key features
 
 * 8088 CPU with these speed settings: 4.77 MHz, 7.16 MHz, 9.54 MHz cycle accurate, and PC/AT 286 at 3.5MHz equivalent (max. speed)
+
 * BIOS selectable (Tandy 1000 / PCXT). Compatible BIOS selection (IBM5160, Yuko ST, pcxt31, Tandy, micro8088, XT-IDE, ...)
+
 * XT-IDE support
+
 * Support for IBM Tandy 1000
+
 * Support for IBM PCXT 5160 and clones
+
 * Main memory 640Kb + 384Kb UMB memory
+
 * EMS memory up to 2Mb
+
 * Video modes (VGA or RGB 15 kHz)
   * Tandy graphics with 128Kb of shared VRAM  (not available on all ports due to BRAM resources)
   * CGA graphics 32kB VRAM
   * MDA monochrome
   * Composite (real) video output 
+  
 * Audio: Adlib, Tandy, Game Blaster, Speaker
+
 * Joystick support
-* Mouse support into COM2 serial port, this works like any Microsoft mouse. you just need a driver to configure it, like CTMOUSE 1.9 (available into hdd folder), with the command CTMOUSE /s2 
 
-## Quick Start (DeMiSTified ports)
+* Mouse support into COM2 serial port, this works like any Microsoft mouse. You just need a driver to configure it, like CTMOUSE 1.9 (available into hdd folder), with the command CTMOUSE /s2 
 
-* Download and uncompress [hd_image.zip](https://github.com/MiSTer-devel/PCXT_MiSTer/raw/main/games/PCXT/hd_image.zip)  on your host system. It contains a [freedos](http://www.freedos.org/ ) image
-* Load the OS image with [Serdrive](SW/ ) as explained below at Mounting the disk image section
-* Prepare an SD card for your FPGA with a PCXT folder containing the BIOS  (see ROM instructions below)
-* Upload bitstream file into your FPGA
-* Press F12 on your keyboard to access the OSD and select options:
-  * Model: IBM PCXT
+  
+
+## Quick Start
+
+* Download and uncompress [hd_image.zip](https://github.com/MiSTer-devel/PCXT_MiSTer/raw/main/games/PCXT/hd_image.zip)  on your host system (it contains a [freedos](http://www.freedos.org/ ) image)
+* Prepare an SD card for your FPGA 
+  * MiST ports: rename previous image to PCXT.HD0 (primary IDE). Secondary IDE disk will be loaded if PCXT.HD1 file is present.
+  * DeMiSTify ports: rename previous image with extension .VHD
+  * Create also a PCXT folder containing all the BIOSes  (see ROM instructions below). 
+
+* Load (or flash) PCXT core with the SD card inserted and press F12 on your keyboard to access the OSD to select options:
+  * Model:  IBM PCXT (Note: for Tandy is needed to generate the Tandy BIOS first)
   * CPU Speed: 4.77MHz for better compatibility (PC/AT 3.5MHz for max. speed)
-  * BIOS > PCXT BIOS > browse to the SD folder and choose pcxt_pcxt31.rom or any other ROM
-
-NOTE: If you leave the BIOS files into the root of the SD card with the following names, they will be loaded automatically after the splash screen:
-
-* PCXT.ROM  for the PCXT BIOS
-* TANDY.ROM for the TANDY 1000 BIOS
-* XTIDE.ROM for the XT-IDE BIOS needed to load the OS
+  * BIOS > PCXT BIOS > browse to the BIOS folder and choose e.g. pcxt_pcxt31.rom. For automatic load of BIOSes read section below.
+  * Mount IDE: only for DeMiSTify ports select in OSD the VHD image for primary IDE HD and Reset core
+* To load floppies it is only possible with an USB serial cable connected to your Host computer using [Serdrive](SW/ ) as explained below at Mounting the disk image section. With this method it is possible to load HD images also. Press ALT key during boot to detect the COM drives.
 
 
 
-## Quick Start (MiST ports)
 
-* Download and uncompress [hd_image.zip](https://github.com/MiSTer-devel/PCXT_MiSTer/raw/main/games/PCXT/hd_image.zip)  on your host system. It contains a [freedos](http://www.freedos.org/ ) image
-* Prepare an SD card for your FPGA with the previous image file at root renamed to PCXT.HD0. Create also a PCXT folder containing all the BIOSes  (see ROM instructions below). Secondary IDE disk will be loaded if PCXT.HD1 file is present.
-* Press F12 on your keyboard to access the OSD and select options:
-  * Model: IBM PCXT
-  * CPU Speed: 4.77MHz for better compatibility (PC/AT 3.5MHz for max. speed)
-  * BIOS > PCXT BIOS > browse to the SD folder and choose pcxt_pcxt31.rom or any other ROM
+## BIOS instructions
 
-NOTE: If you leave the BIOS files into the root of the SD card with the following names, they will be loaded automatically after the splash screen:
+BIOSes can be selected in the BIOS section of the OSD menu. After selecting each BIOS a reset is done. 
 
-* PCXT.ROM and PCXT.R01 for the PCXT BIOS (2 files duplicated)
-* PCXT.R02 for the TANDY BIOS
-* PCXT.R03 for the XT-IDE BIOS needed to load the OS
+Automatically load of BIOS is possible by leaving the BIOS files into the root of the SD card with the following names:
 
-ROM not working with MiST IDE: 
+* MiST ports: PCXT.ROM and PCXT.R01 for the PCXT BIOS (2 files duplicated), PCXT.R02 for the TANDY BIOS, PCXT.R03 for the XT-IDE BIOS (needed to load the OS). Note: micro8088 BIOS does nos work well with MiST ports
 
-* micro8088 hungs during OS boot
-
-
-## ROM Instructions
-
-ROMs should be provided initially from the BIOS section of the OSD menu, then it is only necessary to indicate the computer model and reset, on subsequent boots of the core, it is no longer necessary to provide them, unless we want to use others. 
+* DeMiSTify ports: PCXT.ROM  for the PCXT BIOS, TANDY.ROM for the TANDY 1000 BIOS, XTIDE.ROM for the XT-IDE BIOS (needed to load the OS)
 
 ROMs provided in SW/ROMs folder:
 
 * SW/ROMs  are used for ports with HD IDE implementation (Serdrive is also possible to be used if you press the ALT key during boot to load other images or floppies)
 * SW/ROMs/XT-IDE_COM are used for ports using serdrive to load images from serial cable (no need to press ALT key)
-* SW/ROMs/BASICA  updated with the "Full Operation Mode" option enabled, it is now compatible with the BASICA application and some other Tandy 1000 software that might be incompatible with this mode disabled. Thanks akeley for investigating this problem.
+* SW/ROMs/BASICA  updated with the "Full Operation Mode" option enabled, it is now compatible with the BASICA application and some other Tandy 1000 software that might be incompatible with this mode disabled. 
 
 Scripts incorporated to generate other BIOSes:
 
@@ -131,7 +129,7 @@ NOTES:
 
 * ROMs working with MDA video: (IBM5160, Yuko ST and pcxt31 work), (Tandy, micro8088, full XTIDE BIOS do not work). If you load a BIOS that does not work with MDA you may need to power cycle the board.
 
-* IBM5160 BIOS: Starting BIOS at PC/AT 3.5MHz (max. speed), lights start blinking and keyboard doesn't work anymore. Starting BIOS at 4.77 MHz and changing it thereafter during the RAM test to PC/AT 3.5MHz (max. speed) it lets work in this BIOS without keyboard problems.
+* IBM5160 BIOS: Starting BIOS at PC/AT 3.5MHz (max. speed), lights start blinking and keyboard doesn't work anymore. Starting BIOS at 4.77 MHz and changing it thereafter during the RAM test to PC/AT 3.5MHz (max. speed) it lets you work in this BIOS without keyboard problems.
 
   
 
@@ -141,24 +139,26 @@ NOTES:
 
   
 
-## Mounting the disk image (serdrive)
+## Mounting the disk image with Serdrive
 
-Currently floppy and hdd images can only be loaded trough serial UART with the XT IDE BIOS. This could be done with a USB-Serial cable connected from a PC to the FPGA. [Serdrive](SW/ ) program is required in the host computer serving the OS/floppy image/s.
+With IDE drive support to load HD images now serdrive is mostly useful to load floppy images.
+
+Floppy and HD images can be loaded trough serial UART with the XT IDE BIOS while pressing the ALT key during BIOS boot. This could be done with a USB-Serial cable connected from a PC to the FPGA. [Serdrive](SW/ ) program is required in the host computer serving the OS/floppy image/s.
 
 ```sh
 #Usage: SerDrive [options] imagefile [[slave-options] slave-imagefile]
 #You should know the geometry of the disk (-g parameter) and the serial port of the host computer (-c parameter). UART speed is set by the -b parameter
 
 #Linux example
-serdrive_x64 -g 733:7:17 -v -c /dev/ttyUSB0 -b 921.6K PCXT_CGA_Tandy.img 
-serdrive_x64 -g 733:7:17 -v -c /dev/ttyUSB0 -b 921.6K PCXT_CGA_Tandy.img floppy.img
+serdrive_x64 -v -c /dev/ttyUSB0 -b 460.8Kb floppy.img
+serdrive_x64 -g 733:7:17 -v -c /dev/ttyUSB0 -b 460.8Kb PCXT_CGA_Tandy.img 
+serdrive_x64 -g 733:7:17 -v -c /dev/ttyUSB0 -b 460.8Kb PCXT_CGA_Tandy.img floppy.img
 #Windows example
+serdrive.exe -v [-c <port>] -d 460.8Kb <image_floppy>
 serdrive.exe -g 733:7:17 -v [-c <port>] -d 460.8Kb <image_OS> <image_floppy>
 ```
 
-
-
-The floppy disk image is recognised by XTIDE as B: in all BIOSes except JukoST, so to boot from the floppy disk, press the 'B' key when the XTIDE boot screen appears. Mounting and unmounting of such a drive becomes effective after a BIOS reset. Floppy swapping is possible as long as the drive was previously mounted.
+The floppy disk image is recognised by XTIDE as B: in all BIOSes except JukoST, so to boot from the floppy disk, press the 'A' or B' key when the XTIDE boot screen appears. 
 
 **Some notes about serdrive**
 
@@ -177,20 +177,22 @@ The floppy disk image is recognised by XTIDE as B: in all BIOSes except JukoST, 
 
 ## OSD Controls
 
-* F12 show/hide OSD 
+* F12 show / hide OSD 
 * DeMiSTified ports: Long F12 toggles VGA/RGB mode 
 
 
 
 ## MACROS defined in defs.v
 
-Not all boards have the resources (BRAM, logic cells) to implement  all the sound cards and video modes with maximum memory, so there is a defs.v file in each board folder that defines witch modules are implemented.
+Not all boards have the resources (BRAM, logic cells) to implement  all the sound cards and video modes with maximum memory, so there is a defs.v file in each board folder that defines which modules are implemented.
 
 You can edit this file prior to compile the core to test different configurations of the core. If there is not enough resources Quartus will tell you.
 
 
 
 ## **Composite real CGA video output** 
+
+[NOTE: This might not be available in all ports. Check the source code]
 
 CGA mode has available composite video output through:
 
@@ -209,21 +211,20 @@ Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composi
 
 ## To-do list
 
-* 8-bit IDE module implementation in DeMiSTified ports
+Features from MiSTer port not ported yet:
 
 * Floppy implementation
 
 * RTC implementation
 
-* Simulated composite implementation (note that is available real composite instead)
+* Simulated composite implementation 
 
 * Border (overscan)
-
-* Saving OSD configuration
 
 * Hercules graphic mode
 
   
+
 
 ## Compile the project in Quartus:
 
@@ -241,7 +242,7 @@ git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
 
 
 
-## Instructions to Full compile the project for a specific board:
+## DeMiSTify ports instructions to full compile the project for a specific board:
 
 ```sh
 git clone https://github.com/somhi/PCXT_DeMiSTify
@@ -259,11 +260,7 @@ make BOARD=[board target]
 #when asked just accept default settings with Enter key
 ```
 
-After that you can:
 
-* Load project in Quartus from /neptuno/PCXT_[board target].qpf
-
-  
 
 ## Developers
 

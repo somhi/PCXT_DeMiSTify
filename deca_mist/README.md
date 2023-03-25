@@ -6,16 +6,14 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### MiST firmware
 
-Compile the latest firmware from [mist-devel](https://github.com/mist-devel/mist-firmware) if the available binary has been built before 09/03/23.
+Compile the latest firmware from [mist-devel](https://github.com/mist-devel/mist-firmware) if the available binary has been built before 24/03/23.
 
 Note: in case the  SPI bus is noisy it may help adding -DSD_NO_DIRECT_MODE to the Makefile to disable the SS4/SPI_DO method of SD Card transfer. 
 
 ### STATUS
 
-* **IDE HD image can now be used in MiST ports**. Just add an image file named **PCXT.HD0** at the root of the SD card. Not all geometries are accepted. It should work with PCem standard geometries.
-* UART port needs to be used to load floppy images through the serdrive app using a USB Serial cable. Press ALT key during XT-IDE boot process to anable the IDE COM detection.
-* CGA VRAM with 128 kB for all Tandy games now available.
-
+* CGA VRAM with 128 kB for all Tandy games.
+* Check file defs.v to verify and check disabled options.
 * Compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2). 
 
 ## **Features:**

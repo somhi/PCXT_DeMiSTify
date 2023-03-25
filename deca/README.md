@@ -8,11 +8,13 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### STATUS
 
-* CGA VRAM with 128 kB for all Tandy games now available.
+* CGA VRAM with 128 kB for all Tandy games.
 
-* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
+* Check file defs.v to verify and check disabled options. 
 
-Compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2) (new location for 3 pins of old SDRAM modules). Otherwise see pinout below to connect everything through GPIOs.
+* Credits screen not implemented due to lack of BRAM. F11 pauses the core (if you press it, remember to press it again to continue the core execution)
+
+* Compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2). Otherwise see pinout below to connect everything through GPIOs.
 
 ## **Features:**
 
@@ -84,7 +86,6 @@ For 444 video DAC use all VGA pins. For 333 video DAC connect MSB from addon to 
 
 * F12 show/hide OSD 
 * Long F12 toggles VGA/RGB mode
-* The reset button KEY0 resets the controller (so re-initialises the SD card if it's been changed, reloads any autoboot ROM.) The OSD Reset menu item resets the core itself.
-
 * The user button KEY0 resets the controller (so re-initialises the SD card if it's been changed, reloads any autoboot ROM.) The OSD Reset menu item resets the core itself.
+
 * The user button KEY1 opens the OSD

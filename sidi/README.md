@@ -8,23 +8,15 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### MiST firmware
 
-Compile the latest firmware from [mist-devel](https://github.com/mist-devel/mist-firmware) if the available binary has been built before 09/03/23.
+Compile the latest firmware from [mist-devel](https://github.com/mist-devel/mist-firmware) if the available binary has been built before 24/03/23.
 
 ### STATUS
 
-* **IDE HD image can now be used in MiST ports**. Just add an image file named **PCXT.HD0** at the root of the SD card. Not all geometries are accepted. It should work with PCem standard geometries.
+* Check file defs.v to verify and check disabled options. 
 
-* UART port needs to be used to load floppy images through the serdrive app using a USB Serial cable. Press ALT key during XT-IDE boot process to anable the IDE COM detection.
+* Credits screen not implemented due to lack of BRAM. F11 pauses the core (if you press it, remember to press it again to continue the core execution)
+* CGA 32 kB implemented. Some Tandy games are playable like Prince of Persia, Cool Crocks and Sierra's Manhunter.
 
-* ADLIB sound not implemented due to lack of BRAM in this board.
-
-* C/MS Game Blaster sound not implemented (with it enabled there was hungs during BIOS load)
-
-* Credits screen not implemented due to lack of BRAM in this board. F11 pauses the core. If you press it, remember to press it again to continue the core execution.
-
-* CGA 32 kB implemented. Some Tandy games are now playable like Prince of Persia, Cool Crocks and Sierra's Manhunter.
-
-  
 
 ### Compile the project in Quartus:
 

@@ -8,10 +8,8 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### STATUS
 
-* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
-
-
 * CGA VRAM with 128 kB for all Tandy games now available.
+* Check file defs.v to verify and check disabled options. 
 
 
 ### Compile the project in Quartus:

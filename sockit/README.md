@@ -8,11 +8,11 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### STATUS
 
-* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
+* Check file defs.v to verify and check disabled options.
+
+* CGA VRAM with 128 kB for Tandy games.
 
 * Composite real not implemented. Need to fix the serializer module error in cyclone v family.
-
-* CGA VRAM with 128 kB for all Tandy games now available.
 
   
 

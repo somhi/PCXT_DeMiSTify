@@ -10,7 +10,9 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 * CGA VRAM with 128 kB for all Tandy games.
 
-* **UART port needs to be used to load the OS through the serdrive app.** Load OS using Serial Rx/Tx cable.
+* Check file defs.v to verify and check disabled options. 
+
+* Credits screen not implemented due to lack of BRAM. F11 pauses the core (if you press it, remember to press it again to continue the core execution)
 
 **Additional hardware required** (see pinout connections below):
 
