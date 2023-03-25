@@ -244,7 +244,7 @@ module PCXT
     // .PS2DIV(2000) value is adequate
 
     `ifdef MIST_SIDI
-    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1), .FEATURES(32'h50) /* FEAT_IDE0_ATA | FEAT_IDE1_ATA*/) user_io
+    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1), .FEATURES(32'h1050) /* FEAT_PS2REP | FEAT_IDE0_ATA | FEAT_IDE1_ATA*/) user_io
     `else 
     user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000)) user_io 
     `endif
@@ -895,8 +895,8 @@ module PCXT
 
     `ifdef MIST_SIDI
 
-    assign device_clock = ps2_kbd_clk_in;
-    assign device_data  = ps2_kbd_data_in;
+    wire device_clock = ps2_kbd_clk_in;
+    wire device_data  = ps2_kbd_data_in;
 
     `else
 
