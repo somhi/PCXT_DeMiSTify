@@ -11,7 +11,7 @@ entity atlas_top is
 	generic (
 		ATLAS_CYC_EAR : natural := 0; -- 0 = JOY SEL pin,	1 = EAR pin,  2 = MIDI_WSBD
 		ATLAS_CYC_VGA : natural := 1; -- 0 = HDMI,  		1 = VGA
-		ATLAS_CYC_KEYB: natural := 1  -- 0=PS2 NO AT1, 1=PS2 AT1, 2=USB NO AT1, 3=USB AT1, 
+		ATLAS_CYC_KEYB: natural := 0  -- 0=PS2 NO AT1, 1=PS2 AT1, 2=USB NO AT1, 3=USB AT1, 
 	);
 	port (
 		CLK12M : in std_logic;
