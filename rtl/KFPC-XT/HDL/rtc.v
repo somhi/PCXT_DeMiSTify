@@ -24,7 +24,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-module rtc(
+module rtc #(
+	parameter clk_rate = 28'd50000000
+	)
+	(
 	input             clk,
 	input             rst_n,
 
@@ -37,6 +40,8 @@ module rtc(
 	input             io_write,
 	input       [7:0] io_writedata,
 
+	input      [63:0] rtc_data,
+
 	input             memcfg,
 	input       [5:0] bootcfg,
 
@@ -47,13 +52,8 @@ module rtc(
 	*/
 	input       [7:0] mgmt_address,
 	input             mgmt_write,
-	input       [7:0] mgmt_writedata,
-
-	input      [27:0] clock_rate
+	input       [7:0] mgmt_writedata
 );
-
-reg [27:0] clk_rate;
-always @(posedge clk) clk_rate <= clock_rate;
 
 reg ce_800hz;
 always @(posedge clk) begin
@@ -292,52 +292,66 @@ wire rtc_year_update   = rtc_month_update  && max_month;
 wire rtc_century_update= rtc_year_update   && max_year;
 
 //------------------------------------------------------------------------------
+function [7:0] bcd2bin;
+	input [7:0] bcd;
+	begin
+		bcd2bin = 4'd10*bcd[7:4] + bcd[3:0];
+	end
+endfunction
+
 
 reg [7:0] rtc_second;
 always @(posedge clk) begin
-    if(mgmt_write && mgmt_address == 8'h00)                             rtc_second <= mgmt_writedata[7:0];
+    if(!rst_n) begin if (rtc_data != 0)                                 rtc_second <= ~crb_binarymode ? rtc_data[7:0] : bcd2bin(rtc_data[7:0]); end
+    else if(mgmt_write && mgmt_address == 8'h00)                        rtc_second <= mgmt_writedata[7:0];
     else if(io_write && io_address == 1'b1 && ram_address == 7'h00)     rtc_second <= io_writedata;
     else if(rtc_second_update)                                          rtc_second <= next_second; 
 end
 
 reg [7:0] rtc_minute;
 always @(posedge clk) begin
-    if(mgmt_write && mgmt_address == 8'h02)                             rtc_minute <= mgmt_writedata[7:0];
+    if(!rst_n) begin if (rtc_data != 0)                                 rtc_minute <= ~crb_binarymode ? rtc_data[15:8] : bcd2bin(rtc_data[15:8]); end
+    else if(mgmt_write && mgmt_address == 8'h02)                        rtc_minute <= mgmt_writedata[7:0];
     else if(io_write && io_address == 1'b1 && ram_address == 7'h02)     rtc_minute <= io_writedata;
     else if(rtc_minute_update)                                          rtc_minute <= next_minute;
 end
 
 reg [7:0] rtc_hour;
 always @(posedge clk) begin
-    if(mgmt_write && mgmt_address == 8'h04)                             rtc_hour <= mgmt_writedata[7:0];
+    if(!rst_n) begin if (rtc_data != 0)                                 rtc_hour <= ~crb_binarymode ? rtc_data[23:16] : bcd2bin(rtc_data[23:16]); end
+    else if(mgmt_write && mgmt_address == 8'h04)                        rtc_hour <= mgmt_writedata[7:0];
     else if(io_write && io_address == 1'b1 && ram_address == 7'h04)     rtc_hour <= io_writedata;
     else if(rtc_hour_update)                                            rtc_hour <= next_hour;
 end
 
 reg [7:0] rtc_dayofweek;
 always @(posedge clk) begin
-    if(mgmt_write && mgmt_address == 8'h06)                             rtc_dayofweek <= mgmt_writedata[7:0];
+    if(!rst_n) begin if (rtc_data != 0)                                 rtc_dayofweek <= rtc_data[48:45]; end
+    else if(mgmt_write && mgmt_address == 8'h06)                        rtc_dayofweek <= mgmt_writedata[7:0];
     else if(io_write && io_address == 1'b1 && ram_address == 7'h06)     rtc_dayofweek <= io_writedata;
     else if(rtc_day_update)                                             rtc_dayofweek <= next_dayofweek;
 end
 
 reg [7:0] rtc_dayofmonth;
 always @(posedge clk) begin
-    if(mgmt_write && mgmt_address == 8'h07)                             rtc_dayofmonth <= mgmt_writedata[7:0];
+    if(!rst_n) begin if (rtc_data != 0)                                 rtc_dayofmonth <= ~crb_binarymode ? rtc_data[31:24] : bcd2bin(rtc_data[31:24]); end
+    else if(mgmt_write && mgmt_address == 8'h07)                        rtc_dayofmonth <= mgmt_writedata[7:0];
     else if(io_write && io_address == 1'b1 && ram_address == 7'h07)     rtc_dayofmonth <= io_writedata;
     else if(rtc_day_update)                                             rtc_dayofmonth <= next_dayofmonth;
 end
 
 reg [7:0] rtc_month;
 always @(posedge clk) begin
-    if(mgmt_write && mgmt_address == 8'h08)                             rtc_month <= mgmt_writedata[7:0];
+    if(!rst_n) begin if (rtc_data != 0)                                 rtc_month <= ~crb_binarymode ? rtc_data[39:32] : bcd2bin(rtc_data[39:32]); end
+    else if(mgmt_write && mgmt_address == 8'h08)                        rtc_month <= mgmt_writedata[7:0];
     else if(io_write && io_address == 1'b1 && ram_address == 7'h08)     rtc_month <= io_writedata;
     else if(rtc_month_update)                                           rtc_month <= next_month;
 end
 
 reg [7:0] rtc_year;
 always @(posedge clk) begin
-    if(mgmt_write && mgmt_address == 8'h09)                             rtc_year <= mgmt_writedata[7:0];
+    if(!rst_n) begin if (rtc_data != 0)                                 rtc_year <= ~crb_binarymode ? rtc_data[47:40] : bcd2bin(rtc_data[47:40]); end
+    else if(mgmt_write && mgmt_address == 8'h09)                        rtc_year <= mgmt_writedata[7:0];
     else if(io_write && io_address == 1'b1 && ram_address == 7'h09)     rtc_year <= io_writedata;
     else if(rtc_year_update)                                            rtc_year <= next_year;
 end
@@ -485,23 +499,20 @@ end
 
 //------------------------------------------------------------------------------
 
-wire [7:0] ram_q;
+reg  [7:0] ram_q;
 
-simple_ram #(
-    .width      (8),
-    .widthad    (7)
-)
-rtc_ram_inst(
-    .clk                (clk),
-    
-    .wraddress          ((mgmt_write && mgmt_address[7] == 1'b0)?   mgmt_address[6:0] : ram_address),
-    .wren               ((mgmt_write && mgmt_address[7] == 1'b0) || (io_write && io_address == 1'b1)),
-    .data               ((mgmt_write && mgmt_address[7] == 1'b0)?   mgmt_writedata[7:0] : io_writedata),
-    
-    .rdaddress          ((io_write && io_address == 1'b0)?  io_writedata[6:0] : ram_address),
-    .q                  (ram_q)
-);
+`ifdef CMOS_RAM
+reg  [7:0] cmos_ram[128];
 
+always @(posedge clk) begin
+
+    if ((mgmt_write && mgmt_address[7] == 1'b0) || (io_write && io_address == 1'b1))
+        cmos_ram[(mgmt_write && mgmt_address[7] == 1'b0) ? mgmt_address[6:0] : ram_address] <=
+        (mgmt_write && mgmt_address[7] == 1'b0) ? mgmt_writedata[7:0] : io_writedata;
+
+    ram_q <= cmos_ram[(io_write && io_address == 1'b0)?  io_writedata[6:0] : ram_address];
+end
+`endif
 
 //------------------------------------------------------------------------------
 

@@ -121,6 +121,8 @@ module PERIPHERALS #(
         input   logic   [15:0]  ide0_readdata,
         output  logic           ide0_read,
         output  logic           ide0_write,
+        // Real time clock
+        input   logic   [63:0]  rtc_data,
         // XTCTL DATA
         output  logic   [7:0]   xtctl = 8'h00,
         output  logic           pause_core
@@ -1277,6 +1279,31 @@ end
             ide0_data_bus_in <= ide0_data_bus_in;
     end
 
+    // RTC
+
+    logic   [7:0]   rtc_readdata;
+
+    rtc #(.clk_rate(clk_rate)) rtc
+    (
+       .clk               (clock),
+       .rst_n             (~reset),
+
+       .io_address        (address[0]),
+       .io_writedata      (internal_data_bus),
+       .io_read           (~io_read_n & rtc_chip_select),
+       .io_write          (~io_write_n & rtc_chip_select),
+       .io_readdata       (rtc_readdata),
+
+       .rtc_data          (rtc_data),
+
+       .mgmt_address      (),
+       .mgmt_write        (1'b0),
+       .mgmt_writedata    (),
+
+       .memcfg            (1'b0),
+       .bootcfg           (5'd0)
+    );
+
     //
     // Joysticks
     //
@@ -1398,6 +1425,11 @@ end
         begin
             data_bus_out_from_chipset <= 1'b1;
             data_bus_out <= xt2ide0_data_bus_out;
+        end
+        else if (rtc_chip_select && (~io_read_n))
+        begin
+            data_bus_out_from_chipset <= 1'b1;
+            data_bus_out <= rtc_readdata;
         end
         else
         begin
