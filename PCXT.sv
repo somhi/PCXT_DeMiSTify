@@ -182,7 +182,7 @@ module PCXT
     wire [7:0]  ioctl_data;
     reg         ioctl_wait;
 
-    //wire [21:0] gamma_bus;
+    wire [63:0] rtc_data;
 
     wire [31:0] joy0, joy1;
     wire [31:0] joya0, joya1;
@@ -244,7 +244,7 @@ module PCXT
     // .PS2DIV(2000) value is adequate
 
     `ifdef MIST_SIDI
-    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1), .FEATURES(32'h50) /* FEAT_IDE0_ATA | FEAT_IDE1_ATA*/) user_io
+    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1), .FEATURES(32'h1050) /* FEAT_PS2REP | FEAT_IDE0_ATA | FEAT_IDE1_ATA*/) user_io
     `else 
     user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000)) user_io 
     `endif
@@ -261,6 +261,8 @@ module PCXT
 		.status         ( status        ),
 		.buttons        ( buttons       ),
 		.scandoubler_disable ( forced_scandoubler ),
+
+		.rtc            ( rtc_data      ),
 
         `ifdef MIST_SIDI
 		.ps2_kbd_clk_i		(ps2_kbd_clk_out),
@@ -895,8 +897,8 @@ module PCXT
 
     `ifdef MIST_SIDI
 
-    assign device_clock = ps2_kbd_clk_in;
-    assign device_data  = ps2_kbd_data_in;
+    wire device_clock = ps2_kbd_clk_in;
+    wire device_data  = ps2_kbd_data_in;
 
     `else
 
@@ -1107,6 +1109,7 @@ module PCXT
 		.ide0_readdata                      (ide0_readdata),
 		.ide0_read                          (ide0_read),
 		.ide0_write                         (ide0_write),
+		.rtc_data                           (rtc_data),
 		.xtctl                              (xtctl),
 		.enable_a000h                       (a000h),
 		.wait_count_clk_en                  (~clk_cpu & clk_cpu_ff_2),

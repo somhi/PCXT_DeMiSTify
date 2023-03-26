@@ -153,6 +153,8 @@ module CHIPSET #(
         input   logic   [15:0]  ide0_readdata,
         output  logic           ide0_read,
         output  logic           ide0_write,
+        // Real time clock
+        input   logic   [63:0]  rtc_data,
         // XTCTL DATA
         output  logic   [7:0]   xtctl,
         // Optional flags
@@ -374,6 +376,7 @@ module CHIPSET #(
         .ide0_readdata                      (ide0_readdata),
         .ide0_read                          (ide0_read),
         .ide0_write                         (ide0_write),
+        .rtc_data                           (rtc_data),
         .xtctl                              (xtctl),
         .pause_core                         (pause_core)
     );
