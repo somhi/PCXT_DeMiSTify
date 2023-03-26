@@ -60,7 +60,7 @@ here, the number of units defaults to 4. */
 #undef CONFIG_SETTINGS_FILENAME "PCXT    CFG"
 
 /* Do we support the Real Time Clock (if available)? */
-#undef CONFIG_RTC
+#define CONFIG_RTC
 
 /* Support for 64-bit status word.  Adds around 200 bytes to the firmware size. */
 #define CONFIG_STATUSWORD_64BIT
