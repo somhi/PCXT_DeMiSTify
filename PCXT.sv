@@ -109,7 +109,8 @@ module PCXT
         //"OJK,Write Protect,None,A:,B:,A: & B:;",    
 		//
         `ifndef MIST_SIDI
-		"S0,IMGVHD,Mount IDE:;",
+		"S0,IMGVHD,Mount IDE 1:;",
+		"S1,IMGVHD,Mount IDE 2:;",
         `endif
 		"P1,BIOS;",
 		"P1F,ROM,PCXT BIOS:;",
@@ -150,9 +151,9 @@ module PCXT
         `ifdef DEBUG2
 		"P5,Debug;",
 //      "P5Oq,Comp. simulated (WIP),Off,On;",           //[52] -> "P2o8,Composite video,Off,On;",
-        "P5OLM,UART signal,clk_uart,clk_uart_en;",      //[22:21] 
-//		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",        //[45]
-//		"P5Ok,DEBUG.OSD disable,No,Yes;",               //[46]
+//      "P5OLM,UART signal,clk_uart,clk_uart_en;",      //[22:21] 
+//		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",        //[45] display_mode_disable
+//		"P5Ok,DEBUG.OSD disable,No,Yes;",               //[46] osd_disable
         `endif
 		//
 		"V,v",`BUILD_DATE
@@ -197,10 +198,14 @@ module PCXT
 	wire a000h = ~status[51] & ~xtctl[6];
     wire composite_on = status[44];
     wire vga_composite = status[47];
+
 	//debug
     `ifdef DEBUG2
     wire display_mode_disable = status[45];
     wire osd_disable = status[46];
+    `else
+    wire display_mode_disable = 1'b0;
+    wire osd_disable = 1'b0;
     `endif
 
 
@@ -276,14 +281,13 @@ module PCXT
 		.ps2_mouse_data		(ps2_mouse_data_in),
         `endif
 
-		.joystick_0(joy0),
-		.joystick_1(joy1),
-		.joystick_analog_0(joya0),
-		.joystick_analog_1(joya1)
+		.joystick_0         (joy0 ),
+		.joystick_1         (joy1 ),
+		.joystick_analog_0  (joya0),
+		.joystick_analog_1  (joya1)
 	);
 
-    `ifdef MIST_SIDI
-    `else 
+    `ifndef MIST_SIDI
     assign PS2K_CLK_OUT     = ps2_kbd_clk_out;
     assign PS2K_DAT_OUT     = ps2_kbd_data_out;
     assign ps2_kbd_clk_in   = PS2K_CLK_IN;
@@ -315,7 +319,7 @@ module PCXT
 		.ioctl_dout ( ioctl_data   ),
 	//  .ioctl_din  ( ioctl_din    )
 
-        .hdd_clk       ( clk_chipset  ),        //clk_cpu    //clk_chipset  same as data_io and ide module
+        .hdd_clk       ( clk_chipset  ),        //clk_chipset  same as data_io and ide module
         .hdd_cmd_req   ( hdd_cmd_req  ),
         .hdd_dat_req   ( hdd_dat_req  ),
     //  .hdd_cdda_req  ( hdd_cdda_req ),
@@ -362,6 +366,8 @@ module PCXT
         .hdd_data_rd   ( hdd_data_rd ),
         .hdd_data_wr   ( hdd_data_wr )
     );
+    
+
     //
     ///////////////////////   CLOCKS   /////////////////////////////
     //
@@ -372,7 +378,6 @@ module PCXT
     wire clk_100;
     wire clk_28_636;
     wire clk_56_875;
-    //wire clk_113_750;         //CLOCK_VIDEO_MDA
     reg clk_25 = 1'b0;
     reg clk_14_318 = 1'b0;
     reg clk_9_54 = 1'b0;
@@ -397,7 +402,6 @@ module PCXT
 			.outclk_0(clk_100),			//100                   CLOCK_CORE
 			.outclk_1(clk_chipset),		//50                    CLOCK_CHIP
 			.outclk_2(clk_uart),		//14.7456 -> 14.7541    CLOCK_UART
-		//	.outclk_3(clk_uart2),		//1.8432  -> 1.8442    [LONG COMPILATION TIMES IF (status[22:21] == 2'b00) ? clk_uart2 : clk_uart_en]
 			.locked(pll_locked)
 		);
 
@@ -1073,11 +1077,8 @@ module PCXT
 		.tandy_bios_flag                    (tandy_bios_flag),
 	//	.tandy_16_gfx                       (tandy_16_gfx),
 	//	.tandy_color_16                     (tandy_color_16),
-        `ifdef DEBUG2
-        .clk_uart                           ((status[22:21] == 2'b00) ? clk_uart : clk_uart_en),
-        `else
+    //  .clk_uart                           ((status[22:21] == 2'b00) ? clk_uart : clk_uart_en),   //debug
         .clk_uart                           (clk_uart),
-        `endif
 		.clk_uart2                          (clk_uart2_en),
 		.uart_rx                            (UART_RX),
 		.uart_tx                            (UART_TX),
@@ -1281,6 +1282,7 @@ module PCXT
 	// UART1 connected to external cable to host for serdrive
 	// UART2 connected internally in Peripherals.sv for serial mouse
 
+
     //
     ///////////////////////   VIDEO   ///////////////////////
     //
@@ -1329,19 +1331,10 @@ module PCXT
 		.B_OUT(baux)
 	);
 
-
-    `ifdef DEBUG2
+    // display_mode_disable default is 0
     assign raux2 = display_mode_disable ? r_in : raux[7:2];
     assign gaux2 = display_mode_disable ? g_in : gaux[7:2];
     assign baux2 = display_mode_disable ? b_in : baux[7:2];
-    // assign raux2 = display_mode_disable ? r_in : pre2x_r[7:2];
-    // assign gaux2 = display_mode_disable ? g_in : pre2x_g[7:2];
-    // assign baux2 = display_mode_disable ? b_in : pre2x_b[7:2];
-    `else
-    assign raux2 = raux[7:2];
-    assign gaux2 = gaux[7:2];
-    assign baux2 = baux[7:2];
-    `endif
 
 
     mist_video #( .SD_HCNT_WIDTH(10) ) mist_video    //.OSD_COLOR(3'd5),
@@ -1385,74 +1378,34 @@ module PCXT
 		.VGA_HS      ( vga_hs_o   )
 	);
 
-
-    `ifdef DEBUG2
+    // osd_disable default is 0
     assign raux4  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
     assign gaux4  = osd_disable ? {gaux2,gaux2[1:0]} : {gaux3,gaux3[1:0]};
     assign baux4  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
-    `else
-    assign raux4  = {raux3,raux3[1:0]};
-    assign gaux4  = {gaux3,gaux3[1:0]};
-    assign baux4  = {baux3,baux3[1:0]};
-    `endif
 
-    assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};
+    assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};    // for composite real video output
+
+    // osd_disable default is 0
+    assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;
+    assign VGA_HS = osd_disable ? ~vga_hs : ~vga_hs_o;
+    assign VGA_DE = ~(HBlank | VBlank);
 
     `ifdef NO_CREDITS
     assign VGA_R = composite_on ?                        8'd0 : raux4;
     assign VGA_G = composite_on ?  {comp_video,comp_video[0]} : gaux4;
     assign VGA_B = composite_on ?                        8'd0 : baux4;
+
     `else
     assign VGA_R = pause_core ? pre2x_r : composite_on ?                        8'd0 : raux4;
     assign VGA_G = pause_core ? pre2x_g : composite_on ?  {comp_video,comp_video[0]} : gaux4;
     assign VGA_B = pause_core ? pre2x_b : composite_on ?                        8'd0 : baux4;
-    `endif
 
-
-    `ifdef DEBUG2
-    assign VGA_VS = osd_disable ? ~vga_vs : ~vga_vs_o;
-    assign VGA_HS = osd_disable ? ~vga_hs : ~vga_hs_o;
-    `else
-    assign VGA_VS = ~vga_vs_o;
-    assign VGA_HS = ~vga_hs_o;
-    `endif
-
-
-    assign VGA_DE = ~(HBlank | VBlank);
-
-
-    // wire [5:0] osd_r_o;
-    // wire [5:0] osd_g_o;
-    // wire [5:0] osd_b_o;
-
-    // osd #(.OSD_COLOR(3'd5), .OSD_AUTO_CE(1'b0) ) osd
-    // (
-    // 	.clk_sys ( clk_56_875 ),	// clk_56_875, clk_28_636, clk_56_875 /auto 0/clk_28_636/clk_56_875/clk_56_875
-    // 	.rotate  ( 2'b00      ),
-    // 	.ce      ( clk_14_318 ),	// clk_28_636, 1'b0      , clk_14_318 /auto 0/clk_14_318/clk_28_636/clk_14_318
-    // 	.SPI_DI  ( SPI_DI     ),
-    // 	.SPI_SCK ( SPI_SCK    ),
-    // 	.SPI_SS3 ( SPI_SS3    ),
-    // 	.R_in    ( raux[7:2]  ),
-    // 	.G_in    ( gaux[7:2]  ),
-    // 	.B_in    ( baux[7:2]  ),
-    // 	.HSync   ( ~vga_hs    ),  //with or without ~
-    // 	.VSync   ( ~vga_vs    ),
-    // 	.R_out   ( osd_r_o    ),
-    // 	.G_out   ( osd_g_o    ),
-    // 	.B_out   ( osd_b_o    )
-    // );
-	 
-
-
-    `ifdef NO_CREDITS
-    // NO CREDITS
-    `else
     // JTFRAME CREDITS.  
-    // **********SIGNALS to be updated ************
+    // TODO: SIGNALS to be updated 
     //wire LHBL = border_video_ff ? HBlank_fixed : HBlank_VGA;
     //wire LVBL = border_video_ff ? std_hsyncwidth ? VGA_VBlank_border : ~VSync : VBlank;
     //wire       pre2x_LHBL, pre2x_LVBL;
+
     wire [7:0] pre2x_r, pre2x_g, pre2x_b;
 
     jtframe_credits #(
@@ -1462,7 +1415,7 @@ module PCXT
     ) u_credits(
         .rst        ( reset       ),
         .clk        ( clk_56_875  ), //clk_chipset not good  
-        //.pxl_cen    ( mda_mode_video_ff ? clk_14_318 : clk_56_875   ), // clk_14_318 ok en MDA, clk_28_636 o clk_56_875 millor en CGA
+        //.pxl_cen    ( mda_mode_video_ff ? clk_14_318 : clk_56_875   ), // clk_14_318 ok in MDA, clk_28_636 or clk_56_875 better in CGA
         .pxl_cen    ( clk_14_318  ), 
         
         // input image
@@ -1491,5 +1444,29 @@ module PCXT
     );
 
     `endif
+
+
+    // wire [5:0] osd_r_o;
+    // wire [5:0] osd_g_o;
+    // wire [5:0] osd_b_o;
+
+    // osd #(.OSD_COLOR(3'd5), .OSD_AUTO_CE(1'b0) ) osd
+    // (
+    // 	.clk_sys ( clk_56_875 ),	// clk_56_875, clk_28_636, clk_56_875 /auto 0/clk_28_636/clk_56_875/clk_56_875
+    // 	.rotate  ( 2'b00      ),
+    // 	.ce      ( clk_14_318 ),	// clk_28_636, 1'b0      , clk_14_318 /auto 0/clk_14_318/clk_28_636/clk_14_318
+    // 	.SPI_DI  ( SPI_DI     ),
+    // 	.SPI_SCK ( SPI_SCK    ),
+    // 	.SPI_SS3 ( SPI_SS3    ),
+    // 	.R_in    ( raux[7:2]  ),
+    // 	.G_in    ( gaux[7:2]  ),
+    // 	.B_in    ( baux[7:2]  ),
+    // 	.HSync   ( ~vga_hs    ),  //with or without ~
+    // 	.VSync   ( ~vga_vs    ),
+    // 	.R_out   ( osd_r_o    ),
+    // 	.G_out   ( osd_g_o    ),
+    // 	.B_out   ( osd_b_o    )
+    // );
+	 
 
 endmodule
