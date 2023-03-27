@@ -192,18 +192,18 @@ You can edit this file prior to compile the core to test different configuration
 
 ## **Composite real CGA video output** 
 
-[NOTE: This might not be available in all ports. Check the source code]
-
 CGA mode has available composite video output through:
 
 * Green pin of the DB15 VGA connector
+  * Just add 1 resistor of 180 Ohm (could be 220) between the FPGA composite output pin and the TV composite input central pin. 
+
 * Simultaneous output through 1 GPIO pin 
-  * Check pin location in the corresponding top and qsf files inside the respective board folder
-  * Optionally a second pin might be used with a 2k resistor connected in the same way as the first pin  
-  * Currently only implemented in Atlas cyc1000, Deca and Neptuno boards.
+  * Same circuit as DB15 green pin. Check pin location in the corresponding top and qsf files inside the respective board folder
+  * Optionally a second pin might be used with a 2k resistor connected as schematic below  
+  * Currently only implemented in Atlas CYC1000, Deca and Neptuno boards.
 
 
-Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composite output pin and the TV composite input central pin. 
+
 
 ![composite_schematic](composite_schematic.png)
 
@@ -214,8 +214,6 @@ Just add 1 resistor in series of 180 Ohm (could be 220) between the FPGA composi
 Features from MiSTer port not ported yet:
 
 * Floppy implementation
-
-* RTC implementation
 
 * Simulated composite implementation 
 

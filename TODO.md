@@ -29,8 +29,6 @@
 
 * FDD based on ao486 core that has dependencies with the MiSTer firmware (main)
   
-* RTC has dependencies with the MiSTer firmware (main)
-
 * UART 16750 not updated because of serdrive not loading HDD images
 
 * Video
