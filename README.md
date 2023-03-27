@@ -82,14 +82,14 @@ The [Graphics Gremlin project](https://github.com/schlae/graphics-gremlin) from 
 * Download and uncompress [hd_image.zip](https://github.com/MiSTer-devel/PCXT_MiSTer/raw/main/games/PCXT/hd_image.zip)  on your host system (it contains a [freedos](http://www.freedos.org/ ) image)
 * Prepare an SD card for your FPGA 
   * MiST ports: rename previous image to PCXT.HD0 (primary IDE). Secondary IDE disk will be loaded if PCXT.HD1 file is present.
-  * DeMiSTify ports: make sure HD image has extension .VHD or .IMG
+  * DeMiSTify ports: rename previous image to PCXT1.VHD (primary IDE). Secondary IDE disk will be loaded if PCXT2.VHD file is present.
   * Create also a PCXT folder containing all the BIOSes  (see ROM instructions below). 
 
 * Load (or flash) PCXT core with the SD card inserted and press F12 on your keyboard to access the OSD to select options:
   * Model:  IBM PCXT (Note: for Tandy is needed to generate the Tandy BIOS first)
   * CPU Speed: 4.77MHz for better compatibility (PC/AT 3.5MHz for max. speed)
   * BIOS > PCXT BIOS > browse to the BIOS folder and choose e.g. pcxt_pcxt31.rom. For automatic load of BIOSes read section below.
-  * Mount IDE: only for DeMiSTify ports select in OSD the VHD or IMG image for primary IDE HD and Reset core
+  * Mount IDE: only for DeMiSTify ports select in OSD the VHD or IMG image for primary / secondary IDE HD and Reset core.
 * To load floppies it is only possible with an USB serial cable connected to your Host computer using [Serdrive](SW/ ) as explained below at Mounting the disk image section. With this method it is possible to load HD images also. Press ALT key during boot to detect the COM drives.
 
 
