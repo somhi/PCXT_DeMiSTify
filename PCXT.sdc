@@ -93,6 +93,7 @@ set_clock_groups -asynchronous -group [get_clocks spiclk] -group [get_clocks sdr
 set_clock_groups -asynchronous -group [get_clocks $hostclk] -group [get_clocks sdramclk]
 set_clock_groups -asynchronous -group [get_clocks $supportclk] -group [get_clocks sdramclk]
 
+set_clock_groups -asynchronous -group [get_clocks spiclk] -group [get_clocks ${topmodule}pllvideo|*]
 set_clock_groups -asynchronous -group [get_clocks ${topmodule}pll|*] -group [get_clocks ${topmodule}pllvideo|*]
 
 # False paths
