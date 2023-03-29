@@ -1,30 +1,10 @@
-//
-//
-// https://github.com/mist-devel
-// 
-// Copyright (c) 2015 Till Harbaum <till@harbaum.org> 
-// 
-// This source file is free software: you can redistribute it and/or modify 
-// it under the terms of the GNU General Public License as published 
-// by the Free Software Foundation, either version 3 of the License, or 
-// (at your option) any later version. 
-// 
-// This source file is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of 
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License 
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
-//
-
 module deca_mist_top (
    input  	 MAX10_CLK1_50,
 
    input [1:0]    KEY,
    
-	// LED outputs
-   output [7:0]   LED, // LED Yellow
+   // LED outputs
+   output [7:0]   LED, 
 	
    // SDRAM interface
    inout  [15:0]  DRAM_DQ, // SDRAM Data bus 16 Bits

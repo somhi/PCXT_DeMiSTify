@@ -1,6 +1,6 @@
-# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify)  - UNAMIGA Reloaded port
+# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify)  - UnAMIGA Reloaded port
 
-07/07/22 UAReloaded port DeMiSTified by @somhi from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
+07/07/22 UAReloaded port DeMiSTified by @somhi from original MiSTer PCXT core  https://github.com/MiSTer-devel/PCXT_MiSTer by @spark2k06
 
 [Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
 
@@ -14,17 +14,13 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### Compile the project in Quartus:
 
-Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
+If the project has the DeMiSTify firmware already generated you only need to clone recursively the repository and then open the project with Quartus from the specific board folder:
 
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
-
 #check comments on top of /uareloaded/uareloaded_top.vhd in case additional actions are needed
-
 #Load project in Quartus from /uareloaded/PCXT_uareloaded.qpf
 ```
-
-
 
 ### Instructions to Full compile the project for a specific board:
 
@@ -47,8 +43,6 @@ make BOARD=uareloaded
 After that you can:
 
 * Load project in Quartus from /uareloaded/PCXT_uareloaded.qpf
-
-
 
 ### OSD Controls
 

@@ -25,7 +25,7 @@ module mist_top (
    output 	 LED, // LED Yellow
 	
    // SDRAM interface
-   inout [15:0]  SDRAM_DQ, // SDRAM Data bus 16 Bits
+   inout  [15:0] SDRAM_DQ, // SDRAM Data bus 16 Bits
    output [12:0] SDRAM_A, // SDRAM Address bus 13 Bits
    output 	 SDRAM_DQML, // SDRAM Low-byte Data Mask
    output 	 SDRAM_DQMH, // SDRAM High-byte Data Mask

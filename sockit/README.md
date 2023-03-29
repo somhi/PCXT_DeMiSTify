@@ -1,6 +1,6 @@
 # [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify) - SoCkit port
 
-SoCkit port DeMiSTified by @somhi from original MiSTer PCXT core  https://github.com/MiSTer-devel/PCXT_MiSTer
+SoCkit port DeMiSTified by @somhi from original MiSTer PCXT core   https://github.com/MiSTer-devel/PCXT_MiSTer by @spark2k06
 
 [Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
 
@@ -14,33 +14,33 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 * Composite real not implemented. Need to fix the serializer module error in cyclone v family.
 
-  
 
 ## **Features:**
 
 * VGA video output (using only 666 but capable of 888)
 * Audio I2S Line out (3.5 jack green connector) 
 
-**External addon required for:**
 
-* PS/2 Keyboard
-* DB9 Joystick 
-* MIDI output and MIDI I2S mixing available though an external mt32-pi synthesizer ([MIDI2SBC](https://github.com/somhi/MIDI_I2S_SBC_Pmod_Edge_Interface))
-* SDRAM Mister module 
-  - Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2 ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca))
-  - Tested with a dual memory module v1.3 with 3 pins ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca) + [3pins](https://github.com/DECAfpga/DECA_board/blob/main/Sdram_mister_deca/README_3pins.md))
+**Additional hardware required**
 
+* Terasic HSMC to GPIO [Daughter Board](https://www.digikey.es/es/products/detail/P0033/P0033-ND/2003485) for:
+
+  *  SDRAM Mister module 
+    * Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2
+    * Tested with a dual memory module v1.3 with 3 pins
+
+  * PS/2 Keyboard
+
+  * DB9 Joystick 
 
 
 ### Compile the project in Quartus:
 
-Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
+If the project has the DeMiSTify firmware already generated you only need to clone recursively the repository and then open the project with Quartus from the specific board folder:
 
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
-
 #check comments on top of /sockit/sockit_top.vhd in case additional actions are needed
-
 #Load project in Quartus from /sockit/PCXT_sockit.qpf
 ```
 
@@ -79,15 +79,13 @@ I'm currently using the Terasic HSMC to GPIO [Daughter Board](https://www.digike
 
 An specific addon for SoCkit might be developed in the future.
 
-**Others:**
+### Buttons
 
-* Button KEY4 is a reset button
-* Button KEY0 is OSD button
+* The reset button KEY4 resets the controller (so re-initialises the SD card if it's been changed, reloads any autoboot ROM.) The OSD Reset menu item resets the core itself.
+* The user button KEY0 opens the OSD
 
 ### OSD Controls
 
 * F12 show/hide OSD 
 * Long F12 toggles VGA/RGB mode
-* The reset button KEY4 resets the controller (so re-initialises the SD card if it's been changed, reloads any autoboot ROM.) The OSD Reset menu item resets the core itself.
-* The user button KEY0 opens the OSD
 

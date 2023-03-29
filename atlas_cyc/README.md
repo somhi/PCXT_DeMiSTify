@@ -1,6 +1,6 @@
 # [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT)  [DeMiSTified](https://github.com/robinsonb5/DeMiSTify)  -  Atlas CYC1000 port
 
-07/07/22 Atlas CYC1000 port DeMiSTified by @somhi from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
+07/07/22 Atlas CYC1000 port DeMiSTified by @somhi from original MiSTer PCXT core  https://github.com/MiSTer-devel/PCXT_MiSTer by @spark2k06
 
 [Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
 
@@ -21,7 +21,6 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 * CGA 32 kB implemented. Some Tandy games are playable like Prince of Persia, Cool Crocks and Sierra's Manhunter.
 
-  
 
 ## **Features:**
 
@@ -41,15 +40,12 @@ Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### Compile the project in Quartus:
 
-Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
+If the project has the DeMiSTify firmware already generated you only need to clone recursively the repository and then open the project with Quartus from the specific board folder:
 
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
-
 #Load project in Quartus from /atlas_cyc/PCXT_atlas_cyc.qpf
 ```
-
-
 
 ### Instructions to Full compile the project for a specific board:
 
@@ -73,11 +69,12 @@ After that you can:
 
 * Load project in Quartus from /atlas_cyc/PCXT_atlas_cyc.qpf
 
+### Buttons
 
+* The user button KEY0 resets the controller (so re-initialises the SD card if it's been changed, reloads any autoboot ROM.) The OSD Reset menu item resets the core itself.
 
 ### OSD Controls
 
 * F12 show/hide OSD 
 * Long F12 toggles VGA/RGB mode
-* The user button KEY0 resets the controller (so re-initialises the SD card if it's been changed, reloads any autoboot ROM.) The OSD Reset menu item resets the core itself.
 

@@ -22,10 +22,10 @@ module sidi_top (
    input  	 CLOCK_27,
 
 	// LED outputs
-   output 	 LED, // LED Yellow
+   output 	 LED,
 	
    // SDRAM interface
-   inout [15:0]  SDRAM_DQ, // SDRAM Data bus 16 Bits
+   inout  [15:0] SDRAM_DQ, // SDRAM Data bus 16 Bits
    output [12:0] SDRAM_A, // SDRAM Address bus 13 Bits
    output 	 SDRAM_DQML, // SDRAM Low-byte Data Mask
    output 	 SDRAM_DQMH, // SDRAM High-byte Data Mask
@@ -61,7 +61,7 @@ module sidi_top (
 
 wire  [7:0] r_aux, g_aux, b_aux;	
 
-PCXT guest       //TODO revise constraints for MiST boards 
+PCXT guest
 (
    .CLOCK_27 	(CLOCK_27),
    .RESET_N    (1'b1),        //very important to pass this reset signal

@@ -1,8 +1,6 @@
 # [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT) - SiDi port
 
-07/07/22 SiDi port by @somhi from original MiSTer PCXT core  https://github.com/spark2k06/PCXT_MiSTer
-
-[Read this guide if you want to know how I DeMiSTified this core](https://github.com/DECAfpga/DECA_board/tree/main/Tutorials/DeMiSTify).
+07/07/22 SiDi port by @somhi from original MiSTer PCXT core   https://github.com/MiSTer-devel/PCXT_MiSTer by @spark2k06
 
 Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
@@ -20,7 +18,7 @@ Compile the latest firmware from [mist-devel](https://github.com/mist-devel/mist
 
 ### Compile the project in Quartus:
 
-Project already has the Demistify firmware already generated so if you have cloned recursively then you can open the project with Quartus:
+Clone the repository recursively and open the project with Quartus:
 
 ```sh
 git clone  --recursive https://github.com/somhi/PCXT_DeMiSTify
