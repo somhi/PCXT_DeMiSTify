@@ -39,9 +39,6 @@ entity deca_top is
 		--COMPOSITE VIDEO
 		SPI_CS0_CLKBD 	: out std_logic;		--1 PIN
 		SPI_MOSI 		: out std_logic;		--OPTIONAL 2 PIN
-		-- -- AUDIO
-		-- SIGMA_R : out std_logic;
-		-- SIGMA_L : out std_logic;
 		-- -- MIDI
 		-- SPI_MISO_WSBD         : in    std_logic;
 		-- SPI_SCLK_DABD         : in    std_logic;
@@ -75,6 +72,11 @@ entity deca_top is
 		SD_CMD_DIR  : out std_logic := '1';
 		SD_D0_DIR   : out std_logic := '0';
 		SD_D123_DIR : out std_logic;
+		-- PMOD DETO
+		DETO1_PMOD2_6 	: out std_logic;
+		DETO2_PMOD2_7 	: out std_logic;
+		DETO3_JOY_MUX 	: inout std_logic;
+		DETO4			: inout std_logic;
 		-- HDMI-TX  DECA 
 		HDMI_I2C_SCL : inout std_logic;
 		HDMI_I2C_SDA : inout std_logic;
@@ -115,7 +117,7 @@ entity deca_top is
 		USB_RESET_n : out std_logic;    	--Fixed to High
 		USB_CS 		: out std_logic        	--Fixed to High
 	);
-end entity;
+END entity;
 
 architecture RTL of deca_top is
 
@@ -170,7 +172,7 @@ architecture RTL of deca_top is
 	signal joyc : std_logic_vector(7 downto 0);
 	signal joyd : std_logic_vector(7 downto 0);
 
-	-- DAC AUDIO     
+	-- DAC AUDIO
 	signal dac_l : signed(15 downto 0);
 	signal dac_r : signed(15 downto 0);
 	signal dac_l_s: signed(15 downto 0);
@@ -197,13 +199,13 @@ architecture RTL of deca_top is
 
 	component audio_top is
 		port (
-			clk_50MHz : in std_logic;  -- system clock (50 MHz)
+			clk_50MHz : in std_logic;  -- system clock
 			dac_MCLK  : out std_logic; -- outputs to I2S DAC
 			dac_LRCK  : out std_logic;
 			dac_SCLK  : out std_logic;
 			dac_SDIN  : out std_logic;
-			L_data    : in std_logic_vector(15 downto 0); -- LEFT data (16-bit signed)
-			R_data    : in std_logic_vector(15 downto 0)  -- RIGHT data (16-bit signed) 
+			L_data    : in std_logic_vector(15 downto 0); -- LEFT data (15-bit signed)
+			R_data    : in std_logic_vector(15 downto 0)  -- RIGHT data (15-bit signed) 
 		);
 	end component;
 
@@ -273,6 +275,9 @@ architecture RTL of deca_top is
 	signal act_led : std_logic;
 
 	signal clk_chipset : std_logic;
+
+	alias sigma_l : std_logic is DETO1_PMOD2_6;
+	alias sigma_r : std_logic is DETO2_PMOD2_7;
 
 begin
 
@@ -393,7 +398,6 @@ begin
 	I2S_D   <= i2s_D_o;
 
 
-
 	guest : component PCXT
 		port map
 		(
@@ -427,6 +431,7 @@ begin
 			SPI_SS3    => spi_ss3,
 			SPI_SS4    => spi_ss4,
 			CONF_DATA0 => conf_data0,
+
 			--VGA
 			VGA_HS    => vga_hsync,
 			VGA_VS    => vga_vsync,
@@ -440,6 +445,8 @@ begin
 			DAC_L   => dac_l,
 			DAC_R   => dac_r,
 			CLK_CHIPSET => clk_chipset,
+			--AUDIO_L => sigma_l,		-- NOTE: if enabled keyboard hung and start beeping
+			--AUDIO_R => sigma_r,
 
 			PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 			PS2K_DAT_IN => ps2_keyboard_dat_in,
