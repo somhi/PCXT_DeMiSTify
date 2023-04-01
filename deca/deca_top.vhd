@@ -445,8 +445,10 @@ begin
 			DAC_L   => dac_l,
 			DAC_R   => dac_r,
 			CLK_CHIPSET => clk_chipset,
-			--AUDIO_L => sigma_l,		-- NOTE: if enabled keyboard hung and start beeping
-			--AUDIO_R => sigma_r,
+			`ifdef DEBUG2
+			AUDIO_L => sigma_l,		-- NOTE: when enabled Delta Sigma audio keyboard beeped a lot
+			AUDIO_R => sigma_r,		-- I then did a keyboard fix commit on 02/04/23
+			`endif
 
 			PS2K_CLK_IN => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 			PS2K_DAT_IN => ps2_keyboard_dat_in,
