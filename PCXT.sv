@@ -1163,7 +1163,7 @@ module PCXT
     wire [15:0] cms_l_snd_e;
     wire [16:0] cms_l_snd = {cms_l_snd_e[15],cms_l_snd_e};
     wire [15:0] cms_r_snd_e;
-    wire [16:0] cms_r_snd = {cms_l_snd_e[15],cms_l_snd_e};
+    wire [16:0] cms_r_snd = {cms_r_snd_e[15],cms_r_snd_e};
 	 
     wire [15:0] jtopl2_snd_e;
     wire [16:0] jtopl2_snd = {jtopl2_snd_e[15], jtopl2_snd_e};
