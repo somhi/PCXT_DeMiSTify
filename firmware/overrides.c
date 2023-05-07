@@ -1,6 +1,8 @@
 // Remove anything that is not needed
 
 #include "statusword.h"
+
+int LoadROM(const char *fn);
  
 const char *bootrom_name1="PCXT    ROM";
 const char *bootrom_name2="TANDY   ROM";

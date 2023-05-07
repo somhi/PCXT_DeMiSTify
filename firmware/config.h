@@ -11,7 +11,6 @@
 #undef CONFIG_WITHOUT_FILESYSTEM
 
 /* PS/2 Mouse support */
-/* PS/2 Mouse support */
 #undef PS2_MOUSE
 #undef PS2_MOUSE_WHEEL /* Attempt to initialise the mouse in 4-byte (wheel) mode */
 #undef PS2_MOUSE_USERIO /* Do we need to send the mouse data to the core (not needed if the core can interpret PS/2 wires directly. */
@@ -36,13 +35,17 @@ here, the number of units defaults to 4. */
    range would be between 4 and 16 */
 #define CONFIG_FILEBOOKMARKS 16
 
+/* If the core has initialised the keyboard to use scan set 1 the OSD will
+   need to use set 1 as well. */
+#undef CONFIG_KEYBOARD_SET1
+
 /* Keyboard-based Joystick emulation */
 #define CONFIG_JOYKEYS
 #undef CONFIG_JOYKEYS_TOGGLE
 
 /* Send key events via the mist_io block. If the core can support
    a PS/2 keyboard directly then that's probably a better option. */
-#undef CONFIG_SENDKEYS
+#define CONFIG_SENDKEYS
 
 /* Send joystick events using the "new" extended joystick protocol.
    This could support more buttons (if DeMiSTify itself supported them,
@@ -55,9 +58,9 @@ here, the number of units defaults to 4. */
 /* ROM name will default to "BOOT    ROM" if not defined here... */ 
 #undef ROM_FILENAME "PCXT    ROM"
 
-/* Do we support configuration files? */
-#undef CONFIG_SETTINGS
+/* Do we support settings files */
 #undef CONFIG_SETTINGS_FILENAME "PCXT    CFG"
+#undef CONFIG_SETTINGS
 
 /* Do we support the Real Time Clock (if available)? */
 #define CONFIG_RTC
@@ -70,10 +73,13 @@ here, the number of units defaults to 4. */
 
 /* Is this an arcade core with .ARC file support? */
 #undef CONFIG_ARCFILE
+/* If the core doesn't have its own ROM loading menu item, use this to add a selector for .ARC files. */
+#undef CONFIG_ARCFILE_SELECTOR
+
 
 /* If this is defined, DeMiSTify will look for a file called "15KHZ.CFG", and if found,
 disable the scandoubler. */
-#undef CONFIG_AUTOSCANDOUBLER
+#define CONFIG_AUTOSCANDOUBLER
 
 #endif
 
