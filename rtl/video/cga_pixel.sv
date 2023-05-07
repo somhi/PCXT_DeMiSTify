@@ -42,6 +42,8 @@ module cga_pixel(
     reg[7:0] char_byte_old;
     reg[7:0] attr_byte_del;
     reg[7:0] charbits;
+    reg[7:0] charbits1;
+    reg[7:0] charbits2;
     reg[1:0] cursor_del;
     reg[1:0] display_enable_del;
     reg pix;
@@ -53,7 +55,6 @@ module cga_pixel(
     reg[3:0] tandy_palette[0:15] = '{ 4'h0, 4'h1, 4'h2, 4'h3, 4'h4, 4'h5, 4'h6, 4'h7, 4'h8, 4'h9, 4'ha, 4'hb, 4'hc, 4'hd, 4'he, 4'hf };  
 	 
     wire pix_640;
-    wire[10:0] rom_addr;
     wire load_shifter;
     wire [2:0] charpix_sel;
     reg[3:0] video_out;
@@ -118,15 +119,29 @@ module cga_pixel(
     end
 
     // Look up character byte in our character ROM table
-    assign rom_addr = {char_byte, row_addr[2:0]};
+    wire[11:0] rom_addr;
+    wire[11:0] rom_addr2;
+    assign rom_addr = {1'b0,char_byte, row_addr[2:0]};
+    assign rom_addr2 = {1'b1,char_byte, row_addr[2:0]};
+//  char_rom[{~thin_font, 11'b0} | rom_addr];
     always @ (posedge clk)
     begin
         // Only load character bits at this point
         if (charrom_read) begin
-            charbits <= ((row_addr > 5'd7) && tandy_16_mode) ? 8'b0 : char_rom[{~thin_font, 11'b0} | rom_addr];
+            charbits1 <= char_rom[rom_addr];
         end
     end
 
+    always @ (posedge clk)
+    begin
+        // Only load character bits at this point
+        if (charrom_read) begin
+            charbits2 <= char_rom[rom_addr2];
+        end
+    end
+
+	 assign charbits = ((row_addr > 5'd7) && tandy_16_mode) ? 1'b0 : thin_font ? charbits1 : charbits2;
+	 
     // This must be a mux. Using a shift register causes very weird
     // issues with the character ROM and Yosys turns it into a bunch
     // of flip-flops instead of a ROM.
