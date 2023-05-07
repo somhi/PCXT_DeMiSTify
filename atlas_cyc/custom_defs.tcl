@@ -1,0 +1,2 @@
+set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE AREA
+

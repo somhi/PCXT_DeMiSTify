@@ -15,7 +15,7 @@
 `define NO_CMSOUND   		// Game Blaster. For board with not enough Logic cells
 `define NO_CREDITS		// (10 M9K) Remove Credits screen. For boards with not enough BRAM 
 `define CGA_32			// (32 M9K)    
-`define NO_UART1		// (2 M9K) 
+//`define NO_UART1		// (2 M9K) 
 
 // DEVELOPMENT MACROS
 //`define NO_MDA
