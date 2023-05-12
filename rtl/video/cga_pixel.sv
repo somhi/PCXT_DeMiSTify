@@ -41,7 +41,7 @@ module cga_pixel(
     reg[7:0] char_byte;
     reg[7:0] char_byte_old;
     reg[7:0] attr_byte_del;
-    reg[7:0] charbits;
+    wire[7:0] charbits;
     reg[7:0] charbits1;
     reg[7:0] charbits2;
     reg[1:0] cursor_del;
