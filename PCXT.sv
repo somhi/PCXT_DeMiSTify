@@ -141,10 +141,10 @@ module PCXT
 		"P4OB,Lo-tech 2MB EMS,Enabled,Disabled;",
 		"P4OCD,EMS Frame,C000,D000,E000;",
         "P4Op,A000 UMB,Enabled,Disabled;",           //[51]
-		"P4ONO,Joystick 1, Analog, Digital, Disabled;",
-		"P4OPQ,Joystick 2, Analog, Digital, Disabled;",
-		"P4OR,Sync Joy to CPU Speed,No,Yes;",
-		"P4OS,Swap Joysticks,No,Yes;",
+	//	"P4ONO,Joystick 1, Analog, Digital, Disabled;",
+	//	"P4OPQ,Joystick 2, Analog, Digital, Disabled;",
+	//	"P4OR,Sync Joy to CPU Speed,No,Yes;",
+	//	"P4OS,Swap Joysticks,No,Yes;",
 		//
 		"T0,Reset;",
 		//
@@ -152,8 +152,8 @@ module PCXT
 		"P5,Debug;",
 //      "P5Oq,Comp. simulated (WIP),Off,On;",           //[52] -> "P2o8,Composite video,Off,On;",
 //      "P5OLM,UART signal,clk_uart,clk_uart_en;",      //[22:21] 
-//		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",        //[45] display_mode_disable
-//		"P5Ok,DEBUG.OSD disable,No,Yes;",               //[46] osd_disable
+		"P5Oj,DEBUG.Displ.mode disable,No,Yes;",        //[45] display_mode_disable
+		"P5Ok,DEBUG.OSD disable,No,Yes;",               //[46] osd_disable
         `endif
 		//
 		"V,v",`BUILD_DATE

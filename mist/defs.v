@@ -19,7 +19,7 @@
 //`define EMBED_CHAR_ROM_MDA  	// (4 M9K)
 //`define NO_CREDITS		// (10 M9K) Remove Credits screen. For boards with not enough BRAM 
 //`define CGA_32		// (32 M9K)
-//`define DEBUG2		// Define if want to show DEBUG menu in OSD
+`define DEBUG2		// Define if want to show DEBUG menu in OSD
 
 /////////////////////////////////   COMPLETE LIST OF MACROS   //////////////////////////////////////
 
