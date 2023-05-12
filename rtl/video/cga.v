@@ -443,7 +443,8 @@ module cga(
         .dbl_video(dbl_video)
     );
 
-    assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //mist_video will do the csync      
+    //assign hsync_sd = scandoubler ? dbl_hsync : ~(vsync ^ hsync);    //mist_video will do the csync      
+    assign hsync_sd = scandoubler ? dbl_hsync : vsync & hsync;    //different csync mixing method can be tried (AND'ing instead of XNOR).  
     assign vsync_sd = scandoubler ? vsync     : 1'b1;
     assign video_sd = scandoubler ? dbl_video : video;
 
