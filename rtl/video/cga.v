@@ -418,6 +418,7 @@ module cga(
       .video    (video_osd  )
     );
 
+    `ifndef NO_COMPOSITE
     // Composite video generation
     cga_composite comp (
         .clk(clk),
@@ -430,6 +431,7 @@ module cga(
         .comp_video(comp_video),
         .composite_out(composite_out)
     );
+	`endif
 
     wire cga_de;
     assign cga_de = ~(hblank | vblank);

@@ -25,11 +25,11 @@ module video_monochrome_converter
 	
 );
   
-  wire [7:0] r, g, b;	
-  wire [7:0] r1, g1, b1;	
+  reg [7:0] r, g, b;	
+  reg [7:0] r1, g1, b1;	
 
-  wire [7:0] mono;
-  wire [7:0] shifted_mono;
+  reg [7:0] mono;
+  reg [7:0] shifted_mono;
     
   reg [7:0] red_weight[0:255] = '{ // 0.2126*R 
 	 8'h0, 8'h0, 8'h0, 8'h0, 8'h0, 8'h1, 8'h1, 8'h1, 8'h1, 8'h1, 8'h2, 8'h2, 8'h2, 8'h2, 8'h2, 8'h3, 8'h3, 8'h3, 8'h3, 8'h4, 8'h4, 8'h4, 8'h4, 

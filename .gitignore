@@ -43,3 +43,11 @@ c5_pin_model_dump.txt
 *.o
 controller.bin
 controller.map
+*.cache
+*.gen
+*.hw
+*.runs
+*.sim
+*.ip_user_files
+*.srcs
+*.bit

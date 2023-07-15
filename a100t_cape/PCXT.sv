@@ -34,7 +34,10 @@ module PCXT
         output        SDRAM_CLK,
         output        SDRAM_CKE,
 
-        inout         SPI_DO,
+    	`ifndef MIST_SIDI
+        input         SPI_DO_IN,
+    	`endif        
+        output        SPI_DO,
         input         SPI_DI,
         input         SPI_SCK,
         input         SPI_SS2,
@@ -99,7 +102,7 @@ module PCXT
     // 0123456789ABCDEFGHIJKLMNOPQRSTUV WXYZabcdefghijklmnopqrstuvwxyz
     // XttXX..XttXXXXXXXXXttXXXXXXXXtXX aaaaaattaaDDDDDD...XX.........
 
-	`include "build_id.v"
+	`include "build_id.vh"
 
     //CAUTION: Too many entries will hung the OSD when entering a submenu (CONF_STR < 1024 bytes)
     parameter CONF_STR = {		// options order: 0,1,2,...
@@ -246,6 +249,12 @@ module PCXT
         //VIDEO_ARY               <= (!ar) ? 12'd3 : 12'd0;
     end
 
+
+    wire spi_do_uio;
+    wire spi_do_dio;
+
+    assign SPI_DO = CONF_DATA0 ? spi_do_dio : spi_do_uio; // DO comes from user_io when CONF_DATA0 is low
+
     // .PS2DIV(2000) value is adequate
 
     `ifdef MIST_SIDI
@@ -260,7 +269,7 @@ module PCXT
 		// the spi interface
 		.SPI_CLK        ( SPI_SCK       ),
 		.SPI_SS_IO      ( CONF_DATA0    ),
-		.SPI_MISO       ( SPI_DO        ),   // tristate handling inside user_io
+		.SPI_MISO       ( spi_do_uio    ),   // tristate handling inside user_io
 		.SPI_MOSI       ( SPI_DI        ),
 
 		.status         ( status        ),
@@ -307,7 +316,10 @@ module PCXT
 		.SPI_SS2    ( SPI_SS2 ),
         .SPI_SS4    ( SPI_SS4 ),
 		.SPI_DI     ( SPI_DI  ),
-		.SPI_DO     ( SPI_DO  ),    
+		.SPI_DO     ( spi_do_dio ),
+        `ifndef MIST_SIDI
+        .SPI_DO_IN  ( SPI_DO_IN  ),
+        `endif      
 
 		.ioctl_download ( ioctl_download ),
 	//  .ioctl_upload   ( upload_active  ),
@@ -391,52 +403,31 @@ module PCXT
 
     localparam [27:0] cur_rate = 28'd50000000; // clk_chipset freq
 
-	`ifdef DEMISTIFY_SOCKIT		/////  SOCKIT BOARD with Cyclone V   /////
-
-		assign SDRAM_CLK = clk_chipset;
-
-		pll pll
-		(
-			.refclk(CLK_50M),
-			.rst(0),
-			.outclk_0(clk_100),			//100                   CLOCK_CORE
-			.outclk_1(clk_chipset),		//50                    CLOCK_CHIP
-			.outclk_2(clk_uart),		//14.7456 -> 14.7541    CLOCK_UART
-			.locked(pll_locked)
-		);
-
-		pllvideo pllvideo
-		(
-			.refclk(CLK_50M),
-			.rst(0),
-			.outclk_0(clk_28_636),		//28.636                CLOCK_VGA_CGA
-			.outclk_1(clk_56_875),		//56.875 -> 57.272      CLOCK_VGA_MDA
-			.locked()
-		);
-
-	`else  						/////  REST OF BOARDS    /////
-
-		pll pll
-		(
-			.inclk0(CLK_50M),
-			.areset(1'b0),
-			.c0(clk_100),			//100                           CLOCK_CORE
-			.c1(clk_chipset),		//50                            CLOCK_CHIP
-			.c2(SDRAM_CLK),			//50 -2ns
-			.c3(clk_uart),			//14.7456 MHz                   CLOCK_UART
-			.locked(pll_locked)
-		);
-
-		pllvideo pllvideo
-		(
-			.inclk0(CLK_50M),
-			.areset(1'b0),
-			.c0(clk_28_636),		//28.636 -> 28.636      CLOCK_VGA_CGA
-			.c1(clk_56_875),		//56.875 -> 57.272      CLOCK_VGA_MDA
-			.locked()
-		);
-
-	`endif
+    pll pll
+    (
+        // Clock out ports
+        .clk_out1(clk_100),        // output clk_out1 //100            CLOCK_CORE
+        .clk_out2(clk_chipset),    // output clk_out2 //50             CLOCK_CHIP
+        .clk_out3(SDRAM_CLK),      // output clk_out3 //50 -2ns    
+        .clk_out4(clk_uart),       // output clk_out4 //14.7456 MHz    CLOCK_UART
+        // Status and control signals
+        .reset(1'b0),              // input reset
+        .locked(pll_locked),       // output locked
+        // Clock in ports
+        .clk_in1(CLK_50M)          // input clk_in1
+    );
+ 
+    pllvideo pllvideo 
+    (
+        // Clock out ports
+        .clk_out1(clk_28_636),        // output clk_out1 //28.636 -> 28.636      CLOCK_VGA_CGA
+        .clk_out2(clk_56_875),        // output clk_out2 //56.875 -> 57.272      CLOCK_VGA_MDA
+        // Status and control signals
+        .reset(1'b0),              // input reset
+        .locked(),                 // output locked
+        // Clock in ports
+        .clk_in1(CLK_50M)          // input clk_in1
+    );
 
 
     `ifdef MIST_SIDI    //Reset from OSD did not work in some SiDi board. This counter increases OSD reset toogle time
