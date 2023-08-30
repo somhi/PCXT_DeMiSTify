@@ -1,4 +1,4 @@
-# Xilinx Artix A100T notes
+# Xilinx board notes
 
 
 
@@ -13,16 +13,15 @@ Some bugs observed:
 
 ### Changed files for xilinx port
 
-Those files are included in a100t_cape folder.
+Those files are included in xilinx folder.
 
 * PCXT.sv
+* PCXT.sdc
 * demistify_config_pkg.vhd
 * rtl/KFPC-XT/HDL/peripherals.sv 
 * uart/gh_fifo_async_sr.vhd
 
-Following file is only used by Xilinx port:
-
-* rtl/common/data_io.v
+* mist-modules/data_io.v
 
 
 

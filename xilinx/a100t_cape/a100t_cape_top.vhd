@@ -5,7 +5,6 @@ use ieee.numeric_std.all;
 library work;
 use work.demistify_config_pkg.all;
 
-
 -------------------------------------------------------------------------
 
 entity a100t_cape_top is
