@@ -170,25 +170,6 @@ architecture RTL of zxtres_top is
 			sega_strobe		: out std_logic
 		);
 	end component;
-	
-	component joydecoder is
-		generic
-		(
-		  FRECCLKIN       : integer := 50
-		);
-		port 
-		(
-			clk             : in std_logic;
-		    joy_data        : in std_logic;
-			joy_clk         : out std_logic;
-			joy_load_n      : out std_logic;
-			reset           : in std_logic;
-			hsync_n_s       : in std_logic;
-			joy_select      : out std_logic; --Joy select for output to joyticks
-			joy1_o			: out std_logic_vector(11 downto 0); -- MXYZ SACB RLDU  Negative Logic
-			joy2_o			: out std_logic_vector(11 downto 0)  -- MXYZ SACB RLDU  Negative Logic
-		);
-	end component;
 
 	-- DAC AUDIO
 	signal dac_l : signed(15 downto 0);

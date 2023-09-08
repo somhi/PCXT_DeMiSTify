@@ -25,6 +25,7 @@ PLLJ_PLLSPE_INFO.txt
 *.ppf
 *.ddb
 build_id.v
+build_id.vh
 c5_pin_model_dump.txt
 *.sopcinfo
 *.csv
