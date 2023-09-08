@@ -55,7 +55,7 @@ set_clock_groups -asynchronous -group [get_clocks ${supportclk}] -group [get_clo
 #set_clock_groups -asynchronous -group [get_clocks ${supportclk}] -group [get_clocks sdramclk]
 
 set_clock_groups -asynchronous -group [get_clocks spiclk] -group [get_clocks {"clk_out1_clk_wiz_1" "clk_out2_clk_wiz_1"}]
-set_clock_groups -asynchronous -group [get_clocks {"clk_out1_pll" "clk_out2_pll" "clk_out4_pll"}] -group [get_clocks {"clk_out1_clk_wiz_1" "clk_out2_clk_wiz_1"}]]
+set_clock_groups -asynchronous -group [get_clocks {"clk_out1_pll" "clk_out2_pll" "clk_out4_pll"}] -group [get_clocks {"clk_out1_clk_wiz_1" "clk_out2_clk_wiz_1"}]
 
 # False paths
 set_false_path -to ${FALSE_OUT}
