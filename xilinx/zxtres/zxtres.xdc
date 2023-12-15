@@ -20,6 +20,25 @@ set_property IOSTANDARD LVCMOS33 [get_ports LED5]
 set_property PACKAGE_PIN G15 [get_ports LED6]
 set_property IOSTANDARD LVCMOS33 [get_ports LED6]
 
+
+#PMOD addon
+set_property PACKAGE_PIN J5 [get_ports PMOD4_D0]
+set_property IOSTANDARD LVCMOS33 [get_ports PMOD4_D0]
+set_property PACKAGE_PIN P6 [get_ports PMOD4_D1]
+set_property IOSTANDARD LVCMOS33 [get_ports PMOD4_D1]
+set_property PACKAGE_PIN C2 [get_ports PMOD4_D2]
+set_property IOSTANDARD LVCMOS33 [get_ports PMOD4_D2]
+set_property PACKAGE_PIN H3 [get_ports PMOD4_D3]
+set_property IOSTANDARD LVCMOS33 [get_ports PMOD4_D3]
+set_property PACKAGE_PIN R2 [get_ports PMOD4_D4]
+set_property IOSTANDARD LVCMOS33 [get_ports PMOD4_D4]
+set_property PACKAGE_PIN H2 [get_ports PMOD4_D5]
+set_property IOSTANDARD LVCMOS33 [get_ports PMOD4_D5]
+set_property PACKAGE_PIN P5 [get_ports PMOD4_D6]
+set_property IOSTANDARD LVCMOS33 [get_ports PMOD4_D6]
+set_property PACKAGE_PIN B22 [get_ports PMOD4_D7]
+set_property IOSTANDARD LVCMOS33 [get_ports PMOD4_D7]
+
 #Keyboard and mouse
 set_property PACKAGE_PIN U1 [get_ports PS2_KEYBOARD_CLK]
 set_property IOSTANDARD LVCMOS33 [get_ports PS2_KEYBOARD_CLK]

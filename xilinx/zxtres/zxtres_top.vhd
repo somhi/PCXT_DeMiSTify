@@ -38,6 +38,11 @@ entity zxtres_top is
 		PS2_KEYBOARD_DAT : inout std_logic := '1';
 		PS2_MOUSE_CLK    : inout std_logic;
 		PS2_MOUSE_DAT    : inout std_logic;
+		-- UART
+		PMOD4_D4 : in std_logic;		--UART_RXD
+		PMOD4_D5 : out std_logic;		--UART_TXD
+		PMOD4_D6 : in std_logic;		--UART_CTS
+		PMOD4_D7 : out std_logic;		--UART_RTS		
 		-- JOYSTICK
         joy_clk : out std_logic;
         joy_load_n : out std_logic;
@@ -61,10 +66,10 @@ END entity;
 architecture RTL of zxtres_top is
 
 	-- UART not in xdc file yet  FIX
-	signal UART_RXD  : std_logic;
-	signal UART_TXD : std_logic;
-	signal SPI_CS1  : std_logic;	--CTS
-	signal SPI_CS2 : std_logic;		--RTS
+	-- signal UART_RXD  : std_logic;
+	-- signal UART_TXD : std_logic;
+	-- signal SPI_CS1  : std_logic;	--CTS
+	-- signal SPI_CS2 : std_logic;		--RTS
 
 	-- System clocks
 	signal locked  : std_logic;
@@ -303,12 +308,16 @@ audio_i2s : entity work.audio_top
 			SDRAM_CLK  => DRAM_CLK,
 			SDRAM_CKE  => DRAM_CKE,
 			--UART
-			UART_TX    => UART_TXD,
-			UART_RX	   => UART_RXD,
+			-- UART_TX    => UART_TXD,
+			-- UART_RX	   => UART_RXD,
+			-- UART_CTS   => SPI_CS1,
+			-- UART_RTS   => SPI_CS2,
 	
-			UART_CTS   => SPI_CS1,
-			UART_RTS   => SPI_CS2,
-	
+			UART_TX    => PMOD4_D5,
+			UART_RX    => PMOD4_D4,
+			UART_CTS   => PMOD4_D6,
+			UART_RTS   => PMOD4_D7,			
+
 			--SPI
 		--	SPI_DO     => spi_do,
 			SPI_DO_IN  => sd_miso,
