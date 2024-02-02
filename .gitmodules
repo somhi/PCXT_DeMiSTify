@@ -1,12 +1,13 @@
-[submodule "DeMiSTify"]
-	path = DeMiSTify
-	url = https://github.com/robinsonb5/DeMiSTify.git
 [submodule "mist-modules"]
 	path = mist-modules
 	url = https://github.com/mist-devel/mist-modules.git
-[submodule "rtl/jtopl"]
-	path = rtl/sound/jtopl
-	url = https://github.com/jotego/jtopl
 [submodule "rtl/sound/jt89"]
 	path = rtl/sound/jt89
 	url = https://github.com/jotego/jt89
+[submodule "rtl/sound/jtopl"]
+	path = rtl/sound/jtopl
+	url = https://github.com/jotego/jtopl
+[submodule "demistify/DeMiSTify"]
+	path = demistify/DeMiSTify
+	url = https://github.com/somhi/DeMiSTify
+
