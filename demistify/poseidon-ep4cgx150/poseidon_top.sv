@@ -1,9 +1,9 @@
 
 module poseidon_top (
 	input         CLOCK_50,
-
 	input         KEY0,
 	output        LED,
+
 	output  [5:0] VGA_R,
 	output  [5:0] VGA_G,
 	output  [5:0] VGA_B,

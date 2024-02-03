@@ -94,7 +94,7 @@ module PCXT
         output        I2S_LRCK,
         output        I2S_DATA,
     `endif
-    `ifdef I2S_AUDIO_HDMIª
+    `ifdef I2S_AUDIO_HDMI
         output        HDMI_MCLK,
         output        HDMI_BCK,
         output        HDMI_LRCK,
@@ -109,6 +109,9 @@ module PCXT
 
         input         UART_RX,
         output        UART_TX,
+    
+    ////// DeMiSTify ports //////
+
         input		  UART_CTS,
         output 		  UART_RTS,
 
@@ -192,6 +195,7 @@ module PCXT
     assign SDRAM2_nWE = 1;
     `endif
   
+    ////////////////////
 
     wire CLK_50M;
     assign CLK_50M = CLOCK_27;
@@ -224,6 +228,7 @@ module PCXT
 		"S0,IMGVHD,Mount IDE 1:;",
 		"S1,IMGVHD,Mount IDE 2:;",
         `endif
+        `SEP
 		"P1,BIOS;",
 		"P1F,ROM,PCXT BIOS:;",
 		"P1F,ROM,Tandy BIOS:;",
@@ -360,7 +365,7 @@ module PCXT
     end
 
 
-    `ifdef USE_HDMI
+    `ifdef USE_HDMI         // sidi128
     wire        i2c_start;
     wire        i2c_read;
     wire  [6:0] i2c_addr;
@@ -405,7 +410,7 @@ module PCXT
 		.ps2_mouse_data		(ps2_mouse_data_in),
     `endif
 
-    `ifdef USE_HDMI
+    `ifdef USE_HDMI        // sidi128
         .i2c_start       ( i2c_start     ),
         .i2c_read        ( i2c_read      ),
         .i2c_addr        ( i2c_addr      ),
@@ -1484,8 +1489,8 @@ module PCXT
     wire [5:0] r_in, g_in, b_in;
     reg  [7:0] raux,  gaux,  baux;
     wire [5:0] raux2, gaux2, baux2;
-    wire [5:0] raux3, gaux3, baux3;
-    reg  [7:0] raux4, gaux4, baux4;
+    wire [VGA_BITS-1:0] raux3, gaux3, baux3;
+    reg  [VGA_BITS-1:0] raux4, gaux4, baux4;
 
     wire vga_hs;
     wire vga_vs;
@@ -1523,8 +1528,8 @@ module PCXT
     assign gaux2 = display_mode_disable ? g_in : gaux[7:2];
     assign baux2 = display_mode_disable ? b_in : baux[7:2];
 
-    // mist_video #(  .SD_HCNT_WIDTH(10). .COLOR_DEPTH(6), .OUT_COLOR_DEPTH(VGA_BITS), .BIG_OSD(BIG_OSD)) mist_video
-    mist_video #( .SD_HCNT_WIDTH(10) ) mist_video    //.OSD_COLOR(3'd5),
+    // mist_video #( .SD_HCNT_WIDTH(10) ) mist_video    //.OSD_COLOR(3'd5),
+    mist_video #( .COLOR_DEPTH(6), .OUT_COLOR_DEPTH(VGA_BITS), .BIG_OSD(BIG_OSD)) mist_video
 	(
 		.clk_sys     ( clk_56_875 ),
 
@@ -1566,9 +1571,9 @@ module PCXT
 	);
 
     // osd_disable default is 0
-    assign raux4  = osd_disable ? {raux2,raux2[1:0]} : {raux3,raux3[1:0]};
-    assign gaux4  = osd_disable ? {gaux2,gaux2[1:0]} : {gaux3,gaux3[1:0]};
-    assign baux4  = osd_disable ? {baux2,baux2[1:0]} : {baux3,baux3[1:0]};
+    assign raux4  = osd_disable ? {raux2,raux2[1:0]} : raux3;
+    assign gaux4  = osd_disable ? {gaux2,gaux2[1:0]} : gaux3;
+    assign baux4  = osd_disable ? {baux2,baux2[1:0]} : baux3;
 
     assign rgb_18b = {raux4[7:2],gaux4[7:2],baux4[7:2]};    // for composite real video output
 
@@ -1656,6 +1661,7 @@ module PCXT
     // );
 	 
 
+
     // `ifdef USE_HDMI
     // i2c_master #(50_000_000) i2c_master (
     //     .CLK         (clk_cpu),
@@ -1720,9 +1726,6 @@ module PCXT
     // assign HDMI_PCLK = clk_25;
     
     // `endif
-    
-
-
 
 
 endmodule
