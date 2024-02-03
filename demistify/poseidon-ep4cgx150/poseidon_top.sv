@@ -61,9 +61,6 @@ module poseidon_top (
 
 
 wire [7:0]  r_aux, g_aux, b_aux;	
-wire [15:0] dac_l, dac_r;
-wire clk_chipset; 
-
 // wire  [1:0] COMPOSITE_OUT;
 // wire UART_CTS, UART_RTS;
 
@@ -93,9 +90,9 @@ PCXT guest
  .SPI_SS4	 (SPI_SS4),
  .CONF_DATA0 (CONF_DATA0),
 
-//  .DAC_L      (dac_l),
-//  .DAC_R      (dac_r),
-//  .CLK_CHIPSET(clk_chipset),
+ .I2S_BCK	 (I2S_BCK),
+ .I2S_LRCK	 (I2S_LRCK),
+ .I2S_DATA	 (I2S_DATA),
 
  .VGA_HS	 (VGA_HS),
  .VGA_VS	 (VGA_VS),
@@ -109,23 +106,9 @@ PCXT guest
 //  .UART_RTS   (UART_RTS)
 );
 
-
 // VIDEO bits assignation
 assign VGA_R = r_aux[7:2];
 assign VGA_G = g_aux[7:2];
 assign VGA_B = b_aux[7:2];
-
-/*
-audio_top audio_i2s
-(
-    .clk_50MHz (clk_chipset),
-  //.dac_MCLK  (I2S_MCK),
-    .dac_LRCK  (I2S_LRCK),
-    .dac_SCLK  (I2S_BCK),
-    .dac_SDIN  (I2S_DATA),
-    .L_data    (dac_l),
-    .R_data    (dac_r)
-);
-*/
 
 endmodule

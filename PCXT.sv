@@ -19,11 +19,50 @@
 module PCXT
     (
         input         CLOCK_27,
+    `ifdef USE_CLOCK_50
+        input         CLOCK_50,
+    `endif        
         input 		  RESET_N,
         output        LED,
 
-        inout  [15:0] SDRAM_DQ,
+        output [VGA_BITS-1:0] VGA_R,
+        output [VGA_BITS-1:0] VGA_G,
+        output [VGA_BITS-1:0] VGA_B,
+        output        VGA_HS,
+        output        VGA_VS,
+    
+    `ifdef USE_HDMI
+        output        HDMI_RST,
+        output  [7:0] HDMI_R,
+        output  [7:0] HDMI_G,
+        output  [7:0] HDMI_B,
+        output        HDMI_HS,
+        output        HDMI_VS,
+        output        HDMI_PCLK,
+        output        HDMI_DE,
+        inout         HDMI_SDA,
+        inout         HDMI_SCL,
+        input         HDMI_INT,
+    `endif
+    
+        input         SPI_SCK,
+        inout         SPI_DO,
+        input         SPI_DI,
+        input         SPI_SS2,    // data_io
+        input         SPI_SS3,    // OSD
+        input         CONF_DATA0, // SPI_SS for user_io
+    
+    `ifdef USE_QSPI
+        input         QSCK,
+        input         QCSn,
+        inout   [3:0] QDAT,
+    `endif
+    `ifndef NO_DIRECT_UPLOAD
+        input         SPI_SS4,
+    `endif
+
         output [12:0] SDRAM_A,
+        inout  [15:0] SDRAM_DQ,
         output        SDRAM_DQML,
         output        SDRAM_DQMH,
         output        SDRAM_nWE,
@@ -34,32 +73,48 @@ module PCXT
         output        SDRAM_CLK,
         output        SDRAM_CKE,
 
-        inout         SPI_DO,
-        input         SPI_DI,
-        input         SPI_SCK,
-        input         SPI_SS2,
-        input         SPI_SS3,
-        input         SPI_SS4,
-        input         CONF_DATA0,
-
-        output  [7:0] VGA_R,
-        output  [7:0] VGA_G,
-        output  [7:0] VGA_B,
-        output        VGA_HS,
-        output        VGA_VS,
-
-        output  [1:0] COMPOSITE_OUT,
-
-        output        CLK_VIDEO,	//Base video clock. Usually equals to CLK_SYS.
-        output        VGA_DE,    	// = ~(VBlank | HBlank)
+    `ifdef DUAL_SDRAM
+        output [12:0] SDRAM2_A,
+        inout  [15:0] SDRAM2_DQ,
+        output        SDRAM2_DQML,
+        output        SDRAM2_DQMH,
+        output        SDRAM2_nWE,
+        output        SDRAM2_nCAS,
+        output        SDRAM2_nRAS,
+        output        SDRAM2_nCS,
+        output  [1:0] SDRAM2_BA,
+        output        SDRAM2_CLK,
+        output        SDRAM2_CKE,
+    `endif
 
         output        AUDIO_L,
         output        AUDIO_R,
+    `ifdef I2S_AUDIO
+        output        I2S_BCK,
+        output        I2S_LRCK,
+        output        I2S_DATA,
+    `endif
+    `ifdef I2S_AUDIO_HDMIª
+        output        HDMI_MCLK,
+        output        HDMI_BCK,
+        output        HDMI_LRCK,
+        output        HDMI_SDATA,
+    `endif
+    `ifdef SPDIF_AUDIO
+        output        SPDIF,
+    `endif
+    `ifdef USE_AUDIO_IN
+        input         AUDIO_IN,
+    `endif
 
-	`ifdef DEMISTIFY
+        input         UART_RX,
+        output        UART_TX,
+        input		  UART_CTS,
+        output 		  UART_RTS,
+
+    `ifdef DEMISTIFY
         output [15:0]  DAC_L,
         output [15:0]  DAC_R,
-
         output         CLK_CHIPSET,
     `endif
 
@@ -72,14 +127,71 @@ module PCXT
         input         PS2K_MOUSE_CLK_IN,
         input         PS2K_MOUSE_DAT_IN,
         output        PS2K_MOUSE_CLK_OUT,
-        output        PS2K_MOUSE_DAT_OUT,        
-	`endif
+        output        PS2K_MOUSE_DAT_OUT   
+	`endif        
 
-        input		  UART_CTS,
-        output 		  UART_RTS,
-        input         UART_RX,
-        output        UART_TX
+        output  [1:0] COMPOSITE_OUT,
+        output        CLK_VIDEO,	//Base video clock. Usually equals to CLK_SYS.
+        output        VGA_DE    	// = ~(VBlank | HBlank)
     );
+
+
+    `ifdef NO_DIRECT_UPLOAD
+    localparam bit DIRECT_UPLOAD = 0;
+    wire SPI_SS4 = 1;
+    `else
+    localparam bit DIRECT_UPLOAD = 1;
+    `endif
+    
+    `ifdef USE_QSPI
+    localparam bit QSPI = 1;
+    assign QDAT = 4'hZ;
+    `else
+    localparam bit QSPI = 0;
+    `endif
+    
+    // `ifdef VGA_8BIT
+    localparam VGA_BITS = 8;
+    // `else
+    // localparam VGA_BITS = 6;
+    // `endif
+    
+    `ifdef USE_HDMI
+    localparam bit HDMI = 1;
+    assign HDMI_RST = 1'b1;
+    `else
+    localparam bit HDMI = 0;
+    `endif
+    
+    `ifdef BIG_OSD
+    localparam bit BIG_OSD = 1;
+    `define SEP "-;",
+    `else
+    localparam bit BIG_OSD = 0;
+    `define SEP
+    `endif
+    
+    `ifdef USE_AUDIO_IN
+    localparam bit USE_AUDIO_IN = 1;
+    `else
+    localparam bit USE_AUDIO_IN = 0;
+    `endif
+    
+    // remove this if the 2nd chip is actually used
+    `ifdef DUAL_SDRAM
+    assign SDRAM2_A = 13'hZZZZ;
+    assign SDRAM2_BA = 0;
+    assign SDRAM2_DQML = 0;
+    assign SDRAM2_DQMH = 0;
+    assign SDRAM2_CKE = 0;
+    assign SDRAM2_CLK = 0;
+    assign SDRAM2_nCS = 1;
+    assign SDRAM2_DQ = 16'hZZZZ;
+    assign SDRAM2_nCAS = 1;
+    assign SDRAM2_nRAS = 1;
+    assign SDRAM2_nWE = 1;
+    `endif
+  
 
     wire CLK_50M;
     assign CLK_50M = CLOCK_27;
@@ -146,6 +258,7 @@ module PCXT
 		"P4OR,Sync Joy to CPU Speed,No,Yes;",
 		"P4OS,Swap Joysticks,No,Yes;",
 		//
+        `SEP
 		"T0,Reset;",
 		//
         `ifdef DEBUG2
@@ -246,10 +359,21 @@ module PCXT
         //VIDEO_ARY               <= (!ar) ? 12'd3 : 12'd0;
     end
 
-    // .PS2DIV(2000) value is adequate
 
+    `ifdef USE_HDMI
+    wire        i2c_start;
+    wire        i2c_read;
+    wire  [6:0] i2c_addr;
+    wire  [7:0] i2c_subaddr;
+    wire  [7:0] i2c_dout;
+    wire  [7:0] i2c_din;
+    wire        i2c_ack;
+    wire        i2c_end;
+    `endif
+    
+    // .PS2DIV(2000) value is adequate
     `ifdef MIST_SIDI
-    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1), .FEATURES(32'h1050) /* FEAT_PS2REP | FEAT_IDE0_ATA | FEAT_IDE1_ATA*/) user_io
+    user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000), .PS2BIDIR(1), .FEATURES(32'h1050 | (BIG_OSD << 13) | (HDMI << 14)) /* FEAT_PS2REP | FEAT_IDE0_ATA | FEAT_IDE1_ATA*/) user_io
     `else 
     user_io #(.STRLEN($size(CONF_STR)>>3), .PS2DIV(2000)) user_io 
     `endif
@@ -269,7 +393,7 @@ module PCXT
 
 		.rtc            ( rtc_data      ),
 
-        `ifdef MIST_SIDI
+    `ifdef MIST_SIDI
 		.ps2_kbd_clk_i		(ps2_kbd_clk_out),
 		.ps2_kbd_data_i		(ps2_kbd_data_out),
 		.ps2_kbd_clk		(ps2_kbd_clk_in),
@@ -279,7 +403,18 @@ module PCXT
 		.ps2_mouse_data_i	(ps2_mouse_data_out),
 		.ps2_mouse_clk		(ps2_mouse_clk_in),
 		.ps2_mouse_data		(ps2_mouse_data_in),
-        `endif
+    `endif
+
+    `ifdef USE_HDMI
+        .i2c_start       ( i2c_start     ),
+        .i2c_read        ( i2c_read      ),
+        .i2c_addr        ( i2c_addr      ),
+        .i2c_subaddr     ( i2c_subaddr   ),
+        .i2c_dout        ( i2c_dout      ),
+        .i2c_din         ( i2c_din       ),
+        .i2c_ack         ( i2c_ack       ),
+        .i2c_end         ( i2c_end       ),
+    `endif
 
 		.joystick_0         (joy0 ),
 		.joystick_1         (joy1 ),
@@ -1234,10 +1369,13 @@ module PCXT
         cmp_r <= compr(out_r);
     end
 
-	`ifdef DEMISTIFY	//needed for not getting error in Quartus compilation for MiST board
-		assign DAC_L =  pause_core ? 1'b0 : status[37:36] ? cmp_l : out_l;
-		assign DAC_R =  pause_core ? 1'b0 : status[37:36] ? cmp_r : out_r;
+    wire [15:0]  laudio, raudio;
+    assign laudio =  pause_core ? 1'b0 : status[37:36] ? cmp_l : out_l;
+    assign raudio =  pause_core ? 1'b0 : status[37:36] ? cmp_r : out_r;
 
+	`ifdef DEMISTIFY	//needed for not getting error in Quartus compilation for MiST board
+		assign DAC_L =  laudio;
+		assign DAC_R =  raudio;
         assign CLK_CHIPSET = clk_chipset;
 	`endif
 
@@ -1249,6 +1387,43 @@ module PCXT
 		.left     ( AUDIO_L     ),      // left bitstream output
 		.right    ( AUDIO_R     )       // right bitsteam output
 	);
+
+
+    `ifdef I2S_AUDIO
+    i2s i2s (
+        .reset(1'b0),
+        .clk(clk_chipset),
+        .clk_rate(32'd50_000_000),
+    
+        .sclk(I2S_BCK),
+        .lrclk(I2S_LRCK),
+        .sdata(I2S_DATA),
+    
+        .left_chan(laudio),
+        .right_chan(raudio)
+    );
+    `endif
+    
+    `ifdef I2S_AUDIO_HDMI
+    assign HDMI_MCLK = 0;
+    always @(posedge clk_chipset) begin
+        HDMI_BCK <= I2S_BCK;
+        HDMI_LRCK <= I2S_LRCK;
+        HDMI_SDATA <= I2S_DATA;
+    end
+    `endif
+    
+    `ifdef SPDIF_AUDIO
+    spdif spdif
+    (
+        .clk_i(clk_chipset),
+        .rst_i(1'b0),
+        .clk_rate_i(32'd50_000_000),
+        .spdif_o(SPDIF),
+        .sample_i({raudio, laudio})
+    );
+    `endif
+    
 
     //
     ////////////////////////////  UART  ///////////////////////////////////
@@ -1348,7 +1523,7 @@ module PCXT
     assign gaux2 = display_mode_disable ? g_in : gaux[7:2];
     assign baux2 = display_mode_disable ? b_in : baux[7:2];
 
-
+    // mist_video #(  .SD_HCNT_WIDTH(10). .COLOR_DEPTH(6), .OUT_COLOR_DEPTH(VGA_BITS), .BIG_OSD(BIG_OSD)) mist_video
     mist_video #( .SD_HCNT_WIDTH(10) ) mist_video    //.OSD_COLOR(3'd5),
 	(
 		.clk_sys     ( clk_56_875 ),
@@ -1480,5 +1655,74 @@ module PCXT
     // 	.B_out   ( osd_b_o    )
     // );
 	 
+
+    // `ifdef USE_HDMI
+    // i2c_master #(50_000_000) i2c_master (
+    //     .CLK         (clk_cpu),
+    //     .I2C_START   (i2c_start),
+    //     .I2C_READ    (i2c_read),
+    //     .I2C_ADDR    (i2c_addr),
+    //     .I2C_SUBADDR (i2c_subaddr),
+    //     .I2C_WDATA   (i2c_dout),
+    //     .I2C_RDATA   (i2c_din),
+    //     .I2C_END     (i2c_end),
+    //     .I2C_ACK     (i2c_ack),
+    
+    //     //I2C bus
+    //     .I2C_SCL     (HDMI_SCL),
+    //     .I2C_SDA     (HDMI_SDA)
+    // );
+    
+    // mist_video #(.COLOR_DEPTH(6), .OUT_COLOR_DEPTH(8), .USE_BLANKS(1'b1), .BIG_OSD(BIG_OSD)) hdmi_video (
+    //     .clk_sys     ( clk_25     ),
+    
+    //     // OSD SPI interface
+    //     .SPI_SCK     ( SPI_SCK    ),
+    //     .SPI_SS3     ( SPI_SS3    ),
+    //     .SPI_DI      ( SPI_DI     ),
+    
+    //     // scanlines (00-none 01-25% 10-50% 11-75%)
+    //     .scanlines   ( 2'b00      ),
+    
+    //     // non-scandoubled pixel clock divider 0 - clk_sys/4, 1 - clk_sys/2
+    //     .ce_divider  ( 1'b0       ),
+    
+    //     // 0 = HVSync 31KHz, 1 = CSync 15KHz
+    //     .scandoubler_disable ( 1'b1 ), // already VGA
+    //     // disable csync without scandoubler
+    //     .no_csync    ( 1'b1       ),
+    //     // YPbPr always uses composite sync
+    //     .ypbpr       ( 1'b0       ),
+    //     // Rotate OSD [0] - rotate [1] - left or right
+    //     .rotate      ( 2'b00      ),
+    //     // composite-like blending
+    //     .blend       ( 1'b0       ),
+    
+    //     // video in
+    //     .R           ( core_r     ),
+    //     .G           ( core_g     ),
+    //     .B           ( core_b     ),
+    
+    //     .HSync       ( ~core_hs   ),
+    //     .VSync       ( ~core_vs   ),
+    //     .HBlank      ( core_blank ),
+    //     .VBlank      ( core_vb    ),
+    
+    //     // MiST video output signals
+    //     .VGA_R       ( HDMI_R     ),
+    //     .VGA_G       ( HDMI_G     ),
+    //     .VGA_B       ( HDMI_B     ),
+    //     .VGA_VS      ( HDMI_VS    ),
+    //     .VGA_HS      ( HDMI_HS    ),
+    //     .VGA_DE      ( HDMI_DE    )
+    // );
+    
+    // assign HDMI_PCLK = clk_25;
+    
+    // `endif
+    
+
+
+
 
 endmodule
