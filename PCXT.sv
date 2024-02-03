@@ -1050,25 +1050,19 @@ module PCXT
     // Input F/F PS2_CLK
     //
     logic   device_clock_ff;
-    logic   device_clock_ff2;
-    logic   device_clock_ff3;
     logic   device_clock;
 
-    always_ff @(posedge clk_chipset, posedge reset)
+    always_ff @(negedge clk_chipset, posedge reset)
     begin
         if (reset)
         begin
-            device_clock_ff  <= 1'b0;
-            device_clock_ff2 <= 1'b0;
-            device_clock_ff3 <= 1'b0;
-            device_clock     <= 1'b0;
+            device_clock_ff <= 1'b0;
+            device_clock    <= 1'b0;
         end
         else
         begin
-            device_clock_ff  <= ps2_kbd_clk_in;
-            device_clock_ff2 <= device_clock_ff;
-            device_clock_ff3 <= device_clock_ff2;
-            device_clock     <= device_clock_ff3 ;
+            device_clock_ff <= ps2_kbd_clk_in;
+            device_clock    <= device_clock_ff ;
         end
     end
 
@@ -1077,25 +1071,19 @@ module PCXT
     // Input F/F PS2_DAT
     //
     logic   device_data_ff;
-    logic   device_data_ff2;
-    logic   device_data_ff3;
     logic   device_data;
 
-    always_ff @(posedge clk_chipset, posedge reset)
+    always_ff @(negedge clk_chipset, posedge reset)
     begin
         if (reset)
         begin
-            device_data_ff  <= 1'b0;
-            device_data_ff2 <= 1'b0;
-            device_data_ff3 <= 1'b0;
-            device_data     <= 1'b0;
+            device_data_ff <= 1'b0;
+            device_data    <= 1'b0;
         end
         else
         begin
-            device_data_ff  <= ps2_kbd_data_in;
-            device_data_ff2 <= device_data_ff;
-            device_data_ff3 <= device_data_ff2;
-            device_data     <= device_data_ff3;
+            device_data_ff <= ps2_kbd_data_in;
+            device_data    <= device_data_ff;
         end
     end
 
@@ -1375,8 +1363,8 @@ module PCXT
     end
 
     wire [15:0]  laudio, raudio;
-    assign laudio =  pause_core ? 1'b0 : status[37:36] ? cmp_l : out_l;
-    assign raudio =  pause_core ? 1'b0 : status[37:36] ? cmp_r : out_r;
+    assign laudio = pause_core ? 1'b0 : status[37:36] ? cmp_l : out_l;
+    assign raudio = pause_core ? 1'b0 : status[37:36] ? cmp_r : out_r;
 
 	`ifdef DEMISTIFY	//needed for not getting error in Quartus compilation for MiST board
 		assign DAC_L =  laudio;

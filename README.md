@@ -17,7 +17,9 @@ This is a general Readme for all targets. Check also Readme in each board folder
 **MiST ports** 
 
 * Altera Cyclone III:  MiST, MiSTica
-* Altera Cyclone IV: SiDi (ManuFerHi EP4CE22)
+* Altera Cyclone IV E: SiDi (ManuFerHi EP4CE22)
+
+* Altera Cyclone IV GX: [Poseidon](https://manuferhi.com/p/poseidon-motherboard) carrier + QMTech EP4CGX150
 
 * Altera Max 10: Arrow Terasic DECA + [MiSTdon](https://github.com/somhi/MiSTdon)
 
@@ -69,7 +71,7 @@ The [Graphics Gremlin project](https://github.com/schlae/graphics-gremlin) from 
   * MDA monochrome
   * Composite (real) video output 
   
-* Audio: Adlib, Tandy, Game Blaster, Speaker
+* Audio: Adlib, Tandy, Game Blaster, speaker
 
 * Joystick support
 
@@ -117,9 +119,9 @@ Scripts incorporated to generate other BIOSes:
 * `make_rom_with_jukost.py`: A valid ROM is created for the PCXT model (pcxt.rom) based on the original Juko ST ROM, and with the XTIDE BIOS embedded at address F000h.
 * `make_rom_with_tandy.py`: A valid ROM is created for the Tandy model (tandy.rom) based on the original Tandy 1000 ROM, requires the XTIDE BIOS at address EC00h to work with HD images.
 
-From the same BIOS section of the OSD it is possible to specify an XTIDE ROM of up to 16Kb to work at address EC00h. It is also provided in this folder (ide_xtl.rom).
+From the same BIOS section of the OSD it is possible to specify an XTIDE ROM of up to 16Kb to work at address EC00h. It is also provided in this repository.
 
-Other Open Source ROMs are available in the same folders:
+Other Open Source ROMs are available in the same folder:
 
 * `pcxt_pcxt31.rom`: This ROM already has the XTIDE BIOS embedded at address F000h. ([Source Code](https://github.com/virtualxt/pcxtbios))
 * `pcxt_micro8088.rom`: This ROM already has the XTIDE BIOS embedded at address F000h. ([Source Code](https://github.com/skiselev/8088_bios))
@@ -131,13 +133,13 @@ NOTES:
 
 * IBM5160 BIOS: Starting BIOS at PC/AT 3.5MHz (max. speed), lights start blinking and keyboard doesn't work anymore. Starting BIOS at 4.77 MHz and changing it thereafter during the RAM test to PC/AT 3.5MHz (max. speed) it lets you work in this BIOS without keyboard problems.
 
-  
+
 
 **Other BIOSes**
 
 * https://github.com/640-KB/GLaBIOS
 
-  
+
 
 ## Mounting the disk image with Serdrive
 
@@ -221,7 +223,7 @@ Features from MiSTer port not ported yet:
 
 * Hercules graphic mode
 
-  
+
 
 
 ## Compile the project in Quartus:

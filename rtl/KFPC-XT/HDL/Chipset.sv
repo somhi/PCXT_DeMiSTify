@@ -313,7 +313,7 @@ module CHIPSET #(
         .composite_out                      (composite_out),
         .rgb_18b                            (rgb_18b),
         .address                            (address),
-		  .latch_address                      (latch_address),
+	    .latch_address                      (latch_address),
         .internal_data_bus                  (internal_data_bus),
         .data_bus_out                       (internal_data_bus_chipset),
         .data_bus_out_from_chipset          (data_bus_out_from_chipset),

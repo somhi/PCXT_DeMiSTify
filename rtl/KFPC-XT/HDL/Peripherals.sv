@@ -281,6 +281,7 @@ module PERIPHERALS #(
     logic           uart_interrupt;
     logic           uart2_interrupt;
     logic   [7:0]   interrupt_data_bus_out;
+    logic           interrupt_to_cpu_buf;
 
     KF8259 u_KF8259 
     (
@@ -302,7 +303,7 @@ module PERIPHERALS #(
         //.buffer_enable              (),
         //.slave_program_or_enable_buffer     (),
         .interrupt_acknowledge_n    (interrupt_acknowledge_n),
-        .interrupt_to_cpu           (interrupt_to_cpu),
+        .interrupt_to_cpu           (interrupt_to_cpu_buf),
         .interrupt_request          ({interrupt_request[7:5],
                                         uart_interrupt,
                                         uart2_interrupt & ~uart2_chip_select,   //kitune-san change to force IRQ go low every time accessing UART (solves mouse not working)
@@ -310,6 +311,15 @@ module PERIPHERALS #(
                                         keybord_interrupt,
                                         timer_interrupt})
     );
+
+    always_ff @(posedge clock, posedge reset)
+        if (reset)
+            interrupt_to_cpu    <= 1'b0;
+        else if (cpu_clock_negedge)
+            interrupt_to_cpu    <= interrupt_to_cpu_buf;
+        else
+            interrupt_to_cpu    <= interrupt_to_cpu;
+
 
     //
     // 8253
@@ -413,6 +423,7 @@ module PERIPHERALS #(
     logic           keybord_irq;
     logic           uart_irq;
     logic           uart2_irq;
+    logic   [7:0]   keycode_buf;
     logic   [7:0]   keycode;
     logic   [7:0]   tandy_keycode;
     logic           prev_ps2_reset;
@@ -443,11 +454,13 @@ module PERIPHERALS #(
 
         // I/O
         .irq                        (keybord_irq),
-        .keycode                    (keycode),
+        .keycode                    (keycode_buf),
         .reset_keyboard             (~prev_ps2_reset_n & ps2_reset_n),
         .clear_keycode              (clear_keycode),
         .pause_core                 (pause_core)
     );
+
+    assign  keycode = ps2_reset_n ? keycode_buf : 8'h80;
 
     // No need to send any command to the PS2 keyboard, answer to reset is created locally
     // Local AA response is generated with signal reset_keyboard in KFPS2KB module
@@ -1303,6 +1316,7 @@ end
        .memcfg            (1'b0),
        .bootcfg           (5'd0)
     );
+    
 
     //
     // Joysticks
@@ -1439,4 +1453,3 @@ end
     end
 
 endmodule
-
