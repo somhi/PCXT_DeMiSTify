@@ -127,7 +127,7 @@ module PCXT
         input         PS2K_MOUSE_CLK_IN,
         input         PS2K_MOUSE_DAT_IN,
         output        PS2K_MOUSE_CLK_OUT,
-        output        PS2K_MOUSE_DAT_OUT   
+        output        PS2K_MOUSE_DAT_OUT,   
 	`endif        
 
         output  [1:0] COMPOSITE_OUT,
