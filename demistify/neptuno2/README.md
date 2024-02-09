@@ -1,12 +1,12 @@
-# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT) - Poseidon GX150 MiST port
+# [IBM PC/XT](https://en.wikipedia.org/wiki/IBM_Personal_Computer_XT) - NeptUNO+ GX150 MiST port
 
-15/12/23 Poseidon GX150 MiST port by @somhi from original MiSTer PCXT core  https://github.com/MiSTer-devel/PCXT_MiSTer by @spark2k06
+port by @somhi from original MiSTer PCXT core  https://github.com/MiSTer-devel/PCXT_MiSTer by @spark2k06
 
 Read the main [Readme](https://github.com/somhi/PCXT_DeMiSTify) also.
 
 ### MiST firmware
 
-Make sure you have a MiST [firmware](https://github.com/mist-devel/mist-firmware) version later than 24/03/23.
+Make sure you have recent MiST [firmware](https://github.com/ZXMicroJack/mist-firmware-rp2040).
 
 ### STATUS
 
