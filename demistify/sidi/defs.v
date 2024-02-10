@@ -13,6 +13,7 @@
 `define EMBED_CHAR_ROM_MDA  	// (4 M9K)
 `define NO_CREDITS		// (10 M9K) Remove Credits screen. For boards with not enough BRAM 
 `define CGA_32			// (32 M9K)	
+//`define NO_CMSOUND		// Game Blaster. For board with not enough Logic cells
 
 // DEVELOPMENT MACROS
 //`define MIST_SIDI		// Define if your board is MiST compatible
