@@ -18,13 +18,13 @@
 #
 # Quartus Prime
 # Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
-# Date created = 21:28:26  February 02, 2024
+# Date created = 22:52:15  February 11, 2024
 #
 # -------------------------------------------------------------------------- #
 
 QUARTUS_VERSION = "17.1"
-DATE = "21:28:26  February 02, 2024"
+DATE = "22:52:15  February 11, 2024"
 
 # Revisions
 
-PROJECT_REVISION = "PCXT_neptuno"
+PROJECT_REVISION = "PCXT_neptuno_legacy"
