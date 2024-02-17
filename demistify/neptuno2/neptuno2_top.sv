@@ -44,12 +44,12 @@ module neptuno2_top (
 	input         AUDIO_IN,
 `endif
 	input         UART_RX,
-	output        UART_TX
+	output        UART_TX,
 
 	// output        SD_CS,
-	// output        SD_SCK,
+	input        SD_SCK,
 	// output        SD_MOSI,
-	// input         SD_MISO,
+	input         SD_MISO
 	
 	// inout 		  PS2_KEYBOARD_CLK,
 	// inout	      PS2_KEYBOARD_DAT,
@@ -102,8 +102,9 @@ pll_50_27 u_pll_50_27 (
  .SDRAM_CKE	 (SDRAM_CKE),
 		 			
  .SPI_DO	 (SPI_DO),
+ .SPI_DO_IN	 (SD_MISO),
  .SPI_DI	 (SPI_DI),
- .SPI_SCK	 (SPI_SCK),
+ .SPI_SCK	 (SPI_SS4 ? SPI_SCK : SD_SCK),
  .SPI_SS2	 (SPI_SS2),
  .SPI_SS3	 (SPI_SS3),
  .SPI_SS4	 (SPI_SS4),

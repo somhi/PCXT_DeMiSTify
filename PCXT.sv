@@ -46,6 +46,9 @@ module PCXT
     `endif
     
         input         SPI_SCK,
+`ifdef USE_SPI_DO_IN
+        input         SPI_DO_IN,
+`endif
         inout         SPI_DO,
         input         SPI_DI,
         input         SPI_SS2,    // data_io
@@ -448,6 +451,9 @@ module PCXT
         .SPI_SS4    ( SPI_SS4 ),
 		.SPI_DI     ( SPI_DI  ),
 		.SPI_DO     ( SPI_DO  ),    
+`ifdef USE_SPI_DO_IN
+    .SPI_DO_IN  ( SPI_DO_IN),
+`endif
 
 		.ioctl_download ( ioctl_download ),
 	//  .ioctl_upload   ( upload_active  ),

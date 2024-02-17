@@ -273,7 +273,7 @@ always@(posedge SPI_SCK, posedge SPI_SS4) begin : SPI_DIRECT_RECEIVER
 `ifdef DEMISTIFY		
 			sbuf2 <= { sbuf2[5:0], SPI_DO_IN };
 `else
-			// sbuf2 <= { sbuf2[5:0], SPI_DO };
+			sbuf2 <= { sbuf2[5:0], SPI_DO };
 `endif
 		cnt2 <= cnt2 + 1'd1;
 
@@ -284,7 +284,11 @@ always@(posedge SPI_SCK, posedge SPI_SS4) begin : SPI_DIRECT_RECEIVER
 			if (bytecnt == 513) bytecnt <= 0;
 			// don't send the CRC bytes
 			if (~bytecnt[9]) begin
+`ifdef DEMISTIFY
 				data_w2 <= {sbuf2, SPI_DO_IN};
+`else
+				data_w2 <= {sbuf2, SPI_DO};
+`endif
 				rclk2 <= ~rclk2;
 			end
 		end
