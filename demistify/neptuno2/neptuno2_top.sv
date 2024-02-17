@@ -47,7 +47,7 @@ module neptuno2_top (
 	output        UART_TX,
 
 	// output        SD_CS,
-	input        SD_SCK,
+	input         SD_SCK,		//SD_SCK is being driven by middleboard
 	// output        SD_MOSI,
 	input         SD_MISO
 	
@@ -101,8 +101,7 @@ pll_50_27 u_pll_50_27 (
  .SDRAM_CLK	 (SDRAM_CLK),
  .SDRAM_CKE	 (SDRAM_CKE),
 		 			
- .SPI_DO	 (SPI_DO),
- .SPI_DO_IN	 (SD_MISO),
+ .SPI_DO	 (spi_do_int),
  .SPI_DI	 (SPI_DI),
  .SPI_SCK	 (SPI_SS4 ? SPI_SCK : SD_SCK),
  .SPI_SS2	 (SPI_SS2),
@@ -128,5 +127,9 @@ pll_50_27 u_pll_50_27 (
 //  .UART_CTS   (UART_CTS),
 //  .UART_RTS   (UART_RTS)
 );
+
+wire spi_do_int;
+assign spi_do_int = SPI_SS4 ? 1'bz : SD_MISO;
+assign SPI_DO = spi_do_int;
 
 endmodule
