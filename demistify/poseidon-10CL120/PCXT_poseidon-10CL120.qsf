@@ -1,0 +1,269 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2017  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
+# Date created = 00:22:27  March 23, 2024
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		PCXT_poseidon-10CL120_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone 10 LP"
+set_global_assignment -name DEVICE 10CL120YF484I7G
+set_global_assignment -name TOP_LEVEL_ENTITY poseidon_top
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 17.1.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "00:22:27  MARCH 23, 2024"
+set_global_assignment -name LAST_QUARTUS_VERSION "17.1.0 Lite Edition"
+set_global_assignment -name AUTO_MERGE_PLLS OFF
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
+set_global_assignment -name IGNORE_CLOCK_SETTINGS ON
+set_global_assignment -name TPD_REQUIREMENT "5 ns"
+set_global_assignment -name TSU_REQUIREMENT "5 ns"
+set_global_assignment -name TCO_REQUIREMENT "5 ns"
+set_global_assignment -name TH_REQUIREMENT "5 ns"
+set_global_assignment -name FMAX_REQUIREMENT "101.58 MHz"
+set_global_assignment -name CYCLONEIII_CONFIGURATION_SCHEME "PASSIVE SERIAL"
+set_global_assignment -name FORCE_CONFIGURATION_VCCIO ON
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name RESERVE_DATA0_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_DATA1_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_FLASH_NCE_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_DCLK_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name OPTIMIZE_HOLD_TIMING "ALL PATHS"
+set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
+set_global_assignment -name FITTER_EFFORT "STANDARD FIT"
+set_global_assignment -name GENERATE_RBF_FILE ON
+set_global_assignment -name ENABLE_DRC_SETTINGS OFF
+set_global_assignment -name ENABLE_CLOCK_LATENCY ON
+set_global_assignment -name ENABLE_RECOVERY_REMOVAL_ANALYSIS ON
+set_global_assignment -name IGNORE_LCELL_BUFFERS ON
+set_global_assignment -name ROUTER_TIMING_OPTIMIZATION_LEVEL MAXIMUM
+set_global_assignment -name PLACEMENT_EFFORT_MULTIPLIER 4.0
+set_global_assignment -name ROUTER_EFFORT_MULTIPLIER 2.0
+set_global_assignment -name OPTIMIZE_TIMING "NORMAL COMPILATION"
+set_global_assignment -name FINAL_PLACEMENT_OPTIMIZATION ALWAYS
+set_global_assignment -name AUTO_GLOBAL_MEMORY_CONTROLS ON
+set_global_assignment -name ALLOW_ANY_RAM_SIZE_FOR_RECOGNITION OFF
+set_global_assignment -name ALLOW_ANY_ROM_SIZE_FOR_RECOGNITION OFF
+set_global_assignment -name ADD_PASS_THROUGH_LOGIC_TO_INFERRED_RAMS OFF
+set_global_assignment -name IGNORE_CARRY_BUFFERS OFF
+set_global_assignment -name IGNORE_CASCADE_BUFFERS OFF
+set_global_assignment -name AUTO_GLOBAL_CLOCK ON
+set_global_assignment -name AUTO_RAM_RECOGNITION ON
+set_global_assignment -name AUTO_SHIFT_REGISTER_RECOGNITION AUTO
+set_global_assignment -name STATE_MACHINE_PROCESSING AUTO
+set_global_assignment -name FMAX_REQUIREMENT "34 MHz" -section_id clk32
+set_global_assignment -name BLOCK_RAM_AND_MLAB_EQUIVALENT_PAUSED_READ_CAPABILITIES "DONT CARE"
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name DEVICE_FILTER_PACKAGE TQFP
+set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
+set_global_assignment -name OPTIMIZE_POWER_DURING_FITTING OFF
+set_global_assignment -name ADV_NETLIST_OPT_SYNTH_WYSIWYG_REMAP OFF
+set_global_assignment -name PHYSICAL_SYNTHESIS_EFFORT NORMAL
+set_global_assignment -name SEED 1
+set_global_assignment -name OPTIMIZE_POWER_DURING_SYNTHESIS "NORMAL COMPILATION"
+set_global_assignment -name PRE_MAPPING_RESYNTHESIS ON
+set_global_assignment -name OPTIMIZATION_MODE "AGGRESSIVE PERFORMANCE"
+set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE SPEED
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_location_assignment PIN_G22 -to CLOCK_50
+set_location_assignment PIN_A5 -to VGA_R[5]
+set_location_assignment PIN_A3 -to VGA_R[4]
+set_location_assignment PIN_B3 -to VGA_R[3]
+set_location_assignment PIN_B5 -to VGA_R[2]
+set_location_assignment PIN_A6 -to VGA_R[1]
+set_location_assignment PIN_D6 -to VGA_R[0]
+set_location_assignment PIN_C4 -to VGA_G[5]
+set_location_assignment PIN_F2 -to VGA_G[4]
+set_location_assignment PIN_G3 -to VGA_G[3]
+set_location_assignment PIN_E5 -to VGA_G[2]
+set_location_assignment PIN_B6 -to VGA_G[1]
+set_location_assignment PIN_E6 -to VGA_G[0]
+set_location_assignment PIN_A4 -to VGA_B[5]
+set_location_assignment PIN_H2 -to VGA_B[4]
+set_location_assignment PIN_H3 -to VGA_B[3]
+set_location_assignment PIN_B4 -to VGA_B[2]
+set_location_assignment PIN_C6 -to VGA_B[1]
+set_location_assignment PIN_A7 -to VGA_B[0]
+set_location_assignment PIN_C7 -to VGA_VS
+set_location_assignment PIN_B7 -to VGA_HS
+set_location_assignment PIN_K1 -to CONF_DATA0
+set_location_assignment PIN_AA3 -to SPI_DI
+set_location_assignment PIN_AB3 -to SPI_DO
+set_location_assignment PIN_Y3 -to SPI_SCK
+set_location_assignment PIN_Y15 -to SPI_SS2
+set_location_assignment PIN_W15 -to SPI_SS3
+set_location_assignment PIN_AA4 -to SPI_SS4
+set_location_assignment PIN_W19 -to SDRAM_A[0]
+set_location_assignment PIN_AA18 -to SDRAM_A[1]
+set_location_assignment PIN_U21 -to SDRAM_A[2]
+set_location_assignment PIN_V21 -to SDRAM_A[3]
+set_location_assignment PIN_Y22 -to SDRAM_A[4]
+set_location_assignment PIN_W22 -to SDRAM_A[5]
+set_location_assignment PIN_V22 -to SDRAM_A[6]
+set_location_assignment PIN_U22 -to SDRAM_A[7]
+set_location_assignment PIN_R22 -to SDRAM_A[8]
+set_location_assignment PIN_P22 -to SDRAM_A[9]
+set_location_assignment PIN_AB18 -to SDRAM_A[10]
+set_location_assignment PIN_M22 -to SDRAM_A[11]
+set_location_assignment PIN_M21 -to SDRAM_A[12]
+set_location_assignment PIN_E22 -to SDRAM_DQ[0]
+set_location_assignment PIN_F17 -to SDRAM_DQ[1]
+set_location_assignment PIN_F20 -to SDRAM_DQ[2]
+set_location_assignment PIN_G18 -to SDRAM_DQ[3]
+set_location_assignment PIN_K18 -to SDRAM_DQ[4]
+set_location_assignment PIN_H18 -to SDRAM_DQ[5]
+set_location_assignment PIN_J18 -to SDRAM_DQ[6]
+set_location_assignment PIN_R19 -to SDRAM_DQ[7]
+set_location_assignment PIN_H22 -to SDRAM_DQ[8]
+set_location_assignment PIN_D22 -to SDRAM_DQ[9]
+set_location_assignment PIN_D21 -to SDRAM_DQ[10]
+set_location_assignment PIN_C22 -to SDRAM_DQ[11]
+set_location_assignment PIN_C21 -to SDRAM_DQ[12]
+set_location_assignment PIN_B22 -to SDRAM_DQ[13]
+set_location_assignment PIN_B21 -to SDRAM_DQ[14]
+set_location_assignment PIN_A20 -to SDRAM_DQ[15]
+set_location_assignment PIN_W20 -to SDRAM_BA[0]
+set_location_assignment PIN_Y17 -to SDRAM_BA[1]
+set_location_assignment PIN_J22 -to SDRAM_DQMH
+set_location_assignment PIN_T19 -to SDRAM_DQML
+set_location_assignment PIN_U20 -to SDRAM_nRAS
+set_location_assignment PIN_T18 -to SDRAM_nCAS
+set_location_assignment PIN_T20 -to SDRAM_nWE
+set_location_assignment PIN_W21 -to SDRAM_nCS
+set_location_assignment PIN_J21 -to SDRAM_CKE
+set_location_assignment PIN_B20 -to SDRAM_CLK
+set_location_assignment PIN_D7 -to I2S_BCK
+set_location_assignment PIN_E7 -to I2S_DATA
+set_location_assignment PIN_A8 -to I2S_LRCK
+set_location_assignment PIN_B8 -to AUDIO_IN
+set_location_assignment PIN_E8 -to BUS_A[15]
+set_location_assignment PIN_A10 -to BUS_A[14]
+set_location_assignment PIN_A13 -to BUS_A[13]
+set_location_assignment PIN_A14 -to BUS_A[12]
+set_location_assignment PIN_C15 -to BUS_A[11]
+set_location_assignment PIN_B17 -to BUS_A[10]
+set_location_assignment PIN_B18 -to BUS_A[9]
+set_location_assignment PIN_B19 -to BUS_A[8]
+set_location_assignment PIN_A18 -to BUS_A[7]
+set_location_assignment PIN_A16 -to BUS_A[6]
+set_location_assignment PIN_B14 -to BUS_A[5]
+set_location_assignment PIN_B13 -to BUS_A[4]
+set_location_assignment PIN_B10 -to BUS_A[3]
+set_location_assignment PIN_A9 -to BUS_A[2]
+set_location_assignment PIN_AA5 -to BUS_A[1]
+set_location_assignment PIN_AA6 -to BUS_A[0]
+set_location_assignment PIN_AA7 -to BUS_nM1
+set_location_assignment PIN_AA8 -to BUS_nRESET
+set_location_assignment PIN_Y8 -to BUS_CLK
+set_location_assignment PIN_AA9 -to BUS_nINT
+set_location_assignment PIN_AA10 -to BUS_nMREQ
+set_location_assignment PIN_V12 -to BUS_nWR
+set_location_assignment PIN_AB13 -to BUS_nRD
+set_location_assignment PIN_Y13 -to BUS_nIORQ
+set_location_assignment PIN_V14 -to BUS_D[0]
+set_location_assignment PIN_W14 -to BUS_D[1]
+set_location_assignment PIN_AA16 -to BUS_D[2]
+set_location_assignment PIN_AA22 -to BUS_D[3]
+set_location_assignment PIN_R21 -to BUS_D[4]
+set_location_assignment PIN_L21 -to BUS_D[5]
+set_location_assignment PIN_H20 -to BUS_D[6]
+set_location_assignment PIN_F22 -to BUS_D[7]
+set_location_assignment PIN_K21 -to UART_TX
+set_location_assignment PIN_P21 -to UART_RX
+set_location_assignment PIN_AA20 -to BUS_USER1
+set_location_assignment PIN_AB19 -to BUS_USER2
+set_location_assignment PIN_AB15 -to BUS_USER3
+set_location_assignment PIN_AB14 -to BUS_IE0
+set_location_assignment PIN_C8 -to BUS_N41
+set_location_assignment PIN_B9 -to BUS_N42
+set_location_assignment PIN_C10 -to BUS_N43
+set_location_assignment PIN_C13 -to BUS_N44
+set_location_assignment PIN_A15 -to BUS_N45
+set_location_assignment PIN_A17 -to BUS_N46
+set_location_assignment PIN_D17 -to BUS_N47
+set_location_assignment PIN_A19 -to BUS_N48
+set_location_assignment PIN_C18 -to BUS_A[23]
+set_location_assignment PIN_C17 -to BUS_A[22]
+set_location_assignment PIN_B15 -to BUS_A[21]
+set_location_assignment PIN_D13 -to BUS_A[20]
+set_location_assignment PIN_D10 -to BUS_A[19]
+set_location_assignment PIN_E9 -to BUS_A[18]
+set_location_assignment PIN_D8 -to BUS_A[17]
+set_location_assignment PIN_AB15 -to BUS_A[16]
+set_location_assignment PIN_AB6 -to BUS_RFSH
+set_location_assignment PIN_AB7 -to BUS_PAGE
+set_location_assignment PIN_AB8 -to BUS_CLK2
+set_location_assignment PIN_AB9 -to BUS_nBUSAK
+set_location_assignment PIN_AB10 -to BUS_nHALT
+set_location_assignment PIN_Y10 -to BUS_nBUSRQ
+set_location_assignment PIN_V14 -to BUS_nWAIT
+set_location_assignment PIN_AA13 -to BUS_nNMI
+set_location_assignment PIN_W13 -to BUS_D[8]
+set_location_assignment PIN_AA14 -to BUS_D[9]
+set_location_assignment PIN_AA15 -to BUS_D[10]
+set_location_assignment PIN_AB20 -to BUS_D[11]
+set_location_assignment PIN_T16 -to BUS_D[12]
+set_location_assignment PIN_N22 -to BUS_D[13]
+set_location_assignment PIN_J20 -to BUS_D[14]
+set_location_assignment PIN_F21 -to BUS_D[15]
+set_location_assignment PIN_H21 -to BUS_TX2
+set_location_assignment PIN_M19 -to BUS_RX2
+set_location_assignment PIN_P20 -to BUS_USER5
+set_location_assignment PIN_AA21 -to BUS_USER6
+set_location_assignment PIN_AB16 -to BUS_USER7
+set_location_assignment PIN_Y14 -to BUS_IE1
+set_location_assignment PIN_AB4 -to LED
+set_location_assignment PIN_V8 -to LED1
+set_location_assignment PIN_V9 -to KEY0
+set_location_assignment PLL_1 -to "pll:pll|altpll:altpll_component"
+set_global_assignment -name SDC_FILE "../DeMiSTify/Board/poseidon-10CL055/constraints.sdc"
+set_global_assignment -name VERILOG_MACRO "DEMISTIFY_POSEIDON_10CL120=1"
+set_global_assignment -name VERILOG_MACRO "I2S_AUDIO=1"
+set_global_assignment -name VERILOG_MACRO "USE_AUDIO_IN=1"
+set_global_assignment -name VERILOG_MACRO "USE_CLOCK_50=1"
+set_global_assignment -name VERILOG_MACRO "BIG_OSD=1"
+set_global_assignment -name VERILOG_MACRO "DEMISTIFY=1"
+set_global_assignment -name QIP_FILE top.qip
+set_global_assignment -name QIP_FILE ../../files.qip
+set_global_assignment -name QIP_FILE "../../mist-modules/mist.qip"
+set_global_assignment -name QIP_FILE ../DeMiSTify/controller/controller.qip
+set_global_assignment -name VHDL_FILE ../demistify_config_pkg.vhd
+set_global_assignment -name VHDL_FILE ../firmware/controller_rom1_byte.vhd
+set_global_assignment -name VHDL_FILE ../firmware/controller_rom2_byte.vhd
+set_global_assignment -name PRE_FLOW_SCRIPT_FILE "quartus_sh:../../build_id.tcl"
